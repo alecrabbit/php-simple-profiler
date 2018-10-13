@@ -1,12 +1,16 @@
 FROM php:7-fpm-alpine
 LABEL Description="Application container"
 
-ENV PS1='\[\033[1;32m\]🐳  \[\033[1;36m\][\u@\h] \[\033[1;34m\]\w\[\033[0;35m\] \[\033[1;36m\]# \[\033[0m\]'
+ENV PS1='\[\033[1;32m\]🐳 \[\033[1;36m\][\u@\h] \[\033[1;34m\]\w\[\033[0;35m\] \[\033[1;36m\]# \[\033[0m\]'
 
 ENV COMPOSER_VERSION 1.7.2
 ## Looked here: <https://github.com/prooph/docker-files/blob/master/php/7.2-cli>
 ENV PHP_REDIS_VERSION 4.1.1
 ENV PHP_XDEBUG_VERSION 2.6.0
+
+ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV COMPOSER_HOME /tmp
+ENV PATH /scripts:/scripts/aliases:$PATH
 
 # persistent / runtime deps
 ENV PHPIZE_DEPS \
@@ -48,9 +52,8 @@ RUN apk add --no-cache --virtual .persistent-deps \
     # for imagick extension
     imagemagick-dev \
     # etc
-    bash nano
-
-RUN set -xe \
+    bash nano \
+    && set -xe \
     # workaround for rabbitmq linking issue
     && ln -s /usr/lib /usr/local/lib64 \
     && apk add --no-cache --virtual .build-deps \
@@ -101,12 +104,13 @@ RUN set -xe \
 #opcache.fast_shutdown=1\n\
 #opcache.enable_cli=1\n\
 #opcache.enable=1\n" > /usr/local/etc/php/conf.d/opcache.ini \
-
     && pecl install trader \
     && docker-php-ext-enable trader \
     && pecl install event \
     && docker-php-ext-enable event  \
     && mv /usr/local/etc/php/conf.d/docker-php-ext-event.ini /usr/local/etc/php/conf.d/docker-php-ext-zz-event.ini \
+    && pecl install imagick \
+    && docker-php-ext-enable imagick \
     # For phpunit coverage
     && pecl install xdebug-${PHP_XDEBUG_VERSION} \
     && git clone --branch ${PHP_REDIS_VERSION} https://github.com/phpredis/phpredis /tmp/phpredis \
@@ -116,14 +120,7 @@ RUN set -xe \
         && make  \
         && make install \
         && make test \
-        && echo 'extension=redis.so' > /usr/local/etc/php/conf.d/redis.ini
-
-RUN set -xe \
-    && apk add --no-cache --virtual .build-deps \
-        $PHPIZE_DEPS \
-    # Placeholder to install new extensions
-    && pecl install imagick \
-    && docker-php-ext-enable imagick \
+        && echo 'extension=redis.so' > /usr/local/etc/php/conf.d/redis.ini \
     && apk del .build-deps \
     && rm -rf /tmp/* \
     && rm -rf /app \
@@ -135,15 +132,7 @@ RUN set -xe \
     && mkdir /home/user \
     && chmod 777 /home/user \
     && rm -f /docker-entrypoint.sh \
-    && rm -f /usr/local/etc/php-fpm.d/*
-
-COPY ./etc/php/php-dev.ini /usr/local/etc/php/php.ini
-
-ENV COMPOSER_ALLOW_SUPERUSER 1
-ENV COMPOSER_HOME /tmp
-ENV PATH /scripts:/scripts/aliases:$PATH
-
-RUN set -xe \
+    && rm -f /usr/local/etc/php-fpm.d/* \
     && mkdir -p "$COMPOSER_HOME" \
     # install composer
     && php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');" \
@@ -161,7 +150,7 @@ RUN set -xe \
 
 COPY ./aliases/* /scripts/aliases/
 COPY ./keep-alive.sh /scripts/keep-alive.sh
-
+COPY ./etc/php/php-dev.ini /usr/local/etc/php/php.ini
 
 WORKDIR /src
 ENTRYPOINT []
