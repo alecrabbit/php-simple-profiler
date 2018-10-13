@@ -4,64 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6a655127cfc400690d030e1271db2b0b",
+    "content-hash": "b07f6710acdb9db7d009d151e26ac130",
     "packages": [
-        {
-            "name": "krowinski/bcmath-extended",
-            "version": "4.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/krowinski/bcmath-extended.git",
-                "reference": "171762b5daecc3eb0d74accbbbe9f294f8606e1d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/krowinski/bcmath-extended/zipball/171762b5daecc3eb0d74accbbbe9f294f8606e1d",
-                "reference": "171762b5daecc3eb0d74accbbbe9f294f8606e1d",
-                "shasum": ""
-            },
-            "require": {
-                "ext-bcmath": "*",
-                "php": ">=5.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.8|^5.7"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "BCMathExtended\\": "src/BCMathExtended/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Kacper Rowiński",
-                    "email": "kacper.rowinski@gmail.com"
-                }
-            ],
-            "description": "Extends php BCMath lib for missing functions like floor, ceil, round, abs, min, max, rand for big numbers. Also wraps existing BCMath functions. (more http://php.net/manual/en/book.bc.php) Supports scientific notation.s",
-            "keywords": [
-                "Arbitrary-precision",
-                "abs",
-                "bc",
-                "bcmath",
-                "bignumber",
-                "ceil",
-                "complex-numbers",
-                "floor",
-                "math",
-                "php",
-                "precision",
-                "rand",
-                "round",
-                "scientific-notation"
-            ],
-            "time": "2018-09-13T12:39:06+00:00"
-        },
         {
             "name": "nesbot/carbon",
             "version": "2.3.0",
