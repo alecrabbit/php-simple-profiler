@@ -1,0 +1,9 @@
+/.idea/*
+/vendor/*
+/docker/*
+/tmp/*
+
+/docker-compose.yml
+/.dockerignore
+
+/phpunit.xml
