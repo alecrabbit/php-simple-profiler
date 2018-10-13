@@ -14,7 +14,7 @@ class Profiler
     {
         $this->value = 5;
     }
-    
+
     public function __toString()
     {
         return (string)$this->value;
