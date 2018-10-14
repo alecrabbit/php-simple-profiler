@@ -10,10 +10,12 @@ namespace AlecRabbit\Profiler\Contracts;
 
 interface Timer
 {
-    const UNIT_MICROSECONDS = 0;
-    const UNIT_MILLISECONDS = 1;
-    const UNIT_SECONDS = 2;
-    const UNIT_MINUTES = 3;
-    const UNIT_HOURS = 4;
+    const DEFAULT_PRECISION = 3;
+
+    const UNIT_MICROSECONDS = 10;
+    const UNIT_MILLISECONDS = 11;
+    const UNIT_SECONDS = 12;
+    const UNIT_MINUTES = 13;
+    const UNIT_HOURS = 14;
 
 }

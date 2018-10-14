@@ -4,8 +4,105 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b07f6710acdb9db7d009d151e26ac130",
+    "content-hash": "f138e7aac14d216fb74c64e68472a1c2",
     "packages": [
+        {
+            "name": "alecrabbit/php-helpers",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alecrabbit/php-helpers.git",
+                "reference": "edcac26f57c73495845a7f824defc3c9ee642c01"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/edcac26f57c73495845a7f824defc3c9ee642c01",
+                "reference": "edcac26f57c73495845a7f824defc3c9ee642c01",
+                "shasum": ""
+            },
+            "require": {
+                "krowinski/bcmath-extended": "^4.1",
+                "nesbot/carbon": "^2.3",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "nunomaduro/collision": "^2.0",
+                "phpunit/phpunit": "^7.3",
+                "symfony/var-dumper": "^4.1"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/functions.php",
+                    "src/numeric/numeric.php",
+                    "src/time/time.php",
+                    "src/array/array.php",
+                    "src/string/string.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP helpers functions",
+            "time": "2018-10-13T23:42:15+00:00"
+        },
+        {
+            "name": "krowinski/bcmath-extended",
+            "version": "4.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/krowinski/bcmath-extended.git",
+                "reference": "171762b5daecc3eb0d74accbbbe9f294f8606e1d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/krowinski/bcmath-extended/zipball/171762b5daecc3eb0d74accbbbe9f294f8606e1d",
+                "reference": "171762b5daecc3eb0d74accbbbe9f294f8606e1d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-bcmath": "*",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8|^5.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "BCMathExtended\\": "src/BCMathExtended/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kacper Rowiński",
+                    "email": "kacper.rowinski@gmail.com"
+                }
+            ],
+            "description": "Extends php BCMath lib for missing functions like floor, ceil, round, abs, min, max, rand for big numbers. Also wraps existing BCMath functions. (more http://php.net/manual/en/book.bc.php) Supports scientific notation.s",
+            "keywords": [
+                "Arbitrary-precision",
+                "abs",
+                "bc",
+                "bcmath",
+                "bignumber",
+                "ceil",
+                "complex-numbers",
+                "floor",
+                "math",
+                "php",
+                "precision",
+                "rand",
+                "round",
+                "scientific-notation"
+            ],
+            "time": "2018-09-13T12:39:06+00:00"
+        },
         {
             "name": "nesbot/carbon",
             "version": "2.3.0",
@@ -2057,7 +2154,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "alecrabbit/php-helpers": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
