@@ -3,11 +3,11 @@ volumes:
   app:
 
 services:
-  app:
+  &app-service app:
     build:
       context: ./docker/app
       dockerfile: Dockerfile
-    working_dir: /var/www
+    hostname: *app-service
     user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
     volumes:
     - /etc/passwd:/etc/passwd:ro

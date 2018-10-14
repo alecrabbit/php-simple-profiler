@@ -152,6 +152,6 @@ COPY ./aliases/* /scripts/aliases/
 COPY ./keep-alive.sh /scripts/keep-alive.sh
 COPY ./etc/php/php-dev.ini /usr/local/etc/php/php.ini
 
-WORKDIR /src
+WORKDIR /var/www
 ENTRYPOINT []
 CMD []
