@@ -1,7 +1,7 @@
 FROM php:7-fpm-alpine
 LABEL Description="Application container"
 
-ENV PS1='\[\033[1;32m\]🐳 \[\033[1;36m\][\u@\h] \[\033[1;34m\]\w\[\033[0;35m\] \[\033[1;36m\]# \[\033[0m\]'
+ENV PS1='\[\033[1;32m\]🐳 \[\033[1;36m\][\u@\033[01;38;05;224m\h\[\033[1;36m\]] \[\033[1;34m\]\w\[\033[0;35m\] \[\033[1;36m\]# \[\033[0m\]'
 
 ENV COMPOSER_VERSION 1.7.2
 ## Looked here: <https://github.com/prooph/docker-files/blob/master/php/7.2-cli>
@@ -22,8 +22,6 @@ ENV PHPIZE_DEPS \
     libc-dev \
     pcre-dev \
     make \
-    git \
-    unzip \
     pkgconf \
     re2c \
     # for GD
@@ -53,6 +51,8 @@ RUN apk add --no-cache --virtual .persistent-deps \
     imagemagick-dev \
     # etc
     bash nano \
+    git \
+    unzip \
     && set -xe \
     # workaround for rabbitmq linking issue
     && ln -s /usr/lib /usr/local/lib64 \

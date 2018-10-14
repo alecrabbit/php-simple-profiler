@@ -8,12 +8,20 @@
 namespace AlecRabbit\Profiler;
 
 
+use AlecRabbit\Exception\RuntimeException;
 use AlecRabbit\Profiler\Contracts\Report;
 
+/**
+ * Class Timer
+ * @package AlecRabbit\Profiler
+ */
 class Timer implements Contracts\Timer
 {
     /** @var string */
     private $name;
+
+    /** @var float */
+    private $previous;
 
     /** @var float */
     private $start;
@@ -33,21 +41,23 @@ class Timer implements Contracts\Timer
     /** @var int */
     private $count;
 
-
-    /**
-     * All of the current timers.
-     *
-     * @var array
-     */
-    public $timers = [];
-
     /**
      * Timer constructor.
-     * @param string $name
+     * @param null|string $name
      */
-    public function __construct(string $name)
+    public function __construct(?string $name = null)
     {
-        $this->name = $name;
+        $this->name = $name ?? 'default';
+    }
+
+    /**
+     * Starts the timer.
+     * @return Timer
+     */
+    public function forceStart()
+    {
+        $this->start();
+        return $this;
     }
 
     /**
@@ -57,7 +67,13 @@ class Timer implements Contracts\Timer
      */
     public function start()
     {
-        $this->start = microtime(true);
+        $this->previous = $this->start = $this->current();
+    }
+
+    private function current()
+    {
+        return
+            microtime(true);
     }
 
     /**
@@ -66,7 +82,7 @@ class Timer implements Contracts\Timer
      */
     public function check(): Timer
     {
-        if (isset($this->start)) {
+        if (isset($this->previous)) {
             $this->mark();
         } else {
             $this->start();
@@ -76,9 +92,9 @@ class Timer implements Contracts\Timer
 
     private function mark()
     {
-        $currentTime = microtime(true);
-
-        $this->currentValue = $currentTime - $this->start;
+        $current = $this->current();
+        $this->currentValue = $current - $this->previous;
+        $this->previous = $current;
 
         if ($this->count) {
             if ($this->currentValue < $this->minValue) {
@@ -98,69 +114,68 @@ class Timer implements Contracts\Timer
     }
 
     /**
-     * @return float|null
+     * @param bool $formatted
+     * @return mixed
      */
-    public function getCurrentValue(): ?float
+    public function elapsed(bool $formatted = false)
     {
-        return $this->currentValue;
-    }
+        if (!$this->start)
+            throw new RuntimeException('Timer has not been started.');
+        $elapsed = $this->current() - $this->start;
 
-    /**
-     * @return float|null
-     */
-    public function getAvgValue(): ?float
-    {
-        return $this->avgValue;
-    }
-
-    /**
-     * @return float|null
-     */
-    public function getMinValue(): ?float
-    {
-        return $this->minValue;
-    }
-
-    /**
-     * @return float|null
-     */
-    public function getMaxValue(): ?float
-    {
-        return $this->maxValue;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getCount(): ?int
-    {
-        return $this->count;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return float
-     */
-    public function elapsed(): float
-    {
         return
-            $this->currentValue;
+            $formatted ? $this->format($elapsed, self::UNIT_MILLISECONDS, 2) : $elapsed;
+    }
+
+    private function format(?float $value, ?int $units = null, int $precision = null)
+    {
+        $units = $units ?? self::UNIT_MILLISECONDS;
+        $precision = $precision ?? self::DEFAULT_PRECISION;
+        $precision = bounds($precision, 0, 6);
+
+        if ($value === null)
+            return null;
+        switch ($units) {
+            case self::UNIT_HOURS:
+                $suffix = 'h';
+                $coefficient = 1 / 3600;
+                break;
+            case self::UNIT_MINUTES:
+                $suffix = 'm';
+                $coefficient = 1 / 60;
+                break;
+            case self::UNIT_SECONDS:
+                $suffix = 's';
+                $coefficient = 1;
+                break;
+            case self::UNIT_MILLISECONDS:
+                $suffix = 'ms';
+                $coefficient = 1000;
+                break;
+            case self::UNIT_MICROSECONDS:
+                $suffix = 'μs';
+                $coefficient = 1000000;
+                break;
+            default:
+                $suffix = 'ms';
+                $coefficient = 1000;
+                break;
+        }
+//        $value = BC::round(BC::mul($value, $coefficient, $precision * 30), $precision);
+        return
+            sprintf('%s%s',
+                round($value * $coefficient, $precision),
+                $suffix
+            );
     }
 
     /**
      * @param  bool $extended
-     * @param int $units
-     * @param  int $precision
+     * @param int|null $units
+     * @param int|null $precision
      * @return string
      */
-    public function report(bool $extended = false, int $units = self::UNIT_MILLISECONDS, int $precision = 2): string
+    public function report(bool $extended = false, ?int $units = null, ?int $precision = null): string
     {
         $current = $this->format($this->currentValue, $units, $precision);
         $r = '';
@@ -188,46 +203,25 @@ class Timer implements Contracts\Timer
         return $r;
     }
 
-    private function format(?float $value, int $units, int $precision)
+    /**
+     * @return string
+     */
+    public function getName(): string
     {
-        if ($value === null)
-            return null;
-        switch ($units) {
-            case self::UNIT_HOURS :
-                $suffix = 'h';
-                $coefficient = 1 / 3600000000;
-                break;
-            case self::UNIT_MINUTES:
-                $suffix = 'm';
-                $coefficient = 1 / 60000000;
-                break;
-            case self::UNIT_SECONDS:
-                $suffix = 's';
-                $coefficient = 1;
-                break;
-            case self::UNIT_MILLISECONDS:
-                $suffix = 'ms';
-                $coefficient = 1000;
-                break;
-            case self::UNIT_MICROSECONDS:
-                $suffix = 'μs';
-                $coefficient = 1000000;
-                break;
-            default:
-                $suffix = 'ms';
-                $coefficient = 1000;
-                break;
-        }
-        return
-            sprintf('%s%s',
-                round($value * $coefficient, $precision),
-                $suffix
-            );
+        return $this->name;
     }
 
-    public function getTimerValues(bool $formatted = true, int $units = self::UNIT_MILLISECONDS, int $precision = 3): array
+    /**
+     * @param bool $formatted
+     * @param int|null $units
+     * @param int|null $precision
+     * @return iterable
+     */
+    public function getTimerValues(bool $formatted = true, ?int $units = null, ?int $precision = null): iterable
     {
-        $count = $this->getCount();
+        if (!$count = $this->getCount()) {
+            throw new RuntimeException('Timer has not been started.');
+        }
         $minValue = ($count == 1) ? $this->getCurrentValue() : $this->getMinValue();
         return [
             'Last' =>
@@ -249,6 +243,46 @@ class Timer implements Contracts\Timer
             'Count' => $count,
         ];
 
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getCount(): ?int
+    {
+        return $this->count;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getCurrentValue(): ?float
+    {
+        return $this->currentValue;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getMinValue(): ?float
+    {
+        return $this->minValue;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getAvgValue(): ?float
+    {
+        return $this->avgValue;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getMaxValue(): ?float
+    {
+        return $this->maxValue;
     }
 
 }

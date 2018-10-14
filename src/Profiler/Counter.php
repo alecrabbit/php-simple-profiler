@@ -8,62 +8,97 @@
 namespace AlecRabbit\Profiler;
 
 
+use AlecRabbit\Exception\RuntimeException;
+
 class Counter implements Contracts\Counter
 {
+    const REPORT_FORMAT = '%s %s';
+
     /** @var string */
     private $name;
 
     /** @var int */
     private $value;
 
-    /**
-     * Counter constructor.
-     * @param string $name
-     * @param int $value
-     */
-    public function __construct(string $name, int $value = 0)
-    {
-        $this->name = $name;
-        $this->value = $value;
-    }
+    /** @var int */
+    private $step;
 
     /**
-     * @param int $times
-     * @return int
+     * Counter constructor
+     * @param string|null $name
+     * @param int $value
      */
-    public function bump(int $times = 1): int
+    public function __construct(?string $name = null, int $value = 0)
     {
-        if ($times < 1)
-            $times = 1;
-        $this->value += $times;
+        $this->name = $name ?? 'default';
+        $this->value = $value;
+        $this->step = 1;
+    }
+
+    public function bump(): int
+    {
+        return
+            $this->bumpUp();
+    }
+
+    public function bumpUp(): int
+    {
+        $this->value += $this->step;
+        return
+            $this->value;
+    }
+
+    public function bumpWith(int $step, bool $setStep = false): int
+    {
+        $this->value += $this->checkStep($step);
+        if ($setStep)
+            $this->setStep($step);
         return
             $this->value;
     }
 
     /**
-     * @return int
+     * @param int $step
+     * @return Counter
      */
+    public function setStep(int $step): Counter
+    {
+        $this->step = $this->checkStep($step);
+        return $this;
+    }
+
+    private function checkStep(int $step): int
+    {
+        if ($step == 0)
+            throw new RuntimeException('Counter step should be non-zero integer.');
+        return $step;
+    }
+
+    public function bumpDown(): int
+    {
+        $this->value -= $this->step;
+        return
+            $this->value;
+    }
+
     public function getValue(): int
     {
         return $this->value;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
     }
 
     public function report(bool $extended = false): string
     {
         return
             sprintf(
-                '%s %s',
+                static::REPORT_FORMAT,
                 $this->getName(),
                 $this->value
             );
 
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
     }
 }
