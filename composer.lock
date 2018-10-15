@@ -4,14 +4,14 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f138e7aac14d216fb74c64e68472a1c2",
+    "content-hash": "3951c93ffc47f2016132d8e93d63d107",
     "packages": [
         {
             "name": "alecrabbit/php-helpers",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/alecrabbit/php-helpers.git",
+                "url": "/var/packages/helpers",
                 "reference": "edcac26f57c73495845a7f824defc3c9ee642c01"
             },
             "dist": {

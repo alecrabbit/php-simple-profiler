@@ -161,7 +161,6 @@ class Timer implements Contracts\Timer
                 $coefficient = 1000;
                 break;
         }
-//        $value = BC::round(BC::mul($value, $coefficient, $precision * 30), $precision);
         return
             sprintf('%s%s',
                 round($value * $coefficient, $precision),

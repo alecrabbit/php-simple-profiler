@@ -18,7 +18,7 @@ class Profiler implements ProfilerContract
     /** @var Counter[] */
     private $counters = [];
 
-    public function counter(string $name, ?string ...$suffixes): Counter
+    public function counter(string $name = 'default', ?string ...$suffixes): Counter
     {
         if (!empty($suffixes))
             $name = sprintf('%s [%s]', $name, implode(', ', $suffixes));
@@ -26,7 +26,7 @@ class Profiler implements ProfilerContract
             $this->counters[$name] ?? $this->counters[$name] = new Counter($name);
     }
 
-    public function timer(string $name, ?string ...$suffixes): Timer
+    public function timer(string $name = 'default', ?string ...$suffixes): Timer
     {
         if (!empty($suffixes))
             $name = sprintf('%s [%s]', $name, implode(', ', $suffixes));
@@ -35,11 +35,17 @@ class Profiler implements ProfilerContract
     }
 
     // TODO separate logic and view
-    public function report(bool $extended = false): string
+    public function report(bool $extended = false): iterable
     {
+        $result = [];
+        foreach ($this->counters as $counter) {
+            $result[] = $counter->report($extended);
+        }
+        foreach ($this->timers as $timer) {
+            $result[] = $timer->report($extended);
+        }
         return
-            $this->format($this->counters, 'Counters', $extended) .
-            $this->format($this->timers, 'Timers', $extended);
+            $result;
     }
 
     private function format(array $objects, string $header = '', bool $extended = false)
