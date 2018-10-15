@@ -8,7 +8,6 @@
 namespace Unit;
 
 
-use AlecRabbit\Exception\RuntimeException;
 use AlecRabbit\Profiler\Timer;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
@@ -51,7 +50,7 @@ class TimerTest extends TestCase
     public function TimerElapsedNotStarted()
     {
         $timer = new Timer();
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $this->assertEquals(1, $timer->elapsed());
     }
 
@@ -59,7 +58,7 @@ class TimerTest extends TestCase
     public function TimerValuesNotStarted()
     {
         $timer = new Timer();
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $this->assertEquals(
             [
                 'Last' => null,
