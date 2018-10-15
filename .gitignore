@@ -2,7 +2,3 @@
 /vendor/*
 /tmp/*
 /.eval/*
-
-/.dockerignore
-
-/phpunit.xml

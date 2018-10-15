@@ -7,7 +7,7 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         bootstrap="vendor/autoload.php">
+         bootstrap="tests/bootstrap.php">
     <testsuites>
         <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Feature</directory>
@@ -29,7 +29,8 @@
     <listeners>
         <listener class="NunoMaduro\Collision\Adapters\Phpunit\Listener" />
     </listeners>
-    <php>
-        <env name="APP_ENV" value="testing"/>
-    </php>
+    <logging>
+        <log type="testdox-html" target="./tmp/testdox.html"/>
+        <log type="testdox-text" target="./tmp/testdox.txt"/>
+    </logging>
 </phpunit>
