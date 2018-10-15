@@ -8,7 +8,6 @@
 namespace Unit;
 
 
-use AlecRabbit\Exception\RuntimeException;
 use AlecRabbit\Profiler\Counter;
 use PHPUnit\Framework\TestCase;
 
@@ -69,7 +68,7 @@ class CounterTest extends TestCase
     /** @test */
     public function CounterWithException()
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $counter = (new Counter())->setStep(0);
     }
 
@@ -77,7 +76,7 @@ class CounterTest extends TestCase
     public function CounterWithExceptionTwo()
     {
         $counter = new Counter();
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $counter->bumpWith(0, true);
     }
 
@@ -85,7 +84,7 @@ class CounterTest extends TestCase
     public function CounterWithExceptionThree()
     {
         $counter = new Counter();
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $counter->bumpWith(0);
     }
 

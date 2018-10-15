@@ -8,8 +8,6 @@
 namespace AlecRabbit\Profiler;
 
 
-use AlecRabbit\Exception\RuntimeException;
-
 /**
  * Class Timer
  * @package AlecRabbit\Profiler
@@ -82,7 +80,7 @@ class Timer implements Contracts\Timer
     public function elapsed(bool $formatted = false)
     {
         if (!$this->start)
-            throw new RuntimeException('Timer has not been started.');
+            throw new \RuntimeException('Timer has not been started.');
         $elapsed = $this->current() - $this->start;
 
         return
@@ -201,7 +199,7 @@ class Timer implements Contracts\Timer
     public function getTimerValues(bool $formatted = true, ?int $units = null, ?int $precision = null): iterable
     {
         if (!$count = $this->getCount()) {
-            throw new RuntimeException('Timer has not been started.');
+            throw new \RuntimeException('Timer has not been started.');
         }
         $minValue = ($count == 1) ? $this->getCurrentValue() : $this->getMinValue();
         return [

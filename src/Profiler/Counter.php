@@ -8,8 +8,6 @@
 namespace AlecRabbit\Profiler;
 
 
-use AlecRabbit\Exception\RuntimeException;
-
 class Counter implements Contracts\Counter
 {
     const REPORT_FORMAT = '%s %s';
@@ -60,7 +58,7 @@ class Counter implements Contracts\Counter
     private function checkStep(int $step): int
     {
         if ($step == 0)
-            throw new RuntimeException('Counter step should be non-zero integer.');
+            throw new \RuntimeException('Counter step should be non-zero integer.');
         return $step;
     }
 
