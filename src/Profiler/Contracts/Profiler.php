@@ -8,7 +8,6 @@
 namespace AlecRabbit\Profiler\Contracts;
 
 
-interface Profiler
+interface Profiler extends Strings
 {
-
 }

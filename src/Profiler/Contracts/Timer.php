@@ -8,7 +8,7 @@
 namespace AlecRabbit\Profiler\Contracts;
 
 
-interface Timer
+interface Timer extends Strings
 {
     const DEFAULT_PRECISION = 3;
 

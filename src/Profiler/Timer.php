@@ -9,7 +9,6 @@ namespace AlecRabbit\Profiler;
 
 
 use AlecRabbit\Exception\RuntimeException;
-use AlecRabbit\Profiler\Contracts\Report;
 
 /**
  * Class Timer
@@ -47,7 +46,7 @@ class Timer implements Contracts\Timer
      */
     public function __construct(?string $name = null)
     {
-        $this->name = $name ?? 'default';
+        $this->name = $name ?? static::_DEFAULT;
     }
 
     /**
@@ -74,43 +73,6 @@ class Timer implements Contracts\Timer
     {
         return
             microtime(true);
-    }
-
-    /**
-     * Marks the elapsed time.
-     * If timer was not started starts the timer.
-     */
-    public function check(): Timer
-    {
-        if (isset($this->previous)) {
-            $this->mark();
-        } else {
-            $this->start();
-        }
-        return $this;
-    }
-
-    private function mark()
-    {
-        $current = $this->current();
-        $this->currentValue = $current - $this->previous;
-        $this->previous = $current;
-
-        if ($this->count) {
-            if ($this->currentValue < $this->minValue) {
-                $this->minValue = $this->currentValue;
-            }
-            if ($this->currentValue > $this->maxValue) {
-                $this->maxValue = $this->currentValue;
-            }
-            $this->avgValue = (($this->avgValue * $this->count) + $this->currentValue) / ++$this->count;
-
-        } else {
-            $this->count = 1;
-            $this->maxValue = $this->currentValue;
-            $this->minValue = $this->currentValue;
-            $this->avgValue = $this->currentValue;
-        }
     }
 
     /**
@@ -168,38 +130,58 @@ class Timer implements Contracts\Timer
             );
     }
 
-    /**
-     * @param  bool $extended
-     * @param int|null $units
-     * @param int|null $precision
-     * @return string
-     */
-    public function report(bool $extended = false, ?int $units = null, ?int $precision = null): string
+    public function report(?bool $formatted = null, ?bool $extended = null, ?int $units = null, ?int $precision = null): iterable
     {
-        $current = $this->format($this->currentValue, $units, $precision);
-        $r = '';
+        if (!$this->count)
+            $this->check();
+        $formatted = $formatted ?? false;
+        $current = $formatted ? $this->format($this->currentValue, $units, $precision) : $this->currentValue;
+        $report = [];
         if ($current) {
-            $r .= sprintf(
-                Report::REPORT_FORMAT,
-                $this->getName(),
-                $current
-            );
-            if ($extended) {
-                $values = $this->getTimerValues(true);
-                $r .= Report::REPORT_DIV;
-                foreach ($values as $key => $value) {
-//                    if ($value)
-                    $r .=
-                        sprintf(
-                            Report::REPORT_EXTENDED_SUFFIX,
-                            $key,
-                            $value
-                        );
-                }
-                $r .= PHP_EOL;
-            }
+            $report[] = [
+                static::_NAME => $this->getName(),
+                static::_LAST => $current,
+                static::_EXTENDED => $extended ? $this->getTimerValues($formatted) : null
+            ];
         }
-        return $r;
+        return $report;
+    }
+
+    /**
+     * Marks the elapsed time.
+     * If timer was not started starts the timer.
+     */
+    public function check(): Timer
+    {
+        if (isset($this->previous)) {
+            $this->mark();
+        } else {
+            $this->start();
+        }
+        return $this;
+    }
+
+    private function mark()
+    {
+        $current = $this->current();
+        $this->currentValue = $current - $this->previous;
+        $this->previous = $current;
+
+        if ($this->count) {
+            if ($this->currentValue < $this->minValue) {
+                $this->minValue = $this->currentValue;
+            }
+            if ($this->currentValue > $this->maxValue) {
+                $this->maxValue = $this->currentValue;
+            }
+            $this->avgValue = (($this->avgValue * $this->count) + $this->currentValue) / ++$this->count;
+
+        } else {
+            $this->count = 1;
+            $this->maxValue = $this->currentValue;
+            $this->minValue = $this->currentValue;
+            $this->avgValue = $this->currentValue;
+        }
     }
 
     /**
@@ -223,23 +205,23 @@ class Timer implements Contracts\Timer
         }
         $minValue = ($count == 1) ? $this->getCurrentValue() : $this->getMinValue();
         return [
-            'Last' =>
+            static::_LAST =>
                 $formatted ?
                     $this->format($this->getCurrentValue(), $units, $precision) :
                     $this->getCurrentValue(),
-            'Avg' =>
+            static::_AVG =>
                 $formatted ?
                     $this->format($this->getAvgValue(), $units, $precision) :
                     $this->getAvgValue(),
-            'Min' =>
+            static::_MIN =>
                 $formatted ?
                     $this->format($minValue, $units, $precision) :
                     $minValue,
-            'Max' =>
+            static::_MAX =>
                 $formatted ?
                     $this->format($this->getMaxValue(), $units, $precision) :
                     $this->getMaxValue(),
-            'Count' => $count,
+            static::_COUNT => $count,
         ];
 
     }

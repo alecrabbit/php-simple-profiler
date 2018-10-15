@@ -8,7 +8,6 @@
 namespace AlecRabbit\Profiler\Contracts;
 
 
-interface Counter
+interface Counter extends Strings
 {
-
 }

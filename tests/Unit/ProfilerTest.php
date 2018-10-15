@@ -68,17 +68,17 @@ class ProfilerTest extends TestCase
             ->check();
         $this->assertEquals(1, $profiler->counter('new')->getValue());
 
-        $this->assertEquals(0.00000214, $profiler->timer('new')->elapsed(), '', 0.001);
+        $this->assertEquals(0.00000214, $profiler->timer('new')->elapsed(), '', 0.00001);
         $profiler
             ->timer('new', 'vol', 'buy', 'tor')
             ->forceStart()->check();
         $report = $profiler->report();
         $report_extended = $profiler->report(true);
         $this->assertInternalType('array', $report);
-        $this->assertCount(5, $report);
+        $this->assertCount(2, $report);
 
         $this->assertInternalType('array', $report_extended);
-        $this->assertCount(5, $report_extended);
+        $this->assertCount(2, $report_extended);
 
     }
 }
