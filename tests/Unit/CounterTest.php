@@ -93,9 +93,8 @@ class CounterTest extends TestCase
     public function CounterReport()
     {
         $counter = new Counter();
-        $this->assertStringMatchesFormat(
-            Counter::REPORT_FORMAT,
-            $counter->report()
-        );
+        $report = $counter->report();
+        $this->assertInternalType('array', $report);
+        $this->assertCount(3, $report);
     }
 }

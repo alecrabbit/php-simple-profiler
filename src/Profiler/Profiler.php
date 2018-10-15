@@ -18,59 +18,44 @@ class Profiler implements ProfilerContract
     /** @var Counter[] */
     private $counters = [];
 
-    public function counter(string $name = 'default', ?string ...$suffixes): Counter
+    public function counter(?string $name = null, ?string ...$suffixes): Counter
     {
-        if (!empty($suffixes))
-            $name = sprintf('%s [%s]', $name, implode(', ', $suffixes));
+        $name = $this->prepName($name, $suffixes);
         return
             $this->counters[$name] ?? $this->counters[$name] = new Counter($name);
     }
 
-    public function timer(string $name = 'default', ?string ...$suffixes): Timer
+    private function prepName($name, $suffixes): string
     {
+        $name = $name ?? static::_DEFAULT;
         if (!empty($suffixes))
-            $name = sprintf('%s [%s]', $name, implode(', ', $suffixes));
+            return $this->formatName($name, $suffixes);
+        return $name;
+    }
+
+    protected function formatName($name, $suffixes): string
+    {
+        return
+            sprintf(static::_NAME_FORMAT, $name, implode(', ', $suffixes));
+    }
+
+    public function timer(?string $name = null, ?string ...$suffixes): Timer
+    {
+        $name = $this->prepName($name, $suffixes);
         return
             $this->timers[$name] ?? $this->timers[$name] = new Timer($name);
     }
 
-    // TODO separate logic and view
-    public function report(bool $extended = false): iterable
+    public function report(?bool $formatted = null, ?bool $extended = null, ?int $units = null, ?int $precision = null): iterable
     {
-        $result = [];
+        $report = [];
         foreach ($this->counters as $counter) {
-            $result[] = $counter->report($extended);
+            $report[static::_COUNTERS] = $counter->report($extended);
         }
         foreach ($this->timers as $timer) {
-            $result[] = $timer->report($extended);
+            $report[static::_TIMERS] = $timer->report($formatted, $extended, $units, $precision);
         }
         return
-            $result;
-    }
-
-    private function format(array $objects, string $header = '', bool $extended = false)
-    {
-        $result = '';
-        if (!empty($objects)) {
-            $result .= $header . ':' . PHP_EOL;
-            $n = 1;
-            foreach ($objects as $obj) {
-                $r = $obj->report($extended);
-                if (!empty($r)) {
-                    $result .=
-                        sprintf(
-                            "%s. %s %s",
-                            $n,
-                            $r,
-                            PHP_EOL
-                        );
-                    $n++;
-                }
-            }
-            $result .= PHP_EOL;
-        }
-        return
-            $result;
-
+            $report;
     }
 }

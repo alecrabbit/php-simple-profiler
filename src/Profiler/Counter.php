@@ -30,7 +30,7 @@ class Counter implements Contracts\Counter
      */
     public function __construct(?string $name = null, int $value = 0)
     {
-        $this->name = $name ?? 'default';
+        $this->name = $name ?? static::_DEFAULT;
         $this->value = $value;
         $this->step = 1;
     }
@@ -57,6 +57,13 @@ class Counter implements Contracts\Counter
             $this->value;
     }
 
+    private function checkStep(int $step): int
+    {
+        if ($step == 0)
+            throw new RuntimeException('Counter step should be non-zero integer.');
+        return $step;
+    }
+
     /**
      * @param int $step
      * @return Counter
@@ -65,13 +72,6 @@ class Counter implements Contracts\Counter
     {
         $this->step = $this->checkStep($step);
         return $this;
-    }
-
-    private function checkStep(int $step): int
-    {
-        if ($step == 0)
-            throw new RuntimeException('Counter step should be non-zero integer.');
-        return $step;
     }
 
     public function bumpDown(): int
@@ -86,14 +86,15 @@ class Counter implements Contracts\Counter
         return $this->value;
     }
 
-    public function report(bool $extended = false): string
+    public function report(bool $extended = null): iterable
     {
+        $extended = $extended ?? false;
         return
-            sprintf(
-                static::REPORT_FORMAT,
-                $this->getName(),
-                $this->value
-            );
+            [
+                static::_NAME => $this->getName(),
+                static::_COUNT => $this->value,
+                static::_EXTENDED => null
+            ];
 
     }
 

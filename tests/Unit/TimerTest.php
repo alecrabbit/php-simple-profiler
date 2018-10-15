@@ -97,11 +97,11 @@ class TimerTest extends TestCase
         }
         $this->assertEquals(
             [
-                'Last' => '1ms',
-                'Avg' => '1ms',
-                'Min' => '1ms',
-                'Max' => '1ms',
-                'Count' => $count,
+                Timer::_LAST=> '1ms',
+                Timer::_AVG => '1ms',
+                Timer::_MIN => '1ms',
+                Timer::_MAX => '1ms',
+                Timer::_COUNT => $count,
 
             ],
             $timer->getTimerValues(true, Timer::UNIT_MILLISECONDS, 0)
