@@ -1,5 +1,5 @@
 {
-  "name": "alecrabbit/simple-profiler",
+  "name": "alecrabbit/php-simple-profiler",
   "type": "library",
   "description": "PHP simple profiler",
   "license": "MIT",
