@@ -93,7 +93,6 @@ class Counter implements Contracts\Counter
                 static::_COUNT => $this->value,
                 static::_EXTENDED => null
             ];
-
     }
 
     public function getName(): string

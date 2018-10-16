@@ -50,10 +50,10 @@ class Profiler implements ProfilerContract
     {
         $report = [];
         foreach ($this->counters as $counter) {
-            $report[static::_COUNTERS] = $counter->report($extended);
+            $report[static::_COUNTERS][$counter->getName()] = $counter->report($extended);
         }
         foreach ($this->timers as $timer) {
-            $report[static::_TIMERS] = $timer->report($formatted, $extended, $units, $precision);
+            $report[static::_TIMERS][$timer->getName()] = $timer->report($formatted, $extended, $units, $precision);
         }
         return
             $report;
