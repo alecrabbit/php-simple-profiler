@@ -5,7 +5,7 @@
   "license": "MIT",
   "require": {
     "php": ">=7.2",
-    "alecrabbit/php-helpers": "dev-master",
+    "alecrabbit/php-helpers": "^0.0.4",
     "krowinski/bcmath-extended": "^4.1",
     "nesbot/carbon": "^2.3"
   },
