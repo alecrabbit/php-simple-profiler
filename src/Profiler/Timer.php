@@ -139,8 +139,9 @@ class Timer implements Contracts\Timer
         $current = $formatted ? $this->format($this->currentValue, $units, $precision) : $this->currentValue;
         $report = [];
         if ($current) {
-            $report[] = [
-                static::_NAME => $this->getName(),
+            $name = $this->getName();
+            $report = [
+                static::_NAME => $name,
                 static::_LAST => $current,
                 static::_EXTENDED => $extended ? $this->getTimerValues($formatted) : null
             ];
