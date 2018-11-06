@@ -10,7 +10,7 @@ namespace AlecRabbit\Profiler;
 
 class Counter implements Contracts\Counter
 {
-    const REPORT_FORMAT = '%s %s';
+    protected const REPORT_FORMAT = '%s %s';
 
     /** @var string */
     private $name;
@@ -49,16 +49,18 @@ class Counter implements Contracts\Counter
     public function bumpWith(int $step, bool $setStep = false): int
     {
         $this->value += $this->checkStep($step);
-        if ($setStep)
+        if ($setStep) {
             $this->setStep($step);
+        }
         return
             $this->value;
     }
 
     private function checkStep(int $step): int
     {
-        if ($step == 0)
+        if ($step === 0) {
             throw new \RuntimeException('Counter step should be non-zero integer.');
+        }
         return $step;
     }
 
@@ -86,7 +88,7 @@ class Counter implements Contracts\Counter
 
     public function report(?bool $extended = null): iterable
     {
-        $extended = $extended ?? false;
+//        $extended = $extended ?? false;
         return
             [
                 static::_NAME => $this->getName(),

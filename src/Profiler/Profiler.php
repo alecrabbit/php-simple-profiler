@@ -28,8 +28,9 @@ class Profiler implements ProfilerContract
     private function prepName($name, $suffixes): string
     {
         $name = $name ?? static::_DEFAULT;
-        if (!empty($suffixes))
+        if (!empty($suffixes)) {
             return $this->formatName($name, $suffixes);
+        }
         return $name;
     }
 
