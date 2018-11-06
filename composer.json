@@ -1,11 +1,11 @@
 {
-  "name": "alecrabbit/simple-profiler",
+  "name": "alecrabbit/php-simple-profiler",
   "type": "library",
   "description": "PHP simple profiler",
   "license": "MIT",
   "require": {
     "php": ">=7.2",
-    "alecrabbit/php-helpers": "dev-master",
+    "alecrabbit/php-helpers": "^0",
     "krowinski/bcmath-extended": "^4.1",
     "nesbot/carbon": "^2.3"
   },

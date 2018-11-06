@@ -51,7 +51,7 @@ class Timer implements Contracts\Timer
      * Starts the timer.
      * @return Timer
      */
-    public function forceStart()
+    public function forceStart(): Timer
     {
         $this->start();
         return $this;
@@ -62,7 +62,7 @@ class Timer implements Contracts\Timer
      *
      * @return void
      */
-    public function start()
+    public function start(): void
     {
         $this->previous = $this->start = $this->current();
     }
@@ -79,8 +79,9 @@ class Timer implements Contracts\Timer
      */
     public function elapsed(bool $formatted = false)
     {
-        if (!$this->start)
+        if (!$this->start) {
             throw new \RuntimeException('Timer has not been started.');
+        }
         $elapsed = $this->current() - $this->start;
 
         return
@@ -91,10 +92,11 @@ class Timer implements Contracts\Timer
     {
         $units = $units ?? self::UNIT_MILLISECONDS;
         $precision = $precision ?? self::DEFAULT_PRECISION;
-        $precision = bounds($precision, 0, 6);
+        $precision = (int)bounds($precision, 0, 6);
 
-        if ($value === null)
+        if ($value === null) {
             return null;
+        }
         switch ($units) {
             case self::UNIT_HOURS:
                 $suffix = 'h';
@@ -130,14 +132,16 @@ class Timer implements Contracts\Timer
 
     public function report(?bool $formatted = null, ?bool $extended = null, ?int $units = null, ?int $precision = null): iterable
     {
-        if (!$this->count)
+        if (!$this->count) {
             $this->check();
+        }
         $formatted = $formatted ?? false;
         $current = $formatted ? $this->format($this->currentValue, $units, $precision) : $this->currentValue;
         $report = [];
         if ($current) {
-            $report[] = [
-                static::_NAME => $this->getName(),
+            $name = $this->getName();
+            $report = [
+                static::_NAME => $name,
                 static::_LAST => $current,
                 static::_EXTENDED => $extended ? $this->getTimerValues($formatted) : null
             ];
@@ -151,7 +155,7 @@ class Timer implements Contracts\Timer
      */
     public function check(): Timer
     {
-        if (isset($this->previous)) {
+        if (null !== $this->previous) {
             $this->mark();
         } else {
             $this->start();
@@ -159,7 +163,7 @@ class Timer implements Contracts\Timer
         return $this;
     }
 
-    private function mark()
+    private function mark(): void
     {
         $current = $this->current();
         $this->currentValue = $current - $this->previous;
@@ -201,7 +205,7 @@ class Timer implements Contracts\Timer
         if (!$count = $this->getCount()) {
             throw new \RuntimeException('Timer has not been started.');
         }
-        $minValue = ($count == 1) ? $this->getCurrentValue() : $this->getMinValue();
+        $minValue = ($count === 1) ? $this->getCurrentValue() : $this->getMinValue();
         return [
             static::_LAST =>
                 $formatted ?

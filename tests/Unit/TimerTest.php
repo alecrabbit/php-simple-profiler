@@ -72,7 +72,7 @@ class TimerTest extends TestCase
     }
 
     /** @test */
-    public function TimerElapsed()
+    public function TimerElapsed(): void
     {
         $timer = new Timer();
         $timer->start();
@@ -85,7 +85,7 @@ class TimerTest extends TestCase
     }
 
     /** @test */
-    public function TimerValues()
+    public function TimerValues(): void
     {
         $timer = new Timer();
         $timer->start();
@@ -110,7 +110,7 @@ class TimerTest extends TestCase
     /** @test
      * @throws \ReflectionException
      */
-    public function TimerFormatPrivate()
+    public function TimerFormatPrivate(): void
     {
         $method = new ReflectionMethod(Timer::class, 'format');
         $method->setAccessible(true);

@@ -14,14 +14,14 @@ use PHPUnit\Framework\TestCase;
 class ProfilerTest extends TestCase
 {
     /** @test */
-    public function ClassCreation()
+    public function ClassCreation(): void
     {
         $profiler = new Profiler();
         $this->assertInstanceOf(Profiler::class, $profiler);
     }
 
     /** @test */
-    public function CounterCreation()
+    public function CounterCreation(): void
     {
         $profiler = new Profiler();
         $profiler->counter('new')->bumpUp();
@@ -36,7 +36,7 @@ class ProfilerTest extends TestCase
     }
 
     /** @test */
-    public function TimerCreation()
+    public function TimerCreation(): void
     {
         $profiler = new Profiler();
         $profiler->counter('new')->bumpUp();
@@ -53,7 +53,7 @@ class ProfilerTest extends TestCase
 
 
     /** @test */
-    public function ProfilerReport()
+    public function ProfilerReport(): void
     {
         $profiler = new Profiler();
         $profiler->counter('new')->bumpUp();
@@ -74,10 +74,8 @@ class ProfilerTest extends TestCase
             ->forceStart()->check();
         $report = $profiler->report();
         $report_extended = $profiler->report(true);
-        $this->assertInternalType('array', $report);
         $this->assertCount(2, $report);
 
-        $this->assertInternalType('array', $report_extended);
         $this->assertCount(2, $report_extended);
 
     }

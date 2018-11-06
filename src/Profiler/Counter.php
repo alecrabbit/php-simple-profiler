@@ -84,7 +84,7 @@ class Counter implements Contracts\Counter
         return $this->value;
     }
 
-    public function report(bool $extended = null): iterable
+    public function report(?bool $extended = null): iterable
     {
         $extended = $extended ?? false;
         return
@@ -93,7 +93,6 @@ class Counter implements Contracts\Counter
                 static::_COUNT => $this->value,
                 static::_EXTENDED => null
             ];
-
     }
 
     public function getName(): string
