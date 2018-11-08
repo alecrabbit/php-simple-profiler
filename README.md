@@ -22,6 +22,25 @@ $profiler->counter()->bump();
 var_export($profiler->report());
 echo PHP_EOL;
 
+// array (
+//     'counters' =>
+//         array (
+//             'new' =>
+//                 array (
+//                     'name' => 'new',
+//                     'count' => 1,
+//                     'extended' => NULL,
+//                 ),
+//             'default' =>
+//                 array (
+//                     'name' => 'default',
+//                     'count' => 3,
+//                     'extended' => NULL,
+//                 ),
+//         ),
+// )
+
+
 $profiler->timer()->start();
 $profiler->timer()->check();
 usleep(100);
@@ -36,8 +55,137 @@ usleep(510);
 
 var_export($profiler->report(null, true));
 echo PHP_EOL;
+
+//    array (
+//      'counters' => 
+//      array (
+//        'new' => 
+//        array (
+//          'name' => 'new',
+//          'count' => 1,
+//          'extended' => NULL,
+//        ),
+//        'default' => 
+//        array (
+//          'name' => 'default',
+//          'count' => 3,
+//          'extended' => NULL,
+//        ),
+//      ),
+//      'timers' => 
+//      array (
+//        'default' => 
+//        array (
+//          'name' => 'default',
+//          'last' => 0.0001590251922607422,
+//          'extended' => 
+//          array (
+//            'last' => 0.0001590251922607422,
+//            'avg' => 8.058547973632812E-5,
+//            'min' => 2.1457672119140625E-6,
+//            'max' => 0.0001590251922607422,
+//            'count' => 2,
+//          ),
+//        ),
+//        'new' => 
+//        array (
+//          'name' => 'new',
+//          'last' => 0.00015592575073242188,
+//          'extended' => 
+//          array (
+//            'last' => 0.00015592575073242188,
+//            'avg' => 7.843971252441406E-5,
+//            'min' => 9.5367431640625E-7,
+//            'max' => 0.00015592575073242188,
+//            'count' => 2,
+//          ),
+//        ),
+//      ),
+//    )
+
 var_export($profiler->report(true));
 echo PHP_EOL;
+
+//    array (
+//      'counters' => 
+//      array (
+//        'new' => 
+//        array (
+//          'name' => 'new',
+//          'count' => 1,
+//          'extended' => NULL,
+//        ),
+//        'default' => 
+//        array (
+//          'name' => 'default',
+//          'count' => 3,
+//          'extended' => NULL,
+//        ),
+//      ),
+//      'timers' => 
+//      array (
+//        'default' => 
+//        array (
+//          'name' => 'default',
+//          'last' => '0.159ms',
+//          'extended' => NULL,
+//        ),
+//        'new' => 
+//        array (
+//          'name' => 'new',
+//          'last' => '0.156ms',
+//          'extended' => NULL,
+//        ),
+//      ),
+//    )
+
 var_export($profiler->report(true, true));
 echo PHP_EOL;
+
+//    array (
+//      'counters' => 
+//      array (
+//        'new' => 
+//        array (
+//          'name' => 'new',
+//          'count' => 1,
+//          'extended' => NULL,
+//        ),
+//        'default' => 
+//        array (
+//          'name' => 'default',
+//          'count' => 3,
+//          'extended' => NULL,
+//        ),
+//      ),
+//      'timers' => 
+//      array (
+//        'default' => 
+//        array (
+//          'name' => 'default',
+//          'last' => '0.159ms',
+//          'extended' => 
+//          array (
+//            'last' => '0.159ms',
+//            'avg' => '0.081ms',
+//            'min' => '0.002ms',
+//            'max' => '0.159ms',
+//            'count' => 2,
+//          ),
+//        ),
+//        'new' => 
+//        array (
+//          'name' => 'new',
+//          'last' => '0.156ms',
+//          'extended' => 
+//          array (
+//            'last' => '0.156ms',
+//            'avg' => '0.078ms',
+//            'min' => '0.001ms',
+//            'max' => '0.156ms',
+//            'count' => 2,
+//          ),
+//        ),
+//      ),
+//    )
 ```
