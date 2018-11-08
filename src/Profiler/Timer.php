@@ -209,20 +209,16 @@ class Timer implements Contracts\Timer
         return [
             static::_LAST =>
                 $formatted ?
-                    $this->format($this->getCurrentValue(), $units, $precision) :
-                    $this->getCurrentValue(),
+                    $this->format($this->getCurrentValue(), $units, $precision) : $this->getCurrentValue(),
             static::_AVG =>
                 $formatted ?
-                    $this->format($this->getAvgValue(), $units, $precision) :
-                    $this->getAvgValue(),
+                    $this->format($this->getAvgValue(), $units, $precision) : $this->getAvgValue(),
             static::_MIN =>
                 $formatted ?
-                    $this->format($minValue, $units, $precision) :
-                    $minValue,
+                    $this->format($minValue, $units, $precision) : $minValue,
             static::_MAX =>
                 $formatted ?
-                    $this->format($this->getMaxValue(), $units, $precision) :
-                    $this->getMaxValue(),
+                    $this->format($this->getMaxValue(), $units, $precision) : $this->getMaxValue(),
             static::_COUNT => $count,
         ];
 

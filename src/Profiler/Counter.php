@@ -88,12 +88,12 @@ class Counter implements Contracts\Counter
 
     public function report(?bool $extended = null): iterable
     {
-//        $extended = $extended ?? false;
+        $extended = $extended ?? false;
         return
             [
                 static::_NAME => $this->getName(),
                 static::_COUNT => $this->value,
-                static::_EXTENDED => null
+                static::_EXTENDED => $extended
             ];
     }
 
