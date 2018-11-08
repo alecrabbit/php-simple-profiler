@@ -2,3 +2,5 @@
 /vendor/*
 /tmp/*
 /.eval/*
+
+docker-compose.yml
