@@ -39,10 +39,10 @@ class TimerTest extends TestCase
             usleep(1000);
             $timer->check();
         }
-        $this->assertEquals(0.001, $timer->getAvgValue(), 'getAvgValue', 0.0002);
-        $this->assertEquals(0.001, $timer->getMinValue(), 'getMinValue', 0.0002);
-        $this->assertEquals(0.001, $timer->getMaxValue(), 'getMaxValue', 0.0002);
-        $this->assertEquals(0.001, $timer->getCurrentValue(), 'getCurrentValue', 0.0002);
+        $this->assertEquals(0.001, $timer->getAvgValue(), 'getAvgValue', 0.0004);
+        $this->assertEquals(0.001, $timer->getMinValue(), 'getMinValue', 0.0004);
+        $this->assertEquals(0.001, $timer->getMaxValue(), 'getMaxValue', 0.0004);
+        $this->assertEquals(0.001, $timer->getCurrentValue(), 'getCurrentValue', 0.0004);
         $this->assertEquals($count, $timer->getCount());
     }
 
