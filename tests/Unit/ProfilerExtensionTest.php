@@ -25,7 +25,7 @@ class ProfilerExt extends Profiler
 class ProfilerExtensionTest extends TestCase
 {
     /** @test */
-    public function ClassCreation()
+    public function ClassCreation(): void
     {
         $profiler = new Profiler();
         $this->assertInstanceOf(Profiler::class, $profiler);
@@ -38,7 +38,7 @@ class ProfilerExtensionTest extends TestCase
     }
 
     /** @test */
-    public function MultipleCountersCreation()
+    public function MultipleCountersCreation(): void
     {
         $profiler = new Profiler();
         $profiler->counter();
@@ -51,8 +51,9 @@ class ProfilerExtensionTest extends TestCase
         $this->assertArrayHasKey('default', $report[Profiler::_COUNTERS]);
         $this->assertArrayHasKey('new', $report[Profiler::_COUNTERS]);
     }
+    
     /** @test */
-    public function MultipleTimersCreation()
+    public function MultipleTimersCreation(): void
     {
         $profiler = new Profiler();
         $profiler->timer();
