@@ -15,7 +15,7 @@ use ReflectionMethod;
 class TimerTest extends TestCase
 {
     /** @test */
-    public function ClassCreation()
+    public function ClassCreation(): void
     {
         $timer = new Timer();
         $this->assertInstanceOf(Timer::class, $timer);
@@ -96,7 +96,7 @@ class TimerTest extends TestCase
         }
         $this->assertEquals(
             [
-                Timer::_LAST=> '1ms',
+                Timer::_LAST => '1ms',
                 Timer::_AVG => '1ms',
                 Timer::_MIN => '1ms',
                 Timer::_MAX => '1ms',
