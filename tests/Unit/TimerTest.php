@@ -15,14 +15,14 @@ use ReflectionMethod;
 class TimerTest extends TestCase
 {
     /** @test */
-    public function ClassCreation()
+    public function ClassCreation(): void
     {
         $timer = new Timer();
         $this->assertInstanceOf(Timer::class, $timer);
     }
 
     /** @test */
-    public function TimerDefaultCreation()
+    public function TimerDefaultCreation(): void
     {
         $timer = new Timer();
         $this->assertEquals('default', $timer->getName());
@@ -31,7 +31,7 @@ class TimerTest extends TestCase
     }
 
     /** @test */
-    public function TimerAvgValue()
+    public function TimerAvgValue(): void
     {
         $timer = (new Timer())->forceStart();
         $count = 5;
@@ -47,7 +47,7 @@ class TimerTest extends TestCase
     }
 
     /** @test */
-    public function TimerElapsedNotStarted()
+    public function TimerElapsedNotStarted(): void
     {
         $timer = new Timer();
         $this->expectException(\RuntimeException::class);
@@ -55,7 +55,7 @@ class TimerTest extends TestCase
     }
 
     /** @test */
-    public function TimerValuesNotStarted()
+    public function TimerValuesNotStarted(): void
     {
         $timer = new Timer();
         $this->expectException(\RuntimeException::class);
@@ -96,7 +96,7 @@ class TimerTest extends TestCase
         }
         $this->assertEquals(
             [
-                Timer::_LAST=> '1ms',
+                Timer::_LAST => '1ms',
                 Timer::_AVG => '1ms',
                 Timer::_MIN => '1ms',
                 Timer::_MAX => '1ms',

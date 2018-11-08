@@ -14,14 +14,14 @@ use PHPUnit\Framework\TestCase;
 class CounterTest extends TestCase
 {
     /** @test */
-    public function ClassCreation()
+    public function ClassCreation(): void
     {
         $counter = new Counter();
         $this->assertInstanceOf(Counter::class, $counter);
     }
 
     /** @test */
-    public function CounterDefaultCreation()
+    public function CounterDefaultCreation(): void
     {
         $counter = new Counter();
         $this->assertEquals('default', $counter->getName());
@@ -30,7 +30,7 @@ class CounterTest extends TestCase
     }
 
     /** @test */
-    public function CounterBump()
+    public function CounterBump(): void
     {
         $counter = new Counter();
         $counter->bumpUp();
@@ -46,7 +46,7 @@ class CounterTest extends TestCase
     }
 
     /** @test */
-    public function CounterWithSetStep()
+    public function CounterWithSetStep(): void
     {
         $counter = (new Counter())->setStep(2);
         $counter->bump();
@@ -66,14 +66,14 @@ class CounterTest extends TestCase
     }
 
     /** @test */
-    public function CounterWithException()
+    public function CounterWithException(): void
     {
         $this->expectException(\RuntimeException::class);
-        $counter = (new Counter())->setStep(0);
+        (new Counter())->setStep(0);
     }
 
     /** @test */
-    public function CounterWithExceptionTwo()
+    public function CounterWithExceptionTwo(): void
     {
         $counter = new Counter();
         $this->expectException(\RuntimeException::class);
@@ -81,7 +81,7 @@ class CounterTest extends TestCase
     }
 
     /** @test */
-    public function CounterWithExceptionThree()
+    public function CounterWithExceptionThree(): void
     {
         $counter = new Counter();
         $this->expectException(\RuntimeException::class);
@@ -89,11 +89,10 @@ class CounterTest extends TestCase
     }
 
     /** @test */
-    public function CounterReport()
+    public function CounterReport(): void
     {
         $counter = new Counter();
         $report = $counter->report();
-        $this->assertInternalType('array', $report);
         $this->assertCount(3, $report);
     }
 }
