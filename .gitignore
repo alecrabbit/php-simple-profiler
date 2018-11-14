@@ -2,5 +2,6 @@
 /vendor/*
 /tmp/*
 /.eval/*
+/tests/coverage/*
 
-docker-compose.yml
+/docker-compose*
