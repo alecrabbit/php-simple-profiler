@@ -11,9 +11,26 @@ namespace Unit;
 use AlecRabbit\Profiler\Timer;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
+use Symfony\Bridge\PhpUnit\ClockMock;
 
+/**
+ * Class TimerTest
+ * @group time-sensitive
+ */
 class TimerTest extends TestCase
 {
+
+    public static function setUpBeforeClass(): void
+    {
+        ClockMock::register(Timer::class);
+        ClockMock::withClockMock(true);
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        ClockMock::withClockMock(false);
+    }
+
     /** @test */
     public function ClassCreation(): void
     {
@@ -30,19 +47,23 @@ class TimerTest extends TestCase
         $this->assertEquals('name', $timer->getName());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function TimerAvgValue(): void
     {
         $timer = (new Timer())->forceStart();
         $count = 5;
         for ($i = 0; $i < $count; $i++) {
-            usleep(1000);
+//            dump('>>>' . time() . ' ' . microtime(true));
+            sleep(1);
+//            dump('>>>' . time() . ' ' . microtime(true));
             $timer->check();
         }
-        $this->assertEquals(0.001, $timer->getAvgValue(), 'getAvgValue', 0.0004);
-        $this->assertEquals(0.001, $timer->getMinValue(), 'getMinValue', 0.0004);
-        $this->assertEquals(0.001, $timer->getMaxValue(), 'getMaxValue', 0.0004);
-        $this->assertEquals(0.001, $timer->getCurrentValue(), 'getCurrentValue', 0.0004);
+        $this->assertEquals(1.0, $timer->getAvgValue(), 'getAvgValue', 0.0004);
+        $this->assertEquals(1.0, $timer->getMinValue(), 'getMinValue', 0.0004);
+        $this->assertEquals(1.0, $timer->getMaxValue(), 'getMaxValue', 0.0004);
+        $this->assertEquals(1.0, $timer->getCurrentValue(), 'getCurrentValue', 0.0004);
         $this->assertEquals($count, $timer->getCount());
     }
 
@@ -91,15 +112,15 @@ class TimerTest extends TestCase
         $timer->start();
         $count = 7;
         for ($i = 0; $i < $count; $i++) {
-            usleep(1000);
+            usleep(7000);
             $timer->check();
         }
         $this->assertEquals(
             [
-                Timer::_LAST => '1ms',
-                Timer::_AVG => '1ms',
-                Timer::_MIN => '1ms',
-                Timer::_MAX => '1ms',
+                Timer::_LAST => '7ms',
+                Timer::_AVG => '7ms',
+                Timer::_MIN => '7ms',
+                Timer::_MAX => '7ms',
                 Timer::_COUNT => $count,
 
             ],

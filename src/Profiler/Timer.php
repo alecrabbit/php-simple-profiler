@@ -8,10 +8,6 @@
 namespace AlecRabbit\Profiler;
 
 
-/**
- * Class Timer
- * @package AlecRabbit\Profiler
- */
 class Timer implements Contracts\Timer
 {
     /** @var string */
@@ -67,7 +63,10 @@ class Timer implements Contracts\Timer
         $this->previous = $this->start = $this->current();
     }
 
-    private function current()
+    /**
+     * @return float
+     */
+    private function current(): float
     {
         return
             microtime(true);
