@@ -7,7 +7,6 @@
 
 namespace AlecRabbit\Profiler;
 
-
 class Counter implements Contracts\Counter
 {
     protected const REPORT_FORMAT = '%s %s';

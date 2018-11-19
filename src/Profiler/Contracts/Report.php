@@ -7,7 +7,6 @@
 
 namespace AlecRabbit\Profiler\Contracts;
 
-
 interface Report
 {
     public const REPORT_FORMAT = '"%s": %s';

@@ -7,7 +7,6 @@
 
 namespace AlecRabbit\Profiler\Contracts;
 
-
 interface Strings
 {
     public const _NAME = 'name';
@@ -23,5 +22,4 @@ interface Strings
     public const _DEFAULT = 'default';
 
     public const _NAME_FORMAT = '%s [%s]';
-
 }

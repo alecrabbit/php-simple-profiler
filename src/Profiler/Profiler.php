@@ -7,7 +7,6 @@
 
 namespace AlecRabbit\Profiler;
 
-
 use AlecRabbit\Profiler\Contracts\Profiler as ProfilerContract;
 
 class Profiler implements ProfilerContract

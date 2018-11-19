@@ -3,5 +3,6 @@
 /tmp/*
 /.eval/*
 /tests/coverage/*
+/tests/phpmetrics/*
 
 /docker-compose*
