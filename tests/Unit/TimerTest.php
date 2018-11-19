@@ -55,9 +55,7 @@ class TimerTest extends TestCase
         $timer = (new Timer())->forceStart();
         $count = 5;
         for ($i = 0; $i < $count; $i++) {
-//            dump('>>>' . time() . ' ' . microtime(true));
             sleep(1);
-//            dump('>>>' . time() . ' ' . microtime(true));
             $timer->check();
         }
         $this->assertEquals(1.0, $timer->getAvgValue(), 'getAvgValue', 0.0004);
@@ -112,16 +110,18 @@ class TimerTest extends TestCase
         $timer->start();
         $count = 7;
         for ($i = 0; $i < $count; $i++) {
-            usleep(7000);
+            usleep(2000 + $i * 1000);
             $timer->check();
         }
+        usleep(1000);
+        $timer->check();
         $this->assertEquals(
             [
-                Timer::_LAST => '7ms',
-                Timer::_AVG => '7ms',
-                Timer::_MIN => '7ms',
-                Timer::_MAX => '7ms',
-                Timer::_COUNT => $count,
+                Timer::_LAST => '1ms',
+                Timer::_AVG => '5ms',
+                Timer::_MIN => '1ms',
+                Timer::_MAX => '8ms',
+                Timer::_COUNT => ++$count,
 
             ],
             $timer->getTimerValues(true, Timer::UNIT_MILLISECONDS, 0)
