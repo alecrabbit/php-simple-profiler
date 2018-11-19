@@ -128,6 +128,32 @@ class TimerTest extends TestCase
         );
     }
 
+    /** @test */
+    public function TimerValuesTwo(): void
+    {
+        $timer = new Timer();
+        $timer->start();
+        $count = 7;
+        for ($i = 0; $i < $count; $i++) {
+            usleep(2000 + $i * 1000);
+            $timer->check();
+        }
+        usleep(1000);
+        $timer->check();
+        $expected = [
+            Timer::_LAST => 0.001,
+            Timer::_AVG => 0.005,
+            Timer::_MIN => 0.001,
+            Timer::_MAX => 0.008,
+            Timer::_COUNT => ++$count,
+
+        ];
+        $actual = $timer->getTimerValues(false);
+        foreach ($expected as $key => $value) {
+            $this->assertEquals($value, $actual[$key],'', 0.0005);
+        }
+    }
+
     /** @test
      * @throws \ReflectionException
      */
