@@ -7,11 +7,6 @@
 
 namespace AlecRabbit\Profiler;
 
-
-/**
- * Class Timer
- * @package AlecRabbit\Profiler
- */
 class Timer implements Contracts\Timer
 {
     /** @var string */
@@ -67,7 +62,10 @@ class Timer implements Contracts\Timer
         $this->previous = $this->start = $this->current();
     }
 
-    private function current()
+    /**
+     * @return float
+     */
+    private function current(): float
     {
         return
             microtime(true);
@@ -88,15 +86,21 @@ class Timer implements Contracts\Timer
             $formatted ? $this->format($elapsed, self::UNIT_MILLISECONDS, 2) : $elapsed;
     }
 
-    private function format(?float $value, ?int $units = null, int $precision = null)
+    /**
+     * @param float|null $value
+     * @param int|null $units
+     * @param int|null $precision
+     * @return string
+     */
+    private function format(?float $value, ?int $units = null, int $precision = null): string
     {
         $units = $units ?? self::UNIT_MILLISECONDS;
         $precision = $precision ?? self::DEFAULT_PRECISION;
         $precision = (int)bounds($precision, 0, 6);
+        $value = $value ?? 0.0;
+        $suffix = 'ms';
+        $coefficient = 1000;
 
-        if ($value === null) {
-            return null;
-        }
         switch ($units) {
             case self::UNIT_HOURS:
                 $suffix = 'h';
@@ -118,20 +122,29 @@ class Timer implements Contracts\Timer
                 $suffix = 'μs';
                 $coefficient = 1000000;
                 break;
-            default:
-                $suffix = 'ms';
-                $coefficient = 1000;
-                break;
         }
         return
-            sprintf('%s%s',
+            sprintf(
+                '%s%s',
                 round($value * $coefficient, $precision),
                 $suffix
             );
     }
 
-    public function report(?bool $formatted = null, ?bool $extended = null, ?int $units = null, ?int $precision = null): iterable
-    {
+    /**
+     * @param bool|null $formatted
+     * @param bool|null $extended
+     * @param int|null $units
+     * @param int|null $precision
+     *
+     * @return iterable
+     */
+    public function report(
+        ?bool $formatted = null,
+        ?bool $extended = null,
+        ?int $units = null,
+        ?int $precision = null
+    ): iterable {
         if (!$this->count) {
             $this->check();
         }
@@ -177,7 +190,6 @@ class Timer implements Contracts\Timer
                 $this->maxValue = $this->currentValue;
             }
             $this->avgValue = (($this->avgValue * $this->count) + $this->currentValue) / ++$this->count;
-
         } else {
             $this->count = 1;
             $this->maxValue = $this->currentValue;
@@ -206,26 +218,22 @@ class Timer implements Contracts\Timer
             throw new \RuntimeException('Timer has not been started.');
         }
         $minValue = ($count === 1) ? $this->getCurrentValue() : $this->getMinValue();
-        return [
-            static::_LAST =>
-                $formatted ?
-                    $this->format($this->getCurrentValue(), $units, $precision) :
-                    $this->getCurrentValue(),
-            static::_AVG =>
-                $formatted ?
-                    $this->format($this->getAvgValue(), $units, $precision) :
-                    $this->getAvgValue(),
-            static::_MIN =>
-                $formatted ?
-                    $this->format($minValue, $units, $precision) :
-                    $minValue,
-            static::_MAX =>
-                $formatted ?
-                    $this->format($this->getMaxValue(), $units, $precision) :
-                    $this->getMaxValue(),
-            static::_COUNT => $count,
-        ];
-
+        return
+            $formatted ?
+                [
+                    static::_LAST => $this->format($this->getCurrentValue(), $units, $precision),
+                    static::_AVG => $this->format($this->getAvgValue(), $units, $precision),
+                    static::_MIN => $this->format($minValue, $units, $precision),
+                    static::_MAX => $this->format($this->getMaxValue(), $units, $precision),
+                    static::_COUNT => $count,
+                ] :
+                [
+                    static::_LAST => $this->getCurrentValue(),
+                    static::_AVG => $this->getAvgValue(),
+                    static::_MIN => $minValue,
+                    static::_MAX => $this->getMaxValue(),
+                    static::_COUNT => $count,
+                ];
     }
 
     /**
@@ -267,5 +275,4 @@ class Timer implements Contracts\Timer
     {
         return $this->maxValue;
     }
-
 }

@@ -9,10 +9,27 @@ namespace Unit;
 
 
 use AlecRabbit\Profiler\Profiler;
+use AlecRabbit\Profiler\Timer;
 use PHPUnit\Framework\TestCase;
+use Symfony\Bridge\PhpUnit\ClockMock;
 
 class ProfilerTest extends TestCase
 {
+    public static function setUpBeforeClass(): void
+    {
+
+        ClockMock::register(Timer::class);
+        ClockMock::withClockMock(true);
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+
+
+        ClockMock::withClockMock(false);
+    }
+
+
     /** @test */
     public function ClassCreation(): void
     {
@@ -68,10 +85,11 @@ class ProfilerTest extends TestCase
             ->check();
         $this->assertEquals(1, $profiler->counter('new')->getValue());
 
-        $this->assertEquals(0.00000214, $profiler->timer('new')->elapsed(), '', 0.00001);
+        $this->assertInternalType('float', $profiler->timer('new')->elapsed());
         $profiler
             ->timer('new', 'vol', 'buy', 'tor')
-            ->forceStart()->check();
+            ->forceStart()
+            ->check();
         $report = $profiler->report();
         $report_extended = $profiler->report(true);
         $this->assertCount(2, $report);

@@ -7,7 +7,6 @@
 
 namespace AlecRabbit\Profiler\Contracts;
 
-
 interface Counter extends Strings
 {
 }

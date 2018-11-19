@@ -7,7 +7,6 @@
 
 namespace AlecRabbit\Profiler;
 
-
 class Counter implements Contracts\Counter
 {
     protected const REPORT_FORMAT = '%s %s';
@@ -33,12 +32,18 @@ class Counter implements Contracts\Counter
         $this->step = 1;
     }
 
+    /**
+     * @return int
+     */
     public function bump(): int
     {
         return
             $this->bumpUp();
     }
 
+    /**
+     * @return int
+     */
     public function bumpUp(): int
     {
         $this->value += $this->step;
@@ -46,6 +51,11 @@ class Counter implements Contracts\Counter
             $this->value;
     }
 
+    /**
+     * @param int $step
+     * @param bool $setStep
+     * @return int
+     */
     public function bumpWith(int $step, bool $setStep = false): int
     {
         $this->value += $this->checkStep($step);
@@ -56,6 +66,10 @@ class Counter implements Contracts\Counter
             $this->value;
     }
 
+    /**
+     * @param int $step
+     * @return int
+     */
     private function checkStep(int $step): int
     {
         if ($step === 0) {
@@ -74,6 +88,9 @@ class Counter implements Contracts\Counter
         return $this;
     }
 
+    /**
+     * @return int
+     */
     public function bumpDown(): int
     {
         $this->value -= $this->step;
@@ -81,22 +98,32 @@ class Counter implements Contracts\Counter
             $this->value;
     }
 
+    /**
+     * @return int
+     */
     public function getValue(): int
     {
         return $this->value;
     }
 
+    /**
+     * @param bool|null $extended
+     * @return iterable
+     */
     public function report(?bool $extended = null): iterable
     {
-//        $extended = $extended ?? false;
+        $extended = $extended ?? false;
         return
             [
                 static::_NAME => $this->getName(),
                 static::_COUNT => $this->value,
-                static::_EXTENDED => null
+                static::_EXTENDED => $extended
             ];
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
