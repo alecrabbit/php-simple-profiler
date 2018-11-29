@@ -40,6 +40,9 @@ class Benchmark
         $this->namingIndex = 0;
     }
 
+    /**
+     * Launch benchmarking
+     */
     public function compare(): void
     {
         foreach ($this->functions as $name => $f) {
@@ -74,6 +77,9 @@ class Benchmark
         $this->functions[$callable_name] = [$func, $args];
     }
 
+    /**
+     * @return array
+     */
     public function report(): array
     {
         $timers = $this->profiler->getTimers();
@@ -119,12 +125,23 @@ class Benchmark
         return $relatives;
     }
 
+    /**
+     * @param float $relative
+     * @return string
+     */
     private function toPercentage(float $relative): string
     {
         return
             number_format($relative * 100, 1) . '%';
     }
 
+    /**
+     * @param bool $formatted
+     * @param bool $extended
+     * @param int|null $units
+     * @param int|null $precision
+     * @return iterable
+     */
     public function profilerReport(
         bool $formatted = true,
         bool $extended = true,
@@ -135,6 +152,10 @@ class Benchmark
             $this->profiler->report($formatted, $extended, $units, $precision);
     }
 
+    /**
+     * @param string $name
+     * @return Benchmark
+     */
     public function withName(string $name): self
     {
         $this->tmpName = $name;
