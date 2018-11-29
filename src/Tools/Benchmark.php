@@ -28,7 +28,7 @@ class Benchmark
     {
         $this->iterations =
             new Rewindable(
-                function ($iterations) {
+                function (int $iterations): \Generator {
                     $i = 1;
                     while ($i <= $iterations) {
                         yield $i++;
@@ -128,8 +128,8 @@ class Benchmark
     public function profilerReport(
         bool $formatted = true,
         bool $extended = true,
-        $units = null,
-        $precision = null
+        ?int $units = null,
+        ?int $precision = null
     ): iterable {
         return
             $this->profiler->report($formatted, $extended, $units, $precision);
