@@ -40,6 +40,9 @@ class Benchmark
         $this->namingIndex = 0;
     }
 
+    /**
+     * Launch benchmarking
+     */
     public function compare(): void
     {
         foreach ($this->functions as $name => $f) {
@@ -60,28 +63,26 @@ class Benchmark
      */
     public function addFunction($func, ...$args): void
     {
-
-        if (!\is_callable($func, false, $callable_name)) {
-            throw new \InvalidArgumentException('Function must be callable');
+        if (!\is_callable($func, false, $callableName)) {
+            throw new \InvalidArgumentException('Function must be callable.');
         }
         if (null !== $this->tmpName) {
-            $callable_name = $this->tmpName;
+            $callableName = $this->tmpName;
             $this->tmpName = null;
         }
-        if (array_key_exists($callable_name, $this->functions)) {
-            $callable_name .= '_' . ++$this->namingIndex;
+        if (array_key_exists($callableName, $this->functions)) {
+            $callableName .= '_' . ++$this->namingIndex;
         }
-        $this->functions[$callable_name] = [$func, $args];
+        $this->functions[$callableName] = [$func, $args];
     }
 
+    /**
+     * @return array
+     */
     public function report(): array
     {
-        $timers = $this->profiler->getTimers();
-        $averages = $this->computeAverages($timers);
-
-        $min = min($averages);
         return
-            $this->computeRelatives($averages, $min);
+            $this->computeRelatives();
     }
 
     /**
@@ -99,12 +100,16 @@ class Benchmark
     }
 
     /**
-     * @param array $averages
-     * @param float $min
      * @return array
      */
-    private function computeRelatives(array $averages, float $min): array
+    private function computeRelatives(): array
     {
+        $averages = $this->computeAverages(
+            $this->profiler->getTimers()
+        );
+
+        $min = min($averages);
+
         $relatives = [];
         foreach ($averages as $name => $average) {
             $relatives[$name] = $average / $min;
@@ -119,12 +124,23 @@ class Benchmark
         return $relatives;
     }
 
+    /**
+     * @param float $relative
+     * @return string
+     */
     private function toPercentage(float $relative): string
     {
         return
             number_format($relative * 100, 1) . '%';
     }
 
+    /**
+     * @param bool $formatted
+     * @param bool $extended
+     * @param int|null $units
+     * @param int|null $precision
+     * @return iterable
+     */
     public function profilerReport(
         bool $formatted = true,
         bool $extended = true,
@@ -135,6 +151,10 @@ class Benchmark
             $this->profiler->report($formatted, $extended, $units, $precision);
     }
 
+    /**
+     * @param string $name
+     * @return Benchmark
+     */
     public function withName(string $name): self
     {
         $this->tmpName = $name;
