@@ -150,7 +150,7 @@ class TimerTest extends TestCase
         ];
         $actual = $timer->getTimerValues(false);
         foreach ($expected as $key => $value) {
-            $this->assertEquals($value, $actual[$key],'', 0.0005);
+            $this->assertEquals($value, $actual[$key], '', 0.0005);
         }
     }
 

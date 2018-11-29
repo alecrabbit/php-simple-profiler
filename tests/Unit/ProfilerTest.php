@@ -7,7 +7,7 @@
 
 namespace Unit;
 
-
+use AlecRabbit\Profiler\Counter;
 use AlecRabbit\Profiler\Profiler;
 use AlecRabbit\Profiler\Timer;
 use PHPUnit\Framework\TestCase;
@@ -31,14 +31,14 @@ class ProfilerTest extends TestCase
 
 
     /** @test */
-    public function ClassCreation(): void
+    public function classCreation(): void
     {
         $profiler = new Profiler();
         $this->assertInstanceOf(Profiler::class, $profiler);
     }
 
     /** @test */
-    public function CounterCreation(): void
+    public function counterCreation(): void
     {
         $profiler = new Profiler();
         $profiler->counter('new')->bumpUp();
@@ -53,7 +53,7 @@ class ProfilerTest extends TestCase
     }
 
     /** @test */
-    public function TimerCreation(): void
+    public function timerCreation(): void
     {
         $profiler = new Profiler();
         $profiler->counter('new')->bumpUp();
@@ -70,7 +70,7 @@ class ProfilerTest extends TestCase
 
 
     /** @test */
-    public function ProfilerReport(): void
+    public function profilerReport(): void
     {
         $profiler = new Profiler();
         $profiler->counter('new')->bumpUp();
@@ -96,5 +96,9 @@ class ProfilerTest extends TestCase
 
         $this->assertCount(2, $report_extended);
 
+        $counters = $profiler->getCounters();
+        foreach ($counters as $counter) {
+            $this->assertInstanceOf(Counter::class, $counter);
+        }
     }
 }

@@ -89,4 +89,20 @@ class Profiler implements ProfilerContract
         return
             $report;
     }
+
+    /**
+     * @return Timer[]
+     */
+    public function getTimers(): array
+    {
+        return $this->timers;
+    }
+
+    /**
+     * @return Counter[]
+     */
+    public function getCounters(): array
+    {
+        return $this->counters;
+    }
 }
