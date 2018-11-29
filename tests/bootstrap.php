@@ -21,7 +21,7 @@ if (!defined('APP_DEBUG')) {
 }
 
 // snippet
-if (defined('APP_DEBUG') && APP_DEBUG ) {
+if (defined('APP_DEBUG') && APP_DEBUG) {
     if (!defined('DEBUG_DUMP_EXCEPTION')) {
         define('DEBUG_DUMP_EXCEPTION', false); // change to 'true' to dump exception message and trace
     }
@@ -37,6 +37,8 @@ $dumper = new ServerDumper('tcp://127.0.0.1:9912', $fallbackDumper, array(
     'source' => new SourceContextProvider(),
 ));
 
-VarDumper::setHandler(function ($var) use ($cloner, $dumper) {
-    $dumper->dump($cloner->cloneVar($var));
-});
+VarDumper::setHandler(
+    function ($var) use ($cloner, $dumper) {
+        $dumper->dump($cloner->cloneVar($var));
+    }
+);

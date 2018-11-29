@@ -4,30 +4,30 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1e49f696b11314013de505dc48a6c7b4",
+    "content-hash": "17d1a455a400d9a6e6f41ea20a1ae075",
     "packages": [
         {
             "name": "alecrabbit/php-helpers",
-            "version": "0.0.14",
+            "version": "0.0.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-helpers.git",
-                "reference": "1fce76c4c06c5510ee4e4e4820154bc20490d0e3"
+                "reference": "d50b2f4ba5c992e7d0f1fd4f24f1a04aaf680a9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/1fce76c4c06c5510ee4e4e4820154bc20490d0e3",
-                "reference": "1fce76c4c06c5510ee4e4e4820154bc20490d0e3",
+                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/d50b2f4ba5c992e7d0f1fd4f24f1a04aaf680a9f",
+                "reference": "d50b2f4ba5c992e7d0f1fd4f24f1a04aaf680a9f",
                 "shasum": ""
             },
             "require": {
                 "krowinski/bcmath-extended": "^4.1",
-                "nesbot/carbon": "^2.3",
+                "nesbot/carbon": "^2.6",
                 "php": ">=7.2"
             },
             "require-dev": {
-                "nunomaduro/collision": "^2.0",
-                "phpunit/phpunit": "^7.3",
+                "nunomaduro/collision": "^2.1",
+                "phpunit/phpunit": "^7.4",
                 "symfony/var-dumper": "^4.1"
             },
             "type": "library",
@@ -45,7 +45,7 @@
                 "MIT"
             ],
             "description": "PHP helpers functions",
-            "time": "2018-11-14T16:10:27+00:00"
+            "time": "2018-11-29T13:17:42+00:00"
         },
         {
             "name": "krowinski/bcmath-extended",
@@ -105,16 +105,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.5.4",
+            "version": "2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "92edfddcfe37b0d7956045d57f8ba714df8c0fb8"
+                "reference": "ab9bfecb5b9ea9557f027dcd01762495c351632f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/92edfddcfe37b0d7956045d57f8ba714df8c0fb8",
-                "reference": "92edfddcfe37b0d7956045d57f8ba714df8c0fb8",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/ab9bfecb5b9ea9557f027dcd01762495c351632f",
+                "reference": "ab9bfecb5b9ea9557f027dcd01762495c351632f",
                 "shasum": ""
             },
             "require": {
@@ -160,7 +160,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2018-11-15T06:40:11+00:00"
+            "time": "2018-11-22T16:45:03+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -223,16 +223,16 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v4.1.7",
+            "version": "v4.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "aa04dc1c75b7d3da7bd7003104cd0cfc5dff635c"
+                "reference": "615e3cf75d00a7d6788316d9631957991ba9c26a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/aa04dc1c75b7d3da7bd7003104cd0cfc5dff635c",
-                "reference": "aa04dc1c75b7d3da7bd7003104cd0cfc5dff635c",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/615e3cf75d00a7d6788316d9631957991ba9c26a",
+                "reference": "615e3cf75d00a7d6788316d9631957991ba9c26a",
                 "shasum": ""
             },
             "require": {
@@ -288,10 +288,126 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2018-10-28T18:38:52+00:00"
+            "time": "2018-11-26T10:26:29+00:00"
         }
     ],
     "packages-dev": [
+        {
+            "name": "alecrabbit/accessories",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alecrabbit/accessories.git",
+                "reference": "73c058d590714a437c075adbebc5f34b327ee5a3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alecrabbit/accessories/zipball/73c058d590714a437c075adbebc5f34b327ee5a3",
+                "reference": "73c058d590714a437c075adbebc5f34b327ee5a3",
+                "shasum": ""
+            },
+            "require": {
+                "alecrabbit/php-helpers": "^0",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "nunomaduro/collision": "^2.0",
+                "phpstan/phpstan": "^0.10.5",
+                "phpunit/phpunit": "^7.3",
+                "symfony/var-dumper": "^4.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AlecRabbit\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP accessories Classes etc.",
+            "time": "2018-11-29T09:30:40+00:00"
+        },
+        {
+            "name": "alecrabbit/php-console-colour",
+            "version": "0.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alecrabbit/php-console-colour.git",
+                "reference": "c98a8eebaa1fc1fcaafa67c17a5616c3fd6f4502"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alecrabbit/php-console-colour/zipball/c98a8eebaa1fc1fcaafa67c17a5616c3fd6f4502",
+                "reference": "c98a8eebaa1fc1fcaafa67c17a5616c3fd6f4502",
+                "shasum": ""
+            },
+            "require": {
+                "alecrabbit/php-helpers": "^0",
+                "jakub-onderka/php-console-color": "^0.2.0",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "nunomaduro/collision": "^2.0",
+                "phpunit/phpunit": "^7.4",
+                "symfony/var-dumper": "^4.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AlecRabbit\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP package alecrabbit/php-console-colour",
+            "time": "2018-10-16T10:01:51+00:00"
+        },
+        {
+            "name": "alecrabbit/php-output-a",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alecrabbit/php-output-a.git",
+                "reference": "744178a473d366be7ca53b18475f2e2c23710776"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alecrabbit/php-output-a/zipball/744178a473d366be7ca53b18475f2e2c23710776",
+                "reference": "744178a473d366be7ca53b18475f2e2c23710776",
+                "shasum": ""
+            },
+            "require": {
+                "alecrabbit/php-console-colour": "^0",
+                "alecrabbit/php-helpers": "^0",
+                "krowinski/bcmath-extended": "^4.1",
+                "nesbot/carbon": "^2.3",
+                "php": ">=7.2",
+                "react/event-loop": "^1.0",
+                "react/stream": "^1.0",
+                "symfony/console": "^4.1"
+            },
+            "require-dev": {
+                "nunomaduro/collision": "^2.0",
+                "phpunit/phpunit": "^7.4",
+                "symfony/var-dumper": "^4.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AlecRabbit\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP output package",
+            "time": "2018-10-16T10:21:12+00:00"
+        },
         {
             "name": "doctrine/instantiator",
             "version": "1.1.0",
@@ -345,6 +461,49 @@
                 "instantiate"
             ],
             "time": "2017-07-22T11:58:36+00:00"
+        },
+        {
+            "name": "evenement/evenement",
+            "version": "v3.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/igorw/evenement.git",
+                "reference": "531bfb9d15f8aa57454f5f0285b18bec903b8fb7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/igorw/evenement/zipball/531bfb9d15f8aa57454f5f0285b18bec903b8fb7",
+                "reference": "531bfb9d15f8aa57454f5f0285b18bec903b8fb7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Evenement": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Igor Wiedler",
+                    "email": "igor@wiedler.ch"
+                }
+            ],
+            "description": "Événement is a very simple event dispatching library for PHP",
+            "keywords": [
+                "event-dispatcher",
+                "event-emitter"
+            ],
+            "time": "2017-07-23T21:35:13+00:00"
         },
         {
             "name": "filp/whoops",
@@ -451,33 +610,34 @@
         },
         {
             "name": "jakub-onderka/php-console-highlighter",
-            "version": "v0.3.2",
+            "version": "v0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JakubOnderka/PHP-Console-Highlighter.git",
-                "reference": "7daa75df45242c8d5b75a22c00a201e7954e4fb5"
+                "reference": "9f7a229a69d52506914b4bc61bfdb199d90c5547"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JakubOnderka/PHP-Console-Highlighter/zipball/7daa75df45242c8d5b75a22c00a201e7954e4fb5",
-                "reference": "7daa75df45242c8d5b75a22c00a201e7954e4fb5",
+                "url": "https://api.github.com/repos/JakubOnderka/PHP-Console-Highlighter/zipball/9f7a229a69d52506914b4bc61bfdb199d90c5547",
+                "reference": "9f7a229a69d52506914b4bc61bfdb199d90c5547",
                 "shasum": ""
             },
             "require": {
-                "jakub-onderka/php-console-color": "~0.1",
-                "php": ">=5.3.0"
+                "ext-tokenizer": "*",
+                "jakub-onderka/php-console-color": "~0.2",
+                "php": ">=5.4.0"
             },
             "require-dev": {
                 "jakub-onderka/php-code-style": "~1.0",
-                "jakub-onderka/php-parallel-lint": "~0.5",
+                "jakub-onderka/php-parallel-lint": "~1.0",
                 "jakub-onderka/php-var-dump-check": "~0.1",
                 "phpunit/phpunit": "~4.0",
                 "squizlabs/php_codesniffer": "~1.5"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "JakubOnderka\\PhpConsoleHighlighter": "src/"
+                "psr-4": {
+                    "JakubOnderka\\PhpConsoleHighlighter\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -491,7 +651,8 @@
                     "homepage": "http://www.acci.cz/"
                 }
             ],
-            "time": "2015-04-20T18:58:01+00:00"
+            "description": "Highlight PHP code in terminal",
+            "time": "2018-09-29T18:48:56+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -543,26 +704,27 @@
         },
         {
             "name": "nunomaduro/collision",
-            "version": "v2.1.0",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/collision.git",
-                "reference": "1149ad9f36f61b121ae61f5f6de820fc77b51e6b"
+                "reference": "b5feb0c0d92978ec7169232ce5d70d6da6b29f63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/1149ad9f36f61b121ae61f5f6de820fc77b51e6b",
-                "reference": "1149ad9f36f61b121ae61f5f6de820fc77b51e6b",
+                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/b5feb0c0d92978ec7169232ce5d70d6da6b29f63",
+                "reference": "b5feb0c0d92978ec7169232ce5d70d6da6b29f63",
                 "shasum": ""
             },
             "require": {
                 "filp/whoops": "^2.1.4",
-                "jakub-onderka/php-console-highlighter": "0.3.*",
+                "jakub-onderka/php-console-highlighter": "0.3.*|0.4.*",
                 "php": "^7.1",
                 "symfony/console": "~2.8|~3.3|~4.0"
             },
             "require-dev": {
                 "laravel/framework": "5.7.*",
+                "nunomaduro/larastan": "^0.3.0",
                 "phpstan/phpstan": "^0.10",
                 "phpunit/phpunit": "~7.3"
             },
@@ -602,7 +764,7 @@
                 "php",
                 "symfony"
             ],
-            "time": "2018-10-03T20:01:54+00:00"
+            "time": "2018-11-21T21:40:54+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -1259,16 +1421,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d"
+                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
-                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
+                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
                 "shasum": ""
             },
             "require": {
@@ -1302,7 +1464,94 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10T12:19:37+00:00"
+            "time": "2018-11-20T15:27:04+00:00"
+        },
+        {
+            "name": "react/event-loop",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/reactphp/event-loop.git",
+                "reference": "0266aff7aa7b0613b1f38a723e14a0ebc55cfca3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/reactphp/event-loop/zipball/0266aff7aa7b0613b1f38a723e14a0ebc55cfca3",
+                "reference": "0266aff7aa7b0613b1f38a723e14a0ebc55cfca3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8.35 || ^5.7 || ^6.4"
+            },
+            "suggest": {
+                "ext-event": "~1.0 for ExtEventLoop",
+                "ext-pcntl": "For signal handling support when using the StreamSelectLoop"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "React\\EventLoop\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "ReactPHP's core reactor event loop that libraries can use for evented I/O.",
+            "keywords": [
+                "asynchronous",
+                "event-loop"
+            ],
+            "time": "2018-07-11T14:37:46+00:00"
+        },
+        {
+            "name": "react/stream",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/reactphp/stream.git",
+                "reference": "fdd0140f42805d65bf9687636503db0b326d2244"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/reactphp/stream/zipball/fdd0140f42805d65bf9687636503db0b326d2244",
+                "reference": "fdd0140f42805d65bf9687636503db0b326d2244",
+                "shasum": ""
+            },
+            "require": {
+                "evenement/evenement": "^3.0 || ^2.0 || ^1.0",
+                "php": ">=5.3.8",
+                "react/event-loop": "^1.0 || ^0.5 || ^0.4 || ^0.3.5"
+            },
+            "require-dev": {
+                "clue/stream-filter": "~1.2",
+                "phpunit/phpunit": "^6.4 || ^5.7 || ^4.8.35"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "React\\Stream\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Event-driven readable and writable streams for non-blocking I/O in ReactPHP",
+            "keywords": [
+                "event-driven",
+                "io",
+                "non-blocking",
+                "pipe",
+                "reactphp",
+                "readable",
+                "stream",
+                "writable"
+            ],
+            "time": "2018-07-11T14:38:16+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -1471,28 +1720,28 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "3.1.0",
+            "version": "4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "cd0871b3975fb7fc44d11314fd1ee20925fce4f5"
+                "reference": "febd209a219cea7b56ad799b30ebbea34b71eb8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/cd0871b3975fb7fc44d11314fd1ee20925fce4f5",
-                "reference": "cd0871b3975fb7fc44d11314fd1ee20925fce4f5",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/febd209a219cea7b56ad799b30ebbea34b71eb8f",
+                "reference": "febd209a219cea7b56ad799b30ebbea34b71eb8f",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.0"
+                "php": "^7.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.1"
+                "phpunit/phpunit": "^7.4"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.1.x-dev"
+                    "dev-master": "4.0-dev"
                 }
             },
             "autoload": {
@@ -1517,7 +1766,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2017-07-01T08:51:00+00:00"
+            "time": "2018-11-25T09:31:21+00:00"
         },
         {
             "name": "sebastian/exporter",
@@ -1920,16 +2169,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.1.7",
+            "version": "v4.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "432122af37d8cd52fba1b294b11976e0d20df595"
+                "reference": "c74f4d1988dfcd8760273e53551694da32b056d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/432122af37d8cd52fba1b294b11976e0d20df595",
-                "reference": "432122af37d8cd52fba1b294b11976e0d20df595",
+                "url": "https://api.github.com/repos/symfony/console/zipball/c74f4d1988dfcd8760273e53551694da32b056d0",
+                "reference": "c74f4d1988dfcd8760273e53551694da32b056d0",
                 "shasum": ""
             },
             "require": {
@@ -1984,20 +2233,20 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2018-10-31T09:30:44+00:00"
+            "time": "2018-11-26T14:00:40+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v4.1.7",
+            "version": "v4.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "2474c5d4a5e3431fee2f6f0dddde9d34983d9ceb"
+                "reference": "473fb4544afff836f4d9877c4607efe46b94cea9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/2474c5d4a5e3431fee2f6f0dddde9d34983d9ceb",
-                "reference": "2474c5d4a5e3431fee2f6f0dddde9d34983d9ceb",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/473fb4544afff836f4d9877c4607efe46b94cea9",
+                "reference": "473fb4544afff836f4d9877c4607efe46b94cea9",
                 "shasum": ""
             },
             "require": {
@@ -2050,7 +2299,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2018-10-02T12:40:59+00:00"
+            "time": "2018-11-24T07:45:31+00:00"
         },
         {
             "name": "symfony/polyfill-php72",
@@ -2109,16 +2358,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v4.1.7",
+            "version": "v4.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "60319b45653580b0cdacca499344577d87732f16"
+                "reference": "42a55e4a4a7421124636f6f15845187704be0423"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/60319b45653580b0cdacca499344577d87732f16",
-                "reference": "60319b45653580b0cdacca499344577d87732f16",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/42a55e4a4a7421124636f6f15845187704be0423",
+                "reference": "42a55e4a4a7421124636f6f15845187704be0423",
                 "shasum": ""
             },
             "require": {
@@ -2180,7 +2429,7 @@
                 "debug",
                 "dump"
             ],
-            "time": "2018-10-02T16:36:10+00:00"
+            "time": "2018-11-20T16:14:00+00:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -2275,7 +2524,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "alecrabbit/accessories": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

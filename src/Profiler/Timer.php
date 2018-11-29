@@ -83,7 +83,7 @@ class Timer implements Contracts\Timer
         $elapsed = $this->current() - $this->start;
 
         return
-            $formatted ? $this->format($elapsed, self::UNIT_MILLISECONDS, 2) : $elapsed;
+            $formatted ? $this->format($elapsed, static::UNIT_MILLISECONDS, 2) : $elapsed;
     }
 
     /**
@@ -94,41 +94,8 @@ class Timer implements Contracts\Timer
      */
     private function format(?float $value, ?int $units = null, int $precision = null): string
     {
-        $units = $units ?? self::UNIT_MILLISECONDS;
-        $precision = $precision ?? self::DEFAULT_PRECISION;
-        $precision = (int)bounds($precision, 0, 6);
-        $value = $value ?? 0.0;
-        $suffix = 'ms';
-        $coefficient = 1000;
-
-        switch ($units) {
-            case self::UNIT_HOURS:
-                $suffix = 'h';
-                $coefficient = 1 / 3600;
-                break;
-            case self::UNIT_MINUTES:
-                $suffix = 'm';
-                $coefficient = 1 / 60;
-                break;
-            case self::UNIT_SECONDS:
-                $suffix = 's';
-                $coefficient = 1;
-                break;
-            case self::UNIT_MILLISECONDS:
-                $suffix = 'ms';
-                $coefficient = 1000;
-                break;
-            case self::UNIT_MICROSECONDS:
-                $suffix = 'μs';
-                $coefficient = 1000000;
-                break;
-        }
         return
-            sprintf(
-                '%s%s',
-                round($value * $coefficient, $precision),
-                $suffix
-            );
+            format_time($value, $units, $precision ?? static::DEFAULT_PRECISION);
     }
 
     /**

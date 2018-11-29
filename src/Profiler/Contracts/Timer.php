@@ -9,11 +9,11 @@ namespace AlecRabbit\Profiler\Contracts;
 
 interface Timer extends Strings
 {
-    public const DEFAULT_PRECISION = 3;
+    public const DEFAULT_PRECISION = DEFAULT_PRECISION;
 
-    public const UNIT_MICROSECONDS = 10;
-    public const UNIT_MILLISECONDS = 11;
-    public const UNIT_SECONDS = 12;
-    public const UNIT_MINUTES = 13;
-    public const UNIT_HOURS = 14;
+    public const UNIT_MICROSECONDS = UNIT_MICROSECONDS;
+    public const UNIT_MILLISECONDS = UNIT_MILLISECONDS;
+    public const UNIT_SECONDS = UNIT_SECONDS;
+    public const UNIT_MINUTES = UNIT_MINUTES;
+    public const UNIT_HOURS = UNIT_HOURS;
 }
