@@ -5,9 +5,11 @@
  * Time: 2:19
  */
 
-namespace AlecRabbit\Profiler;
+namespace AlecRabbit\Tools;
 
-class Timer implements Contracts\Timer
+use AlecRabbit\Tools\Contracts\TimerInterface;
+
+class Timer implements TimerInterface
 {
     /** @var string */
     private $name;

@@ -7,8 +7,8 @@
 
 namespace Tests\Unit;
 
-use AlecRabbit\Profiler\Timer;
 use AlecRabbit\Tools\Benchmark;
+use AlecRabbit\Tools\Timer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
 

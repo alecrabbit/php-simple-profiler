@@ -8,7 +8,7 @@
 namespace Unit;
 
 
-use AlecRabbit\Profiler\Counter;
+use AlecRabbit\Tools\Counter;
 use PHPUnit\Framework\TestCase;
 
 class CounterTest extends TestCase

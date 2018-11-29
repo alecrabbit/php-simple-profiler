@@ -7,8 +7,6 @@
 
 namespace AlecRabbit\Tools;
 
-use AlecRabbit\Profiler\Profiler;
-use AlecRabbit\Profiler\Timer;
 use AlecRabbit\Rewindable;
 
 class Benchmark

@@ -5,9 +5,11 @@
  * Time: 2:18
  */
 
-namespace AlecRabbit\Profiler;
+namespace AlecRabbit\Tools;
 
-class Counter implements Contracts\Counter
+use AlecRabbit\Tools\Contracts\CounterInterface;
+
+class Counter implements CounterInterface
 {
     protected const REPORT_FORMAT = '%s %s';
 

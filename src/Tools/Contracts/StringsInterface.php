@@ -5,9 +5,9 @@
  * Time: 3:54
  */
 
-namespace AlecRabbit\Profiler\Contracts;
+namespace AlecRabbit\Tools\Contracts;
 
-interface Strings
+interface StringsInterface
 {
     public const _NAME = 'name';
     public const _AVG = 'avg';

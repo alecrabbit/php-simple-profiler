@@ -5,9 +5,9 @@
  * Time: 2:18
  */
 
-namespace AlecRabbit\Profiler\Contracts;
+namespace AlecRabbit\Tools\Contracts;
 
-interface Timer extends Strings
+interface TimerInterface extends StringsInterface
 {
     public const DEFAULT_PRECISION = DEFAULT_PRECISION;
 

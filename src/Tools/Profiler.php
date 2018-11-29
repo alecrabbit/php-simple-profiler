@@ -5,9 +5,9 @@
  * Time: 2:13
  */
 
-namespace AlecRabbit\Profiler;
+namespace AlecRabbit\Tools;
 
-use AlecRabbit\Profiler\Contracts\Profiler as ProfilerContract;
+use AlecRabbit\Tools\Contracts\ProfilerInterface as ProfilerContract;
 
 class Profiler implements ProfilerContract
 {
