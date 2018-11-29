@@ -32,14 +32,14 @@ class TimerTest extends TestCase
     }
 
     /** @test */
-    public function ClassCreation(): void
+    public function classCreation(): void
     {
         $timer = new Timer();
         $this->assertInstanceOf(Timer::class, $timer);
     }
 
     /** @test */
-    public function TimerDefaultCreation(): void
+    public function timerDefaultCreation(): void
     {
         $timer = new Timer();
         $this->assertEquals('default', $timer->getName());
@@ -50,7 +50,7 @@ class TimerTest extends TestCase
     /**
      * @test
      */
-    public function TimerAvgValue(): void
+    public function timerAvgValue(): void
     {
         $timer = (new Timer())->forceStart();
         $count = 5;
@@ -58,15 +58,15 @@ class TimerTest extends TestCase
             sleep(1);
             $timer->check();
         }
-        $this->assertEquals(1.0, $timer->getAvgValue(), 'getAvgValue', 0.0004);
-        $this->assertEquals(1.0, $timer->getMinValue(), 'getMinValue', 0.0004);
-        $this->assertEquals(1.0, $timer->getMaxValue(), 'getMaxValue', 0.0004);
-        $this->assertEquals(1.0, $timer->getCurrentValue(), 'getCurrentValue', 0.0004);
+        $this->assertEquals(1.0, $timer->getAvgValue(), 'getAvgValue');
+        $this->assertEquals(1.0, $timer->getMinValue(), 'getMinValue');
+        $this->assertEquals(1.0, $timer->getMaxValue(), 'getMaxValue');
+        $this->assertEquals(1.0, $timer->getCurrentValue(), 'getCurrentValue');
         $this->assertEquals($count, $timer->getCount());
     }
 
     /** @test */
-    public function TimerElapsedNotStarted(): void
+    public function timerElapsedNotStarted(): void
     {
         $timer = new Timer();
         $this->expectException(\RuntimeException::class);
@@ -74,7 +74,7 @@ class TimerTest extends TestCase
     }
 
     /** @test */
-    public function TimerValuesNotStarted(): void
+    public function timerValuesNotStarted(): void
     {
         $timer = new Timer();
         $this->expectException(\RuntimeException::class);
@@ -91,7 +91,7 @@ class TimerTest extends TestCase
     }
 
     /** @test */
-    public function TimerElapsed(): void
+    public function timerElapsed(): void
     {
         $timer = new Timer();
         $timer->start();
@@ -104,7 +104,7 @@ class TimerTest extends TestCase
     }
 
     /** @test */
-    public function TimerValues(): void
+    public function timerValues(): void
     {
         $timer = new Timer();
         $timer->start();
@@ -129,7 +129,7 @@ class TimerTest extends TestCase
     }
 
     /** @test */
-    public function TimerValuesTwo(): void
+    public function timerValuesTwo(): void
     {
         $timer = new Timer();
         $timer->start();
@@ -157,7 +157,7 @@ class TimerTest extends TestCase
     /** @test
      * @throws \ReflectionException
      */
-    public function TimerFormatPrivate(): void
+    public function timerFormatPrivate(): void
     {
         $method = new ReflectionMethod(Timer::class, 'format');
         $method->setAccessible(true);
