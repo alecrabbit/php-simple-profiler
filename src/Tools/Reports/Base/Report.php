@@ -11,5 +11,9 @@ use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 
 class Report implements ReportInterface
 {
-
+    public function __toString(): string
+    {
+        return
+            brackets(typeOf($this) . '::' . __FUNCTION__) . ' Not implemented!';
+    }
 }

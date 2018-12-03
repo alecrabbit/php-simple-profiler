@@ -7,15 +7,28 @@
 
 namespace AlecRabbit\Tools;
 
-use AlecRabbit\Tools\Contracts\ProfilerInterface as ProfilerContract;
+use AlecRabbit\Tools\Contracts\ProfilerInterface;
+use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
+use AlecRabbit\Tools\Reports\Traits\Reportable;
+use AlecRabbit\Traits\DefaultableName;
 
-class Profiler implements ProfilerContract
+class Profiler implements ProfilerInterface, ReportableInterface
 {
+    use Reportable, DefaultableName;
+
     /** @var Timer[] */
     private $timers = [];
 
     /** @var Counter[] */
     private $counters = [];
+
+    public function __construct()
+    {
+        // Create "default" counter
+        $this->counter();
+        // Create "default" timer
+        $this->timer();
+    }
 
     /**
      * @param null|string $name
@@ -36,7 +49,7 @@ class Profiler implements ProfilerContract
      */
     private function prepName(?string $name, array $suffixes): string
     {
-        $name = $name ?? static::_DEFAULT;
+        $name = $this->default($name);
         if (!empty($suffixes)) {
             return $this->formatName($name, $suffixes);
         }
@@ -64,30 +77,6 @@ class Profiler implements ProfilerContract
         $name = $this->prepName($name, $suffixes);
         return
             $this->timers[$name] ?? $this->timers[$name] = new Timer($name);
-    }
-
-    /**
-     * @param bool|null $formatted
-     * @param bool|null $extended
-     * @param int|null $units
-     * @param int|null $precision
-     * @return iterable
-     */
-    public function report(
-        ?bool $formatted = null,
-        ?bool $extended = null,
-        ?int $units = null,
-        ?int $precision = null
-    ): iterable {
-        $report = [];
-        foreach ($this->counters as $counter) {
-            $report[static::_COUNTERS][$counter->getName()] = $counter->report($extended);
-        }
-        foreach ($this->timers as $timer) {
-            $report[static::_TIMERS][$timer->getName()] = $timer->report($formatted, $extended, $units, $precision);
-        }
-        return
-            $report;
     }
 
     /**

@@ -8,32 +8,13 @@
 namespace AlecRabbit\Tools;
 
 use AlecRabbit\Tools\Contracts\TimerInterface;
+use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
+use AlecRabbit\Tools\Reports\Traits\Reportable;
+use AlecRabbit\Tools\Traits\TimerFields;
 
-class Timer implements TimerInterface
+class Timer implements TimerInterface, ReportableInterface
 {
-    /** @var string */
-    private $name;
-
-    /** @var float */
-    private $previous;
-
-    /** @var float */
-    private $start;
-
-    /** @var float */
-    private $currentValue;
-
-    /** @var float */
-    private $avgValue;
-
-    /** @var float */
-    private $minValue;
-
-    /** @var float */
-    private $maxValue;
-
-    /** @var int */
-    private $count;
+    use TimerFields, Reportable;
 
     /**
      * Timer constructor.
@@ -41,17 +22,26 @@ class Timer implements TimerInterface
      */
     public function __construct(?string $name = null)
     {
-        $this->name = $name ?? static::_DEFAULT;
+        $this->name = $this->default($name);
+        $this->creation = $this->current();
     }
 
     /**
-     * Starts the timer.
-     * @return Timer
+     * @return float
      */
-    public function forceStart(): Timer
+    private function current(): float
     {
-        $this->start();
-        return $this;
+        return
+            microtime(true);
+    }
+
+    public function prepareForReport(): void
+    {
+        if (null === $this->start) {
+            $this->start();
+            $this->mark();
+        }
+        $this->stop();
     }
 
     /**
@@ -65,98 +55,26 @@ class Timer implements TimerInterface
     }
 
     /**
-     * @return float
+     * @param int|null $iterationNumber
      */
-    private function current(): float
-    {
-        return
-            microtime(true);
-    }
-
-    /**
-     * @param bool $formatted
-     * @return mixed
-     */
-    public function elapsed(bool $formatted = false)
-    {
-        if (!$this->start) {
-            throw new \RuntimeException('Timer has not been started.');
-        }
-        $elapsed = $this->current() - $this->start;
-
-        return
-            $formatted ? $this->format($elapsed, static::UNIT_MILLISECONDS, 2) : $elapsed;
-    }
-
-    /**
-     * @param float|null $value
-     * @param int|null $units
-     * @param int|null $precision
-     * @return string
-     */
-    private function format(?float $value, ?int $units = null, int $precision = null): string
-    {
-        return
-            format_time($value, $units, $precision ?? static::DEFAULT_PRECISION);
-    }
-
-    /**
-     * @param bool|null $formatted
-     * @param bool|null $extended
-     * @param int|null $units
-     * @param int|null $precision
-     *
-     * @return iterable
-     */
-    public function report(
-        ?bool $formatted = null,
-        ?bool $extended = null,
-        ?int $units = null,
-        ?int $precision = null
-    ): iterable {
-        if (!$this->count) {
-            $this->check();
-        }
-        $formatted = $formatted ?? false;
-        $current = $formatted ? $this->format($this->currentValue, $units, $precision) : $this->currentValue;
-        $report = [];
-        if ($current) {
-            $name = $this->getName();
-            $report = [
-                static::_NAME => $name,
-                static::_LAST => $current,
-                static::_EXTENDED => $extended ? $this->getTimerValues($formatted) : null
-            ];
-        }
-        return $report;
-    }
-
-    /**
-     * Marks the elapsed time.
-     * If timer was not started starts the timer.
-     */
-    public function check(): Timer
-    {
-        if (null !== $this->previous) {
-            $this->mark();
-        } else {
-            $this->start();
-        }
-        return $this;
-    }
-
-    private function mark(): void
+    private function mark(?int $iterationNumber = null): void
     {
         $current = $this->current();
         $this->currentValue = $current - $this->previous;
         $this->previous = $current;
 
-        if ($this->count) {
+        if (0 !== $this->count) {
             if ($this->currentValue < $this->minValue) {
                 $this->minValue = $this->currentValue;
+                if ($iterationNumber) {
+                    $this->minValueIteration = $iterationNumber;
+                }
             }
             if ($this->currentValue > $this->maxValue) {
                 $this->maxValue = $this->currentValue;
+                if ($iterationNumber) {
+                    $this->maxValueIteration = $iterationNumber;
+                }
             }
             $this->avgValue = (($this->avgValue * $this->count) + $this->currentValue) / ++$this->count;
         } else {
@@ -167,81 +85,38 @@ class Timer implements TimerInterface
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getName(): string
+    public function stop(): void
     {
-        return $this->name;
+        $this->elapsed = $this->current() - $this->creation;
+        $this->stopped = true;
+    }
+
+    /**
+     * Marks the elapsed time.
+     * If timer was not started starts the timer.
+     * @param int|null $iterationNumber
+     * @return Timer
+     */
+    public function check(?int $iterationNumber = null): Timer
+    {
+        if (null === $this->start) {
+            $this->start();
+        } else {
+            $this->mark($iterationNumber);
+        }
+        return $this;
     }
 
     /**
      * @param bool $formatted
-     * @param int|null $units
-     * @param int|null $precision
-     * @return iterable
+     * @return mixed
      */
-    public function getTimerValues(bool $formatted = true, ?int $units = null, ?int $precision = null): iterable
+    public function elapsed(bool $formatted = true)
     {
-        if (!$count = $this->getCount()) {
-            throw new \RuntimeException('Timer has not been started.');
+        if ($this->isNotStopped()) {
+            $this->stop();
         }
-        $minValue = ($count === 1) ? $this->getCurrentValue() : $this->getMinValue();
         return
-            $formatted ?
-                [
-                    static::_LAST => $this->format($this->getCurrentValue(), $units, $precision),
-                    static::_AVG => $this->format($this->getAvgValue(), $units, $precision),
-                    static::_MIN => $this->format($minValue, $units, $precision),
-                    static::_MAX => $this->format($this->getMaxValue(), $units, $precision),
-                    static::_COUNT => $count,
-                ] :
-                [
-                    static::_LAST => $this->getCurrentValue(),
-                    static::_AVG => $this->getAvgValue(),
-                    static::_MIN => $minValue,
-                    static::_MAX => $this->getMaxValue(),
-                    static::_COUNT => $count,
-                ];
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getCount(): ?int
-    {
-        return $this->count;
-    }
-
-    /**
-     * @return float|null
-     */
-    public function getCurrentValue(): ?float
-    {
-        return $this->currentValue;
-    }
-
-    /**
-     * @return float|null
-     */
-    public function getMinValue(): ?float
-    {
-        return $this->minValue;
-    }
-
-    /**
-     * @return float|null
-     */
-    public function getAvgValue(): ?float
-    {
-        return $this->avgValue;
-    }
-
-    /**
-     * @return float|null
-     */
-    public function getMaxValue(): ?float
-    {
-        return $this->maxValue;
+            $formatted ? format_time($this->getElapsed()) : $this->elapsed;
     }
 }

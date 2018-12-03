@@ -8,9 +8,9 @@
 namespace Unit;
 
 
+use AlecRabbit\Tools\Reports\TimerReport;
 use AlecRabbit\Tools\Timer;
 use PHPUnit\Framework\TestCase;
-use ReflectionMethod;
 use Symfony\Bridge\PhpUnit\ClockMock;
 
 /**
@@ -42,7 +42,7 @@ class TimerTest extends TestCase
     public function timerDefaultCreation(): void
     {
         $timer = new Timer();
-        $this->assertEquals('default', $timer->getName());
+        $this->assertEquals('default_name', $timer->getName());
         $timer = new Timer('name');
         $this->assertEquals('name', $timer->getName());
     }
@@ -52,16 +52,17 @@ class TimerTest extends TestCase
      */
     public function timerAvgValue(): void
     {
-        $timer = (new Timer())->forceStart();
+        $timer = new Timer();
+        $timer->start();
         $count = 5;
         for ($i = 0; $i < $count; $i++) {
             sleep(1);
             $timer->check();
         }
-        $this->assertEquals(1.0, $timer->getAvgValue(), 'getAvgValue');
+        $this->assertEquals(1.0, $timer->getAverageValue(), 'getAvgValue');
         $this->assertEquals(1.0, $timer->getMinValue(), 'getMinValue');
         $this->assertEquals(1.0, $timer->getMaxValue(), 'getMaxValue');
-        $this->assertEquals(1.0, $timer->getCurrentValue(), 'getCurrentValue');
+        $this->assertEquals(1.0, $timer->getLastValue(), 'getCurrentValue');
         $this->assertEquals($count, $timer->getCount());
     }
 
@@ -69,25 +70,15 @@ class TimerTest extends TestCase
     public function timerElapsedNotStarted(): void
     {
         $timer = new Timer();
-        $this->expectException(\RuntimeException::class);
-        $this->assertEquals(1, $timer->elapsed());
+//        $this->expectException(\RuntimeException::class);
+        $this->assertEquals('0ms', $timer->elapsed());
     }
 
     /** @test */
-    public function timerValuesNotStarted(): void
+    public function timerReportsNotStarted(): void
     {
         $timer = new Timer();
-        $this->expectException(\RuntimeException::class);
-        $this->assertEquals(
-            [
-                'Last' => null,
-                'Avg' => null,
-                'Min' => null,
-                'Max' => null,
-                'Count' => null,
-            ],
-            $timer->getTimerValues()
-        );
+        $this->assertInstanceOf(TimerReport::class, $timer->report());
     }
 
     /** @test */
@@ -96,7 +87,7 @@ class TimerTest extends TestCase
         $timer = new Timer();
         $timer->start();
         usleep(1000);
-        $this->assertEquals(0.001, $timer->elapsed(), 'Elapsed time', 0.0002);
+        $this->assertEquals('1ms', $timer->elapsed(), 'Elapsed time', 0.0002);
         $this->assertStringMatchesFormat(
             '%fms',
             $timer->elapsed(true)
@@ -108,70 +99,21 @@ class TimerTest extends TestCase
     {
         $timer = new Timer();
         $timer->start();
-        $count = 7;
-        for ($i = 0; $i < $count; $i++) {
+        $count = 6;
+        for ($i = 1; $i <= $count; $i++) {
             usleep(2000 + $i * 1000);
-            $timer->check();
+            $timer->check($i);
         }
         usleep(1000);
-        $timer->check();
-        $this->assertEquals(
-            [
-                Timer::_LAST => '1ms',
-                Timer::_AVG => '5ms',
-                Timer::_MIN => '1ms',
-                Timer::_MAX => '8ms',
-                Timer::_COUNT => ++$count,
-
-            ],
-            $timer->getTimerValues(true, Timer::UNIT_MILLISECONDS, 0)
-        );
+        $timer->check($i + 1);
+        /** @var TimerReport $report */
+        $report = $timer->report();
+        $this->assertEquals(0.001, $report->getLastValue(), '', 0.0001);
+        $this->assertEquals(0.005, $report->getAverageValue(), '', 0.0005);
+        $this->assertEquals(0.001, $report->getMinValue(), '', 0.0001);
+        $this->assertEquals(8, $report->getMinValueIteration());
+        $this->assertEquals(0.008, $report->getMaxValue(), '', 0.0001);
+        $this->assertEquals(6, $report->getMaxValueIteration());
+        $this->assertEquals(7, $report->getCount());
     }
-
-    /** @test */
-    public function timerValuesTwo(): void
-    {
-        $timer = new Timer();
-        $timer->start();
-        $count = 7;
-        for ($i = 0; $i < $count; $i++) {
-            usleep(2000 + $i * 1000);
-            $timer->check();
-        }
-        usleep(1000);
-        $timer->check();
-        $expected = [
-            Timer::_LAST => 0.001,
-            Timer::_AVG => 0.005,
-            Timer::_MIN => 0.001,
-            Timer::_MAX => 0.008,
-            Timer::_COUNT => ++$count,
-
-        ];
-        $actual = $timer->getTimerValues(false);
-        foreach ($expected as $key => $value) {
-            $this->assertEquals($value, $actual[$key], '', 0.0005);
-        }
-    }
-
-    /** @test
-     * @throws \ReflectionException
-     */
-    public function timerFormatPrivate(): void
-    {
-        $method = new ReflectionMethod(Timer::class, 'format');
-        $method->setAccessible(true);
-
-        $timer = new Timer();
-
-        $this->assertEquals('11.1ms', $method->invoke($timer, 0.0111));
-        $this->assertEquals('11100μs', $method->invoke($timer, 0.0111, Timer::UNIT_MICROSECONDS));
-        $this->assertEquals('22.342342μs', $method->invoke($timer, 0.000022342342342, Timer::UNIT_MICROSECONDS, 6));
-        $this->assertEquals('1000022.23435μs', $method->invoke($timer, 1.00002223435, Timer::UNIT_MICROSECONDS, 6));
-        $this->assertEquals('1000.022ms', $method->invoke($timer, 1.000022, Timer::UNIT_MILLISECONDS));
-        $this->assertEquals('10.000022s', $method->invoke($timer, 10.000022, Timer::UNIT_SECONDS, 6));
-        $this->assertEquals('0.17m', $method->invoke($timer, 10.000022, Timer::UNIT_MINUTES, 2));
-        $this->assertEquals('0.002778h', $method->invoke($timer, 10.000022, Timer::UNIT_HOURS, 6));
-    }
-
 }

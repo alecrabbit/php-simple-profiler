@@ -7,27 +7,29 @@
 
 namespace AlecRabbit\Tools;
 
+use AlecRabbit\BenchmarkedFunction;
 use AlecRabbit\Rewindable;
+use AlecRabbit\Tools\Contracts\BenchmarkInterface;
+use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
+use AlecRabbit\Tools\Reports\Traits\Reportable;
+use AlecRabbit\Tools\Traits\BenchmarkFields;
 
-class Benchmark
+class Benchmark implements BenchmarkInterface, ReportableInterface
 {
-    /** @var array */
-    private $functions = [];
-    /** @var Rewindable */
-    private $iterations;
-    /** @var Profiler */
-    private $profiler;
+    use BenchmarkFields, Reportable;
+
     /** @var int */
-    private $namingIndex;
+    private $namingIndex = 0;
+    /** @var Rewindable */
+    private $iterations; // todo rename field
     /** @var null|string */
-    private $tmpName;
+    private $comment;
 
     public function __construct(int $iterations = 1000)
     {
         $this->iterations =
             new Rewindable(
-                function (int $iterations): \Generator {
-                    $i = 1;
+                function (int $iterations, int $i = 1): \Generator {
                     while ($i <= $iterations) {
                         yield $i++;
                     }
@@ -35,7 +37,6 @@ class Benchmark
                 $iterations
             );
         $this->profiler = new Profiler();
-        $this->namingIndex = 0;
     }
 
     /**
@@ -43,14 +44,17 @@ class Benchmark
      */
     public function compare(): void
     {
+        /** @var  BenchmarkedFunction $f */
         foreach ($this->functions as $name => $f) {
             $this->profiler->timer($name)->start();
+            $function = $f->getFunction();
+            $args = $f->getArgs();
             foreach ($this->iterations as $iteration) {
-                [$function, $args] = $f;
                 /** @noinspection VariableFunctionsUsageInspection */
-                \call_user_func($function, ...$args);
                 /** @noinspection DisconnectedForeachInstructionInspection */
-                $this->profiler->timer($name)->check();
+                \call_user_func($function, ...$args);
+                $this->profiler->timer($name)->check($iteration);
+                ++$this->iteration;
             }
         }
     }
@@ -61,101 +65,35 @@ class Benchmark
      */
     public function addFunction($func, ...$args): void
     {
-        if (!\is_callable($func, false, $callableName)) {
+        if (!\is_callable($func, false, $name)) {
             throw new \InvalidArgumentException('Function must be callable.');
         }
-        if (null !== $this->tmpName) {
-            $callableName = $this->tmpName;
-            $this->tmpName = null;
-        }
-        if (array_key_exists($callableName, $this->functions)) {
-            $callableName .= '_' . ++$this->namingIndex;
-        }
-        $this->functions[$callableName] = [$func, $args];
-    }
+        $function = new BenchmarkedFunction($func, $name, $this->namingIndex++, $args, $this->comment);
+        $this->comment = null;
 
-    /**
-     * @return array
-     */
-    public function report(): array
-    {
-        return
-            $this->computeRelatives();
-    }
-
-    /**
-     * @param array $timers
-     * @return array
-     */
-    private function computeAverages(array $timers): array
-    {
-        $averages = [];
-        /** @var Timer $timer */
-        foreach ($timers as $timer) {
-            $averages[$timer->getName()] = $timer->getAvgValue();
-        }
-        return $averages;
-    }
-
-    /**
-     * @return array
-     */
-    private function computeRelatives(): array
-    {
-        $averages = $this->computeAverages(
-            $this->profiler->getTimers()
-        );
-
-        $min = min($averages);
-
-        $relatives = [];
-        foreach ($averages as $name => $average) {
-            $relatives[$name] = $average / $min;
-        }
-        asort($relatives);
-
-        foreach ($relatives as $name => $relative) {
-            $relatives[$name] =
-                $this->toPercentage($relative) . ' ' .
-                brackets(format_time($averages[$name]), BRACKETS_PARENTHESES);
-        }
-        return $relatives;
-    }
-
-    /**
-     * @param float $relative
-     * @return string
-     */
-    private function toPercentage(float $relative): string
-    {
-        return
-            number_format($relative * 100, 1) . '%';
-    }
-
-    /**
-     * @param bool $formatted
-     * @param bool $extended
-     * @param int|null $units
-     * @param int|null $precision
-     * @return iterable
-     */
-    public function profilerReport(
-        bool $formatted = true,
-        bool $extended = true,
-        ?int $units = null,
-        ?int $precision = null
-    ): iterable {
-        return
-            $this->profiler->report($formatted, $extended, $units, $precision);
+        $this->functions[$function->getEnumeratedName()] = $function;
     }
 
     /**
      * @param string $name
      * @return Benchmark
      */
-    public function withName(string $name): self
+    public function withComment(string $name): self
     {
-        $this->tmpName = $name;
+        $this->comment = $name;
         return $this;
+    }
+
+    /**
+     * @return Profiler
+     */
+    public function getProfiler(): Profiler
+    {
+        return $this->profiler;
+    }
+
+    protected function prepareForReport(): void
+    {
+        $this->getProfiler()->report();
     }
 }
