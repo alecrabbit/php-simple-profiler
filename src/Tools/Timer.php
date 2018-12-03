@@ -67,13 +67,13 @@ class Timer implements TimerInterface, ReportableInterface
         if (0 !== $this->count) {
             if ($this->currentValue < $this->minValue) {
                 $this->minValue = $this->currentValue;
-                if ($iterationNumber) {
+                if (null !== $iterationNumber) {
                     $this->minValueIteration = $iterationNumber;
                 }
             }
             if ($this->currentValue > $this->maxValue) {
                 $this->maxValue = $this->currentValue;
-                if ($iterationNumber) {
+                if (null !== $iterationNumber) {
                     $this->maxValueIteration = $iterationNumber;
                 }
             }
