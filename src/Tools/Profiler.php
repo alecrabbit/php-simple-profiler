@@ -37,7 +37,7 @@ class Profiler implements ProfilerInterface, ReportableInterface
      */
     public function counter(?string $name = null, string ...$suffixes): Counter
     {
-        $name = $this->prepName($name, $suffixes);
+        $name = $this->prepareName($name, $suffixes);
         return
             $this->counters[$name] ?? $this->counters[$name] = new Counter($name);
     }
@@ -47,9 +47,9 @@ class Profiler implements ProfilerInterface, ReportableInterface
      * @param array $suffixes
      * @return string
      */
-    private function prepName(?string $name, array $suffixes): string
+    private function prepareName(?string $name, array $suffixes): string
     {
-        $name = $this->default($name);
+        $name = $this->defaultName($name);
         if (!empty($suffixes)) {
             return $this->formatName($name, $suffixes);
         }
@@ -74,7 +74,7 @@ class Profiler implements ProfilerInterface, ReportableInterface
      */
     public function timer(?string $name = null, string ...$suffixes): Timer
     {
-        $name = $this->prepName($name, $suffixes);
+        $name = $this->prepareName($name, $suffixes);
         return
             $this->timers[$name] ?? $this->timers[$name] = new Timer($name);
     }

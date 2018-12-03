@@ -7,10 +7,15 @@
 
 namespace AlecRabbit\Tools\Reports\Base;
 
+use function AlecRabbit\brackets;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
+use function AlecRabbit\typeOf;
 
 class Report implements ReportInterface
 {
+    /**
+     * @return string
+     */
     public function __toString(): string
     {
         return

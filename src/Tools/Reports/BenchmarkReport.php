@@ -7,23 +7,34 @@
 
 namespace AlecRabbit\Tools\Reports;
 
-use AlecRabbit\BenchmarkedFunction;
-use AlecRabbit\Constants;
+use function AlecRabbit\brackets;
+use const AlecRabbit\Constants\Accessories\DEFAULT_NAME;
+use const AlecRabbit\Constants\BRACKETS_PARENTHESES;
+use function AlecRabbit\format_time;
 use AlecRabbit\Tools\Benchmark;
+use AlecRabbit\Tools\Internal\BenchmarkedFunction;
 use AlecRabbit\Tools\Reports\Base\Report;
 use AlecRabbit\Tools\Timer;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
+use function AlecRabbit\typeOf;
 
 class BenchmarkReport extends Report
 {
     use BenchmarkFields;
 
+    /**
+     * BenchmarkReport constructor.
+     * @param Benchmark $reportable
+     */
     public function __construct(Benchmark $reportable)
     {
         $this->profiler = $reportable->getProfiler();
         $this->functions = $reportable->getFunctions();
     }
 
+    /**
+     * @return string
+     */
     public function __toString(): string
     {
         $r = (string)$this->getProfiler()->report();
@@ -84,7 +95,7 @@ class BenchmarkReport extends Report
         $averages = [];
         /** @var Timer $timer */
         foreach ($timers as $timer) {
-            if (Constants::DEFAULT_NAME !== $name = $timer->getName()) {
+            if (DEFAULT_NAME !== $name = $timer->getName()) {
                 $averages[$name] = $timer->getAverageValue();
             }
         }
@@ -101,6 +112,10 @@ class BenchmarkReport extends Report
             number_format($relative * 100, 1) . '%';
     }
 
+    /**
+     * @param string $name
+     * @return BenchmarkedFunction
+     */
     private function getFunctionObject(string $name): BenchmarkedFunction
     {
         return $this->functions[$name];

@@ -38,6 +38,9 @@ class ProfilerReport extends Report implements StringsInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function __toString(): string
     {
         $r = '';

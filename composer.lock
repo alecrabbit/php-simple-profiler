@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "03c2f7433d907a36ccfb061fc258378f",
+    "content-hash": "6386e124cf816848a1e55e17be23edeb",
     "packages": [
         {
             "name": "alecrabbit/php-helpers",
-            "version": "0.0.16",
+            "version": "0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-helpers.git",
-                "reference": "d50b2f4ba5c992e7d0f1fd4f24f1a04aaf680a9f"
+                "reference": "eefdd0149453c126a5ac7142148af6438fcd847e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/d50b2f4ba5c992e7d0f1fd4f24f1a04aaf680a9f",
-                "reference": "d50b2f4ba5c992e7d0f1fd4f24f1a04aaf680a9f",
+                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/eefdd0149453c126a5ac7142148af6438fcd847e",
+                "reference": "eefdd0149453c126a5ac7142148af6438fcd847e",
                 "shasum": ""
             },
             "require": {
@@ -33,11 +33,13 @@
             "type": "library",
             "autoload": {
                 "files": [
-                    "src/functions.php",
-                    "src/numeric/numeric.php",
-                    "src/time/time.php",
-                    "src/array/array.php",
-                    "src/string/string.php"
+                    "src/Constants/constants.php",
+                    "src/Constants/String/constants.php",
+                    "src/Helpers/functions.php",
+                    "src/Helpers/numeric/numeric.php",
+                    "src/Helpers/time/time.php",
+                    "src/Helpers/array/array.php",
+                    "src/Helpers/string/string.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -45,7 +47,7 @@
                 "MIT"
             ],
             "description": "PHP helpers functions",
-            "time": "2018-11-29T13:17:42+00:00"
+            "time": "2018-12-03T15:29:51+00:00"
         },
         {
             "name": "krowinski/bcmath-extended",
@@ -244,16 +246,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.6.1",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "ab9bfecb5b9ea9557f027dcd01762495c351632f"
+                "reference": "90ff5556d4bd25954c272a22654e7bd43e8ab055"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/ab9bfecb5b9ea9557f027dcd01762495c351632f",
-                "reference": "ab9bfecb5b9ea9557f027dcd01762495c351632f",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/90ff5556d4bd25954c272a22654e7bd43e8ab055",
+                "reference": "90ff5556d4bd25954c272a22654e7bd43e8ab055",
                 "shasum": ""
             },
             "require": {
@@ -299,20 +301,20 @@
                 "datetime",
                 "time"
             ],
-            "time": "2018-11-22T16:45:03+00:00"
+            "time": "2018-12-02T10:14:51+00:00"
         },
         {
             "name": "symfony/contracts",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/contracts.git",
-                "reference": "4a33574d5771f4b04334cd4f7d43de96a92efb62"
+                "reference": "3edf0ab943d1985a356721952cba36ff31bd6e5f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/contracts/zipball/4a33574d5771f4b04334cd4f7d43de96a92efb62",
-                "reference": "4a33574d5771f4b04334cd4f7d43de96a92efb62",
+                "url": "https://api.github.com/repos/symfony/contracts/zipball/3edf0ab943d1985a356721952cba36ff31bd6e5f",
+                "reference": "3edf0ab943d1985a356721952cba36ff31bd6e5f",
                 "shasum": ""
             },
             "require": {
@@ -367,7 +369,7 @@
                 "interoperability",
                 "standards"
             ],
-            "time": "2018-10-31T08:00:32+00:00"
+            "time": "2018-11-24T09:35:08+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -505,20 +507,20 @@
     "packages-dev": [
         {
             "name": "alecrabbit/accessories",
-            "version": "dev-master",
+            "version": "0.0.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/accessories.git",
-                "reference": "f9574838068350ba3c67686050823e9e815f3141"
+                "reference": "a1de1d5d57060d6c9ed6beef59f7b295063530cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/accessories/zipball/f9574838068350ba3c67686050823e9e815f3141",
-                "reference": "f9574838068350ba3c67686050823e9e815f3141",
+                "url": "https://api.github.com/repos/alecrabbit/accessories/zipball/a1de1d5d57060d6c9ed6beef59f7b295063530cb",
+                "reference": "a1de1d5d57060d6c9ed6beef59f7b295063530cb",
                 "shasum": ""
             },
             "require": {
-                "alecrabbit/php-helpers": "^0",
+                "alecrabbit/php-helpers": "^0.1",
                 "php": ">=7.2"
             },
             "require-dev": {
@@ -531,14 +533,17 @@
             "autoload": {
                 "psr-4": {
                     "AlecRabbit\\": "src"
-                }
+                },
+                "files": [
+                    "src/Constants/constants.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "PHP accessories Classes etc.",
-            "time": "2018-12-01T20:28:54+00:00"
+            "time": "2018-12-03T22:19:16+00:00"
         },
         {
             "name": "alecrabbit/php-console-colour",
@@ -1548,16 +1553,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.4.4",
+            "version": "7.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "b1be2c8530c4c29c3519a052c9fb6cee55053bbd"
+                "reference": "61d34e8dd6eb3555900f0f2a2fa9e7e570730102"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/b1be2c8530c4c29c3519a052c9fb6cee55053bbd",
-                "reference": "b1be2c8530c4c29c3519a052c9fb6cee55053bbd",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/61d34e8dd6eb3555900f0f2a2fa9e7e570730102",
+                "reference": "61d34e8dd6eb3555900f0f2a2fa9e7e570730102",
                 "shasum": ""
             },
             "require": {
@@ -1578,7 +1583,7 @@
                 "phpunit/php-timer": "^2.0",
                 "sebastian/comparator": "^3.0",
                 "sebastian/diff": "^3.0",
-                "sebastian/environment": "^3.1 || ^4.0",
+                "sebastian/environment": "^4.0",
                 "sebastian/exporter": "^3.1",
                 "sebastian/global-state": "^2.0",
                 "sebastian/object-enumerator": "^3.0.3",
@@ -1628,7 +1633,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-11-14T16:52:02+00:00"
+            "time": "2018-12-03T05:01:24+00:00"
         },
         {
             "name": "psr/log",
@@ -2736,9 +2741,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "alecrabbit/accessories": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

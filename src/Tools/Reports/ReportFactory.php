@@ -13,10 +13,15 @@ use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Timer;
+use function AlecRabbit\typeOf;
 
 class ReportFactory
 {
 
+    /**
+     * @param ReportableInterface $reportable
+     * @return ReportInterface
+     */
     public static function createReport(ReportableInterface $reportable): ReportInterface
     {
         if ($reportable instanceof Timer) {

@@ -23,7 +23,7 @@ class Counter implements CounterInterface, ReportableInterface
      */
     public function __construct(?string $name = null, int $value = 0)
     {
-        $this->name = $this->default($name);
+        $this->name = $this->defaultName($name);
         $this->value = $value;
         $this->step = 1;
     }

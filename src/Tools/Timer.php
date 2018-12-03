@@ -7,6 +7,7 @@
 
 namespace AlecRabbit\Tools;
 
+use function AlecRabbit\format_time;
 use AlecRabbit\Tools\Contracts\TimerInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
@@ -22,7 +23,7 @@ class Timer implements TimerInterface, ReportableInterface
      */
     public function __construct(?string $name = null)
     {
-        $this->name = $this->default($name);
+        $this->name = $this->defaultName($name);
         $this->creation = $this->current();
     }
 

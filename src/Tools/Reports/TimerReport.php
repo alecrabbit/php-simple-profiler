@@ -7,15 +7,20 @@
 
 namespace AlecRabbit\Tools\Reports;
 
-use AlecRabbit\Constants;
 use AlecRabbit\Tools\Reports\Base\Report;
 use AlecRabbit\Tools\Timer;
 use AlecRabbit\Tools\Traits\TimerFields;
+use function AlecRabbit\format_time;
+use const AlecRabbit\Constants\Accessories\DEFAULT_NAME;
 
 class TimerReport extends Report
 {
     use TimerFields;
 
+    /**
+     * TimerReport constructor.
+     * @param Timer $timer
+     */
     public function __construct(Timer $timer)
     {
         if (0 === $count = $timer->getCount()) {
@@ -36,9 +41,12 @@ class TimerReport extends Report
         $this->count = $count;
     }
 
+    /**
+     * @return string
+     */
     public function __toString(): string
     {
-        if (Constants::DEFAULT_NAME === $name = $this->getName()) {
+        if (DEFAULT_NAME === $name = $this->getName()) {
             return
                 sprintf(
                     'Timer:[%s] Elapsed: %s' . PHP_EOL,

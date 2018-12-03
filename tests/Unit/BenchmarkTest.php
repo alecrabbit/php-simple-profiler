@@ -175,6 +175,7 @@ class BenchmarkTest extends TestCase
 //        $actual = $this->bench->report();
 //        var_export($actual);
         $this->assertInstanceOf(BenchmarkReport::class, $this->bench->report());
+        $this->assertInternalType('string', (string)$this->bench->report());
     }
 //
 //    /** @test */

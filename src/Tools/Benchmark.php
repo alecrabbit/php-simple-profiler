@@ -7,9 +7,9 @@
 
 namespace AlecRabbit\Tools;
 
-use AlecRabbit\BenchmarkedFunction;
 use AlecRabbit\Rewindable;
 use AlecRabbit\Tools\Contracts\BenchmarkInterface;
+use AlecRabbit\Tools\Internal\BenchmarkedFunction;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\BenchmarkFields;

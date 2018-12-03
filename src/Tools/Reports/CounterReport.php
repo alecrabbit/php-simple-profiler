@@ -15,6 +15,10 @@ class CounterReport extends Report
 {
     use CounterFields;
 
+    /**
+     * CounterReport constructor.
+     * @param Counter $counter
+     */
     public function __construct(Counter $counter)
     {
         $this->name = $counter->getName();
@@ -22,6 +26,9 @@ class CounterReport extends Report
         $this->step = $counter->getStep();
     }
 
+    /**
+     * @return string
+     */
     public function __toString(): string
     {
         return

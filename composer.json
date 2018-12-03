@@ -5,13 +5,13 @@
   "license": "MIT",
   "require": {
     "php": ">=7.2",
-    "alecrabbit/php-helpers": "dev-master",
+    "alecrabbit/php-helpers": "^0.1",
     "krowinski/bcmath-extended": "^4.1",
     "nesbot/carbon": "^2.6",
     "lstrojny/functional-php": "^1.8"
   },
   "require-dev": {
-    "alecrabbit/accessories": "dev-master",
+    "alecrabbit/accessories": "^0.0",
     "alecrabbit/php-output-a": "^0.0.1",
     "nunomaduro/collision": "^2.1",
     "phpunit/phpunit": "^7.4",
