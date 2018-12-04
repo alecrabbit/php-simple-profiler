@@ -13,6 +13,7 @@ use AlecRabbit\Tools\Internal\BenchmarkedFunction;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
+use function AlecRabbit\typeOf;
 
 class Benchmark implements BenchmarkInterface, ReportableInterface
 {
@@ -49,6 +50,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
             $this->profiler->timer($name)->start();
             $function = $f->getFunction();
             $args = $f->getArgs();
+            $this->iteration = 0;
             foreach ($this->iterations as $iteration) {
                 /** @noinspection VariableFunctionsUsageInspection */
                 /** @noinspection DisconnectedForeachInstructionInspection */
@@ -66,7 +68,13 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     public function addFunction($func, ...$args): void
     {
         if (!\is_callable($func, false, $name)) {
-            throw new \InvalidArgumentException('Function must be callable.');
+            throw new \InvalidArgumentException(
+                sprintf(
+                    '\'%s\' is NOT callable. Function must be callable. Type of "%s" provided instead.',
+                    $name,
+                    typeOf($func)
+                )
+            );
         }
         $function = new BenchmarkedFunction($func, $name, $this->namingIndex++, $args, $this->comment);
         $this->comment = null;
@@ -82,14 +90,6 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     {
         $this->comment = $name;
         return $this;
-    }
-
-    /**
-     * @return Profiler
-     */
-    public function getProfiler(): Profiler
-    {
-        return $this->profiler;
     }
 
     protected function prepareForReport(): void

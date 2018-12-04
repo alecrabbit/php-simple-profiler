@@ -141,7 +141,7 @@ class BenchmarkTest extends TestCase
             ->withComment('Added First(1)')
             ->addFunction(function () {
                 usleep(498);
-            });
+            }, 1, 2);
         $this->bench
             ->withComment('Added Second(3)')
             ->addFunction(function () {
@@ -177,16 +177,16 @@ class BenchmarkTest extends TestCase
         $this->assertInstanceOf(BenchmarkReport::class, $this->bench->report());
         $this->assertInternalType('string', (string)$this->bench->report());
     }
-//
-//    /** @test */
-//    public function wrongArgument(): void
-//    {
-//        $this->expectException(\InvalidArgumentException::class);
-//        $this->bench
-//            ->withComment('Added Third(2)')
-//            ->addFunction('notCallable');
-//    }
-//
+
+    /** @test */
+    public function wrongArgument(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->bench
+            ->withComment('Added Third(2)')
+            ->addFunction('notCallable');
+    }
+
     protected function setUp()
     {
         parent::setUp();

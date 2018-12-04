@@ -23,9 +23,7 @@ class TimerReport extends Report
      */
     public function __construct(Timer $timer)
     {
-        if (0 === $count = $timer->getCount()) {
-            throw new \RuntimeException('Timer "' . $timer->getName() . '" has not been started.');
-        }
+        $count = $timer->getCount();
         $this->name = $timer->getName();
         $this->previous = $timer->getPrevious();
         $this->creation = $timer->getCreation();

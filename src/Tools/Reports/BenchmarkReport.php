@@ -7,16 +7,16 @@
 
 namespace AlecRabbit\Tools\Reports;
 
-use function AlecRabbit\brackets;
-use const AlecRabbit\Constants\Accessories\DEFAULT_NAME;
-use const AlecRabbit\Constants\BRACKETS_PARENTHESES;
-use function AlecRabbit\format_time;
 use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Internal\BenchmarkedFunction;
 use AlecRabbit\Tools\Reports\Base\Report;
 use AlecRabbit\Tools\Timer;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
+use function AlecRabbit\brackets;
+use function AlecRabbit\format_time;
 use function AlecRabbit\typeOf;
+use const AlecRabbit\Constants\Accessories\DEFAULT_NAME;
+use const AlecRabbit\Constants\BRACKETS_PARENTHESES;
 
 class BenchmarkReport extends Report
 {
@@ -30,6 +30,7 @@ class BenchmarkReport extends Report
     {
         $this->profiler = $reportable->getProfiler();
         $this->functions = $reportable->getFunctions();
+        $this->iteration = $reportable->getIteration();
     }
 
     /**
@@ -49,12 +50,14 @@ class BenchmarkReport extends Report
                 }
             }
             $r .= sprintf(
-                '+%s [%s] %s(%s) %s' . PHP_EOL,
+                '+%s [%s] %s(%s) %s %s %s',
                 $result,
                 $function->getIndex(),
                 $function->getName(),
                 implode(', ', $types),
-                $function->getComment()
+                $function->getComment(),
+                $this->getIteration(),
+                PHP_EOL
             );
         }
         return
