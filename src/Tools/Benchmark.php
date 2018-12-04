@@ -9,7 +9,7 @@ namespace AlecRabbit\Tools;
 
 use AlecRabbit\Rewindable;
 use AlecRabbit\Tools\Contracts\BenchmarkInterface;
-use AlecRabbit\Tools\Internal\BenchmarkedFunction;
+use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
@@ -22,13 +22,22 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     /** @var int */
     private $namingIndex = 0;
     /** @var Rewindable */
-    private $iterations; // todo rename field
+    private $rewindable;
+    /** @var int */
+    private $iterations = 0;
     /** @var null|string */
     private $comment;
+    /** @var bool */
+    private $verbose = false;
 
+    /**
+     * Benchmark constructor.
+     * @param int $iterations
+     */
     public function __construct(int $iterations = 1000)
     {
-        $this->iterations =
+        $this->iterations = $iterations;
+        $this->rewindable =
             new Rewindable(
                 function (int $iterations, int $i = 1): \Generator {
                     while ($i <= $iterations) {
@@ -42,23 +51,85 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
 
     /**
      * Launch benchmarking
+     * @param bool $report
      */
-    public function compare(): void
+    public function run(bool $report = false): void
     {
-        /** @var  BenchmarkedFunction $f */
+        if ($this->verbose) {
+            $this->verboseRun();
+        } else {
+            $this->nonVerboseRun();
+        }
+        if ($report) {
+            echo (string)$this->report();
+            echo PHP_EOL;
+        }
+    }
+
+    /**
+     * Launch benchmarking in verbose mode
+     */
+    private function verboseRun(): void
+    {
+        echo
+        sprintf(
+            'Running benchmarks(%s):',
+            $this->iterations
+        );
+        echo PHP_EOL;
+        /** @var  BenchmarkFunction $f */
         foreach ($this->functions as $name => $f) {
-            $this->profiler->timer($name)->start();
             $function = $f->getFunction();
             $args = $f->getArgs();
-            $this->iteration = 0;
-            foreach ($this->iterations as $iteration) {
+            $this->prepareResult($f, $function, $args);
+            $timer = $this->profiler->timer($name);
+            $timer->start();
+            foreach ($this->rewindable as $iteration) {
                 /** @noinspection VariableFunctionsUsageInspection */
                 /** @noinspection DisconnectedForeachInstructionInspection */
                 \call_user_func($function, ...$args);
-                $this->profiler->timer($name)->check($iteration);
-                ++$this->iteration;
+                $timer->check($iteration);
+                ++$this->totalIterations;
+                if (1 === $this->totalIterations % 5000) {
+                    echo '.';
+                }
             }
+            $this->profiler->counter()->bump();
         }
+        echo PHP_EOL;
+        echo PHP_EOL;
+    }
+
+    /**
+     * Launch benchmarking in verbose mode
+     */
+    private function nonVerboseRun(): void
+    {
+        /** @var  BenchmarkFunction $f */
+        foreach ($this->functions as $name => $f) {
+            $function = $f->getFunction();
+            $args = $f->getArgs();
+            $this->prepareResult($f, $function, $args);
+            $timer = $this->profiler->timer($name);
+            $timer->start();
+            foreach ($this->rewindable as $iteration) {
+                /** @noinspection VariableFunctionsUsageInspection */
+                /** @noinspection DisconnectedForeachInstructionInspection */
+                \call_user_func($function, ...$args);
+                $timer->check($iteration);
+                ++$this->totalIterations;
+            }
+            $this->profiler->counter()->bump();
+        }
+    }
+
+    /**
+     * @return Benchmark
+     */
+    public function verbose(): self
+    {
+        $this->verbose = true;
+        return $this;
     }
 
     /**
@@ -76,7 +147,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
                 )
             );
         }
-        $function = new BenchmarkedFunction($func, $name, $this->namingIndex++, $args, $this->comment);
+        $function = new BenchmarkFunction($func, $name, $this->namingIndex++, $args, $this->comment);
         $this->comment = null;
 
         $this->functions[$function->getEnumeratedName()] = $function;
@@ -92,8 +163,30 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
         return $this;
     }
 
+    /**
+     * @return Benchmark
+     */
+    public function returnResults(): self
+    {
+        $this->withResults = true;
+        return $this;
+    }
+
     protected function prepareForReport(): void
     {
         $this->getProfiler()->report();
+    }
+
+    /**
+     * @param BenchmarkFunction $f
+     * @param callable $function
+     * @param array $args
+     */
+    private function prepareResult(BenchmarkFunction $f, callable $function, array $args): void
+    {
+        if ($this->withResults) {
+            /** @noinspection VariableFunctionsUsageInspection */
+            $f->setResult(\call_user_func($function, ...$args));
+        }
     }
 }

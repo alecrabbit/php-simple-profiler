@@ -13,11 +13,11 @@ use function AlecRabbit\str_decorate;
 use const AlecRabbit\Constants\BRACKETS_ANGLE;
 
 /**
- * Class BenchmarkedFunction
+ * Class BenchmarkFunction
  * @package AlecRabbit
  * @internal
  */
-class BenchmarkedFunction
+class BenchmarkFunction
 {
     use GettableName;
 
@@ -32,6 +32,9 @@ class BenchmarkedFunction
 
     /** @var callable */
     private $func;
+
+    /** @var mixed */
+    private $result;
 
     /**
      * BenchmarkedFunction constructor.
@@ -86,5 +89,21 @@ class BenchmarkedFunction
     {
         return
             brackets((string)$this->index, BRACKETS_ANGLE) . ' ' . $this->name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResult()
+    {
+        return $this->result;
+    }
+
+    /**
+     * @param mixed $result
+     */
+    public function setResult($result): void
+    {
+        $this->result = $result;
     }
 }

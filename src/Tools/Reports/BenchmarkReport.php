@@ -8,7 +8,7 @@
 namespace AlecRabbit\Tools\Reports;
 
 use AlecRabbit\Tools\Benchmark;
-use AlecRabbit\Tools\Internal\BenchmarkedFunction;
+use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\Base\Report;
 use AlecRabbit\Tools\Timer;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
@@ -30,7 +30,8 @@ class BenchmarkReport extends Report
     {
         $this->profiler = $reportable->getProfiler();
         $this->functions = $reportable->getFunctions();
-        $this->iteration = $reportable->getIteration();
+        $this->totalIterations = $reportable->getTotalIterations();
+        $this->withResults = $reportable->isWithResults();
     }
 
     /**
@@ -38,8 +39,8 @@ class BenchmarkReport extends Report
      */
     public function __toString(): string
     {
-        $r = (string)$this->getProfiler()->report();
-        $r .= 'Benchmark:' . PHP_EOL;
+        $profilerReport = (string)$this->getProfiler()->report();
+        $r = 'Benchmark:' . PHP_EOL;
         foreach ($this->computeRelatives() as $indexName => $result) {
             $function = $this->getFunctionObject($indexName);
             $arguments = $function->getArgs();
@@ -50,18 +51,20 @@ class BenchmarkReport extends Report
                 }
             }
             $r .= sprintf(
-                '+%s [%s] %s(%s) %s %s %s',
+                '+%s [%s] %s(%s) %s %s',
                 $result,
                 $function->getIndex(),
                 $function->getName(),
                 implode(', ', $types),
                 $function->getComment(),
-                $this->getIteration(),
                 PHP_EOL
             );
+            if ($this->withResults) {
+                $r .= var_export($function->getResult(), true) . PHP_EOL;
+            }
         }
         return
-            $r;
+            $r . PHP_EOL . $profilerReport;
     }
 
     /**
@@ -117,9 +120,9 @@ class BenchmarkReport extends Report
 
     /**
      * @param string $name
-     * @return BenchmarkedFunction
+     * @return BenchmarkFunction
      */
-    private function getFunctionObject(string $name): BenchmarkedFunction
+    private function getFunctionObject(string $name): BenchmarkFunction
     {
         return $this->functions[$name];
     }

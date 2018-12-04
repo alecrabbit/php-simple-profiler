@@ -157,7 +157,7 @@ class BenchmarkTest extends TestCase
             ->addFunction(function () {
                 usleep(521);
             });
-        $this->bench->compare();
+        $this->bench->run();
 //        $expected =
 //            """
 //Counter:[default_name] Value: 0, Step: 1\n

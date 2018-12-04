@@ -47,9 +47,9 @@ class TimerReport extends Report
         if (DEFAULT_NAME === $name = $this->getName()) {
             return
                 sprintf(
-                    'Timer:[%s] Elapsed: %s' . PHP_EOL,
-                    $name,
-                    format_time($this->getElapsed())
+                    'Elapsed: %s %s',
+                    format_time($this->getElapsed()),
+                    PHP_EOL
                 );
         }
         return

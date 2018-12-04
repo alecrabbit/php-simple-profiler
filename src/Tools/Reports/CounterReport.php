@@ -7,6 +7,7 @@
 
 namespace AlecRabbit\Tools\Reports;
 
+use const AlecRabbit\Constants\Accessories\DEFAULT_NAME;
 use AlecRabbit\Tools\Counter;
 use AlecRabbit\Tools\Reports\Base\Report;
 use AlecRabbit\Tools\Traits\CounterFields;
@@ -31,12 +32,22 @@ class CounterReport extends Report
      */
     public function __toString(): string
     {
+        if (DEFAULT_NAME === $name = $this->getName()) {
+            return
+                sprintf(
+                    'Counter: %s(%s)%s',
+                    $this->getValue(),
+                    $this->getStep(),
+                    PHP_EOL
+                );
+        }
         return
             sprintf(
-                'Counter:[%s] Value: %s, Step: %s' . PHP_EOL,
-                $this->getName(),
+                'Counter:[%s] Value: %s, Step: %s %s',
+                $name,
                 $this->getValue(),
-                $this->getStep()
+                $this->getStep(),
+                PHP_EOL
             );
     }
 }
