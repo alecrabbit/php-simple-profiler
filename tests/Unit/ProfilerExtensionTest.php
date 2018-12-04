@@ -63,7 +63,7 @@ class ProfilerExtensionTest extends TestCase
         $profiler->counter();
         $profiler->counter('new');
         /** @var ProfilerReport $report */
-        $report = $profiler->report();
+        $report = $profiler->getReport();
         $this->assertArrayHasKey('default_name', $report->getReports()[Profiler::_COUNTERS]);
         $this->assertArrayHasKey('new', $report->getReports()[Profiler::_COUNTERS]);
         $this->assertArrayHasKey('default_name', $report->getReports()[Profiler::_TIMERS]);
@@ -80,7 +80,7 @@ class ProfilerExtensionTest extends TestCase
         $profiler->timer();
         $profiler->timer('new');
         /** @var ProfilerReport $report */
-        $report = $profiler->report();
+        $report = $profiler->getReport();
         $this->assertArrayHasKey('default_name', $report->getReports()[Profiler::_COUNTERS]);
         $this->assertArrayHasKey('default_name', $report->getReports()[Profiler::_TIMERS]);
         $this->assertArrayHasKey('new', $report->getReports()[Profiler::_TIMERS]);

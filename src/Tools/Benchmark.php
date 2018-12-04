@@ -61,7 +61,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
             $this->nonVerboseRun();
         }
         if ($report) {
-            echo (string)$this->report();
+            echo (string)$this->getReport();
             echo PHP_EOL;
         }
     }
@@ -98,6 +98,19 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
         }
         echo PHP_EOL;
         echo PHP_EOL;
+    }
+
+    /**
+     * @param BenchmarkFunction $f
+     * @param callable $function
+     * @param array $args
+     */
+    private function prepareResult(BenchmarkFunction $f, callable $function, array $args): void
+    {
+        if ($this->withResults) {
+            /** @noinspection VariableFunctionsUsageInspection */
+            $f->setResult(\call_user_func($function, ...$args));
+        }
     }
 
     /**
@@ -172,21 +185,23 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
         return $this;
     }
 
-    protected function prepareForReport(): void
+    /**
+     * @return string
+     */
+    public function elapsed(): string
     {
-        $this->getProfiler()->report();
+        return
+            sprintf(
+                'Done in: %s',
+                $this->getProfiler()->timer()->elapsed()
+            );
     }
 
     /**
-     * @param BenchmarkFunction $f
-     * @param callable $function
-     * @param array $args
+     * {@inheritdoc}
      */
-    private function prepareResult(BenchmarkFunction $f, callable $function, array $args): void
+    protected function prepareForReport(): void
     {
-        if ($this->withResults) {
-            /** @noinspection VariableFunctionsUsageInspection */
-            $f->setResult(\call_user_func($function, ...$args));
-        }
+        $this->getProfiler()->getReport();
     }
 }

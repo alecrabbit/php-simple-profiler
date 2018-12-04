@@ -31,10 +31,10 @@ class ProfilerReport extends Report implements StringsInterface
     public function __construct(Profiler $reportable)
     {
         foreach ($reportable->getCounters() as $counter) {
-            $this->reports[static::_COUNTERS][$counter->getName()] = $counter->report();
+            $this->reports[static::_COUNTERS][$counter->getName()] = $counter->getReport();
         }
         foreach ($reportable->getTimers() as $timer) {
-            $this->reports[static::_TIMERS][$timer->getName()] = $timer->report();
+            $this->reports[static::_TIMERS][$timer->getName()] = $timer->getReport();
         }
     }
 

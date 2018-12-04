@@ -93,7 +93,7 @@ class CounterTest extends TestCase
     {
         $counter = new Counter();
         /** @var CounterReport $report */
-        $report = $counter->report();
+        $report = $counter->getReport();
         $this->assertInstanceOf(CounterReport::class, $report);
         $this->assertEquals(0, $report->getValue());
         $this->assertEquals(1, $report->getStep());

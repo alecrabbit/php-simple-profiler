@@ -36,7 +36,7 @@ class BenchmarkTest extends TestCase
     public function instance(): void
     {
         $this->assertInstanceOf(Benchmark::class, $this->bench);
-        $this->assertInstanceOf(BenchmarkReport::class, $this->bench->report());
+        $this->assertInstanceOf(BenchmarkReport::class, $this->bench->getReport());
     }
 
 //    /** @test */
@@ -174,8 +174,8 @@ class BenchmarkTest extends TestCase
 //""";
 //        $actual = $this->bench->report();
 //        var_export($actual);
-        $this->assertInstanceOf(BenchmarkReport::class, $this->bench->report());
-        $this->assertInternalType('string', (string)$this->bench->report());
+        $this->assertInstanceOf(BenchmarkReport::class, $this->bench->getReport());
+        $this->assertInternalType('string', (string)$this->bench->getReport());
     }
 
     /** @test */

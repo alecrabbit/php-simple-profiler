@@ -12,13 +12,13 @@ use AlecRabbit\Tools\Reports\ReportFactory;
 
 trait Reportable
 {
-
+    /** @var ReportInterface */
     protected $reportObject;
 
     /**
      * @return ReportInterface
      */
-    public function report(): ReportInterface
+    public function getReport(): ReportInterface
     {
         if (null === $this->reportObject) {
             $this->prepareForReport();
@@ -28,6 +28,9 @@ trait Reportable
             $this->reportObject;
     }
 
+    /**
+     * Makes all necessary actions before report
+     */
     protected function prepareForReport(): void
     {
     }

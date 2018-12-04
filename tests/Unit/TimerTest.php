@@ -78,7 +78,7 @@ class TimerTest extends TestCase
     public function timerReportsNotStarted(): void
     {
         $timer = new Timer();
-        $this->assertInstanceOf(TimerReport::class, $timer->report());
+        $this->assertInstanceOf(TimerReport::class, $timer->getReport());
     }
 
     /** @test */
@@ -107,7 +107,7 @@ class TimerTest extends TestCase
         usleep(1000);
         $timer->check($i + 1);
         /** @var TimerReport $report */
-        $report = $timer->report();
+        $report = $timer->getReport();
         $this->assertEquals(0.001, $report->getLastValue(), '', 0.0001);
         $this->assertEquals(0.005, $report->getAverageValue(), '', 0.0005);
         $this->assertEquals(0.001, $report->getMinValue(), '', 0.0001);

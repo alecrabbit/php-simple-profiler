@@ -39,7 +39,7 @@ class BenchmarkReport extends Report
      */
     public function __toString(): string
     {
-        $profilerReport = (string)$this->getProfiler()->report();
+        $profilerReport = (string)$this->getProfiler()->getReport();
         $r = 'Benchmark:' . PHP_EOL;
         foreach ($this->computeRelatives() as $indexName => $result) {
             $function = $this->getFunctionObject($indexName);

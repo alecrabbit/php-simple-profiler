@@ -88,7 +88,7 @@ class ProfilerTest extends TestCase
         $this->assertEquals('2000ms', $profiler->timer()->elapsed());
         $this->assertEquals('2000ms', $profiler->timer('new')->elapsed());
         $profiler->timer('new', 'vol', 'buy', 'tor');
-        $report = $profiler->report();
+        $report = $profiler->getReport();
         $this->assertInstanceOf(ProfilerReport::class, $report);
 
         $counters = $profiler->getCounters();
