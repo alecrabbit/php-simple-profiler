@@ -32,6 +32,7 @@ class BenchmarkReport extends Report
         $this->functions = $reportable->getFunctions();
         $this->totalIterations = $reportable->getTotalIterations();
         $this->withResults = $reportable->isWithResults();
+        $this->exceptionMessages = $reportable->getExceptionMessages();
     }
 
     /**
@@ -51,16 +52,21 @@ class BenchmarkReport extends Report
                 }
             }
             $r .= sprintf(
-                '+%s [%s] %s(%s) %s %s',
+                '+%s %s(%s) %s %s',
                 $result,
-                $function->getIndex(),
-                $function->getName(),
+                $function->getIndexedName(),
                 implode(', ', $types),
                 $function->getComment(),
                 PHP_EOL
             );
             if ($this->withResults) {
                 $r .= var_export($function->getResult(), true) . PHP_EOL;
+            }
+        }
+        if (!empty($this->exceptionMessages)) {
+            $r .= 'Exceptions:'. PHP_EOL;
+            foreach ($this->exceptionMessages as $name => $exceptionMessage) {
+                $r .= brackets($name). ': '. $exceptionMessage . PHP_EOL;
             }
         }
         return

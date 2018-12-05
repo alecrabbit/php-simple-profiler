@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6386e124cf816848a1e55e17be23edeb",
+    "content-hash": "5b174b3a70f426dd52f59b68bed4a216",
     "packages": [
         {
             "name": "alecrabbit/php-helpers",
-            "version": "0.1.1",
+            "version": "0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-helpers.git",
-                "reference": "eefdd0149453c126a5ac7142148af6438fcd847e"
+                "reference": "f9acd917da7789b4943c80715e2e90f8cba9a097"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/eefdd0149453c126a5ac7142148af6438fcd847e",
-                "reference": "eefdd0149453c126a5ac7142148af6438fcd847e",
+                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/f9acd917da7789b4943c80715e2e90f8cba9a097",
+                "reference": "f9acd917da7789b4943c80715e2e90f8cba9a097",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +47,7 @@
                 "MIT"
             ],
             "description": "PHP helpers functions",
-            "time": "2018-12-03T15:29:51+00:00"
+            "time": "2018-12-05T01:01:26+00:00"
         },
         {
             "name": "krowinski/bcmath-extended",

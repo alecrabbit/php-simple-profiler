@@ -7,7 +7,7 @@
     "php": ">=7.2",
     "alecrabbit/php-helpers": "^0.1",
     "krowinski/bcmath-extended": "^4.1",
-    "nesbot/carbon": "^2.6",
+    "nesbot/carbon": "^2.7",
     "lstrojny/functional-php": "^1.8"
   },
   "require-dev": {
