@@ -13,6 +13,7 @@ use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
+use function AlecRabbit\brackets;
 use function AlecRabbit\typeOf;
 
 class Benchmark implements BenchmarkInterface, ReportableInterface
@@ -29,6 +30,9 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     private $comment;
     /** @var bool */
     private $verbose = false;
+
+    private $exceptionMessages = [];
+    private $errorState = false;
 
     /**
      * Benchmark constructor.
@@ -84,6 +88,11 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
             $this->prepareResult($f, $function, $args);
             $timer = $this->profiler->timer($name);
             $timer->start();
+            if ($this->errorState) {
+                $this->errorState = false;
+                $timer->check();
+                continue;
+            }
             foreach ($this->rewindable as $iteration) {
                 /** @noinspection VariableFunctionsUsageInspection */
                 /** @noinspection DisconnectedForeachInstructionInspection */
@@ -108,8 +117,14 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     private function prepareResult(BenchmarkFunction $f, callable $function, array $args): void
     {
         if ($this->withResults) {
-            /** @noinspection VariableFunctionsUsageInspection */
-            $f->setResult(\call_user_func($function, ...$args));
+            try {
+                /** @noinspection VariableFunctionsUsageInspection */
+                $f->setResult(\call_user_func($function, ...$args));
+            } catch (\Throwable $e) {
+                $this->exceptionMessages[$f->getName()] = $message = $e->getMessage();
+                $this->errorState = true;
+                $f->setResult(brackets(typeOf($e)) . ': ' . $message);
+            }
         }
     }
 
@@ -125,6 +140,11 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
             $this->prepareResult($f, $function, $args);
             $timer = $this->profiler->timer($name);
             $timer->start();
+            if ($this->errorState) {
+                $this->errorState = false;
+                $timer->check();
+                continue;
+            }
             foreach ($this->rewindable as $iteration) {
                 /** @noinspection VariableFunctionsUsageInspection */
                 /** @noinspection DisconnectedForeachInstructionInspection */
