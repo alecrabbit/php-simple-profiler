@@ -7,29 +7,39 @@
 
 namespace AlecRabbit\Tools;
 
-use AlecRabbit\Profiler\Profiler;
-use AlecRabbit\Profiler\Timer;
 use AlecRabbit\Rewindable;
+use AlecRabbit\Tools\Contracts\BenchmarkInterface;
+use AlecRabbit\Tools\Internal\BenchmarkFunction;
+use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
+use AlecRabbit\Tools\Reports\Traits\Reportable;
+use AlecRabbit\Tools\Traits\BenchmarkFields;
+use function AlecRabbit\typeOf;
 
-class Benchmark
+class Benchmark implements BenchmarkInterface, ReportableInterface
 {
-    /** @var array */
-    private $functions = [];
-    /** @var Rewindable */
-    private $iterations;
-    /** @var Profiler */
-    private $profiler;
-    /** @var int */
-    private $namingIndex;
-    /** @var null|string */
-    private $tmpName;
+    use BenchmarkFields, Reportable;
 
+    /** @var int */
+    private $namingIndex = 0;
+    /** @var Rewindable */
+    private $rewindable;
+    /** @var int */
+    private $iterations = 0;
+    /** @var null|string */
+    private $comment;
+    /** @var bool */
+    private $verbose = false;
+
+    /**
+     * Benchmark constructor.
+     * @param int $iterations
+     */
     public function __construct(int $iterations = 1000)
     {
-        $this->iterations =
+        $this->iterations = $iterations;
+        $this->rewindable =
             new Rewindable(
-                function (int $iterations): \Generator {
-                    $i = 1;
+                function (int $iterations, int $i = 1): \Generator {
                     while ($i <= $iterations) {
                         yield $i++;
                     }
@@ -37,24 +47,102 @@ class Benchmark
                 $iterations
             );
         $this->profiler = new Profiler();
-        $this->namingIndex = 0;
     }
 
     /**
      * Launch benchmarking
+     * @param bool $report
      */
-    public function compare(): void
+    public function run(bool $report = false): void
     {
-        foreach ($this->functions as $name => $f) {
-            $this->profiler->timer($name)->start();
-            foreach ($this->iterations as $iteration) {
-                [$function, $args] = $f;
-                /** @noinspection VariableFunctionsUsageInspection */
-                \call_user_func($function, ...$args);
-                /** @noinspection DisconnectedForeachInstructionInspection */
-                $this->profiler->timer($name)->check();
-            }
+        if ($this->verbose) {
+            $this->verboseRun();
+        } else {
+            $this->nonVerboseRun();
         }
+        if ($report) {
+            echo (string)$this->getReport();
+            echo PHP_EOL;
+        }
+    }
+
+    /**
+     * Launch benchmarking in verbose mode
+     */
+    private function verboseRun(): void
+    {
+        echo
+        sprintf(
+            'Running benchmarks(%s):',
+            $this->iterations
+        );
+        echo PHP_EOL;
+        /** @var  BenchmarkFunction $f */
+        foreach ($this->functions as $name => $f) {
+            $function = $f->getFunction();
+            $args = $f->getArgs();
+            $this->prepareResult($f, $function, $args);
+            $timer = $this->profiler->timer($name);
+            $timer->start();
+            foreach ($this->rewindable as $iteration) {
+                /** @noinspection VariableFunctionsUsageInspection */
+                /** @noinspection DisconnectedForeachInstructionInspection */
+                \call_user_func($function, ...$args);
+                $timer->check($iteration);
+                ++$this->totalIterations;
+                if (1 === $this->totalIterations % 5000) {
+                    echo '.';
+                }
+            }
+            $this->profiler->counter()->bump();
+        }
+        echo PHP_EOL;
+        echo PHP_EOL;
+    }
+
+    /**
+     * @param BenchmarkFunction $f
+     * @param callable $function
+     * @param array $args
+     */
+    private function prepareResult(BenchmarkFunction $f, callable $function, array $args): void
+    {
+        if ($this->withResults) {
+            /** @noinspection VariableFunctionsUsageInspection */
+            $f->setResult(\call_user_func($function, ...$args));
+        }
+    }
+
+    /**
+     * Launch benchmarking in verbose mode
+     */
+    private function nonVerboseRun(): void
+    {
+        /** @var  BenchmarkFunction $f */
+        foreach ($this->functions as $name => $f) {
+            $function = $f->getFunction();
+            $args = $f->getArgs();
+            $this->prepareResult($f, $function, $args);
+            $timer = $this->profiler->timer($name);
+            $timer->start();
+            foreach ($this->rewindable as $iteration) {
+                /** @noinspection VariableFunctionsUsageInspection */
+                /** @noinspection DisconnectedForeachInstructionInspection */
+                \call_user_func($function, ...$args);
+                $timer->check($iteration);
+                ++$this->totalIterations;
+            }
+            $this->profiler->counter()->bump();
+        }
+    }
+
+    /**
+     * @return Benchmark
+     */
+    public function verbose(): self
+    {
+        $this->verbose = true;
+        return $this;
     }
 
     /**
@@ -63,101 +151,57 @@ class Benchmark
      */
     public function addFunction($func, ...$args): void
     {
-        if (!\is_callable($func, false, $callableName)) {
-            throw new \InvalidArgumentException('Function must be callable.');
+        if (!\is_callable($func, false, $name)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    '\'%s\' is NOT callable. Function must be callable. Type of "%s" provided instead.',
+                    $name,
+                    typeOf($func)
+                )
+            );
         }
-        if (null !== $this->tmpName) {
-            $callableName = $this->tmpName;
-            $this->tmpName = null;
-        }
-        if (array_key_exists($callableName, $this->functions)) {
-            $callableName .= '_' . ++$this->namingIndex;
-        }
-        $this->functions[$callableName] = [$func, $args];
-    }
+        $function = new BenchmarkFunction($func, $name, $this->namingIndex++, $args, $this->comment);
+        $this->comment = null;
 
-    /**
-     * @return array
-     */
-    public function report(): array
-    {
-        return
-            $this->computeRelatives();
-    }
-
-    /**
-     * @param array $timers
-     * @return array
-     */
-    private function computeAverages(array $timers): array
-    {
-        $averages = [];
-        /** @var Timer $timer */
-        foreach ($timers as $timer) {
-            $averages[$timer->getName()] = $timer->getAvgValue();
-        }
-        return $averages;
-    }
-
-    /**
-     * @return array
-     */
-    private function computeRelatives(): array
-    {
-        $averages = $this->computeAverages(
-            $this->profiler->getTimers()
-        );
-
-        $min = min($averages);
-
-        $relatives = [];
-        foreach ($averages as $name => $average) {
-            $relatives[$name] = $average / $min;
-        }
-        asort($relatives);
-
-        foreach ($relatives as $name => $relative) {
-            $relatives[$name] =
-                $this->toPercentage($relative) . ' ' .
-                brackets(format_time($averages[$name]), BRACKETS_PARENTHESES);
-        }
-        return $relatives;
-    }
-
-    /**
-     * @param float $relative
-     * @return string
-     */
-    private function toPercentage(float $relative): string
-    {
-        return
-            number_format($relative * 100, 1) . '%';
-    }
-
-    /**
-     * @param bool $formatted
-     * @param bool $extended
-     * @param int|null $units
-     * @param int|null $precision
-     * @return iterable
-     */
-    public function profilerReport(
-        bool $formatted = true,
-        bool $extended = true,
-        ?int $units = null,
-        ?int $precision = null
-    ): iterable {
-        return
-            $this->profiler->report($formatted, $extended, $units, $precision);
+        $this->functions[$function->getEnumeratedName()] = $function;
     }
 
     /**
      * @param string $name
      * @return Benchmark
      */
-    public function withName(string $name): self
+    public function withComment(string $name): self
     {
-        $this->tmpName = $name;
+        $this->comment = $name;
         return $this;
+    }
+
+    /**
+     * @return Benchmark
+     */
+    public function returnResults(): self
+    {
+        $this->withResults = true;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function elapsed(): string
+    {
+        return
+            sprintf(
+                'Done in: %s',
+                $this->getProfiler()->timer()->elapsed()
+            );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function prepareForReport(): void
+    {
+        $this->getProfiler()->getReport();
     }
 }

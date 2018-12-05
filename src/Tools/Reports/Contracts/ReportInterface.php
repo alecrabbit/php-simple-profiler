@@ -5,11 +5,13 @@
  * Time: 2:26
  */
 
-namespace AlecRabbit\Profiler\Contracts;
+namespace AlecRabbit\Tools\Reports\Contracts;
 
-interface Report
+interface ReportInterface
 {
     public const REPORT_FORMAT = '"%s": %s';
     public const REPORT_DIV = ' => ';
     public const REPORT_EXTENDED_SUFFIX = '%s(%s) ';
+
+    public function __toString();
 }

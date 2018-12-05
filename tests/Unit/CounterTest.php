@@ -7,30 +7,30 @@
 
 namespace Unit;
 
-
-use AlecRabbit\Profiler\Counter;
+use AlecRabbit\Tools\Counter;
+use AlecRabbit\Tools\Reports\CounterReport;
 use PHPUnit\Framework\TestCase;
 
 class CounterTest extends TestCase
 {
     /** @test */
-    public function ClassCreation(): void
+    public function classCreation(): void
     {
         $counter = new Counter();
         $this->assertInstanceOf(Counter::class, $counter);
     }
 
     /** @test */
-    public function CounterDefaultCreation(): void
+    public function counterDefaultCreation(): void
     {
         $counter = new Counter();
-        $this->assertEquals('default', $counter->getName());
+        $this->assertEquals('default_name', $counter->getName());
         $counter = new Counter('name');
         $this->assertEquals('name', $counter->getName());
     }
 
     /** @test */
-    public function CounterBump(): void
+    public function counterBump(): void
     {
         $counter = new Counter();
         $counter->bumpUp();
@@ -46,7 +46,7 @@ class CounterTest extends TestCase
     }
 
     /** @test */
-    public function CounterWithSetStep(): void
+    public function counterWithSetStep(): void
     {
         $counter = (new Counter())->setStep(2);
         $counter->bump();
@@ -66,14 +66,14 @@ class CounterTest extends TestCase
     }
 
     /** @test */
-    public function CounterWithException(): void
+    public function counterWithException(): void
     {
         $this->expectException(\RuntimeException::class);
         (new Counter())->setStep(0);
     }
 
     /** @test */
-    public function CounterWithExceptionTwo(): void
+    public function counterWithExceptionTwo(): void
     {
         $counter = new Counter();
         $this->expectException(\RuntimeException::class);
@@ -81,7 +81,7 @@ class CounterTest extends TestCase
     }
 
     /** @test */
-    public function CounterWithExceptionThree(): void
+    public function counterWithExceptionThree(): void
     {
         $counter = new Counter();
         $this->expectException(\RuntimeException::class);
@@ -89,10 +89,13 @@ class CounterTest extends TestCase
     }
 
     /** @test */
-    public function CounterReport(): void
+    public function counterReport(): void
     {
         $counter = new Counter();
-        $report = $counter->report();
-        $this->assertCount(3, $report);
+        /** @var CounterReport $report */
+        $report = $counter->getReport();
+        $this->assertInstanceOf(CounterReport::class, $report);
+        $this->assertEquals(0, $report->getValue());
+        $this->assertEquals(1, $report->getStep());
     }
 }

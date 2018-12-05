@@ -5,17 +5,30 @@
  * Time: 2:13
  */
 
-namespace AlecRabbit\Profiler;
+namespace AlecRabbit\Tools;
 
-use AlecRabbit\Profiler\Contracts\Profiler as ProfilerContract;
+use AlecRabbit\Tools\Contracts\ProfilerInterface;
+use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
+use AlecRabbit\Tools\Reports\Traits\Reportable;
+use AlecRabbit\Traits\DefaultableName;
 
-class Profiler implements ProfilerContract
+class Profiler implements ProfilerInterface, ReportableInterface
 {
+    use Reportable, DefaultableName;
+
     /** @var Timer[] */
     private $timers = [];
 
     /** @var Counter[] */
     private $counters = [];
+
+    public function __construct()
+    {
+        // Create "default" counter
+        $this->counter();
+        // Create "default" timer
+        $this->timer();
+    }
 
     /**
      * @param null|string $name
@@ -24,7 +37,7 @@ class Profiler implements ProfilerContract
      */
     public function counter(?string $name = null, string ...$suffixes): Counter
     {
-        $name = $this->prepName($name, $suffixes);
+        $name = $this->prepareName($name, $suffixes);
         return
             $this->counters[$name] ?? $this->counters[$name] = new Counter($name);
     }
@@ -34,9 +47,9 @@ class Profiler implements ProfilerContract
      * @param array $suffixes
      * @return string
      */
-    private function prepName(?string $name, array $suffixes): string
+    private function prepareName(?string $name, array $suffixes): string
     {
-        $name = $name ?? static::_DEFAULT;
+        $name = $this->defaultName($name);
         if (!empty($suffixes)) {
             return $this->formatName($name, $suffixes);
         }
@@ -61,33 +74,9 @@ class Profiler implements ProfilerContract
      */
     public function timer(?string $name = null, string ...$suffixes): Timer
     {
-        $name = $this->prepName($name, $suffixes);
+        $name = $this->prepareName($name, $suffixes);
         return
             $this->timers[$name] ?? $this->timers[$name] = new Timer($name);
-    }
-
-    /**
-     * @param bool|null $formatted
-     * @param bool|null $extended
-     * @param int|null $units
-     * @param int|null $precision
-     * @return iterable
-     */
-    public function report(
-        ?bool $formatted = null,
-        ?bool $extended = null,
-        ?int $units = null,
-        ?int $precision = null
-    ): iterable {
-        $report = [];
-        foreach ($this->counters as $counter) {
-            $report[static::_COUNTERS][$counter->getName()] = $counter->report($extended);
-        }
-        foreach ($this->timers as $timer) {
-            $report[static::_TIMERS][$timer->getName()] = $timer->report($formatted, $extended, $units, $precision);
-        }
-        return
-            $report;
     }
 
     /**

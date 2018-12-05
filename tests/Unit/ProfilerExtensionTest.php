@@ -7,9 +7,10 @@
 
 namespace Unit;
 
-
-use AlecRabbit\Profiler\Profiler;
-use AlecRabbit\Profiler\Timer;
+use AlecRabbit\Tools\Profiler;
+use AlecRabbit\Tools\Reports\ProfilerReport;
+use AlecRabbit\Tools\Reports\TimerReport;
+use AlecRabbit\Tools\Timer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
 
@@ -21,14 +22,12 @@ class ProfilerExt extends Profiler
         return
             sprintf('%s >> %s <<', $name, implode(', ', $suffixes));
     }
-
 }
 
 class ProfilerExtensionTest extends TestCase
 {
     public static function setUpBeforeClass(): void
     {
-
         ClockMock::register(Timer::class);
         ClockMock::withClockMock(true);
     }
@@ -41,20 +40,20 @@ class ProfilerExtensionTest extends TestCase
     }
 
     /** @test */
-    public function ClassCreation(): void
+    public function classCreation(): void
     {
         $profiler = new Profiler();
         $this->assertInstanceOf(Profiler::class, $profiler);
-        $this->assertEquals('default [new]', $profiler->timer(null, 'new')->getName());
-        $this->assertEquals('default [new]', $profiler->counter(null, 'new')->getName());
+        $this->assertEquals('default_name [new]', $profiler->timer(null, 'new')->getName());
+        $this->assertEquals('default_name [new]', $profiler->counter(null, 'new')->getName());
         $profiler = new ProfilerExt();
         $this->assertInstanceOf(ProfilerExt::class, $profiler);
-        $this->assertEquals('default >> new <<', $profiler->timer(null, 'new')->getName());
-        $this->assertEquals('default >> new <<', $profiler->counter(null, 'new')->getName());
+        $this->assertEquals('default_name >> new <<', $profiler->timer(null, 'new')->getName());
+        $this->assertEquals('default_name >> new <<', $profiler->counter(null, 'new')->getName());
     }
 
     /** @test */
-    public function MultipleCountersCreation(): void
+    public function multipleCountersCreation(): void
     {
         $profiler = new Profiler();
         $profiler->counter();
@@ -63,13 +62,15 @@ class ProfilerExtensionTest extends TestCase
         $profiler->counter('new');
         $profiler->counter();
         $profiler->counter('new');
-        $report = $profiler->report();
-        $this->assertArrayHasKey('default', $report[Profiler::_COUNTERS]);
-        $this->assertArrayHasKey('new', $report[Profiler::_COUNTERS]);
+        /** @var ProfilerReport $report */
+        $report = $profiler->getReport();
+        $this->assertArrayHasKey('default_name', $report->getReports()[Profiler::_COUNTERS]);
+        $this->assertArrayHasKey('new', $report->getReports()[Profiler::_COUNTERS]);
+        $this->assertArrayHasKey('default_name', $report->getReports()[Profiler::_TIMERS]);
     }
     
     /** @test */
-    public function MultipleTimersCreation(): void
+    public function multipleTimersCreation(): void
     {
         $profiler = new Profiler();
         $profiler->timer();
@@ -78,9 +79,15 @@ class ProfilerExtensionTest extends TestCase
         $profiler->timer('new');
         $profiler->timer();
         $profiler->timer('new');
-        $report = $profiler->report();
-        $this->assertArrayHasKey('default', $report[Profiler::_TIMERS]);
-        $this->assertArrayHasKey('new', $report[Profiler::_TIMERS]);
+        /** @var ProfilerReport $report */
+        $report = $profiler->getReport();
+        $this->assertArrayHasKey('default_name', $report->getReports()[Profiler::_COUNTERS]);
+        $this->assertArrayHasKey('default_name', $report->getReports()[Profiler::_TIMERS]);
+        $this->assertArrayHasKey('new', $report->getReports()[Profiler::_TIMERS]);
+
+        foreach ($report->getReports()[Profiler::_TIMERS] as $item) {
+            $this->assertInstanceOf(TimerReport::class, $item);
+        }
     }
 }
 

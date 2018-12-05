@@ -7,25 +7,26 @@
 
 namespace Unit;
 
-use AlecRabbit\Profiler\Counter;
-use AlecRabbit\Profiler\Profiler;
-use AlecRabbit\Profiler\Timer;
+use AlecRabbit\Tools\Counter;
+use AlecRabbit\Tools\Profiler;
+use AlecRabbit\Tools\Reports\ProfilerReport;
+use AlecRabbit\Tools\Timer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
 
+/**
+ * @group time-sensitive
+ */
 class ProfilerTest extends TestCase
 {
     public static function setUpBeforeClass(): void
     {
-
         ClockMock::register(Timer::class);
         ClockMock::withClockMock(true);
     }
 
     public static function tearDownAfterClass(): void
     {
-
-
         ClockMock::withClockMock(false);
     }
 
@@ -59,7 +60,7 @@ class ProfilerTest extends TestCase
         $profiler->counter('new')->bumpUp();
         $profiler->timer('new')->start();
         $profiler->timer('new')->check();
-        $this->assertEquals(0.00000214, $profiler->timer('new')->elapsed(), '', 0.001);
+        $this->assertEquals('0ms', $profiler->timer('new')->elapsed(), '', 0.001);
         $this->assertStringMatchesFormat(
             '%s [%s, %s, %s]',
             $profiler
@@ -75,26 +76,20 @@ class ProfilerTest extends TestCase
         $profiler = new Profiler();
         $profiler->counter('new')->bumpUp();
         $profiler->counter()->bump();
-        $profiler
-            ->timer('new')
-            ->forceStart()
-            ->check();
-        $profiler
-            ->timer()
-            ->forceStart()
-            ->check();
+        $profiler->timer('new')->check();
+        sleep(1);
+        $profiler->timer('new')->check();
+        $profiler->timer()->check();
+        sleep(1);
+        $profiler->timer()->check();
         $this->assertEquals(1, $profiler->counter('new')->getValue());
 
-        $this->assertInternalType('float', $profiler->timer('new')->elapsed());
-        $profiler
-            ->timer('new', 'vol', 'buy', 'tor')
-            ->forceStart()
-            ->check();
-        $report = $profiler->report();
-        $report_extended = $profiler->report(true);
-        $this->assertCount(2, $report);
-
-        $this->assertCount(2, $report_extended);
+        $this->assertInternalType('string', $profiler->timer('new')->elapsed());
+        $this->assertEquals('2000ms', $profiler->timer()->elapsed());
+        $this->assertEquals('2000ms', $profiler->timer('new')->elapsed());
+        $profiler->timer('new', 'vol', 'buy', 'tor');
+        $report = $profiler->getReport();
+        $this->assertInstanceOf(ProfilerReport::class, $report);
 
         $counters = $profiler->getCounters();
         foreach ($counters as $counter) {

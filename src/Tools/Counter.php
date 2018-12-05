@@ -5,20 +5,16 @@
  * Time: 2:18
  */
 
-namespace AlecRabbit\Profiler;
+namespace AlecRabbit\Tools;
 
-class Counter implements Contracts\Counter
+use AlecRabbit\Tools\Contracts\CounterInterface;
+use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
+use AlecRabbit\Tools\Reports\Traits\Reportable;
+use AlecRabbit\Tools\Traits\CounterFields;
+
+class Counter implements CounterInterface, ReportableInterface
 {
-    protected const REPORT_FORMAT = '%s %s';
-
-    /** @var string */
-    private $name;
-
-    /** @var int */
-    private $value;
-
-    /** @var int */
-    private $step;
+    use CounterFields, Reportable;
 
     /**
      * Counter constructor
@@ -27,7 +23,7 @@ class Counter implements Contracts\Counter
      */
     public function __construct(?string $name = null, int $value = 0)
     {
-        $this->name = $name ?? static::_DEFAULT;
+        $this->name = $this->defaultName($name);
         $this->value = $value;
         $this->step = 1;
     }
@@ -96,36 +92,5 @@ class Counter implements Contracts\Counter
         $this->value -= $this->step;
         return
             $this->value;
-    }
-
-    /**
-     * @return int
-     */
-    public function getValue(): int
-    {
-        return $this->value;
-    }
-
-    /**
-     * @param bool|null $extended
-     * @return iterable
-     */
-    public function report(?bool $extended = null): iterable
-    {
-        $extended = $extended ?? false;
-        return
-            [
-                static::_NAME => $this->getName(),
-                static::_COUNT => $this->value,
-                static::_EXTENDED => $extended
-            ];
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
     }
 }
