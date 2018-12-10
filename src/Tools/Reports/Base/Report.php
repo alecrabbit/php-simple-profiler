@@ -7,12 +7,22 @@
 
 namespace AlecRabbit\Tools\Reports\Base;
 
-use function AlecRabbit\brackets;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
+use AlecRabbit\Tools\Reports\Factory;
+use function AlecRabbit\brackets;
 use function AlecRabbit\typeOf;
 
 class Report implements ReportInterface
 {
+
+    protected $formatter;
+
+    public function __construct(ReportInterface $report)
+    {
+        $this->formatter = Factory::makeFormatter($report);
+    }
+
+
     /**
      * @return string
      */

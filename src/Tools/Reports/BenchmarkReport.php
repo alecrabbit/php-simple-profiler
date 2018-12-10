@@ -24,15 +24,16 @@ class BenchmarkReport extends Report
 
     /**
      * BenchmarkReport constructor.
-     * @param Benchmark $reportable
+     * @param Benchmark $report
      */
-    public function __construct(Benchmark $reportable)
+    public function __construct(Benchmark $report)
     {
-        $this->profiler = $reportable->getProfiler();
-        $this->functions = $reportable->getFunctions();
-        $this->totalIterations = $reportable->getTotalIterations();
-        $this->withResults = $reportable->isWithResults();
-        $this->exceptionMessages = $reportable->getExceptionMessages();
+        $this->profiler = $report->getProfiler();
+        $this->functions = $report->getFunctions();
+        $this->totalIterations = $report->getTotalIterations();
+        $this->withResults = $report->isWithResults();
+        $this->exceptionMessages = $report->getExceptionMessages();
+        parent::__construct($this);
     }
 
     /**
@@ -41,7 +42,7 @@ class BenchmarkReport extends Report
     public function __toString(): string
     {
         $profilerReport = (string)$this->getProfiler()->getReport();
-        $r = 'Benchmark(local):' . PHP_EOL;
+        $r = 'Benchmark:' . PHP_EOL;
         foreach ($this->computeRelatives() as $indexName => $result) {
             $function = $this->getFunctionObject($indexName);
             $arguments = $function->getArgs();
