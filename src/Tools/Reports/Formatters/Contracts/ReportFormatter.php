@@ -10,4 +10,5 @@ namespace AlecRabbit\Tools\Reports\Formatters\Contracts;
 interface ReportFormatter
 {
 
+    public function getString(): string;
 }

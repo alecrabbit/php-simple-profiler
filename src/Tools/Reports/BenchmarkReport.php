@@ -14,13 +14,14 @@ use AlecRabbit\Tools\Timer;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
 use function AlecRabbit\brackets;
 use function AlecRabbit\format_time;
-use function AlecRabbit\typeOf;
 use const AlecRabbit\Constants\Accessories\DEFAULT_NAME;
 use const AlecRabbit\Constants\BRACKETS_PARENTHESES;
 
 class BenchmarkReport extends Report
 {
     use BenchmarkFields;
+
+    protected $relatives;
 
     /**
      * BenchmarkReport constructor.
@@ -33,45 +34,9 @@ class BenchmarkReport extends Report
         $this->totalIterations = $report->getTotalIterations();
         $this->withResults = $report->isWithResults();
         $this->exceptionMessages = $report->getExceptionMessages();
-        parent::__construct($this);
-    }
+        $this->relatives = $this->computeRelatives();
 
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        $profilerReport = (string)$this->getProfiler()->getReport();
-        $r = 'Benchmark:' . PHP_EOL;
-        foreach ($this->computeRelatives() as $indexName => $result) {
-            $function = $this->getFunctionObject($indexName);
-            $arguments = $function->getArgs();
-            $types = [];
-            if (!empty($arguments)) {
-                foreach ($arguments as $argument) {
-                    $types[] = typeOf($argument);
-                }
-            }
-            $r .= sprintf(
-                '+%s %s(%s) %s %s',
-                $result,
-                $function->getIndexedName(),
-                implode(', ', $types),
-                $function->getComment(),
-                PHP_EOL
-            );
-            if ($this->withResults) {
-                $r .= var_export($function->getResult(), true) . PHP_EOL;
-            }
-        }
-        if (!empty($this->exceptionMessages)) {
-            $r .= 'Exceptions:'. PHP_EOL;
-            foreach ($this->exceptionMessages as $name => $exceptionMessage) {
-                $r .= brackets($name). ': '. $exceptionMessage . PHP_EOL;
-            }
-        }
-        return
-            $r . PHP_EOL . $profilerReport;
+        parent::__construct($this);
     }
 
     /**
@@ -126,11 +91,28 @@ class BenchmarkReport extends Report
     }
 
     /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return
+            $this->formatter->getString();
+    }
+
+    /**
      * @param string $name
      * @return BenchmarkFunction
      */
-    private function getFunctionObject(string $name): BenchmarkFunction
+    public function getFunctionObject(string $name): BenchmarkFunction
     {
         return $this->functions[$name];
+    }
+
+    /**
+     * @return array
+     */
+    public function getRelatives(): array
+    {
+        return $this->relatives;
     }
 }

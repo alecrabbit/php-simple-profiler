@@ -11,14 +11,15 @@ namespace AlecRabbit\Tools\Reports\Formatters;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\ReportFormatter;
 
-class Formatter implements ReportFormatter
+abstract class Formatter implements ReportFormatter
 {
     /** @var ReportInterface */
-    private $report;
+    protected $report;
 
     public function __construct(ReportInterface $report)
     {
         $this->report = $report;
     }
 
+    abstract public function getString(): string;
 }
