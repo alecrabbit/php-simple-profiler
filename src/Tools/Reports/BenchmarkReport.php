@@ -24,14 +24,16 @@ class BenchmarkReport extends Report
 
     /**
      * BenchmarkReport constructor.
-     * @param Benchmark $reportable
+     * @param Benchmark $report
      */
-    public function __construct(Benchmark $reportable)
+    public function __construct(Benchmark $report)
     {
-        $this->profiler = $reportable->getProfiler();
-        $this->functions = $reportable->getFunctions();
-        $this->totalIterations = $reportable->getTotalIterations();
-        $this->withResults = $reportable->isWithResults();
+        $this->profiler = $report->getProfiler();
+        $this->functions = $report->getFunctions();
+        $this->totalIterations = $report->getTotalIterations();
+        $this->withResults = $report->isWithResults();
+        $this->exceptionMessages = $report->getExceptionMessages();
+        parent::__construct($this);
     }
 
     /**
@@ -51,16 +53,21 @@ class BenchmarkReport extends Report
                 }
             }
             $r .= sprintf(
-                '+%s [%s] %s(%s) %s %s',
+                '+%s %s(%s) %s %s',
                 $result,
-                $function->getIndex(),
-                $function->getName(),
+                $function->getIndexedName(),
                 implode(', ', $types),
                 $function->getComment(),
                 PHP_EOL
             );
             if ($this->withResults) {
                 $r .= var_export($function->getResult(), true) . PHP_EOL;
+            }
+        }
+        if (!empty($this->exceptionMessages)) {
+            $r .= 'Exceptions:'. PHP_EOL;
+            foreach ($this->exceptionMessages as $name => $exceptionMessage) {
+                $r .= brackets($name). ': '. $exceptionMessage . PHP_EOL;
             }
         }
         return

@@ -30,8 +30,6 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     private $comment;
     /** @var bool */
     private $verbose = false;
-
-    private $exceptionMessages = [];
     private $errorState = false;
 
     /**
@@ -116,20 +114,19 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
      */
     private function prepareResult(BenchmarkFunction $f, callable $function, array $args): void
     {
-        if ($this->withResults) {
-            try {
-                /** @noinspection VariableFunctionsUsageInspection */
-                $f->setResult(\call_user_func($function, ...$args));
-            } catch (\Throwable $e) {
-                $this->exceptionMessages[$f->getName()] = $message = $e->getMessage();
-                $this->errorState = true;
-                $f->setResult(brackets(typeOf($e)) . ': ' . $message);
-            }
+        try {
+            /** @noinspection VariableFunctionsUsageInspection */
+            $result = \call_user_func($function, ...$args);
+        } catch (\Throwable $e) {
+            $this->errorState = true;
+            $result = brackets(typeOf($e)) . ': ' . $e->getMessage();
+            $this->exceptionMessages[$f->getIndexedName()] = $result;
         }
+        $f->setResult($result);
     }
 
     /**
-     * Launch benchmarking in verbose mode
+     * Launch benchmarking in silent mode
      */
     private function nonVerboseRun(): void
     {

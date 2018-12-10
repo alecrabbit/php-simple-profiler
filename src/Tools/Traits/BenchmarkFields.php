@@ -19,6 +19,8 @@ trait BenchmarkFields
     protected $totalIterations = 0;
     /** @var bool */
     protected $withResults = false;
+    /** @var array */
+    private $exceptionMessages = [];
 
     /**
      * @return array
@@ -50,5 +52,13 @@ trait BenchmarkFields
     public function isWithResults(): bool
     {
         return $this->withResults;
+    }
+
+    /**
+     * @return array
+     */
+    public function getExceptionMessages(): array
+    {
+        return $this->exceptionMessages;
     }
 }

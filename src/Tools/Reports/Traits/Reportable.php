@@ -8,7 +8,7 @@
 namespace AlecRabbit\Tools\Reports\Traits;
 
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
-use AlecRabbit\Tools\Reports\ReportFactory;
+use AlecRabbit\Tools\Reports\Factory;
 
 trait Reportable
 {
@@ -22,7 +22,7 @@ trait Reportable
     {
         if (null === $this->reportObject) {
             $this->prepareForReport();
-            $this->reportObject = ReportFactory::createReport($this);
+            $this->reportObject = Factory::makeReport($this);
         }
         return
             $this->reportObject;

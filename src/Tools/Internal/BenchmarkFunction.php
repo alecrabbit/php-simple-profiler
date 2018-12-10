@@ -106,4 +106,16 @@ class BenchmarkFunction
     {
         $this->result = $result;
     }
+
+    /**
+     * @return string
+     */
+    public function getIndexedName(): string
+    {
+        return sprintf(
+            '⟨%s⟩ %s',
+            $this->index,
+            $this->name
+        );
+    }
 }
