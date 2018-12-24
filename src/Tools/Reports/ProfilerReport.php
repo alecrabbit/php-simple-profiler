@@ -26,29 +26,17 @@ class ProfilerReport extends Report implements StringsInterface
 
     /**
      * ProfilerReport constructor.
-     * @param Profiler $report
+     * @param Profiler $profiler
      */
-    public function __construct(Profiler $report)
+    public function __construct(Profiler $profiler)
     {
-        foreach ($report->getCounters() as $counter) {
+        foreach ($profiler->getCounters() as $counter) {
             $this->reports[static::_COUNTERS][$counter->getName()] = $counter->getReport();
         }
-        foreach ($report->getTimers() as $timer) {
+        foreach ($profiler->getTimers() as $timer) {
             $this->reports[static::_TIMERS][$timer->getName()] = $timer->getReport();
         }
+        parent::__construct($profiler);
     }
 
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        $r = '';
-        foreach ($this->reports as $reports) {
-            foreach ($reports as $report) {
-                $r .= $report;
-            }
-        }
-        return $r;
-    }
 }

@@ -15,10 +15,10 @@ class UnimplementedReport implements ReportableInterface
 {
 }
 
-class ReportFactoryTest extends TestCase
+class FactoryTest extends TestCase
 {
     /** @test */
-    public function creation(): void
+    public function creationReportOnUnimplemented(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->assertInstanceOf(

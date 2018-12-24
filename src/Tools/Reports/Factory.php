@@ -9,16 +9,22 @@ namespace AlecRabbit\Tools\Reports;
 
 use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Counter;
+use AlecRabbit\Tools\Internal\Theme;
 use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\ReportFormatter;
+use AlecRabbit\Tools\Reports\Formatters\CounterReportFormatter;
+use AlecRabbit\Tools\Reports\Formatters\ProfilerReportFormatter;
+use AlecRabbit\Tools\Reports\Formatters\TimerReportFormatter;
 use AlecRabbit\Tools\Timer;
 use function AlecRabbit\typeOf;
 
 class Factory
 {
+    private static $theme;
+    protected static $colour = false;
 
     /**
      * @param ReportableInterface $reportable
@@ -51,23 +57,39 @@ class Factory
      */
     public static function makeFormatter(ReportInterface $report): ReportFormatter
     {
-//        if ($report instanceof TimerReport) {
-//            return
-//                new TimerReportFormatter($report);
-//        }
-//        if ($report instanceof CounterReport) {
-//            return
-//                new CounterReportFormatter($report);
-//        }
-//        if ($report instanceof ProfilerReport) {
-//            return
-//                new ProfilerReportFormatter($report);
-//        }
+        if ($report instanceof TimerReport) {
+            return
+                new TimerReportFormatter($report);
+        }
+        if ($report instanceof CounterReport) {
+            return
+                new CounterReportFormatter($report);
+        }
+        if ($report instanceof ProfilerReport) {
+            return
+                new ProfilerReportFormatter($report);
+        }
         if ($report instanceof BenchmarkReport) {
             return
                 new BenchmarkReportFormatter($report);
         }
         throw new \RuntimeException('Attempt to create unimplemented formatter for: ' . typeOf($report));
+    }
+
+    public static function getThemeObject(): Theme
+    {
+        if (!static::$theme) {
+            static::$theme = new Theme(static::$colour);
+        }
+        return static::$theme;
+    }
+
+    /**
+     * @param bool $colour
+     */
+    public static function setColour(bool $colour): void
+    {
+        self::$colour = $colour;
     }
 
 

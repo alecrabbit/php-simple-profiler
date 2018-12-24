@@ -1,7 +1,8 @@
-/.idea/*
+.dockerignore
+.idea/
 /vendor/*
-/tmp/*
-/.eval/*
+tmp/
+.eval/
 /tests/coverage/*
 /tests/phpmetrics/*
 
