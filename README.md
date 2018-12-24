@@ -12,6 +12,9 @@ PHP Simple profiler
 [![Latest Unstable Version](https://poser.pugx.org/alecrabbit/php-simple-profiler/v/unstable)](https://packagist.org/packages/alecrabbit/php-simple-profiler)
 [![License](https://poser.pugx.org/alecrabbit/php-simple-profiler/license)](https://packagist.org/packages/alecrabbit/php-simple-profiler)
 
+### Benchmark
+There are moments when you have to choose between two or more different approaches. Benchmark class is to help you choose which is faster :) see [examples](https://github.com/alecrabbit/php-simple-profiler/tree/master/examples)
+
 Profiler
 
 Counter

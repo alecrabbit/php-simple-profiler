@@ -60,7 +60,7 @@ class ProfilerTest extends TestCase
         $profiler->counter('new')->bumpUp();
         $profiler->timer('new')->start();
         $profiler->timer('new')->check();
-        $this->assertEquals('0ms', $profiler->timer('new')->elapsed(), '', 0.001);
+        $this->assertEquals('0ms', $profiler->timer('new')->elapsed(), '');
         $this->assertStringMatchesFormat(
             '%s [%s, %s, %s]',
             $profiler

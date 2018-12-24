@@ -6,18 +6,19 @@
   "require": {
     "php": ">=7.2",
     "alecrabbit/php-helpers": "^0.1",
-    "krowinski/bcmath-extended": "^4.1",
+    "krowinski/bcmath-extended": "^4.2",
     "nesbot/carbon": "^2.7",
-    "lstrojny/functional-php": "^1.8"
+    "lstrojny/functional-php": "^1.8",
+    "alecrabbit/php-console-colour": "^0.0.2"
   },
   "require-dev": {
     "alecrabbit/accessories": "^0.0",
     "alecrabbit/php-output-a": "^0.0.1",
     "nunomaduro/collision": "^2.1",
-    "phpunit/phpunit": "^7.4",
+    "phpunit/phpunit": "^7.5",
     "squizlabs/php_codesniffer": "^3.3",
-    "symfony/phpunit-bridge": "^4.1",
-    "symfony/var-dumper": "^4.1"
+    "symfony/phpunit-bridge": "^4.2",
+    "symfony/var-dumper": "^4.2"
   },
   "autoload": {
     "psr-4": {
@@ -29,5 +30,11 @@
       "Tests\\": "tests/"
     }
   },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "/var/packages/helpers"
+    }
+  ],
   "prefer-stable": true
 }

@@ -12,66 +12,28 @@ use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\Base\Report;
 use AlecRabbit\Tools\Timer;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
-use function AlecRabbit\brackets;
-use function AlecRabbit\format_time;
-use function AlecRabbit\typeOf;
 use const AlecRabbit\Constants\Accessories\DEFAULT_NAME;
-use const AlecRabbit\Constants\BRACKETS_PARENTHESES;
 
 class BenchmarkReport extends Report
 {
     use BenchmarkFields;
 
-    /**
-     * BenchmarkReport constructor.
-     * @param Benchmark $report
-     */
-    public function __construct(Benchmark $report)
-    {
-        $this->profiler = $report->getProfiler();
-        $this->functions = $report->getFunctions();
-        $this->totalIterations = $report->getTotalIterations();
-        $this->withResults = $report->isWithResults();
-        $this->exceptionMessages = $report->getExceptionMessages();
-        parent::__construct($this);
-    }
+    protected $relatives;
 
     /**
-     * @return string
+     * BenchmarkReport constructor.
+     * @param Benchmark $benchmark
      */
-    public function __toString(): string
+    public function __construct(Benchmark $benchmark)
     {
-        $profilerReport = (string)$this->getProfiler()->getReport();
-        $r = 'Benchmark:' . PHP_EOL;
-        foreach ($this->computeRelatives() as $indexName => $result) {
-            $function = $this->getFunctionObject($indexName);
-            $arguments = $function->getArgs();
-            $types = [];
-            if (!empty($arguments)) {
-                foreach ($arguments as $argument) {
-                    $types[] = typeOf($argument);
-                }
-            }
-            $r .= sprintf(
-                '+%s %s(%s) %s %s',
-                $result,
-                $function->getIndexedName(),
-                implode(', ', $types),
-                $function->getComment(),
-                PHP_EOL
-            );
-            if ($this->withResults) {
-                $r .= var_export($function->getResult(), true) . PHP_EOL;
-            }
-        }
-        if (!empty($this->exceptionMessages)) {
-            $r .= 'Exceptions:'. PHP_EOL;
-            foreach ($this->exceptionMessages as $name => $exceptionMessage) {
-                $r .= brackets($name). ': '. $exceptionMessage . PHP_EOL;
-            }
-        }
-        return
-            $r . PHP_EOL . $profilerReport;
+        $this->profiler = $benchmark->getProfiler();
+        $this->functions = $benchmark->getFunctions();
+        $this->totalIterations = $benchmark->getTotalIterations();
+        $this->withResults = $benchmark->isWithResults();
+        $this->exceptionMessages = $benchmark->getExceptionMessages();
+        $this->relatives = $this->computeRelatives();
+
+        parent::__construct($benchmark);
     }
 
     /**
@@ -79,22 +41,19 @@ class BenchmarkReport extends Report
      */
     private function computeRelatives(): array
     {
-        $averages = $this->computeAverages(
-            $this->profiler->getTimers()
-        );
-
-        $min = min($averages);
-
+        $averages = $this->computeAverages($this->profiler->getTimers());
         $relatives = [];
-        foreach ($averages as $name => $average) {
-            $relatives[$name] = $average / $min;
-        }
-        asort($relatives);
+        if (!empty($averages)) {
+            $min = min($averages);
 
-        foreach ($relatives as $name => $relative) {
-            $relatives[$name] =
-                $this->percent((float)$relative - 1) . ' ' .
-                brackets(format_time($averages[$name]), BRACKETS_PARENTHESES);
+            foreach ($averages as $name => $average) {
+                $relatives[$name] = $average / $min;
+            }
+            asort($relatives);
+
+            foreach ($relatives as $name => $relative) {
+                $relatives[$name] = [(float)$relative - 1, $averages[$name]];
+            }
         }
         return $relatives;
     }
@@ -109,28 +68,29 @@ class BenchmarkReport extends Report
         /** @var Timer $timer */
         foreach ($timers as $timer) {
             if (DEFAULT_NAME !== $name = $timer->getName()) {
-                $averages[$name] = $timer->getAverageValue();
+                try {
+                    $averages[$name] = $timer->getAverageValue();
+                } catch (\Throwable $e) {
+                }
             }
         }
         return $averages;
     }
 
     /**
-     * @param float $relative
-     * @return string
-     */
-    private function percent(float $relative): string
-    {
-        return
-            number_format($relative * 100, 1) . '%';
-    }
-
-    /**
      * @param string $name
      * @return BenchmarkFunction
      */
-    private function getFunctionObject(string $name): BenchmarkFunction
+    public function getFunctionObject(string $name): BenchmarkFunction
     {
         return $this->functions[$name];
+    }
+
+    /**
+     * @return array
+     */
+    public function getRelatives(): array
+    {
+        return $this->relatives;
     }
 }

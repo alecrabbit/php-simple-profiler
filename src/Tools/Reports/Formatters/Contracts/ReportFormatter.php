@@ -9,5 +9,10 @@ namespace AlecRabbit\Tools\Reports\Formatters\Contracts;
 
 interface ReportFormatter
 {
+    /**
+     * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
+     */
+    public function setStyles(): void;
 
+    public function getString(): string;
 }

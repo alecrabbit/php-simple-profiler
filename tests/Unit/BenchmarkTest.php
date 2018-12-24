@@ -29,7 +29,7 @@ class BenchmarkTest extends TestCase
 
     public static function tearDownAfterClass(): void
     {
-        ClockMock::withClockMock(false);
+//        ClockMock::withClockMock(false);
     }
 
     /** @test */
