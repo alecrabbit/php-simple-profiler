@@ -30,11 +30,5 @@
       "Tests\\": "tests/"
     }
   },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "/var/packages/helpers"
-    }
-  ],
   "prefer-stable": true
 }
