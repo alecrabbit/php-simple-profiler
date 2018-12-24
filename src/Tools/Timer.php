@@ -7,7 +7,7 @@
 
 namespace AlecRabbit\Tools;
 
-use function AlecRabbit\format_time;
+use function AlecRabbit\format_time_auto;
 use AlecRabbit\Tools\Contracts\TimerInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
@@ -118,6 +118,6 @@ class Timer implements TimerInterface, ReportableInterface
             $this->stop();
         }
         return
-            $formatted ? format_time($this->getElapsed()) : $this->elapsed;
+            $formatted ? format_time_auto($this->getElapsed()) : $this->elapsed;
     }
 }

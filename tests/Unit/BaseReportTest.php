@@ -17,7 +17,10 @@ class BaseReportTest extends TestCase
     /** @test */
     public function creation(): void
     {
-        $obj = new BenchmarkReport(new Benchmark());
-//        $this->assertContains('Not implemented!', (string)$obj);
+        $str = (string)new BenchmarkReport(new Benchmark());
+        $this->assertContains('Benchmark', $str);
+        $this->assertContains('Counter', $str);
+        $this->assertContains('Elapsed', $str);
+        $this->assertNotContains('Done', $str);
     }
 }

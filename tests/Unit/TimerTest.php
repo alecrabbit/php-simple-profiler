@@ -71,7 +71,7 @@ class TimerTest extends TestCase
     {
         $timer = new Timer();
 //        $this->expectException(\RuntimeException::class);
-        $this->assertEquals('0ms', $timer->elapsed());
+        $this->assertEquals('0ns', $timer->elapsed());
     }
 
     /** @test */
@@ -86,8 +86,8 @@ class TimerTest extends TestCase
     {
         $timer = new Timer();
         $timer->start();
-        usleep(1000);
-        $this->assertEquals('1ms', $timer->elapsed(), 'Elapsed time', 0.0002);
+        usleep(2000);
+        $this->assertEquals('2ms', $timer->elapsed());
         $this->assertStringMatchesFormat(
             '%fms',
             $timer->elapsed(true)
