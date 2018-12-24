@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
-use AlecRabbit\ConsoleColour;
+use AlecRabbit\Tools\Internal\Theme;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Factory;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\ReportFormatter;
@@ -17,7 +17,7 @@ abstract class Formatter implements ReportFormatter
 {
     /** @var ReportInterface */
     protected $report;
-    /** @var ConsoleColour */
+    /** @var Theme */
     protected $theme;
 
     public function __construct(ReportInterface $report)

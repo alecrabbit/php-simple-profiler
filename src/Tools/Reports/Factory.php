@@ -91,6 +91,4 @@ class Factory
     {
         self::$colour = $colour;
     }
-
-
 }

@@ -52,7 +52,10 @@ class BenchmarkReport extends Report
             asort($relatives);
 
             foreach ($relatives as $name => $relative) {
-                $relatives[$name] = [(float)$relative - 1, $averages[$name]];
+                $relatives[$name] = [
+                    (float)$relative - 1,
+                    $averages[$name]
+                ];
             }
         }
         return $relatives;
@@ -71,6 +74,7 @@ class BenchmarkReport extends Report
                 try {
                     $averages[$name] = $timer->getAverageValue();
                 } catch (\Throwable $e) {
+                    // no further action
                 }
             }
         }
