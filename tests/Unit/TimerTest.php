@@ -5,8 +5,7 @@
  * Time: 23:03
  */
 
-namespace Unit;
-
+namespace Tests\Unit;
 
 use AlecRabbit\Tools\Reports\TimerReport;
 use AlecRabbit\Tools\Timer;
@@ -14,7 +13,6 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
 
 /**
- * Class TimerTest
  * @group time-sensitive
  */
 class TimerTest extends TestCase
@@ -71,7 +69,7 @@ class TimerTest extends TestCase
     {
         $timer = new Timer();
 //        $this->expectException(\RuntimeException::class);
-        $this->assertEquals('0ms', $timer->elapsed());
+        $this->assertEquals('0ns', $timer->elapsed());
     }
 
     /** @test */
@@ -86,8 +84,8 @@ class TimerTest extends TestCase
     {
         $timer = new Timer();
         $timer->start();
-        usleep(1000);
-        $this->assertEquals('1ms', $timer->elapsed(), 'Elapsed time', 0.0002);
+        usleep(2000);
+        $this->assertEquals('2ms', $timer->elapsed());
         $this->assertStringMatchesFormat(
             '%fms',
             $timer->elapsed(true)

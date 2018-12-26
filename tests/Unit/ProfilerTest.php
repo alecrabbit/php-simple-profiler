@@ -5,7 +5,7 @@
  * Time: 21:28
  */
 
-namespace Unit;
+namespace Tests\Unit;
 
 use AlecRabbit\Tools\Counter;
 use AlecRabbit\Tools\Profiler;
@@ -60,7 +60,7 @@ class ProfilerTest extends TestCase
         $profiler->counter('new')->bumpUp();
         $profiler->timer('new')->start();
         $profiler->timer('new')->check();
-        $this->assertEquals('0ms', $profiler->timer('new')->elapsed(), '');
+        $this->assertEquals('0ns', $profiler->timer('new')->elapsed(), '');
         $this->assertStringMatchesFormat(
             '%s [%s, %s, %s]',
             $profiler
@@ -84,9 +84,9 @@ class ProfilerTest extends TestCase
         $profiler->timer()->check();
         $this->assertEquals(1, $profiler->counter('new')->getValue());
 
-        $this->assertInternalType('string', $profiler->timer('new')->elapsed());
-        $this->assertEquals('2000ms', $profiler->timer()->elapsed());
-        $this->assertEquals('2000ms', $profiler->timer('new')->elapsed());
+        $this->assertIsString($profiler->timer('new')->elapsed());
+        $this->assertEquals('2s', $profiler->timer()->elapsed());
+        $this->assertEquals('2s', $profiler->timer('new')->elapsed());
         $profiler->timer('new', 'vol', 'buy', 'tor');
         $report = $profiler->getReport();
         $this->assertInstanceOf(ProfilerReport::class, $report);

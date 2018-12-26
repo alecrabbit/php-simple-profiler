@@ -23,7 +23,7 @@ class CounterReportFormatter extends Formatter
     public function getString($colored = true): string
     {
         if (DEFAULT_NAME === $name = $this->report->getName()) {
-            return $this->count($colored);
+            return $this->count();
         }
         return $this->full($name);
     }

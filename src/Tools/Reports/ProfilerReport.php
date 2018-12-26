@@ -38,5 +38,4 @@ class ProfilerReport extends Report implements StringsInterface
         }
         parent::__construct($profiler);
     }
-
 }

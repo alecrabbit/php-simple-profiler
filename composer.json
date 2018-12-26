@@ -27,14 +27,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\": "tests/"
+      "Tests\\": "tests"
     }
   },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "/var/packages/helpers"
-    }
-  ],
   "prefer-stable": true
 }

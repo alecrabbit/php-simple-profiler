@@ -62,7 +62,7 @@ class BenchmarkReportFormatter extends Formatter
     }
 
     /**
-     * @param $relative
+     * @param float $relative
      * @return string
      */
     private function col($relative): string
@@ -85,6 +85,4 @@ class BenchmarkReportFormatter extends Formatter
         return
             number_format($relative * 100, 1) . '%';
     }
-
-
 }

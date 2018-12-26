@@ -37,10 +37,8 @@ class TimerReport extends Report
             $this->maxValue = $timer->getMaxValue();
             $this->count = $count;
         } catch (\Throwable $e) {
+            // no further action
         }
-
         parent::__construct($timer);
-
     }
-
 }
