@@ -7,7 +7,6 @@
 
 namespace Tests\Unit;
 
-
 use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
 use PHPUnit\Framework\TestCase;

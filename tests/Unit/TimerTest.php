@@ -5,8 +5,7 @@
  * Time: 23:03
  */
 
-namespace Unit;
-
+namespace Tests\Unit;
 
 use AlecRabbit\Tools\Reports\TimerReport;
 use AlecRabbit\Tools\Timer;
@@ -14,7 +13,6 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
 
 /**
- * Class TimerTest
  * @group time-sensitive
  */
 class TimerTest extends TestCase

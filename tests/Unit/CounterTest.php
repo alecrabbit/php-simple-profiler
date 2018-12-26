@@ -5,7 +5,7 @@
  * Time: 21:28
  */
 
-namespace Unit;
+namespace Tests\Unit;
 
 use AlecRabbit\Tools\Counter;
 use AlecRabbit\Tools\Reports\CounterReport;
