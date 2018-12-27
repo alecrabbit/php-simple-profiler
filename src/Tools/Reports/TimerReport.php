@@ -39,6 +39,6 @@ class TimerReport extends Report
         } catch (\Throwable $e) {
             // no further action
         }
-        parent::__construct($timer);
+        parent::__construct();
     }
 }

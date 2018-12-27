@@ -33,7 +33,9 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     private $comment;
     /** @var bool */
     private $verbose = false;
+    /** @var bool */
     private $errorState = false;
+    /** @var int */
     private $dots = 0;
 
     /**

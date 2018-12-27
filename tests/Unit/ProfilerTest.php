@@ -10,26 +10,13 @@ namespace Tests\Unit;
 use AlecRabbit\Tools\Counter;
 use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Reports\ProfilerReport;
-use AlecRabbit\Tools\Timer;
 use PHPUnit\Framework\TestCase;
-use Symfony\Bridge\PhpUnit\ClockMock;
 
 /**
  * @group time-sensitive
  */
 class ProfilerTest extends TestCase
 {
-    public static function setUpBeforeClass(): void
-    {
-        ClockMock::register(Timer::class);
-        ClockMock::withClockMock(true);
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        ClockMock::withClockMock(false);
-    }
-
 
     /** @test */
     public function classCreation(): void

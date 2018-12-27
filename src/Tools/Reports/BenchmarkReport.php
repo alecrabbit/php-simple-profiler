@@ -18,6 +18,7 @@ class BenchmarkReport extends Report
 {
     use BenchmarkFields;
 
+    /** @var array */
     protected $relatives;
 
     /**
@@ -33,7 +34,7 @@ class BenchmarkReport extends Report
         $this->exceptionMessages = $benchmark->getExceptionMessages();
         $this->relatives = $this->computeRelatives();
 
-        parent::__construct($benchmark);
+        parent::__construct();
     }
 
     /**
@@ -51,10 +52,11 @@ class BenchmarkReport extends Report
             }
             asort($relatives);
 
+            /** @var  float|int $relative */
             foreach ($relatives as $name => $relative) {
                 $relatives[$name] = [
                     (float)$relative - 1,
-                    $averages[$name]
+                    $averages[$name],
                 ];
             }
         }

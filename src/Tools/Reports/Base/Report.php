@@ -16,7 +16,7 @@ abstract class Report implements ReportInterface
 
     protected $formatter;
 
-    public function __construct(ReportableInterface $reportable)
+    public function __construct()
     {
         $this->formatter = Factory::makeFormatter($this);
     }
