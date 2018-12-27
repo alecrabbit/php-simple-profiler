@@ -36,6 +36,6 @@ class ProfilerReport extends Report implements StringsInterface
         foreach ($profiler->getTimers() as $timer) {
             $this->reports[static::_TIMERS][$timer->getName()] = $timer->getReport();
         }
-        parent::__construct($profiler);
+        parent::__construct();
     }
 }

@@ -37,8 +37,8 @@ class CounterReportFormatter extends Formatter
         return
             sprintf(
                 'Counter: %s(%s)%s',
-                $this->theme->comment($this->report->getValue()),
-                $this->theme->dark($this->report->getStep()),
+                $this->theme->comment((string)$this->report->getValue()),
+                $this->theme->dark((string)$this->report->getStep()),
                 PHP_EOL
             );
     }
@@ -54,7 +54,7 @@ class CounterReportFormatter extends Formatter
             sprintf(
                 'Counter:[%s] Value: %s, Step: %s %s',
                 $name,
-                $this->theme->comment($this->report->getValue()),
+                $this->theme->comment((string)$this->report->getValue()),
                 $this->report->getStep(),
                 PHP_EOL
             );

@@ -9,26 +9,15 @@ namespace Tests\Unit;
 
 use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
-use AlecRabbit\Tools\Timer;
 use PHPUnit\Framework\TestCase;
-use Tests\ClockMock;
 
-class ZBenchmarkTest extends TestCase
+/**
+ * @group time-sensitive
+ */
+class BenchmarkTest extends TestCase
 {
     /** @var Benchmark */
     private $bench;
-
-    public static function setUpBeforeClass(): void
-    {
-        ClockMock::register(static::class);
-        ClockMock::register(Timer::class);
-        ClockMock::withClockMock(true);
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        ClockMock::withClockMock(false);
-    }
 
     /** @test */
     public function instance(): void
@@ -63,7 +52,7 @@ class ZBenchmarkTest extends TestCase
             });
         $this->bench->run();
         $report = (string)$this->bench->getReport();
-        dump($report);
+//        dump($report);
         $this->assertInstanceOf(BenchmarkReport::class, $this->bench->getReport());
         $this->assertIsString($report);
         $this->assertContains('Timer:', $report);
