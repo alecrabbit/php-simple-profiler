@@ -16,11 +16,16 @@ class CounterReportFormatter extends Formatter
     /** @var CounterReport */
     protected $report;
 
+    /** {@inheritdoc} */
     public function setStyles(): void
     {
     }
 
-    public function getString($colored = true): string
+    /**
+     * {@inheritdoc}
+     * @throws \Throwable
+     */
+    public function getString(): string
     {
         if (DEFAULT_NAME === $name = $this->report->getName()) {
             return $this->count();

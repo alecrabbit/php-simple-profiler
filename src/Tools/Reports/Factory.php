@@ -31,6 +31,7 @@ class Factory
     /**
      * @param ReportableInterface $reportable
      * @return ReportInterface
+     * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
      */
     public static function makeReport(ReportableInterface $reportable): ReportInterface
     {
@@ -56,6 +57,7 @@ class Factory
     /**
      * @param ReportInterface $report
      * @return ReportFormatter
+     * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
      */
     public static function makeFormatter(ReportInterface $report): ReportFormatter
     {
@@ -83,7 +85,7 @@ class Factory
      */
     public static function getThemeObject(): Theme
     {
-        if (!static::$theme) {
+        if (null === static::$theme) {
             static::$theme = new Theme(static::$colour);
         }
         return static::$theme;

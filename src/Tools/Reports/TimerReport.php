@@ -18,14 +18,15 @@ class TimerReport extends Report
     /**
      * TimerReport constructor.
      * @param Timer $timer
+     * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
      */
     public function __construct(Timer $timer)
     {
+        $this->name = $timer->getName();
+        $this->creation = $timer->getCreation();
         try {
             $count = $timer->getCount();
-            $this->name = $timer->getName();
             $this->previous = $timer->getPrevious();
-            $this->creation = $timer->getCreation();
             $this->start = $timer->getStart();
             $this->elapsed = $timer->getElapsed();
             $this->stopped = $timer->isStopped();

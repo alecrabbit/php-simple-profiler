@@ -17,12 +17,15 @@ trait Reportable
 
     /**
      * @return ReportInterface
+     * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
      */
     public function getReport(): ReportInterface
     {
         if (null === $this->reportObject) {
             $this->prepareForReport();
-            $this->reportObject = Factory::makeReport($this);
+            /** @var \AlecRabbit\Tools\Reports\Contracts\ReportableInterface $that */
+            $that = $this; // for static analyzers
+            $this->reportObject = Factory::makeReport($that);
         }
         return
             $this->reportObject;

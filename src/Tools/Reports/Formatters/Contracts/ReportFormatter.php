@@ -14,5 +14,8 @@ interface ReportFormatter
      */
     public function setStyles(): void;
 
+    /**
+     * @return string
+     */
     public function getString(): string;
 }

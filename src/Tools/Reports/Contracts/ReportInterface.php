@@ -13,5 +13,6 @@ interface ReportInterface
     public const REPORT_DIV = ' => ';
     public const REPORT_EXTENDED_SUFFIX = '%s(%s) ';
 
+    /** @return string */
     public function __toString();
 }

@@ -20,6 +20,11 @@ abstract class Formatter implements ReportFormatter
     /** @var Theme */
     protected $theme;
 
+    /**
+     * Formatter constructor.
+     * @param ReportInterface $report
+     * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
+     */
     public function __construct(ReportInterface $report)
     {
         $this->report = $report;
@@ -27,7 +32,9 @@ abstract class Formatter implements ReportFormatter
         $this->setStyles();
     }
 
+    /** {@inheritdoc} */
     abstract public function setStyles(): void;
 
+    /** {@inheritdoc} */
     abstract public function getString(): string;
 }

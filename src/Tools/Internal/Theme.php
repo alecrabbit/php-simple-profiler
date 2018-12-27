@@ -53,13 +53,14 @@ class Theme extends ConsoleColour implements ThemesInterface
     }
 
     /**
+     * @param array|string $style
      * @param string $text
      * @return string
      * @throws \Throwable
      */
     public function apply($style, $text): string
     {
-        return $this->do ? parent::apply($style, $text) : (string)$text;
+        return $this->do ? parent::apply($style, $text) : $text;
     }
 
     /**

@@ -114,8 +114,8 @@ class BenchmarkFunction
     {
         return sprintf(
             '⟨%s⟩ %s',
-            $this->index,
-            $this->name
+            $this->getIndex(),
+            $this->getName()
         );
     }
 }
