@@ -27,8 +27,19 @@
         </whitelist>
     </filter>
     <listeners>
-        <listener class="NunoMaduro\Collision\Adapters\Phpunit\Listener" />
-        <listener class="\Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
+        <listener class="NunoMaduro\Collision\Adapters\Phpunit\Listener"/>
+        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener">
+            <arguments>
+                <array>
+                    <element key="time-sensitive">
+                        <string>Tests\Unit</string>
+                    </element>
+                    <element key="time-sensitive">
+                        <string>AlecRabbit\Tools</string>
+                    </element>
+                </array>
+            </arguments>
+        </listener>
     </listeners>
     <logging>
         <log type="testdox-html" target="./tmp/testdox.html"/>

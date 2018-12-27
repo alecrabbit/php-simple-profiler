@@ -18,16 +18,17 @@ use Symfony\Bridge\PhpUnit\ClockMock;
 class TimerTest extends TestCase
 {
 
-    public static function setUpBeforeClass(): void
-    {
-        ClockMock::register(Timer::class);
-        ClockMock::withClockMock(true);
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        ClockMock::withClockMock(false);
-    }
+//    public static function setUpBeforeClass(): void
+//    {
+//        ClockMock::register(static::class);
+//        ClockMock::register(Timer::class);
+//        ClockMock::withClockMock(true);
+//    }
+//
+//    public static function tearDownAfterClass(): void
+//    {
+//        ClockMock::withClockMock(false);
+//    }
 
     /** @test */
     public function classCreation(): void

@@ -11,18 +11,16 @@ use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
 use AlecRabbit\Tools\Timer;
 use PHPUnit\Framework\TestCase;
-use Symfony\Bridge\PhpUnit\ClockMock;
+use Tests\ClockMock;
 
-/**
- * @group time-sensitive
- */
-class BenchmarkTest extends TestCase
+class ZBenchmarkTest extends TestCase
 {
     /** @var Benchmark */
     private $bench;
 
     public static function setUpBeforeClass(): void
     {
+        ClockMock::register(static::class);
         ClockMock::register(Timer::class);
         ClockMock::withClockMock(true);
     }
@@ -65,6 +63,7 @@ class BenchmarkTest extends TestCase
             });
         $this->bench->run();
         $report = (string)$this->bench->getReport();
+        dump($report);
         $this->assertInstanceOf(BenchmarkReport::class, $this->bench->getReport());
         $this->assertIsString($report);
         $this->assertContains('Timer:', $report);
@@ -87,6 +86,6 @@ class BenchmarkTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->bench = new Benchmark();
+        $this->bench = new Benchmark(10);
     }
 }
