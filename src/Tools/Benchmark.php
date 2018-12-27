@@ -206,6 +206,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
 
     /**
      * @return string
+     * @throws \Throwable
      */
     public function elapsed(): string
     {

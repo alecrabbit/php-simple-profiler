@@ -23,7 +23,9 @@ use function AlecRabbit\typeOf;
 
 class Factory
 {
-    private static $theme;
+    /** @var Theme */
+    protected static $theme;
+    /** @var bool */
     protected static $colour = false;
 
     /**
@@ -76,6 +78,9 @@ class Factory
         throw new \RuntimeException('Attempt to create unimplemented formatter for: ' . typeOf($report));
     }
 
+    /**
+     * @return Theme
+     */
     public static function getThemeObject(): Theme
     {
         if (!static::$theme) {
