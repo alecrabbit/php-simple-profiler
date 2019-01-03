@@ -6,12 +6,10 @@
   "require": {
     "php": ">=7.2",
     "alecrabbit/php-helpers": "^0.1",
-    "krowinski/bcmath-extended": "^4.2",
-    "nesbot/carbon": "^2.7",
-    "lstrojny/functional-php": "^1.8",
     "alecrabbit/php-console-colour": "^0.0.4"
   },
   "require-dev": {
+    "krowinski/bcmath-extended": "^4.2",
     "alecrabbit/accessories": "^0.1",
     "alecrabbit/php-output-a": "^0.0.1",
     "nunomaduro/collision": "^2.1",

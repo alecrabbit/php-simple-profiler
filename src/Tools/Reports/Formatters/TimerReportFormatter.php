@@ -10,7 +10,7 @@ namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Tools\Reports\TimerReport;
 use function AlecRabbit\format_time_auto;
-use const AlecRabbit\Constants\Accessories\DEFAULT_NAME;
+use const \AlecRabbit\Constants\Traits\DEFAULT_NAME;
 
 class TimerReportFormatter extends Formatter
 {

@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Tools\Reports\CounterReport;
-use const AlecRabbit\Constants\Accessories\DEFAULT_NAME;
+use const \AlecRabbit\Constants\Traits\DEFAULT_NAME;
 
 class CounterReportFormatter extends Formatter
 {
