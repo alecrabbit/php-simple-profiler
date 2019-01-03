@@ -18,7 +18,6 @@ abstract class Report implements ReportInterface
 
     /**
      * Report constructor.
-     * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
      */
     public function __construct()
     {

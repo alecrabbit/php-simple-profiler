@@ -17,7 +17,6 @@ trait Reportable
 
     /**
      * @return ReportInterface
-     * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
      */
     public function getReport(): ReportInterface
     {

@@ -18,7 +18,6 @@ class CounterReport extends Report
     /**
      * CounterReport constructor.
      * @param Counter $counter
-     * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
      */
     public function __construct(Counter $counter)
     {

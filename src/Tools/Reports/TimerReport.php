@@ -18,7 +18,6 @@ class TimerReport extends Report
     /**
      * TimerReport constructor.
      * @param Timer $timer
-     * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
      */
     public function __construct(Timer $timer)
     {

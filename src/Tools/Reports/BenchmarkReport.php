@@ -24,7 +24,6 @@ class BenchmarkReport extends Report
     /**
      * BenchmarkReport constructor.
      * @param Benchmark $benchmark
-     * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
      */
     public function __construct(Benchmark $benchmark)
     {

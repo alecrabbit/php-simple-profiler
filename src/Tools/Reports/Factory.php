@@ -32,7 +32,6 @@ class Factory
     /**
      * @param ReportableInterface $reportable
      * @return ReportInterface
-     * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
      */
     public static function makeReport(ReportableInterface $reportable): ReportInterface
     {
@@ -58,7 +57,7 @@ class Factory
     /**
      * @param ReportInterface $report
      * @return ReportFormatter
-     * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
+     * @throws InvalidStyleException
      */
     public static function makeFormatter(ReportInterface $report): ReportFormatter
     {
