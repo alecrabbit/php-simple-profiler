@@ -7,9 +7,10 @@
 
 namespace AlecRabbit\Tools\Reports;
 
+use AlecRabbit\Exception\InvalidStyleException;
+use AlecRabbit\Themed;
 use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Counter;
-use AlecRabbit\Tools\Internal\Theme;
 use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
@@ -23,7 +24,7 @@ use function AlecRabbit\typeOf;
 
 class Factory
 {
-    /** @var Theme */
+    /** @var Themed */
     protected static $theme;
     /** @var bool */
     protected static $colour = false;
@@ -81,12 +82,13 @@ class Factory
     }
 
     /**
-     * @return Theme
+     * @return Themed
+     * @throws InvalidStyleException
      */
-    public static function getThemeObject(): Theme
+    public static function getThemedObject(): Themed
     {
         if (null === static::$theme) {
-            static::$theme = new Theme(static::$colour);
+            static::$theme = new Themed(static::$colour);
         }
         return static::$theme;
     }

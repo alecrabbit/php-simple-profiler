@@ -8,7 +8,8 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
-use AlecRabbit\Tools\Internal\Theme;
+use AlecRabbit\Exception\InvalidStyleException;
+use AlecRabbit\Themed;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Factory;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\ReportFormatter;
@@ -17,18 +18,18 @@ abstract class Formatter implements ReportFormatter
 {
     /** @var ReportInterface */
     protected $report;
-    /** @var Theme */
+    /** @var Themed */
     protected $theme;
 
     /**
      * Formatter constructor.
      * @param ReportInterface $report
-     * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
+     * @throws InvalidStyleException
      */
     public function __construct(ReportInterface $report)
     {
         $this->report = $report;
-        $this->theme = Factory::getThemeObject();
+        $this->theme = Factory::getThemedObject();
         $this->setStyles();
     }
 

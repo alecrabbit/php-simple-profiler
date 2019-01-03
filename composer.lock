@@ -4,31 +4,31 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2022f5f9e48c6d6f3efc34779e1354ea",
+    "content-hash": "6b4455299b5a3d001d31171a3c50c16a",
     "packages": [
         {
             "name": "alecrabbit/php-console-colour",
-            "version": "0.0.2",
+            "version": "0.0.4-BETA",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-console-colour.git",
-                "reference": "c98a8eebaa1fc1fcaafa67c17a5616c3fd6f4502"
+                "reference": "c053efbb6a664dff6b241fe8a15b47c96f442ac5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-console-colour/zipball/c98a8eebaa1fc1fcaafa67c17a5616c3fd6f4502",
-                "reference": "c98a8eebaa1fc1fcaafa67c17a5616c3fd6f4502",
+                "url": "https://api.github.com/repos/alecrabbit/php-console-colour/zipball/c053efbb6a664dff6b241fe8a15b47c96f442ac5",
+                "reference": "c053efbb6a664dff6b241fe8a15b47c96f442ac5",
                 "shasum": ""
             },
             "require": {
-                "alecrabbit/php-helpers": "^0",
+                "alecrabbit/php-traits": "^0.0",
                 "jakub-onderka/php-console-color": "^0.2.0",
                 "php": ">=7.2"
             },
             "require-dev": {
-                "nunomaduro/collision": "^2.0",
-                "phpunit/phpunit": "^7.4",
-                "symfony/var-dumper": "^4.1"
+                "nunomaduro/collision": "^2.1",
+                "phpunit/phpunit": "^7.5",
+                "symfony/var-dumper": "^4.2"
             },
             "type": "library",
             "autoload": {
@@ -41,7 +41,7 @@
                 "MIT"
             ],
             "description": "PHP package alecrabbit/php-console-colour",
-            "time": "2018-10-16T10:01:51+00:00"
+            "time": "2018-12-31T18:36:11+00:00"
         },
         {
             "name": "alecrabbit/php-helpers",
@@ -50,6 +50,12 @@
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-helpers.git",
                 "reference": "b7625f49de9ad3ec1b40d52a5e0edf95da35a1b2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/b7625f49de9ad3ec1b40d52a5e0edf95da35a1b2",
+                "reference": "b7625f49de9ad3ec1b40d52a5e0edf95da35a1b2",
+                "shasum": ""
             },
             "require": {
                 "krowinski/bcmath-extended": "^4.2",
@@ -73,16 +79,51 @@
                     "src/Helpers/string/string.php"
                 ]
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Tests\\": "tests/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "PHP helpers functions",
             "time": "2018-12-14T17:02:03+00:00"
+        },
+        {
+            "name": "alecrabbit/php-traits",
+            "version": "0.0.1-RC3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alecrabbit/php-traits.git",
+                "reference": "f2cc6d3684ecc405be91236d7fc91095ac796f76"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alecrabbit/php-traits/zipball/f2cc6d3684ecc405be91236d7fc91095ac796f76",
+                "reference": "f2cc6d3684ecc405be91236d7fc91095ac796f76",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "nunomaduro/collision": "^2.1",
+                "phpstan/phpstan": "^0.10.5",
+                "phpunit/phpunit": "^7.5",
+                "symfony/var-dumper": "^4.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AlecRabbit\\": "src"
+                },
+                "files": [
+                    "src/Constants/constants.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP accessories Classes etc.",
+            "time": "2018-12-31T14:20:12+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -324,16 +365,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.8.0",
+            "version": "2.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "13bbbe16e4afcbbff7476cdcd1472a68950496a5"
+                "reference": "69ff95a9ccdfd5e907678ae844b3fc402110d1a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/13bbbe16e4afcbbff7476cdcd1472a68950496a5",
-                "reference": "13bbbe16e4afcbbff7476cdcd1472a68950496a5",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/69ff95a9ccdfd5e907678ae844b3fc402110d1a3",
+                "reference": "69ff95a9ccdfd5e907678ae844b3fc402110d1a3",
                 "shasum": ""
             },
             "require": {
@@ -379,7 +420,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2018-12-18T10:35:13+00:00"
+            "time": "2019-01-02T21:35:25+00:00"
         },
         {
             "name": "symfony/contracts",
@@ -585,16 +626,16 @@
     "packages-dev": [
         {
             "name": "alecrabbit/accessories",
-            "version": "0.0.17",
+            "version": "0.1.1-RC1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/accessories.git",
-                "reference": "940b5b11857cc5f564d7a3b862f88272b33ee8ad"
+                "reference": "404b47854ca0982700b58dd226c7ccf638467ebd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/accessories/zipball/940b5b11857cc5f564d7a3b862f88272b33ee8ad",
-                "reference": "940b5b11857cc5f564d7a3b862f88272b33ee8ad",
+                "url": "https://api.github.com/repos/alecrabbit/accessories/zipball/404b47854ca0982700b58dd226c7ccf638467ebd",
+                "reference": "404b47854ca0982700b58dd226c7ccf638467ebd",
                 "shasum": ""
             },
             "require": {
@@ -611,17 +652,14 @@
             "autoload": {
                 "psr-4": {
                     "AlecRabbit\\": "src"
-                },
-                "files": [
-                    "src/Constants/constants.php"
-                ]
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "PHP accessories Classes etc.",
-            "time": "2018-12-14T17:14:10+00:00"
+            "time": "2018-12-28T14:29:54+00:00"
         },
         {
             "name": "alecrabbit/php-output-a",
@@ -1724,16 +1762,16 @@
         },
         {
             "name": "react/stream",
-            "version": "v1.0.0",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/stream.git",
-                "reference": "fdd0140f42805d65bf9687636503db0b326d2244"
+                "reference": "50426855f7a77ddf43b9266c22320df5bf6c6ce6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/stream/zipball/fdd0140f42805d65bf9687636503db0b326d2244",
-                "reference": "fdd0140f42805d65bf9687636503db0b326d2244",
+                "url": "https://api.github.com/repos/reactphp/stream/zipball/50426855f7a77ddf43b9266c22320df5bf6c6ce6",
+                "reference": "50426855f7a77ddf43b9266c22320df5bf6c6ce6",
                 "shasum": ""
             },
             "require": {
@@ -1766,7 +1804,7 @@
                 "stream",
                 "writable"
             ],
-            "time": "2018-07-11T14:38:16+00:00"
+            "time": "2019-01-01T16:15:09+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -2518,6 +2556,64 @@
             "time": "2018-11-26T10:55:26+00:00"
         },
         {
+            "name": "symfony/polyfill-ctype",
+            "version": "v1.10.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-ctype.git",
+                "reference": "e3d826245268269cd66f8326bd8bc066687b4a19"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/e3d826245268269cd66f8326bd8bc066687b4a19",
+                "reference": "e3d826245268269cd66f8326bd8bc066687b4a19",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "suggest": {
+                "ext-ctype": "For best performance"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.9-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Polyfill\\Ctype\\": ""
+                },
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                },
+                {
+                    "name": "Gert de Pagter",
+                    "email": "BackEndTea@gmail.com"
+                }
+            ],
+            "description": "Symfony polyfill for ctype functions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "ctype",
+                "polyfill",
+                "portable"
+            ],
+            "time": "2018-08-06T14:22:27+00:00"
+        },
+        {
             "name": "symfony/polyfill-php72",
             "version": "v1.10.0",
             "source": {
@@ -2689,20 +2785,21 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "1.3.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozart/assert.git",
-                "reference": "0df1908962e7a3071564e857d86874dad1ef204a"
+                "reference": "83e253c8e0be5b0257b881e1827274667c5c17a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/0df1908962e7a3071564e857d86874dad1ef204a",
-                "reference": "0df1908962e7a3071564e857d86874dad1ef204a",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/83e253c8e0be5b0257b881e1827274667c5c17a9",
+                "reference": "83e253c8e0be5b0257b881e1827274667c5c17a9",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.3.3 || ^7.0"
+                "php": "^5.3.3 || ^7.0",
+                "symfony/polyfill-ctype": "^1.8"
             },
             "require-dev": {
                 "phpunit/phpunit": "^4.6",
@@ -2735,11 +2832,11 @@
                 "check",
                 "validate"
             ],
-            "time": "2018-01-29T19:49:41+00:00"
+            "time": "2018-12-25T11:19:39+00:00"
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "beta",
     "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,

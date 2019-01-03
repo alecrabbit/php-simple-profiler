@@ -1,9 +1,6 @@
 .dockerignore
-.idea/
-/vendor/*
-tmp/
-.eval/
-/tests/coverage/*
-/tests/phpmetrics/*
+/.idea/
+/vendor/
+/.eval/
+/tests/tmp
 
-/docker-compose*

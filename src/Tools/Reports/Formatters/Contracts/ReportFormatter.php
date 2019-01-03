@@ -7,10 +7,12 @@
 
 namespace AlecRabbit\Tools\Reports\Formatters\Contracts;
 
+use AlecRabbit\Exception\InvalidStyleException;
+
 interface ReportFormatter
 {
     /**
-     * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
+     * @throws InvalidStyleException
      */
     public function setStyles(): void;
 

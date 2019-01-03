@@ -9,10 +9,10 @@
     "krowinski/bcmath-extended": "^4.2",
     "nesbot/carbon": "^2.7",
     "lstrojny/functional-php": "^1.8",
-    "alecrabbit/php-console-colour": "^0.0.2"
+    "alecrabbit/php-console-colour": "^0.0.4"
   },
   "require-dev": {
-    "alecrabbit/accessories": "^0.0",
+    "alecrabbit/accessories": "^0.1",
     "alecrabbit/php-output-a": "^0.0.1",
     "nunomaduro/collision": "^2.1",
     "phpunit/phpunit": "^7.5",
@@ -30,5 +30,6 @@
       "Tests\\": "tests"
     }
   },
+  "minimum-stability": "beta",
   "prefer-stable": true
 }

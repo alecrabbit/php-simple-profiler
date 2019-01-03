@@ -12,7 +12,7 @@ use AlecRabbit\Tools\Reports\Factory;
 
 trait Reportable
 {
-    /** @var ReportInterface */
+    /** @var ReportInterface|null */
     protected $reportObject;
 
     /**
@@ -29,6 +29,11 @@ trait Reportable
         }
         return
             $this->reportObject;
+    }
+
+    public function resetReportObject(): void
+    {
+        $this->reportObject = null;
     }
 
     /**
