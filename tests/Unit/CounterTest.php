@@ -91,6 +91,20 @@ class CounterTest extends TestCase
     /** @test */
     public function counterReport(): void
     {
+        $name = 'name';
+        $counter = new Counter($name);
+        /** @var CounterReport $report */
+        $report = $counter->getReport();
+        $string = (string)$report;
+        $this->assertContains($name, $string);
+        $this->assertInstanceOf(CounterReport::class, $report);
+        $this->assertEquals(0, $report->getValue());
+        $this->assertEquals(1, $report->getStep());
+    }
+
+    /** @test */
+    public function counterReportDefault(): void
+    {
         $counter = new Counter();
         /** @var CounterReport $report */
         $report = $counter->getReport();

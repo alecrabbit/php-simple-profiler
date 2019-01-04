@@ -7,9 +7,10 @@
 
 namespace AlecRabbit\Tools\Reports;
 
+use AlecRabbit\Exception\InvalidStyleException;
+use AlecRabbit\Themed;
 use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Counter;
-use AlecRabbit\Tools\Internal\Theme;
 use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
@@ -23,7 +24,9 @@ use function AlecRabbit\typeOf;
 
 class Factory
 {
-    private static $theme;
+    /** @var Themed */
+    protected static $theme;
+    /** @var bool */
     protected static $colour = false;
 
     /**
@@ -54,6 +57,7 @@ class Factory
     /**
      * @param ReportInterface $report
      * @return ReportFormatter
+     * @throws InvalidStyleException
      */
     public static function makeFormatter(ReportInterface $report): ReportFormatter
     {
@@ -76,10 +80,14 @@ class Factory
         throw new \RuntimeException('Attempt to create unimplemented formatter for: ' . typeOf($report));
     }
 
-    public static function getThemeObject(): Theme
+    /**
+     * @return Themed
+     * @throws InvalidStyleException
+     */
+    public static function getThemedObject(): Themed
     {
-        if (!static::$theme) {
-            static::$theme = new Theme(static::$colour);
+        if (null === static::$theme) {
+            static::$theme = new Themed(static::$colour);
         }
         return static::$theme;
     }

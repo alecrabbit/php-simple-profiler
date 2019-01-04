@@ -28,7 +28,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     /** @var Rewindable */
     private $rewindable;
     /** @var int */
-    private $iterations = 0;
+    private $iterations;
     /** @var null|string */
     private $comment;
     /** @var bool */
@@ -45,6 +45,15 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     public function __construct(int $iterations = 1000)
     {
         $this->iterations = $iterations;
+        $this->reset();
+    }
+
+    /**
+     * Resets Benchmark object clear
+     */
+    public function reset(): void
+    {
+        $this->functions = [];
         $this->rewindable =
             new Rewindable(
                 function (int $iterations, int $i = 1): \Generator {
@@ -52,9 +61,10 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
                         yield $i++;
                     }
                 },
-                $iterations
+                $this->iterations
             );
         $this->profiler = new Profiler();
+        $this->resetReportObject();
     }
 
     /**
@@ -86,6 +96,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
      */
     private function execute(): void
     {
+        dump($this->functions);
         /** @var  BenchmarkFunction $f */
         foreach ($this->functions as $name => $f) {
             $function = $f->getFunction();
@@ -180,9 +191,8 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
             );
         }
         $function = new BenchmarkFunction($func, $name, $this->namingIndex++, $args, $this->comment);
-        $this->comment = null;
-
         $this->functions[$function->getEnumeratedName()] = $function;
+        $this->comment = null;
     }
 
     /**
@@ -206,10 +216,11 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
 
     /**
      * @return string
+     * @throws \Throwable
      */
     public function elapsed(): string
     {
-        $theme = Factory::getThemeObject();
+        $theme = Factory::getThemedObject();
         return
             sprintf(
                 'Done in: %s',

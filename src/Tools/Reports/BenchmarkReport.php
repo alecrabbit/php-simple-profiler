@@ -12,7 +12,7 @@ use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\Base\Report;
 use AlecRabbit\Tools\Timer;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
-use const AlecRabbit\Constants\Accessories\DEFAULT_NAME;
+use const \AlecRabbit\Constants\Traits\DEFAULT_NAME;
 
 class BenchmarkReport extends Report
 {

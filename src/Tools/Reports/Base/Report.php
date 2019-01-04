@@ -7,23 +7,24 @@
 
 namespace AlecRabbit\Tools\Reports\Base;
 
-use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Factory;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\ReportFormatter;
 
 abstract class Report implements ReportInterface
 {
-
+    /** @var ReportFormatter */
     protected $formatter;
 
+    /**
+     * Report constructor.
+     */
     public function __construct()
     {
         $this->formatter = Factory::makeFormatter($this);
     }
 
-    /**
-     * @return string
-     */
+    /** {@inheritdoc} */
     public function __toString(): string
     {
         return

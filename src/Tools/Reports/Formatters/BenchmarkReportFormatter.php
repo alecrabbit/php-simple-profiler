@@ -22,7 +22,11 @@ class BenchmarkReportFormatter extends Formatter
     {
     }
 
-    public function getString($colored = true): string
+    /**
+     * {@inheritdoc}
+     * @throws \Throwable
+     */
+    public function getString(): string
     {
         $profilerReport = (string)$this->report->getProfiler()->getReport();
         $r = 'Benchmark:' . PHP_EOL;
@@ -47,7 +51,7 @@ class BenchmarkReportFormatter extends Formatter
             );
             if ($this->report->isWithResults()) {
                 $result = $function->getResult();
-                $r .= $this->theme->dark('return: '. str_replace('double', 'float', typeOf($result)) . ' "'
+                $r .= $this->theme->dark('return: ' . str_replace('double', 'float', typeOf($result)) . ' "'
                         . var_export($function->getResult(), true) . '" ') . PHP_EOL;
             }
         }
@@ -64,6 +68,7 @@ class BenchmarkReportFormatter extends Formatter
     /**
      * @param float $relative
      * @return string
+     * @throws \Throwable
      */
     private function col($relative): string
     {

@@ -33,9 +33,7 @@ class TimerTest extends TestCase
         $this->assertEquals('name', $timer->getName());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function timerAvgValue(): void
     {
         $timer = new Timer();
@@ -56,9 +54,22 @@ class TimerTest extends TestCase
     public function timerElapsedNotStarted(): void
     {
         $timer = new Timer();
-//        $this->expectException(\RuntimeException::class);
         $this->assertEquals('0ns', $timer->elapsed());
     }
+
+//    /** @test */
+//    public function timerElapsedNotStartedReport(): void
+//    {
+//        $name = 'name';
+//        $timer = new Timer($name);
+//        /** @var TimerReport $report */
+//        $report = $timer->getReport();
+//        $string = (string)$report;
+//        $this->assertContains($name, $string);
+//        $this->assertInstanceOf(TimerReport::class, $report);
+//        $this->assertEquals(1, $report->getCount());
+//        $this->assertEquals('0ns', $timer->elapsed());
+//    }
 
     /** @test */
     public function timerReportsNotStarted(): void

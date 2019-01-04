@@ -9,18 +9,23 @@ declare(strict_types=1);
 namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Tools\Reports\CounterReport;
-use const AlecRabbit\Constants\Accessories\DEFAULT_NAME;
+use const \AlecRabbit\Constants\Traits\DEFAULT_NAME;
 
 class CounterReportFormatter extends Formatter
 {
     /** @var CounterReport */
     protected $report;
 
+    /** {@inheritdoc} */
     public function setStyles(): void
     {
     }
 
-    public function getString($colored = true): string
+    /**
+     * {@inheritdoc}
+     * @throws \Throwable
+     */
+    public function getString(): string
     {
         if (DEFAULT_NAME === $name = $this->report->getName()) {
             return $this->count();
@@ -53,9 +58,9 @@ class CounterReportFormatter extends Formatter
         return
             sprintf(
                 'Counter:[%s] Value: %s, Step: %s %s',
-                $name,
+                $this->theme->info($name),
                 $this->theme->comment((string)$this->report->getValue()),
-                $this->report->getStep(),
+                $this->theme->dark((string)$this->report->getStep()),
                 PHP_EOL
             );
     }

@@ -10,7 +10,7 @@ namespace AlecRabbit\Tools\Internal;
 use AlecRabbit\Traits\GettableName;
 use function AlecRabbit\brackets;
 use function AlecRabbit\str_decorate;
-use const AlecRabbit\Constants\BRACKETS_ANGLE;
+use const \AlecRabbit\Constants\BRACKETS_ANGLE;
 
 /**
  * Class BenchmarkFunction
@@ -114,8 +114,8 @@ class BenchmarkFunction
     {
         return sprintf(
             '⟨%s⟩ %s',
-            $this->index,
-            $this->name
+            $this->getIndex(),
+            $this->getName()
         );
     }
 }

@@ -27,7 +27,7 @@ class BenchmarkTest extends TestCase
     }
 
     /** @test */
-    public function addFunctionWithName(): void
+    public function addFunctionWithComment(): void
     {
         $this->assertInstanceOf(Benchmark::class, $this->bench);
         $this->bench
@@ -50,7 +50,9 @@ class BenchmarkTest extends TestCase
             ->addFunction(function () {
                 usleep(521);
             });
-        $this->bench->run();
+        $this->bench
+            ->color()
+            ->run();
         $report = (string)$this->bench->getReport();
 //        dump($report);
         $this->assertInstanceOf(BenchmarkReport::class, $this->bench->getReport());
@@ -61,6 +63,56 @@ class BenchmarkTest extends TestCase
         $this->assertContains('Min', $report);
         $this->assertContains('Max', $report);
         $this->assertContains('Count:', $report);
+    }
+
+    /** @test */
+    public function addFunctionWithNameException(): void
+    {
+        $bench = new Benchmark(100000);
+
+        $bench
+            ->addFunction(function () {
+                usleep(100);
+                return 1;
+            });
+        $bench
+            ->addFunction(function () {
+                usleep(10);
+                return 2;
+            });
+        $bench
+            ->addFunction(function () {
+                usleep(10);
+                return 2;
+            });
+        $bench
+            ->addFunction(function () {
+                usleep(10);
+                return 2;
+            });
+        $bench
+            ->addFunction(
+                function () {
+                    throw new \Exception('Simulated Exception');
+                }
+            );
+
+        $bench
+            ->returnResults()
+            ->color()
+            ->verbose()
+            ->run(true);
+        $report = $bench->getReport();
+        $this->assertInstanceOf(BenchmarkReport::class, $report);
+        $report = (string)$report;
+        $this->assertIsString($report);
+        $this->assertContains('Timer:', $report);
+        $this->assertContains('Average:', $report);
+        $this->assertContains('Last:', $report);
+        $this->assertContains('Min', $report);
+        $this->assertContains('Max', $report);
+        $this->assertContains('Count:', $report);
+        $this->assertContains('Done in', $bench->elapsed());
     }
 
     /** @test */

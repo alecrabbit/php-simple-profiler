@@ -8,11 +8,21 @@
 namespace Tests\Unit;
 
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
+use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Factory;
 use PHPUnit\Framework\TestCase;
 
-class UnimplementedReport implements ReportableInterface
+class UnimplementedReportable implements ReportableInterface
 {
+}
+
+class UnimplementedReport implements ReportInterface
+{
+    public function __toString()
+    {
+        return '';
+    }
+
 }
 
 class FactoryTest extends TestCase
@@ -22,8 +32,17 @@ class FactoryTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->assertInstanceOf(
+            UnimplementedReportable::class,
+            Factory::makeReport(new UnimplementedReportable())
+        );
+    }
+    /** @test */
+    public function creationFormatterOnUnimplemented(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->assertInstanceOf(
             UnimplementedReport::class,
-            Factory::makeReport(new UnimplementedReport())
+            Factory::makeFormatter(new UnimplementedReport())
         );
     }
 }
