@@ -23,7 +23,7 @@ $profiler = new Profiler();
     $profiler->counter()->bump();
     $profiler->timer()->check();
 
-$profiler->getReport();
+$report = $profiler->getReport();
 ```
 
 ### Counter
