@@ -7,11 +7,11 @@
 
 namespace AlecRabbit\Tools;
 
-use function AlecRabbit\format_time_auto;
 use AlecRabbit\Tools\Contracts\TimerInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\TimerFields;
+use function AlecRabbit\format_time_auto;
 
 class Timer implements TimerInterface, ReportableInterface
 {
@@ -65,21 +65,19 @@ class Timer implements TimerInterface, ReportableInterface
         $this->previous = $current;
 
         if (0 !== $this->count) {
+            ++$this->count;
             if ($this->currentValue < $this->minValue) {
                 $this->minValue = $this->currentValue;
-                if (null !== $iterationNumber) {
-                    $this->minValueIteration = $iterationNumber;
-                }
+                $this->minValueIteration = $iterationNumber ?? $this->count;
             }
             if ($this->currentValue > $this->maxValue) {
                 $this->maxValue = $this->currentValue;
-                if (null !== $iterationNumber) {
-                    $this->maxValueIteration = $iterationNumber;
-                }
+                $this->maxValueIteration = $iterationNumber ?? $this->count;
             }
-            $this->avgValue = (($this->avgValue * $this->count) + $this->currentValue) / ++$this->count;
+            $this->avgValue = (($this->avgValue * ($this->count - 1)) + $this->currentValue) / $this->count;
         } else {
-            $this->count = 1;
+            $this->maxValueIteration = $this->minValueIteration = $this->count = 1;
+            dump($this->maxValueIteration, $this->minValueIteration, $this->count);
             $this->maxValue = $this->currentValue;
             $this->minValue = $this->currentValue;
             $this->avgValue = $this->currentValue;

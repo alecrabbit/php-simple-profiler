@@ -1,6 +1,7 @@
 <?php
 
 use AlecRabbit\Tools\Profiler;
+use AlecRabbit\Tools\Reports\Factory;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -17,11 +18,15 @@ $profiler->timer()->check();
 usleep(510);
 
 $profiler->timer('new')->start();
-//usleep(100);
+usleep(100);
 $profiler->timer('new')->check();
 usleep(100);
 $profiler->timer('new')->check();
-usleep(510);
+usleep(5510);
 
+Factory::setColour(true);
 dump($profiler->getReport()); // symfony/var-dumper function dump()
+echo PHP_EOL;
+
+echo (string)$profiler->getReport();
 echo PHP_EOL;

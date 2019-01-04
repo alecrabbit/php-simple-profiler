@@ -70,7 +70,6 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     /**
      * Launch benchmarking
      * @param bool $report
-     * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
      */
     public function run(bool $report = false): void
     {
