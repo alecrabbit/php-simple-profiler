@@ -77,7 +77,6 @@ class Timer implements TimerInterface, ReportableInterface
             $this->avgValue = (($this->avgValue * ($this->count - 1)) + $this->currentValue) / $this->count;
         } else {
             $this->maxValueIteration = $this->minValueIteration = $this->count = 1;
-            dump($this->maxValueIteration, $this->minValueIteration, $this->count);
             $this->maxValue = $this->currentValue;
             $this->minValue = $this->currentValue;
             $this->avgValue = $this->currentValue;
