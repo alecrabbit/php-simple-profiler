@@ -15,11 +15,17 @@ PHP Simple profiler
 ### Benchmark
 There are moments when you have to choose between two or more different approaches. Benchmark class is to help you choose which is faster :) 
 
-Profiler
+### Profiler
+If you need to count and time some repeating events Profiler class will help you.
+```php
+$profiler = new Profiler();
+$profiler->counter()->bump();
+$profiler->timer()->check();
+```
 
-Counter
+### Counter
 
-Timer
+### Timer
 
 ### Usage
 
