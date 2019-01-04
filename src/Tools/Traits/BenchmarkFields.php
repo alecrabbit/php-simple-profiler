@@ -25,6 +25,18 @@ trait BenchmarkFields
     private $exceptions = [];
 
     /**
+     * Resets fields
+     */
+    protected function resetFields(): void
+    {
+        $this->functions = [];
+        $this->profiler = new Profiler();
+        $this->withResults = false;
+        $this->exceptionMessages = [];
+        $this->exceptions = [];
+    }
+
+    /**
      * @return array
      */
     public function getFunctions(): array
@@ -63,6 +75,7 @@ trait BenchmarkFields
     {
         return $this->exceptionMessages;
     }
+
     /**
      * @return array
      */
@@ -70,4 +83,6 @@ trait BenchmarkFields
     {
         return $this->exceptions;
     }
+
+
 }

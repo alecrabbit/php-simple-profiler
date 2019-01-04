@@ -32,11 +32,11 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     /** @var null|string */
     private $comment;
     /** @var bool */
-    private $verbose = false;
+    private $verbose;
     /** @var bool */
-    private $errorState = false;
+    private $errorState;
     /** @var int */
-    private $dots = 0;
+    private $dots;
 
     /**
      * Benchmark constructor.
@@ -53,7 +53,9 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
      */
     public function reset(): void
     {
-        $this->functions = [];
+        $this->dots = 0;
+        $this->verbose = false;
+        $this->errorState = false;
         $this->rewindable =
             new Rewindable(
                 function (int $iterations, int $i = 1): \Generator {
@@ -63,7 +65,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
                 },
                 $this->iterations
             );
-        $this->profiler = new Profiler();
+        $this->resetFields();
         $this->resetReportObject();
     }
 
@@ -80,12 +82,12 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
                 $this->iterations
             );
             echo PHP_EOL;
+            echo PHP_EOL;
         }
         $this->execute();
-        echo PHP_EOL;
-        echo PHP_EOL;
 
         if ($report) {
+            echo PHP_EOL;
             echo (string)$this->getReport();
             echo PHP_EOL;
         }
