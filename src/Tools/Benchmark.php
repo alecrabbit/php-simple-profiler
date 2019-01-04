@@ -96,7 +96,6 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
      */
     private function execute(): void
     {
-        dump($this->functions);
         /** @var  BenchmarkFunction $f */
         foreach ($this->functions as $name => $f) {
             $function = $f->getFunction();
@@ -128,6 +127,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
             $this->errorState = true;
             $result = brackets(typeOf($e)) . ': ' . $e->getMessage();
             $this->exceptionMessages[$f->getIndexedName()] = $result;
+            $this->exceptions[$f->getIndexedName()] = $e;
         }
         $f->setResult($result);
     }

@@ -16,11 +16,12 @@ trait Reportable
     protected $reportObject;
 
     /**
+     * @param bool $rebuild
      * @return ReportInterface
      */
-    public function getReport(): ReportInterface
+    public function getReport($rebuild = false): ReportInterface
     {
-        if (null === $this->reportObject) {
+        if (null === $this->reportObject || true === $rebuild) {
             $this->prepareForReport();
             /** @var \AlecRabbit\Tools\Reports\Contracts\ReportableInterface $that */
             $that = $this; // for static analyzers

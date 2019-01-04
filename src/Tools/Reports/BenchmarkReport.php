@@ -32,6 +32,7 @@ class BenchmarkReport extends Report
         $this->totalIterations = $benchmark->getTotalIterations();
         $this->withResults = $benchmark->isWithResults();
         $this->exceptionMessages = $benchmark->getExceptionMessages();
+        $this->exceptions = $benchmark->getExceptions();
         $this->relatives = $this->computeRelatives();
 
         parent::__construct();
