@@ -83,6 +83,4 @@ trait BenchmarkFields
     {
         return $this->exceptions;
     }
-
-
 }
