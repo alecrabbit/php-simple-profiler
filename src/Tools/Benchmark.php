@@ -33,8 +33,6 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     private $comment;
     /** @var bool */
     private $verbose;
-    /** @var bool */
-    private $errorState;
     /** @var int */
     private $dots;
 
@@ -55,7 +53,6 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     {
         $this->dots = 0;
         $this->verbose = false;
-        $this->errorState = false;
         $this->rewindable =
             new Rewindable(
                 function (int $iterations, int $i = 1): \Generator {
@@ -104,8 +101,8 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
             $args = $f->getArgs();
             $this->prepareResult($f, $function, $args);
             $timer = $this->profiler->timer($name);
-            if ($this->errorState) {
-                $this->errorState = false;
+            $f->setTimer($timer);
+            if ($f->getException()) {
                 $timer->check();
                 continue;
             }
@@ -126,10 +123,9 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
         try {
             $result = $function(...$args);
         } catch (\Throwable $e) {
-            $this->errorState = true;
-            $result = brackets(typeOf($e)) . ': ' . $e->getMessage();
-            $this->exceptionMessages[$f->getIndexedName()] = $result;
+            $this->exceptionMessages[$f->getIndexedName()] = $result = brackets(typeOf($e)) . ': ' . $e->getMessage();
             $this->exceptions[$f->getIndexedName()] = $e;
+            $f->setException($e);
         }
         $f->setResult($result);
     }
