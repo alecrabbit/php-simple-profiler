@@ -20,6 +20,8 @@ use function AlecRabbit\typeOf;
 class Benchmark implements BenchmarkInterface, ReportableInterface
 {
     protected const PG_WIDTH = 60;
+    protected const ADDED = 'added';
+    protected const BENCHMARKED = 'benchmarked';
 
     use BenchmarkFields, Reportable;
 
@@ -109,7 +111,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
             foreach ($this->rewindable as $iteration) {
                 $this->bench($timer, $function, $args, $iteration);
             }
-            $this->profiler->counter()->bump();
+            $this->profiler->counter(self::BENCHMARKED)->bump();
         }
     }
 
@@ -191,6 +193,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
         $function = new BenchmarkFunction($func, $name, $this->namingIndex++, $args, $this->comment);
         $this->functions[$function->getEnumeratedName()] = $function;
         $this->comment = null;
+        $this->profiler->counter(self::ADDED)->bump();
     }
 
     /**
