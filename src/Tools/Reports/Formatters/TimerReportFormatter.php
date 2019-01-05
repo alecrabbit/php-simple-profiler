@@ -10,23 +10,28 @@ namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Tools\Reports\TimerReport;
 use function AlecRabbit\format_time_auto;
-use const \AlecRabbit\Constants\Traits\DEFAULT_NAME;
+use const AlecRabbit\Constants\Traits\DEFAULT_NAME;
 
 class TimerReportFormatter extends Formatter
 {
     /** @var TimerReport */
     protected $report;
 
+    /** {@inheritdoc} */
     public function setStyles(): void
     {
     }
 
+    /**
+     * @return string
+     * @throws \Throwable
+     */
     public function getString(): string
     {
-        if (DEFAULT_NAME === $name = $this->report->getName()) {
+        if (DEFAULT_NAME === $this->report->getName()) {
             return $this->elapsed();
         }
-        return $this->full($name);
+        return $this->full();
     }
 
     /**
@@ -44,15 +49,15 @@ class TimerReportFormatter extends Formatter
     }
 
     /**
-     * @param string $name
      * @return string
      * @throws \Throwable
      */
-    public function full(string $name): string
+    public function full(): string
     {
+        $name =  $this->report->getName();
         try {
             $str = sprintf(
-                'Timer:[%s] Average: %s, Last: %s, Min(%s): %s, Max(%s): %s, Count: %s' . PHP_EOL,
+                'Timer[%s]: Average: %s, Last: %s, Min(%s): %s, Max(%s): %s, Count: %s' . PHP_EOL,
                 $this->theme->info($name),
                 $this->theme->comment(format_time_auto($this->report->getAverageValue())),
                 format_time_auto($this->report->getLastValue()),
@@ -65,9 +70,9 @@ class TimerReportFormatter extends Formatter
         } catch (\Throwable $e) {
             $str =
                 sprintf(
-                    'Timer:[%s] %s' . PHP_EOL,
-                    $this->theme->info($name),
-                    $this->theme->red('Exception encountered')
+                    'Timer[%s]: %s' . PHP_EOL,
+                    $this->theme->red($name),
+                    $this->theme->comment('Exception encountered')
                 );
         }
         return $str;

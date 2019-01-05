@@ -9,6 +9,7 @@ namespace AlecRabbit\Tools\Reports;
 
 use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
+use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\Base\Report;
 use AlecRabbit\Tools\Timer;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
@@ -32,6 +33,7 @@ class BenchmarkReport extends Report
         $this->totalIterations = $benchmark->getTotalIterations();
         $this->withResults = $benchmark->isWithResults();
         $this->exceptionMessages = $benchmark->getExceptionMessages();
+        $this->exceptions = $benchmark->getExceptions();
         $this->relatives = $this->computeRelatives();
 
         parent::__construct();
@@ -54,10 +56,7 @@ class BenchmarkReport extends Report
 
             /** @var  float|int $relative */
             foreach ($relatives as $name => $relative) {
-                $relatives[$name] = [
-                    (float)$relative - 1,
-                    $averages[$name],
-                ];
+                $relatives[$name] = new BenchmarkRelative((float)$relative - 1, $averages[$name]);
             }
         }
         return $relatives;
@@ -90,6 +89,14 @@ class BenchmarkReport extends Report
     public function getFunctionObject(string $name): BenchmarkFunction
     {
         return $this->functions[$name];
+    }
+
+    /**
+     * @return array
+     */
+    public function getFunctionObjects(): array
+    {
+        return $this->functions;
     }
 
     /**

@@ -27,10 +27,10 @@ class CounterReportFormatter extends Formatter
      */
     public function getString(): string
     {
-        if (DEFAULT_NAME === $name = $this->report->getName()) {
+        if (DEFAULT_NAME === $this->report->getName()) {
             return $this->count();
         }
-        return $this->full($name);
+        return $this->full();
     }
 
     /**
@@ -49,16 +49,15 @@ class CounterReportFormatter extends Formatter
     }
 
     /**
-     * @param string $name
      * @return string
      * @throws \Throwable
      */
-    public function full(string $name): string
+    public function full(): string
     {
         return
             sprintf(
-                'Counter:[%s] Value: %s, Step: %s %s',
-                $this->theme->info($name),
+                'Counter[%s]: Value: %s, Step: %s %s',
+                $this->theme->info($this->report->getName()),
                 $this->theme->comment((string)$this->report->getValue()),
                 $this->theme->dark((string)$this->report->getStep()),
                 PHP_EOL

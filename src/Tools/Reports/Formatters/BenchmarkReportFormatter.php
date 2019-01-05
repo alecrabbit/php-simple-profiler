@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
+use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
 use function AlecRabbit\brackets;
 use function AlecRabbit\format_time_auto;
@@ -30,8 +31,10 @@ class BenchmarkReportFormatter extends Formatter
     {
         $profilerReport = (string)$this->report->getProfiler()->getReport();
         $r = 'Benchmark:' . PHP_EOL;
+        /** @var BenchmarkRelative $result */
         foreach ($this->report->getRelatives() as $indexName => $result) {
-            [$relative, $average] = $result;
+            $relative = $result->getRelative();
+            $average = $result->getAverage();
             $function = $this->report->getFunctionObject($indexName);
             $arguments = $function->getArgs();
             $types = [];

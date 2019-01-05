@@ -18,4 +18,5 @@ dump($timer->getReport()); // symfony/var-dumper function dump()
 echo PHP_EOL;
 
 echo (string)$timer->getReport();
+// Timer:[new] Average: 1s, Last: 1s, Min(1): 1s, Max(3): 1s, Count: 5
 echo PHP_EOL;
