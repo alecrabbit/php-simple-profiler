@@ -45,23 +45,23 @@ class BenchmarkReportFormatter extends Formatter
             }
             $r .= sprintf(
                 '%s (+%s) %s(%s) %s %s',
-                $this->theme->yellow(format_time_auto($average)),
+                $this->themed->yellow(format_time_auto($average)),
                 $this->col($relative),
                 $function->getIndexedName(),
                 implode(', ', $types),
-                $this->theme->comment($function->getComment()),
+                $this->themed->comment($function->getComment()),
                 PHP_EOL
             );
             if ($this->report->isWithResults()) {
                 $result = $function->getResult();
-                $r .= $this->theme->dark('return: ' . str_replace('double', 'float', typeOf($result)) . ' "'
+                $r .= $this->themed->dark('return: ' . str_replace('double', 'float', typeOf($result)) . ' "'
                         . var_export($function->getResult(), true) . '" ') . PHP_EOL;
             }
         }
         if (!empty($exceptionMessages = $this->report->getExceptionMessages())) {
             $r .= 'Exceptions:' . PHP_EOL;
             foreach ($exceptionMessages as $name => $exceptionMessage) {
-                $r .= brackets($name) . ': ' . $this->theme->red($exceptionMessage) . PHP_EOL;
+                $r .= brackets($name) . ': ' . $this->themed->red($exceptionMessage) . PHP_EOL;
             }
         }
         return
@@ -76,12 +76,12 @@ class BenchmarkReportFormatter extends Formatter
     private function col($relative): string
     {
         if ($relative > 1) {
-            return $this->theme->red($this->percent($relative));
+            return $this->themed->red($this->percent($relative));
         }
         if ($relative >= 0.03) {
-            return $this->theme->yellow($this->percent($relative));
+            return $this->themed->yellow($this->percent($relative));
         }
-        return $this->theme->green($this->percent($relative));
+        return $this->themed->green($this->percent($relative));
     }
 
     /**

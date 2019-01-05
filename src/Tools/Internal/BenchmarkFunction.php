@@ -7,10 +7,11 @@
 
 namespace AlecRabbit\Tools\Internal;
 
+use AlecRabbit\Tools\Timer;
 use AlecRabbit\Traits\GettableName;
 use function AlecRabbit\brackets;
 use function AlecRabbit\str_decorate;
-use const \AlecRabbit\Constants\BRACKETS_ANGLE;
+use const AlecRabbit\Constants\BRACKETS_ANGLE;
 
 /**
  * Class BenchmarkFunction
@@ -36,8 +37,14 @@ class BenchmarkFunction
     /** @var mixed */
     private $result;
 
+    /** @var Timer */
+    private $timer;
+
+    /** @var \Throwable|null */
+    private $exception;
+
     /**
-     * BenchmarkedFunction constructor.
+     * BenchmarkFunction constructor.
      * @param callable $func
      * @param string $name
      * @param int $index
@@ -59,14 +66,6 @@ class BenchmarkFunction
     public function getComment(): string
     {
         return $this->comment ? str_decorate($this->comment, '"') : '';
-    }
-
-    /**
-     * @return int
-     */
-    public function getIndex(): int
-    {
-        return $this->index;
     }
 
     /**
@@ -118,4 +117,49 @@ class BenchmarkFunction
             $this->getName()
         );
     }
+
+    /**
+     * @return int
+     */
+    public function getIndex(): int
+    {
+        return $this->index;
+    }
+
+    /**
+     * @return Timer
+     */
+    public function getTimer(): Timer
+    {
+        return $this->timer;
+    }
+
+    /**
+     * @param Timer $timer
+     * @return BenchmarkFunction
+     */
+    public function setTimer(Timer $timer): BenchmarkFunction
+    {
+        $this->timer = $timer;
+        return $this;
+    }
+
+    /**
+     * @return null|\Throwable
+     */
+    public function getException(): ?\Throwable
+    {
+        return $this->exception;
+    }
+
+    /**
+     * @param \Throwable $exception
+     * @return BenchmarkFunction
+     */
+    public function setException(\Throwable $exception): BenchmarkFunction
+    {
+        $this->exception = $exception;
+        return $this;
+    }
+
 }

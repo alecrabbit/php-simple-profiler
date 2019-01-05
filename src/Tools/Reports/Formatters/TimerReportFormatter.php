@@ -43,7 +43,7 @@ class TimerReportFormatter extends Formatter
         return
             sprintf(
                 'Elapsed: %s %s',
-                $this->theme->comment(format_time_auto($this->report->getElapsed())),
+                $this->themed->comment(format_time_auto($this->report->getElapsed())),
                 PHP_EOL
             );
     }
@@ -58,8 +58,8 @@ class TimerReportFormatter extends Formatter
         try {
             $str = sprintf(
                 'Timer[%s]: Average: %s, Last: %s, Min(%s): %s, Max(%s): %s, Count: %s' . PHP_EOL,
-                $this->theme->info($name),
-                $this->theme->comment(format_time_auto($this->report->getAverageValue())),
+                $this->themed->info($name),
+                $this->themed->comment(format_time_auto($this->report->getAverageValue())),
                 format_time_auto($this->report->getLastValue()),
                 $this->report->getMinValueIteration(),
                 format_time_auto($this->report->getMinValue()),
@@ -71,8 +71,8 @@ class TimerReportFormatter extends Formatter
             $str =
                 sprintf(
                     'Timer[%s]: %s' . PHP_EOL,
-                    $this->theme->red($name),
-                    $this->theme->comment('Exception encountered')
+                    $this->themed->red($name),
+                    $this->themed->comment('Exception encountered')
                 );
         }
         return $str;
