@@ -19,7 +19,7 @@ abstract class Formatter implements ReportFormatter
     /** @var ReportInterface */
     protected $report;
     /** @var Themed */
-    protected $theme;
+    protected $themed;
 
     /**
      * Formatter constructor.
@@ -29,7 +29,7 @@ abstract class Formatter implements ReportFormatter
     public function __construct(ReportInterface $report)
     {
         $this->report = $report;
-        $this->theme = Factory::getThemedObject();
+        $this->themed = Factory::getThemedObject();
         $this->setStyles();
     }
 
