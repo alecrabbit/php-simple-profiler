@@ -1,9 +1,4 @@
 <?php
-/**
- * User: alec
- * Date: 30.11.18
- * Time: 17:41
- */
 
 namespace AlecRabbit\Tools\Traits;
 
