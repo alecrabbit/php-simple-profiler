@@ -34,7 +34,6 @@ class Timer implements TimerInterface, ReportableInterface
     private function current(): float
     {
         return
-//            hrtime(true);
             microtime(true);
     }
 
