@@ -7,6 +7,7 @@
 
 namespace AlecRabbit\Tools;
 
+use AlecRabbit\Pretty;
 use AlecRabbit\Tools\Contracts\TimerInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
@@ -33,6 +34,7 @@ class Timer implements TimerInterface, ReportableInterface
     private function current(): float
     {
         return
+//            hrtime(true);
             microtime(true);
     }
 
@@ -106,15 +108,15 @@ class Timer implements TimerInterface, ReportableInterface
     }
 
     /**
-     * @param bool $formatted
+     * @param bool $pretty
      * @return mixed
      */
-    public function elapsed(bool $formatted = true)
+    public function elapsed(bool $pretty = true)
     {
         if ($this->isNotStopped()) {
             $this->stop();
         }
         return
-            $formatted ? format_time_auto($this->getElapsed()) : $this->elapsed;
+            $pretty ? Pretty::time($this->getElapsed()) : $this->elapsed;
     }
 }

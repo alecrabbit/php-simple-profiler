@@ -1,9 +1,5 @@
 <?php
-/**
- * User: alec
- * Date: 10.12.18
- * Time: 14:22
- */
+
 declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
@@ -46,7 +42,7 @@ class BenchmarkReportFormatter extends Formatter
             $r .= sprintf(
                 '%s (+%s) %s(%s) %s %s',
                 $this->themed->yellow(format_time_auto($average)),
-                $this->col($relative),
+                $this->colorize($relative),
                 $function->getIndexedName(),
                 implode(', ', $types),
                 $this->themed->comment($function->getComment()),
@@ -73,7 +69,7 @@ class BenchmarkReportFormatter extends Formatter
      * @return string
      * @throws \Throwable
      */
-    private function col($relative): string
+    private function colorize($relative): string
     {
         if ($relative > 1) {
             return $this->themed->red($this->percent($relative));
@@ -81,7 +77,8 @@ class BenchmarkReportFormatter extends Formatter
         if ($relative >= 0.03) {
             return $this->themed->yellow($this->percent($relative));
         }
-        return $this->themed->green($this->percent($relative));
+        return
+            $this->themed->green($this->percent($relative));
     }
 
     /**

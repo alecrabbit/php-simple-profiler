@@ -1,9 +1,6 @@
 <?php
-/**
- * User: alec
- * Date: 29.11.18
- * Time: 20:56
- */
+
+declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports;
 
@@ -14,7 +11,7 @@ use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\Base\Report;
 use AlecRabbit\Tools\Timer;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
-use const AlecRabbit\Constants\Traits\DEFAULT_NAME;
+use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
 class BenchmarkReport extends Report
 {
@@ -46,7 +43,8 @@ class BenchmarkReport extends Report
      */
     private function computeRelatives(): array
     {
-        $averages = $this->computeAverages($this->profiler->getTimers());
+//        $averages = $this->computeAverages($this->profiler->getTimers());
+        $averages = $this->computeAverages($this->getTimers());
         $relatives = [];
         if (!empty($averages)) {
             $min = min($averages);
@@ -107,5 +105,15 @@ class BenchmarkReport extends Report
     public function getRelatives(): array
     {
         return $this->relatives;
+    }
+
+    private function getTimers(): array
+    {
+        $timers = [];
+        /** @var BenchmarkFunction $f */
+        foreach ($this->functions as $f) {
+            $timers[]=$f->getTimer();
+        }
+        return $timers;
     }
 }

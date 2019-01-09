@@ -7,6 +7,7 @@
 
 namespace AlecRabbit\Tools;
 
+use AlecRabbit\Exception\InvalidStyleException;
 use AlecRabbit\Rewindable;
 use AlecRabbit\Tools\Contracts\BenchmarkInterface;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
@@ -39,8 +40,8 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     private $dots;
     /** @var array */
     private $names;
-    /** @var string */
-    private $name;
+    /** @var string|null */
+    private $humanReadableName;
 
     /**
      * Benchmark constructor.
@@ -58,7 +59,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     public function reset(): void
     {
         $this->names = [];
-        $this->name = null;
+        $this->humanReadableName = null;
         $this->dots = 0;
         $this->verbose = false;
         $this->rewindable =
@@ -77,6 +78,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     /**
      * Launch benchmarking
      * @param bool $report
+     * @throws InvalidStyleException
      */
     public function run(bool $report = false): void
     {
@@ -99,7 +101,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     }
 
     /**
-     * Launch benchmarking in verbose mode
+     * Benchmarking
      */
     private function execute(): void
     {
@@ -197,9 +199,9 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
             );
         }
         $function =
-            new BenchmarkFunction($func, $name, $this->namingIndex++, $args, $this->comment, $this->name);
+            new BenchmarkFunction($func, $name, $this->namingIndex++, $args, $this->comment, $this->humanReadableName);
         $this->functions[$function->getEnumeratedName()] = $function;
-        $this->name = null;
+        $this->humanReadableName = null;
         $this->comment = null;
         $this->profiler->counter(self::ADDED)->bump();
     }
@@ -224,7 +226,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
             throw new \InvalidArgumentException(sprintf('Name "%s" is not unique', $name));
         }
         $this->names[] = $name;
-        $this->name = $name;
+        $this->humanReadableName = $name;
         return $this;
     }
 

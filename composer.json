@@ -8,7 +8,7 @@
     "alecrabbit/php-helpers": "^0.2",
     "alecrabbit/php-console-colour": "^0.0.4",
     "alecrabbit/accessories": "^0.2",
-    "alecrabbit/php-traits": "^0.0.1"
+    "alecrabbit/php-traits": "^0.0.2"
   },
   "require-dev": {
     "krowinski/bcmath-extended": "^4.2",
