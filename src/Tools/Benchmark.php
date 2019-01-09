@@ -37,6 +37,10 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     private $verbose;
     /** @var int */
     private $dots;
+    /** @var array */
+    private $names;
+    /** @var string */
+    private $name;
 
     /**
      * Benchmark constructor.
@@ -53,6 +57,8 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
      */
     public function reset(): void
     {
+        $this->names = [];
+        $this->name = null;
         $this->dots = 0;
         $this->verbose = false;
         $this->rewindable =
@@ -190,19 +196,35 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
                 )
             );
         }
-        $function = new BenchmarkFunction($func, $name, $this->namingIndex++, $args, $this->comment);
+        $function =
+            new BenchmarkFunction($func, $name, $this->namingIndex++, $args, $this->comment, $this->name);
         $this->functions[$function->getEnumeratedName()] = $function;
+        $this->name = null;
         $this->comment = null;
         $this->profiler->counter(self::ADDED)->bump();
+    }
+
+    /**
+     * @param string $comment
+     * @return Benchmark
+     */
+    public function withComment(string $comment): self
+    {
+        $this->comment = $comment;
+        return $this;
     }
 
     /**
      * @param string $name
      * @return Benchmark
      */
-    public function withComment(string $name): self
+    public function useName(string $name): self
     {
-        $this->comment = $name;
+        if (in_array($name, $this->names, true)) {
+            throw new \InvalidArgumentException(sprintf('Name "%s" is not unique', $name));
+        }
+        $this->names[] = $name;
+        $this->name = $name;
         return $this;
     }
 

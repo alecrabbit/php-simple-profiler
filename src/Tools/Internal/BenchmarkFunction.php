@@ -11,7 +11,7 @@ use AlecRabbit\Tools\Timer;
 use AlecRabbit\Traits\GettableName;
 use function AlecRabbit\brackets;
 use function AlecRabbit\str_decorate;
-use const AlecRabbit\Constants\BRACKETS_ANGLE;
+use const AlecRabbit\Helpers\Constants\BRACKETS_ANGLE;
 
 /**
  * Class BenchmarkFunction
@@ -43,6 +43,9 @@ class BenchmarkFunction
     /** @var \Throwable|null */
     private $exception;
 
+    /** @var null|string  */
+    private $humanReadableName;
+
     /**
      * BenchmarkFunction constructor.
      * @param callable $func
@@ -50,14 +53,22 @@ class BenchmarkFunction
      * @param int $index
      * @param array $args
      * @param null|string $comment
+     * @param null|string $humanReadableName
      */
-    public function __construct($func, string $name, int $index, array $args, ?string $comment = null)
-    {
+    public function __construct(
+        $func,
+        string $name,
+        int $index,
+        array $args,
+        ?string $comment = null,
+        ?string $humanReadableName = null
+    ) {
         $this->func = $func;
         $this->comment = $comment;
         $this->name = $name;
         $this->index = $index;
         $this->args = $args;
+        $this->humanReadableName = $humanReadableName;
     }
 
     /**
@@ -161,5 +172,4 @@ class BenchmarkFunction
         $this->exception = $exception;
         return $this;
     }
-
 }

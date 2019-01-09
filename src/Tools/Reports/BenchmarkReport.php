@@ -7,13 +7,14 @@
 
 namespace AlecRabbit\Tools\Reports;
 
+use AlecRabbit\Exception\InvalidStyleException;
 use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\Base\Report;
 use AlecRabbit\Tools\Timer;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
-use const \AlecRabbit\Constants\Traits\DEFAULT_NAME;
+use const AlecRabbit\Constants\Traits\DEFAULT_NAME;
 
 class BenchmarkReport extends Report
 {
@@ -25,6 +26,7 @@ class BenchmarkReport extends Report
     /**
      * BenchmarkReport constructor.
      * @param Benchmark $benchmark
+     * @throws InvalidStyleException
      */
     public function __construct(Benchmark $benchmark)
     {

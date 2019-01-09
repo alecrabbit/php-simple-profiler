@@ -32,6 +32,7 @@ class Factory
     /**
      * @param ReportableInterface $reportable
      * @return ReportInterface
+     * @throws InvalidStyleException
      */
     public static function makeReport(ReportableInterface $reportable): ReportInterface
     {

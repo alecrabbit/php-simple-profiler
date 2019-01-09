@@ -7,6 +7,7 @@
 
 namespace AlecRabbit\Tools\Reports;
 
+use AlecRabbit\Exception\InvalidStyleException;
 use AlecRabbit\Tools\Reports\Base\Report;
 use AlecRabbit\Tools\Timer;
 use AlecRabbit\Tools\Traits\TimerFields;
@@ -18,6 +19,7 @@ class TimerReport extends Report
     /**
      * TimerReport constructor.
      * @param Timer $timer
+     * @throws InvalidStyleException
      */
     public function __construct(Timer $timer)
     {

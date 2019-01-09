@@ -7,6 +7,7 @@
 
 namespace AlecRabbit\Tools\Reports\Base;
 
+use AlecRabbit\Exception\InvalidStyleException;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Factory;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\ReportFormatter;
@@ -18,6 +19,7 @@ abstract class Report implements ReportInterface
 
     /**
      * Report constructor.
+     * @throws InvalidStyleException
      */
     public function __construct()
     {
