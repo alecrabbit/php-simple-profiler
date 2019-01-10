@@ -23,6 +23,9 @@ trait TimerFields
     /** @var bool */
     protected $stopped = false;
 
+    /** @var bool */
+    protected $started = false;
+
     /** @var float */
     protected $currentValue;
 
@@ -59,6 +62,15 @@ trait TimerFields
     {
         return !$this->stopped;
     }
+
+    /**
+     * @return bool
+     */
+    public function isStarted(): bool
+    {
+        return $this->started;
+    }
+
 
     /**
      * @return float

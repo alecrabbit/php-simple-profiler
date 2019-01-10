@@ -21,10 +21,18 @@ use function AlecRabbit\typeOf;
 
 class Factory
 {
-    /** @var Themed */
+    /** @var Themed|null */
     protected static $theme;
+
     /** @var bool */
     protected static $colour = false;
+
+    // @codeCOverageIgnoreStart
+    private function __construct()
+    {
+        // Static class
+    }
+    // @codeCOverageIgnoreEnd
 
     /**
      * @param ReportableInterface $reportable
@@ -93,7 +101,7 @@ class Factory
     /**
      * @param bool $colour
      */
-    public static function setColour(bool $colour): void
+    public static function enableColour(bool $colour): void
     {
         self::$colour = $colour;
     }

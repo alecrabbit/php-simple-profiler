@@ -34,7 +34,7 @@ class Timer implements TimerInterface, ReportableInterface
 
     public function prepareForReport(): void
     {
-        if (null === $this->start) {
+        if (!$this->started) {
             $this->start();
             $this->mark();
         }
@@ -49,6 +49,7 @@ class Timer implements TimerInterface, ReportableInterface
     public function start(): void
     {
         $this->previous = $this->start = $this->current();
+        $this->started = true;
     }
 
     /**
@@ -93,7 +94,7 @@ class Timer implements TimerInterface, ReportableInterface
      */
     public function check(?int $iterationNumber = null): Timer
     {
-        if (null === $this->start) {
+        if (!$this->started) {
             $this->start();
         } else {
             $this->mark($iterationNumber);

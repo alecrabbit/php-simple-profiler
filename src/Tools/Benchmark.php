@@ -174,7 +174,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
      */
     public function color(): self
     {
-        Factory::setColour(true);
+        Factory::enableColour(true);
         return $this;
     }
 
