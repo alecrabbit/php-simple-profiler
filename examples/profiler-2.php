@@ -7,20 +7,22 @@ use AlecRabbit\Tools\Reports\Factory;
 
 function someOperation()
 {
-    usleep(random_int(10, 100));
+    usleep(random_int(1, 100));
 }
 const NAME = 'someOperation';
 $profiler = new Profiler();
-$profiler->timer(NAME)->start();
+$timer = $profiler->timer(NAME);
+$counter = $profiler->counter(NAME);
+$timer->start();
 for ($i = 0; $i < 100; $i++) {
+    $counter->bump();
     someOperation();
-    $profiler->counter(NAME)->bump();
-    $profiler->timer(NAME)->check();
+    $timer->check();
 }
 
-Factory::setColour(true);
+Factory::enableColour(true);
 //dump($profiler->getReport()); // symfony/var-dumper function dump()
 //echo PHP_EOL;
 
-echo (string)$profiler->getReport();
+echo $profiler->getReport();
 echo PHP_EOL;

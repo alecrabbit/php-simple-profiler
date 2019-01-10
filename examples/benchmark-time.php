@@ -5,17 +5,17 @@ use AlecRabbit\Tools\Benchmark;
 require_once __DIR__ . '/../vendor/autoload.php';
 
 /*
- * Let's determine what is faster array_key_first or array_key_first
+ * Let's determine what is faster hrtime or microtime
 */
 
 $benchmark = new Benchmark(900000);
 
 
 $benchmark
-    ->addFunction('hrtime', true);
+    ->addFunction('hrtime', true); // slightly faster on php^7.3
 
 $benchmark
-    ->addFunction('microtime', true);
+    ->addFunction('microtime', true); // significantly faster on php7.2
 
 $benchmark
     ->returnResults()
