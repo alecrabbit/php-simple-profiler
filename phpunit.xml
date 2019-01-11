@@ -10,20 +10,20 @@
          bootstrap="tests/bootstrap.php">
     <testsuites>
         <testsuite name="Feature">
-            <directory suffix="Test.php">./tests/Feature</directory>
+            <directory suffix="Test.php">tests/Feature</directory>
         </testsuite>
 
         <testsuite name="Unit">
-            <directory suffix="Test.php">./tests/Unit</directory>
+            <directory suffix="Test.php">tests/Unit</directory>
         </testsuite>
 
         <testsuite name="Common">
-            <directory suffix="Test.php">./tests</directory>
+            <directory suffix="Test.php">tests</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src</directory>
+            <directory suffix=".php">src</directory>
         </whitelist>
     </filter>
     <listeners>
