@@ -68,6 +68,7 @@ class BenchmarkFunction
         $this->name = $name;
         $this->index = $index;
         $this->args = $args;
+        $this->timer = new Timer($this->getIndexedName());
         $this->humanReadableName = $humanReadableName;
     }
 
@@ -145,16 +146,16 @@ class BenchmarkFunction
         return $this->timer;
     }
 
-    /**
-     * @param Timer $timer
-     * @return BenchmarkFunction
-     */
-    public function setTimer(Timer $timer): BenchmarkFunction
-    {
-        $this->timer = $timer;
-        return $this;
-    }
-
+//    /**
+//     * @param Timer $timer
+//     * @return BenchmarkFunction
+//     */
+//    public function setTimer(Timer $timer): BenchmarkFunction
+//    {
+//        $this->timer = $timer;
+//        return $this;
+//    }
+//
     /**
      * @return null|\Throwable
      */

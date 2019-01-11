@@ -105,8 +105,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
             $function = $f->getFunction();
             $args = $f->getArgs();
             $this->prepareResult($f, $function, $args);
-            $timer = $this->profiler->timer($name);
-            $f->setTimer($timer);
+            $timer = $f->getTimer();
             if ($f->getException()) {
                 $timer->check();
                 continue;
