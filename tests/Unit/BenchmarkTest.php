@@ -68,7 +68,7 @@ class BenchmarkTest extends TestCase
     /** @test */
     public function addFunctionWithNameException(): void
     {
-        $bench = new Benchmark(100000);
+        $bench = new Benchmark(100);
 
         $bench
             ->addFunction(function () {

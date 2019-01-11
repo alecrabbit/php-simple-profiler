@@ -14,8 +14,14 @@ then
   if [[ ${COVERAGE} == 1 ]]
   then
     comment "Running tests with coverage..."
+    if [[ -e XDEBUG_FILTER_FILE ]]
+    then
+      PREPEND_OPT="--prepend ${XDEBUG_FILTER_FILE}"
+    else
+      PREPEND_OPT=''
+    fi
     docker-compose -f ${DOCKER_COMPOSE_FILE} exec app phpunit --coverage-html ${PHPUNIT_COVERAGE_HTML_REPORT} --coverage-text  \
-      --coverage-clover ${PHPUNIT_COVERAGE_CLOVER_REPORT}
+      --coverage-clover ${PHPUNIT_COVERAGE_CLOVER_REPORT} ${PREPEND_OPT}
   else
     if [[ -z "$@" ]]
     then

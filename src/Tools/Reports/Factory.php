@@ -27,12 +27,13 @@ class Factory
     /** @var bool */
     protected static $colour = false;
 
-    // @codeCOverageIgnoreStart
+    /**
+     * @codeCoverageIgnore
+     */
     private function __construct()
     {
         // Static class
     }
-    // @codeCOverageIgnoreEnd
 
     /**
      * @param ReportableInterface $reportable

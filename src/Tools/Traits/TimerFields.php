@@ -71,6 +71,13 @@ trait TimerFields
         return $this->started;
     }
 
+    /**
+     * @return bool
+     */
+    public function isNotStarted(): bool
+    {
+        return !$this->started;
+    }
 
     /**
      * @return float

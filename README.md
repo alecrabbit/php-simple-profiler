@@ -19,7 +19,7 @@ PHP Simple profiler
 There are moments when you have to choose between two or more different approaches. Benchmark class is to help you choose which is faster :) 
 
 ### Profiler
-If you need to count and/or time some repeating events Profiler class will help you.
+If you need to count and/or time some repeating operations Profiler class will help you.
 ```php
 $profiler = new Profiler();
 // in loop 
