@@ -1,17 +1,14 @@
 <?php
-/**
- * User: alec
- * Date: 29.11.18
- * Time: 11:04
- */
 
 namespace AlecRabbit\Tools;
 
+use AlecRabbit\Exception\InvalidStyleException;
 use AlecRabbit\Rewindable;
 use AlecRabbit\Tools\Contracts\BenchmarkInterface;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Factory;
+use AlecRabbit\Tools\Reports\Formatters\Helper;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
 use function AlecRabbit\brackets;
@@ -26,7 +23,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     use BenchmarkFields, Reportable;
 
     /** @var int */
-    private $namingIndex = 0;
+    private $namingIndex = 1;
     /** @var Rewindable */
     private $rewindable;
     /** @var int */
@@ -37,6 +34,12 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     private $verbose;
     /** @var int */
     private $dots;
+    /** @var array */
+    private $names;
+    /** @var string|null */
+    private $humanReadableName;
+    /** @var int */
+    private $iterationsToBench;
 
     /**
      * Benchmark constructor.
@@ -53,6 +56,8 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
      */
     public function reset(): void
     {
+        $this->names = [];
+        $this->humanReadableName = null;
         $this->dots = 0;
         $this->verbose = false;
         $this->rewindable =
@@ -70,22 +75,29 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
 
     /**
      * Launch benchmarking
-     * @param bool $report
+     * @param bool $printReport
+     * @throws InvalidStyleException
      */
-    public function run(bool $report = false): void
+    public function run(bool $printReport = false): void
     {
         if ($this->verbose) {
             echo
             sprintf(
-                'Running benchmarks(%s):',
+                'Running benchmarks(Functions: %s, Repeat: %s):',
+                $this->profiler->counter(self::ADDED)->getValue(),
                 $this->iterations
             );
-            echo PHP_EOL;
             echo PHP_EOL;
         }
         $this->execute();
 
-        if ($report) {
+        if ($this->verbose) {
+            $this->erase();
+            echo ' 100%' . PHP_EOL;
+            echo '  λ   Done!' . PHP_EOL;
+        }
+
+        if ($printReport) {
             echo PHP_EOL;
             echo (string)$this->getReport();
             echo PHP_EOL;
@@ -93,7 +105,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     }
 
     /**
-     * Launch benchmarking in verbose mode
+     * Benchmarking
      */
     private function execute(): void
     {
@@ -102,10 +114,10 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
             $function = $f->getFunction();
             $args = $f->getArgs();
             $this->prepareResult($f, $function, $args);
-            $timer = $this->profiler->timer($name);
-            $f->setTimer($timer);
+            $timer = $f->getTimer();
             if ($f->getException()) {
                 $timer->check();
+                $this->iterationsToBench -= $this->iterations;
                 continue;
             }
             foreach ($this->rewindable as $iteration) {
@@ -149,12 +161,26 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     private function progress(): void
     {
         if ($this->verbose && 1 === ++$this->totalIterations % 5000) {
+            $this->erase();
             echo '.';
+            $a =
+                str_pad(
+                    Helper::percent($this->totalIterations / $this->iterationsToBench),
+                    6,
+                    ' ',
+                    STR_PAD_LEFT
+                );
+            echo $a;
             if (++$this->dots > static::PG_WIDTH) {
                 echo PHP_EOL;
                 $this->dots = 0;
             }
         }
+    }
+
+    private function erase(): void
+    {
+        echo "\e[6D";
     }
 
     /**
@@ -171,7 +197,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
      */
     public function color(): self
     {
-        Factory::setColour(true);
+        Factory::enableColour(true);
         return $this;
     }
 
@@ -190,19 +216,56 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
                 )
             );
         }
-        $function = new BenchmarkFunction($func, $name, $this->namingIndex++, $args, $this->comment);
-        $this->functions[$function->getEnumeratedName()] = $function;
+        $name = $this->refineName($func);
+        $function =
+            new BenchmarkFunction(
+                $func,
+                $name,
+                $this->namingIndex++,
+                $args,
+                $this->comment,
+                $this->humanReadableName
+            );
+        $this->functions[$function->enumeratedName()] = $function;
+        $this->humanReadableName = null;
         $this->comment = null;
         $this->profiler->counter(self::ADDED)->bump();
+        $this->iterationsToBench += $this->iterations;
+    }
+
+    /**
+     * @param $func
+     * @return string
+     */
+    private function refineName($func): string
+    {
+        if ($func instanceof \Closure) {
+            $name = 'λ';
+        }
+        return $name;
+    }
+
+    /**
+     * @param string $comment
+     * @return Benchmark
+     */
+    public function withComment(string $comment): self
+    {
+        $this->comment = $comment;
+        return $this;
     }
 
     /**
      * @param string $name
      * @return Benchmark
      */
-    public function withComment(string $name): self
+    public function useName(string $name): self
     {
-        $this->comment = $name;
+        if (in_array($name, $this->names, true)) {
+            throw new \InvalidArgumentException(sprintf('Name "%s" is not unique', $name));
+        }
+        $this->names[] = $name;
+        $this->humanReadableName = $name;
         return $this;
     }
 

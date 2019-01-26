@@ -11,7 +11,7 @@ use AlecRabbit\Tools\Timer;
 use AlecRabbit\Traits\GettableName;
 use function AlecRabbit\brackets;
 use function AlecRabbit\str_decorate;
-use const AlecRabbit\Constants\BRACKETS_ANGLE;
+use const AlecRabbit\Helpers\Constants\BRACKETS_ANGLE;
 
 /**
  * Class BenchmarkFunction
@@ -28,6 +28,9 @@ class BenchmarkFunction
     /** @var int */
     private $index;
 
+    /** @var null|int */
+    private $rank;
+
     /** @var array */
     private $args;
 
@@ -43,6 +46,9 @@ class BenchmarkFunction
     /** @var \Throwable|null */
     private $exception;
 
+    /** @var null|string  */
+    private $humanReadableName;
+
     /**
      * BenchmarkFunction constructor.
      * @param callable $func
@@ -50,14 +56,23 @@ class BenchmarkFunction
      * @param int $index
      * @param array $args
      * @param null|string $comment
+     * @param null|string $humanReadableName
      */
-    public function __construct($func, string $name, int $index, array $args, ?string $comment = null)
-    {
+    public function __construct(
+        $func,
+        string $name,
+        int $index,
+        array $args,
+        ?string $comment = null,
+        ?string $humanReadableName = null
+    ) {
         $this->func = $func;
         $this->comment = $comment;
         $this->name = $name;
         $this->index = $index;
         $this->args = $args;
+        $this->timer = new Timer($this->getIndexedName());
+        $this->humanReadableName = $humanReadableName;
     }
 
     /**
@@ -84,7 +99,7 @@ class BenchmarkFunction
         return $this->func;
     }
 
-    public function getEnumeratedName(): string
+    public function enumeratedName(): string
     {
         return
             brackets((string)$this->index, BRACKETS_ANGLE) . ' ' . $this->name;
@@ -135,13 +150,11 @@ class BenchmarkFunction
     }
 
     /**
-     * @param Timer $timer
-     * @return BenchmarkFunction
+     * @return null|string
      */
-    public function setTimer(Timer $timer): BenchmarkFunction
+    public function getHumanReadableName(): ?string
     {
-        $this->timer = $timer;
-        return $this;
+        return $this->humanReadableName ?? $this->getIndexedName();
     }
 
     /**
@@ -161,5 +174,24 @@ class BenchmarkFunction
         $this->exception = $exception;
         return $this;
     }
+
+    /**
+     * @return null|int
+     */
+    public function getRank(): ?int
+    {
+        return $this->rank;
+    }
+
+    /**
+     * @param null|int $rank
+     * @return BenchmarkFunction
+     */
+    public function setRank(?int $rank): BenchmarkFunction
+    {
+        $this->rank = $rank;
+        return $this;
+    }
+
 
 }

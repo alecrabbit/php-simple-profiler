@@ -7,6 +7,7 @@
 
 namespace AlecRabbit\Tools\Reports;
 
+use AlecRabbit\Exception\InvalidStyleException;
 use AlecRabbit\Tools\Contracts\StringsInterface;
 use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Reports\Base\Report;
@@ -27,6 +28,7 @@ class ProfilerReport extends Report implements StringsInterface
     /**
      * ProfilerReport constructor.
      * @param Profiler $profiler
+     * @throws InvalidStyleException
      */
     public function __construct(Profiler $profiler)
     {

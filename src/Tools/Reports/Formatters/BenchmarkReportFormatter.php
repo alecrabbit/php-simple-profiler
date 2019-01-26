@@ -1,9 +1,5 @@
 <?php
-/**
- * User: alec
- * Date: 10.12.18
- * Time: 14:22
- */
+
 declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
@@ -29,6 +25,7 @@ class BenchmarkReportFormatter extends Formatter
      */
     public function getString(): string
     {
+        $rank = 0;
         $profilerReport = (string)$this->report->getProfiler()->getReport();
         $r = 'Benchmark:' . PHP_EOL;
         /** @var BenchmarkRelative $result */
@@ -36,6 +33,7 @@ class BenchmarkReportFormatter extends Formatter
             $relative = $result->getRelative();
             $average = $result->getAverage();
             $function = $this->report->getFunctionObject($indexName);
+            $function->setRank(++$rank);
             $arguments = $function->getArgs();
             $types = [];
             if (!empty($arguments)) {
@@ -44,10 +42,26 @@ class BenchmarkReportFormatter extends Formatter
                 }
             }
             $r .= sprintf(
-                '%s (+%s) %s(%s) %s %s',
-                $this->themed->yellow(format_time_auto($average)),
-                $this->col($relative),
-                $function->getIndexedName(),
+                '%s. %s (%s) %s(%s) %s %s',
+                $this->themed->dark((string)$rank),
+                $this->themed->yellow(
+                    str_pad(
+                        format_time_auto($average),
+                        8,
+                        ' ',
+                        STR_PAD_LEFT
+                    )
+                ),
+                $this->colorize(
+                    str_pad(
+                        Helper::percent($relative),
+                        7,
+                        ' ',
+                        STR_PAD_LEFT
+                    ),
+                    $relative
+                ),
+                $function->getHumanReadableName(),
                 implode(', ', $types),
                 $this->themed->comment($function->getComment()),
                 PHP_EOL
@@ -69,28 +83,20 @@ class BenchmarkReportFormatter extends Formatter
     }
 
     /**
+     * @param string $str
      * @param float $relative
      * @return string
      * @throws \Throwable
      */
-    private function col($relative): string
+    private function colorize(string $str, float $relative): string
     {
         if ($relative > 1) {
-            return $this->themed->red($this->percent($relative));
+            return $this->themed->red($str);
         }
         if ($relative >= 0.03) {
-            return $this->themed->yellow($this->percent($relative));
+            return $this->themed->yellow($str);
         }
-        return $this->themed->green($this->percent($relative));
-    }
-
-    /**
-     * @param float $relative
-     * @return string
-     */
-    private function percent(float $relative): string
-    {
         return
-            number_format($relative * 100, 1) . '%';
+            $this->themed->green($str);
     }
 }

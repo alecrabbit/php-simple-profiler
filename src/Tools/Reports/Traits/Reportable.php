@@ -1,12 +1,11 @@
 <?php
-/**
- * User: alec
- * Date: 01.12.18
- * Time: 20:25
- */
+
+declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Traits;
 
+use AlecRabbit\Exception\InvalidStyleException;
+use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Factory;
 
@@ -18,12 +17,13 @@ trait Reportable
     /**
      * @param bool $rebuild
      * @return ReportInterface
+     * @throws InvalidStyleException
      */
     public function getReport($rebuild = false): ReportInterface
     {
         if (null === $this->reportObject || true === $rebuild) {
             $this->prepareForReport();
-            /** @var \AlecRabbit\Tools\Reports\Contracts\ReportableInterface $that */
+            /** @var ReportableInterface $that */
             $that = $this; // for static analyzers
             $this->reportObject = Factory::makeReport($that);
         }

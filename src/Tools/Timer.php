@@ -1,17 +1,12 @@
 <?php
-/**
- * User: alec
- * Date: 14.10.18
- * Time: 2:19
- */
 
 namespace AlecRabbit\Tools;
 
+use AlecRabbit\Pretty;
 use AlecRabbit\Tools\Contracts\TimerInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\TimerFields;
-use function AlecRabbit\format_time_auto;
 
 class Timer implements TimerInterface, ReportableInterface
 {
@@ -30,15 +25,18 @@ class Timer implements TimerInterface, ReportableInterface
     /**
      * @return float
      */
-    private function current(): float
+    public function current(): float
     {
         return
             microtime(true);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function prepareForReport(): void
     {
-        if (null === $this->start) {
+        if (!$this->started) {
             $this->start();
             $this->mark();
         }
@@ -53,6 +51,7 @@ class Timer implements TimerInterface, ReportableInterface
     public function start(): void
     {
         $this->previous = $this->start = $this->current();
+        $this->started = true;
     }
 
     /**
@@ -97,7 +96,7 @@ class Timer implements TimerInterface, ReportableInterface
      */
     public function check(?int $iterationNumber = null): Timer
     {
-        if (null === $this->start) {
+        if (!$this->started) {
             $this->start();
         } else {
             $this->mark($iterationNumber);
@@ -106,15 +105,15 @@ class Timer implements TimerInterface, ReportableInterface
     }
 
     /**
-     * @param bool $formatted
+     * @param bool $pretty
      * @return mixed
      */
-    public function elapsed(bool $formatted = true)
+    public function elapsed(bool $pretty = true)
     {
         if ($this->isNotStopped()) {
             $this->stop();
         }
         return
-            $formatted ? format_time_auto($this->getElapsed()) : $this->elapsed;
+            $pretty ? Pretty::time($this->getElapsed()) : $this->elapsed;
     }
 }

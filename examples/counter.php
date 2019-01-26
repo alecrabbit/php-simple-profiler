@@ -17,7 +17,7 @@ foreach ($a as $item) {
 }
 $counter->bumpWith(2);
 
-Factory::setColour(true);
+Factory::enableColour(true);
 dump($counter->getReport()); // symfony/var-dumper function dump()
 echo PHP_EOL;
 dump($counter2->getReport()); // symfony/var-dumper function dump()

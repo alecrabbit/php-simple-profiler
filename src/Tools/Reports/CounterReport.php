@@ -7,6 +7,7 @@
 
 namespace AlecRabbit\Tools\Reports;
 
+use AlecRabbit\Exception\InvalidStyleException;
 use AlecRabbit\Tools\Counter;
 use AlecRabbit\Tools\Reports\Base\Report;
 use AlecRabbit\Tools\Traits\CounterFields;
@@ -18,6 +19,7 @@ class CounterReport extends Report
     /**
      * CounterReport constructor.
      * @param Counter $counter
+     * @throws InvalidStyleException
      */
     public function __construct(Counter $counter)
     {

@@ -1,9 +1,4 @@
 <?php
-/**
- * User: alec
- * Date: 30.11.18
- * Time: 17:41
- */
 
 namespace AlecRabbit\Tools\Traits;
 
@@ -27,6 +22,9 @@ trait TimerFields
 
     /** @var bool */
     protected $stopped = false;
+
+    /** @var bool */
+    protected $started = false;
 
     /** @var float */
     protected $currentValue;
@@ -63,6 +61,22 @@ trait TimerFields
     public function isNotStopped(): bool
     {
         return !$this->stopped;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStarted(): bool
+    {
+        return $this->started;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNotStarted(): bool
+    {
+        return !$this->started;
     }
 
     /**

@@ -1,9 +1,6 @@
 <?php
-/**
- * User: alec
- * Date: 01.12.18
- * Time: 17:14
- */
+
+declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports;
 
@@ -24,14 +21,24 @@ use function AlecRabbit\typeOf;
 
 class Factory
 {
-    /** @var Themed */
+    /** @var Themed|null */
     protected static $theme;
+
     /** @var bool */
     protected static $colour = false;
 
     /**
+     * @codeCoverageIgnore
+     */
+    private function __construct()
+    {
+        // Static class
+    }
+
+    /**
      * @param ReportableInterface $reportable
      * @return ReportInterface
+     * @throws InvalidStyleException
      */
     public static function makeReport(ReportableInterface $reportable): ReportInterface
     {
@@ -95,7 +102,7 @@ class Factory
     /**
      * @param bool $colour
      */
-    public static function setColour(bool $colour): void
+    public static function enableColour(bool $colour): void
     {
         self::$colour = $colour;
     }

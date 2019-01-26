@@ -81,9 +81,10 @@ class TimerTest extends TestCase
     /** @test */
     public function timerElapsed(): void
     {
-        $timer = new Timer();
+        $timer = new Timer('someName');
         $timer->start();
         usleep(2000);
+        $this->assertIsString('' . $timer->getReport());
         $this->assertEquals('2ms', $timer->elapsed());
         $this->assertStringMatchesFormat(
             '%fms',

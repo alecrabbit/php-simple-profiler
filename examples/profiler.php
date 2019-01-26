@@ -24,7 +24,7 @@ usleep(100);
 $profiler->timer('new')->check();
 usleep(5510);
 
-Factory::setColour(true);
+Factory::enableColour(true);
 dump($profiler->getReport()); // symfony/var-dumper function dump()
 echo PHP_EOL;
 
