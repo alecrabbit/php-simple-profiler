@@ -28,6 +28,9 @@ class BenchmarkFunction
     /** @var int */
     private $index;
 
+    /** @var null|int */
+    private $rank;
+
     /** @var array */
     private $args;
 
@@ -96,7 +99,7 @@ class BenchmarkFunction
         return $this->func;
     }
 
-    public function getEnumeratedName(): string
+    public function enumeratedName(): string
     {
         return
             brackets((string)$this->index, BRACKETS_ANGLE) . ' ' . $this->name;
@@ -146,16 +149,14 @@ class BenchmarkFunction
         return $this->timer;
     }
 
-//    /**
-//     * @param Timer $timer
-//     * @return BenchmarkFunction
-//     */
-//    public function setTimer(Timer $timer): BenchmarkFunction
-//    {
-//        $this->timer = $timer;
-//        return $this;
-//    }
-//
+    /**
+     * @return null|string
+     */
+    public function getHumanReadableName(): ?string
+    {
+        return $this->humanReadableName ?? $this->getIndexedName();
+    }
+
     /**
      * @return null|\Throwable
      */
@@ -173,4 +174,24 @@ class BenchmarkFunction
         $this->exception = $exception;
         return $this;
     }
+
+    /**
+     * @return null|int
+     */
+    public function getRank(): ?int
+    {
+        return $this->rank;
+    }
+
+    /**
+     * @param null|int $rank
+     * @return BenchmarkFunction
+     */
+    public function setRank(?int $rank): BenchmarkFunction
+    {
+        $this->rank = $rank;
+        return $this;
+    }
+
+
 }

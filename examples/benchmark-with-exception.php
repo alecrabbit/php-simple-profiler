@@ -22,23 +22,25 @@ $benchmark
         },
         'a'
     );
-$benchmark
-    ->withComment('slow function')
-    ->addFunction(
-        function ($n) {
-            for ($i = 1500; $i > 0; $i--) {
-                $n++;
-            }
-            return $n;
-        },
-        1
-    );
+
 $benchmark
     ->withComment('throws')
     ->addFunction(
         function () {
             throw new \Exception('Simulated exception');
         }
+    );
+
+$benchmark
+    ->withComment('slow function')
+    ->addFunction(
+        function ($n) {
+            for ($i = 100; $i > 0; $i--) {
+                $n++;
+            }
+            return $n;
+        },
+        1
     );
 $benchmark
     ->returnResults()

@@ -43,7 +43,6 @@ class BenchmarkReport extends Report
      */
     private function computeRelatives(): array
     {
-//        $averages = $this->computeAverages($this->profiler->getTimers());
         $averages = $this->computeAverages($this->getTimers());
         $relatives = [];
         if (!empty($averages)) {
@@ -75,7 +74,7 @@ class BenchmarkReport extends Report
                 try {
                     $averages[$name] = $timer->getAverageValue();
                 } catch (\Throwable $e) {
-                    // no further action
+                    // no action
                 }
             }
         }

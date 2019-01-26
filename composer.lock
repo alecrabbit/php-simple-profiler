@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "alecrabbit/accessories",
-            "version": "0.2.2",
+            "version": "0.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/accessories.git",
-                "reference": "51a5b48b29af83dcda49e9a18a46e27d15fe9e05"
+                "reference": "c9303890dfb4cb69faa25f2ef67986ed6654f2b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/accessories/zipball/51a5b48b29af83dcda49e9a18a46e27d15fe9e05",
-                "reference": "51a5b48b29af83dcda49e9a18a46e27d15fe9e05",
+                "url": "https://api.github.com/repos/alecrabbit/accessories/zipball/c9303890dfb4cb69faa25f2ef67986ed6654f2b4",
+                "reference": "c9303890dfb4cb69faa25f2ef67986ed6654f2b4",
                 "shasum": ""
             },
             "require": {
@@ -50,20 +50,20 @@
                 "rewindable",
                 "time"
             ],
-            "time": "2019-01-09T23:58:13+00:00"
+            "time": "2019-01-23T13:38:55+00:00"
         },
         {
             "name": "alecrabbit/php-console-colour",
-            "version": "0.0.4-BETA",
+            "version": "0.0.4-RC1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-console-colour.git",
-                "reference": "c053efbb6a664dff6b241fe8a15b47c96f442ac5"
+                "reference": "5587f2eafcdaedd0f826378510b7329cbfb52af8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-console-colour/zipball/c053efbb6a664dff6b241fe8a15b47c96f442ac5",
-                "reference": "c053efbb6a664dff6b241fe8a15b47c96f442ac5",
+                "url": "https://api.github.com/repos/alecrabbit/php-console-colour/zipball/5587f2eafcdaedd0f826378510b7329cbfb52af8",
+                "reference": "5587f2eafcdaedd0f826378510b7329cbfb52af8",
                 "shasum": ""
             },
             "require": {
@@ -87,7 +87,7 @@
                 "MIT"
             ],
             "description": "PHP package alecrabbit/php-console-colour",
-            "time": "2018-12-31T18:36:11+00:00"
+            "time": "2019-01-11T13:34:20+00:00"
         },
         {
             "name": "alecrabbit/php-helpers",
@@ -273,16 +273,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.10.0",
+            "version": "2.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "69ff95a9ccdfd5e907678ae844b3fc402110d1a3"
+                "reference": "39a8ebfffc2a75de9d2ade3f0e12c7e11669f7ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/69ff95a9ccdfd5e907678ae844b3fc402110d1a3",
-                "reference": "69ff95a9ccdfd5e907678ae844b3fc402110d1a3",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/39a8ebfffc2a75de9d2ade3f0e12c7e11669f7ce",
+                "reference": "39a8ebfffc2a75de9d2ade3f0e12c7e11669f7ce",
                 "shasum": ""
             },
             "require": {
@@ -291,11 +291,11 @@
                 "symfony/translation": "^4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^7.1.5"
-            },
-            "suggest": {
-                "friendsofphp/php-cs-fixer": "Needed for the `composer phpcs` command. Allow to automatically fix code style.",
-                "phpstan/phpstan": "Needed for the `composer phpstan` command. Allow to detect potential errors."
+                "friendsofphp/php-cs-fixer": "^2.14 || ^3.0",
+                "phpmd/phpmd": "^2.6",
+                "phpstan/phpstan": "^0.10.8",
+                "phpunit/phpunit": "^7.1.5",
+                "squizlabs/php_codesniffer": "^3.4"
             },
             "type": "library",
             "extra": {
@@ -328,7 +328,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2019-01-02T21:35:25+00:00"
+            "time": "2019-01-14T09:25:45+00:00"
         },
         {
             "name": "symfony/contracts",
@@ -1516,16 +1516,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.5.1",
+            "version": "7.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "c23d78776ad415d5506e0679723cb461d71f488f"
+                "reference": "7c89093bd00f7d5ddf0ab81dee04f801416b4944"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/c23d78776ad415d5506e0679723cb461d71f488f",
-                "reference": "c23d78776ad415d5506e0679723cb461d71f488f",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/7c89093bd00f7d5ddf0ab81dee04f801416b4944",
+                "reference": "7c89093bd00f7d5ddf0ab81dee04f801416b4944",
                 "shasum": ""
             },
             "require": {
@@ -1596,7 +1596,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-12-12T07:20:32+00:00"
+            "time": "2019-01-15T08:19:08+00:00"
         },
         {
             "name": "psr/log",

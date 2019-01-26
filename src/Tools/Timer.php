@@ -7,7 +7,6 @@ use AlecRabbit\Tools\Contracts\TimerInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\TimerFields;
-use function AlecRabbit\format_time_auto;
 
 class Timer implements TimerInterface, ReportableInterface
 {
@@ -26,12 +25,15 @@ class Timer implements TimerInterface, ReportableInterface
     /**
      * @return float
      */
-    private function current(): float
+    public function current(): float
     {
         return
             microtime(true);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function prepareForReport(): void
     {
         if (!$this->started) {

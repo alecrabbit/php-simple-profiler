@@ -8,6 +8,7 @@ use AlecRabbit\Tools\Contracts\BenchmarkInterface;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Factory;
+use AlecRabbit\Tools\Reports\Formatters\Helper;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
 use function AlecRabbit\brackets;
@@ -22,7 +23,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     use BenchmarkFields, Reportable;
 
     /** @var int */
-    private $namingIndex = 0;
+    private $namingIndex = 1;
     /** @var Rewindable */
     private $rewindable;
     /** @var int */
@@ -37,6 +38,8 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     private $names;
     /** @var string|null */
     private $humanReadableName;
+    /** @var int */
+    private $iterationsToBench;
 
     /**
      * Benchmark constructor.
@@ -72,23 +75,29 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
 
     /**
      * Launch benchmarking
-     * @param bool $report
+     * @param bool $printReport
      * @throws InvalidStyleException
      */
-    public function run(bool $report = false): void
+    public function run(bool $printReport = false): void
     {
         if ($this->verbose) {
             echo
             sprintf(
-                'Running benchmarks(%s):',
+                'Running benchmarks(Functions: %s, Repeat: %s):',
+                $this->profiler->counter(self::ADDED)->getValue(),
                 $this->iterations
             );
-            echo PHP_EOL;
             echo PHP_EOL;
         }
         $this->execute();
 
-        if ($report) {
+        if ($this->verbose) {
+            $this->erase();
+            echo ' 100%' . PHP_EOL;
+            echo '  λ   Done!' . PHP_EOL;
+        }
+
+        if ($printReport) {
             echo PHP_EOL;
             echo (string)$this->getReport();
             echo PHP_EOL;
@@ -108,6 +117,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
             $timer = $f->getTimer();
             if ($f->getException()) {
                 $timer->check();
+                $this->iterationsToBench -= $this->iterations;
                 continue;
             }
             foreach ($this->rewindable as $iteration) {
@@ -151,12 +161,26 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     private function progress(): void
     {
         if ($this->verbose && 1 === ++$this->totalIterations % 5000) {
+            $this->erase();
             echo '.';
+            $a =
+                str_pad(
+                    Helper::percent($this->totalIterations / $this->iterationsToBench),
+                    6,
+                    ' ',
+                    STR_PAD_LEFT
+                );
+            echo $a;
             if (++$this->dots > static::PG_WIDTH) {
                 echo PHP_EOL;
                 $this->dots = 0;
             }
         }
+    }
+
+    private function erase(): void
+    {
+        echo "\e[6D";
     }
 
     /**
@@ -192,12 +216,33 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
                 )
             );
         }
+        $name = $this->refineName($func);
         $function =
-            new BenchmarkFunction($func, $name, $this->namingIndex++, $args, $this->comment, $this->humanReadableName);
-        $this->functions[$function->getEnumeratedName()] = $function;
+            new BenchmarkFunction(
+                $func,
+                $name,
+                $this->namingIndex++,
+                $args,
+                $this->comment,
+                $this->humanReadableName
+            );
+        $this->functions[$function->enumeratedName()] = $function;
         $this->humanReadableName = null;
         $this->comment = null;
         $this->profiler->counter(self::ADDED)->bump();
+        $this->iterationsToBench += $this->iterations;
+    }
+
+    /**
+     * @param $func
+     * @return string
+     */
+    private function refineName($func): string
+    {
+        if ($func instanceof \Closure) {
+            $name = 'λ';
+        }
+        return $name;
     }
 
     /**
