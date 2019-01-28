@@ -94,7 +94,7 @@ class NewTimer implements TimerInterface, ReportableInterface
      * @param int|null $iterationNumber
      * @return Timer
      */
-    public function check(?int $iterationNumber = null): Timer
+    public function check(?int $iterationNumber = null): NewTimer
     {
         if (!$this->started) {
             $this->start();
