@@ -16,7 +16,7 @@ class Profiler implements ProfilerInterface, ReportableInterface
 {
     use Reportable, DefaultableName;
 
-    /** @var NewTimer[] */
+    /** @var Timer[] */
     private $timers = [];
 
     /** @var Counter[] */
@@ -70,17 +70,17 @@ class Profiler implements ProfilerInterface, ReportableInterface
     /**
      * @param null|string $name
      * @param string ...$suffixes
-     * @return NewTimer
+     * @return Timer
      */
-    public function timer(?string $name = null, string ...$suffixes): NewTimer
+    public function timer(?string $name = null, string ...$suffixes): Timer
     {
         $name = $this->prepareName($name, $suffixes);
         return
-            $this->timers[$name] ?? $this->timers[$name] = new NewTimer($name);
+            $this->timers[$name] ?? $this->timers[$name] = new Timer($name);
     }
 
     /**
-     * @return NewTimer[]
+     * @return Timer[]
      */
     public function getTimers(): array
     {

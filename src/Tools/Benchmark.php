@@ -145,12 +145,12 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     }
 
     /**
-     * @param NewTimer $timer
+     * @param Timer $timer
      * @param callable $function
      * @param array $args
      * @param int $iteration
      */
-    private function bench(NewTimer $timer, callable $function, array $args, int $iteration): void
+    private function bench(Timer $timer, callable $function, array $args, int $iteration): void
     {
         $timer->start();
         $function(...$args);
