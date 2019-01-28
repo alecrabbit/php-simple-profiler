@@ -54,22 +54,8 @@ class TimerTest extends TestCase
     public function timerElapsedNotStarted(): void
     {
         $timer = new Timer();
-        $this->assertEquals('0ns', $timer->elapsed());
+        $this->assertEquals('0.0ns', $timer->elapsed());
     }
-
-//    /** @test */
-//    public function timerElapsedNotStartedReport(): void
-//    {
-//        $name = 'name';
-//        $timer = new Timer($name);
-//        /** @var TimerReport $report */
-//        $report = $timer->getReport();
-//        $string = (string)$report;
-//        $this->assertContains($name, $string);
-//        $this->assertInstanceOf(TimerReport::class, $report);
-//        $this->assertEquals(1, $report->getCount());
-//        $this->assertEquals('0ns', $timer->elapsed());
-//    }
 
     /** @test */
     public function timerReportsNotStarted(): void
@@ -85,7 +71,7 @@ class TimerTest extends TestCase
         $timer->start();
         usleep(2000);
         $this->assertIsString('' . $timer->getReport());
-        $this->assertEquals('2ms', $timer->elapsed());
+        $this->assertEquals('2.0ms', $timer->elapsed());
         $this->assertStringMatchesFormat(
             '%fms',
             $timer->elapsed(true)
@@ -106,11 +92,11 @@ class TimerTest extends TestCase
         $timer->check($i + 1);
         /** @var TimerReport $report */
         $report = $timer->getReport();
-        $this->assertEquals(0.001, $report->getLastValue(), '', 0.0001);
-        $this->assertEquals(0.005, $report->getAverageValue(), '', 0.0005);
-        $this->assertEquals(0.001, $report->getMinValue(), '', 0.0001);
+        $this->assertEqualsWithDelta(0.001, $report->getLastValue(), 0.0001);
+        $this->assertEqualsWithDelta(0.005, $report->getAverageValue(), 0.0005);
+        $this->assertEqualsWithDelta(0.001, $report->getMinValue(), 0.0001);
+        $this->assertEqualsWithDelta(0.008, $report->getMaxValue(), 0.0001);
         $this->assertEquals(8, $report->getMinValueIteration());
-        $this->assertEquals(0.008, $report->getMaxValue(), '', 0.0001);
         $this->assertEquals(6, $report->getMaxValueIteration());
         $this->assertEquals(7, $report->getCount());
     }

@@ -19,7 +19,7 @@ trait Reportable
      * @return ReportInterface
      * @throws InvalidStyleException
      */
-    public function getReport($rebuild = false): ReportInterface
+    public function getReport(bool $rebuild = false): ReportInterface
     {
         if (null === $this->reportObject || true === $rebuild) {
             $this->prepareForReport();
