@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use AlecRabbit\Tools\Reports\TimerReport;
-use AlecRabbit\Tools\Timer;
+use AlecRabbit\Tools\NewTimer;
 use PHPUnit\Framework\TestCase;
 
 class TimerReportTest extends TestCase
@@ -17,7 +17,7 @@ class TimerReportTest extends TestCase
     /** @test */
     public function instantiateWithException(): void
     {
-        $timer = new Timer();
+        $timer = new NewTimer();
         $report = new TimerReport($timer);
         $this->assertInstanceOf(TimerReport::class, $report);
     }

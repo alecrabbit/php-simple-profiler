@@ -1,12 +1,12 @@
 <?php
 
 use AlecRabbit\Tools\Reports\Factory;
-use AlecRabbit\Tools\Timer;
+use AlecRabbit\Tools\NewTimer;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 echo 'Start...', PHP_EOL, 'wait 5 sec', PHP_EOL;
-$timer = new Timer('new');
+$timer = new NewTimer('new');
 $timer->start();
 $count = 5;
 for ($i = 0; $i < $count; $i++) {

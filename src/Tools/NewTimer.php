@@ -11,6 +11,8 @@ use AlecRabbit\Tools\Traits\TimerFields;
 class NewTimer implements TimerInterface, ReportableInterface
 {
     use TimerFields, Reportable;
+    /** @var bool */
+    private $microtime;
 
     /**
      * Timer constructor.
@@ -18,6 +20,9 @@ class NewTimer implements TimerInterface, ReportableInterface
      */
     public function __construct(?string $name = null)
     {
+        if (PHP_VERSION_ID < 70300) {
+            $this->microtime = true;
+        }
         $this->name = $this->defaultName($name);
         $this->creation = $this->current();
     }
@@ -28,7 +33,7 @@ class NewTimer implements TimerInterface, ReportableInterface
     public function current(): float
     {
         return
-            microtime(true);
+            $this->microtime ? microtime(true) : hrtime(true);
     }
 
     /**
@@ -36,7 +41,7 @@ class NewTimer implements TimerInterface, ReportableInterface
      */
     public function prepareForReport(): void
     {
-        if (!$this->started) {
+        if (!$this->isStarted()) {
             $this->start();
             $this->mark();
         }
@@ -92,11 +97,11 @@ class NewTimer implements TimerInterface, ReportableInterface
      * Marks the elapsed time.
      * If timer was not started starts the timer.
      * @param int|null $iterationNumber
-     * @return Timer
+     * @return NewTimer
      */
-    public function check(?int $iterationNumber = null): Timer
+    public function check(?int $iterationNumber = null): NewTimer
     {
-        if (!$this->started) {
+        if (!$this->isStarted()) {
             $this->start();
         } else {
             $this->mark($iterationNumber);
