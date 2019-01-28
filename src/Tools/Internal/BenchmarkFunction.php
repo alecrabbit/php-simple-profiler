@@ -7,7 +7,7 @@
 
 namespace AlecRabbit\Tools\Internal;
 
-use AlecRabbit\Tools\NewTimer;
+use AlecRabbit\Tools\Timer;
 use AlecRabbit\Traits\GettableName;
 use function AlecRabbit\brackets;
 use function AlecRabbit\str_decorate;
@@ -40,7 +40,7 @@ class BenchmarkFunction
     /** @var mixed */
     private $result;
 
-    /** @var NewTimer */
+    /** @var Timer */
     private $timer;
 
     /** @var \Throwable|null */
@@ -71,7 +71,7 @@ class BenchmarkFunction
         $this->name = $name;
         $this->index = $index;
         $this->args = $args;
-        $this->timer = new NewTimer($this->getIndexedName());
+        $this->timer = new Timer($this->getIndexedName());
         $this->humanReadableName = $humanReadableName;
     }
 
@@ -142,9 +142,9 @@ class BenchmarkFunction
     }
 
     /**
-     * @return NewTimer
+     * @return Timer
      */
-    public function getTimer(): NewTimer
+    public function getTimer(): Timer
     {
         return $this->timer;
     }

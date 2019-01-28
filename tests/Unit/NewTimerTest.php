@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use AlecRabbit\Tools\Reports\TimerReport;
-use AlecRabbit\Tools\NewTimer;
+use AlecRabbit\Tools\Timer;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -15,23 +15,23 @@ class NewTimerTest extends TestCase
     /** @test */
     public function classCreation(): void
     {
-        $timer = new NewTimer();
-        $this->assertInstanceOf(NewTimer::class, $timer);
+        $timer = new Timer();
+        $this->assertInstanceOf(Timer::class, $timer);
     }
 
     /** @test */
     public function timerDefaultCreation(): void
     {
-        $timer = new NewTimer();
+        $timer = new Timer();
         $this->assertEquals('default_name', $timer->getName());
-        $timer = new NewTimer('name');
+        $timer = new Timer('name');
         $this->assertEquals('name', $timer->getName());
     }
 
     /** @test */
     public function timerAvgValue(): void
     {
-        $timer = new NewTimer();
+        $timer = new Timer();
         $timer->start();
         $count = 5;
         for ($i = 0; $i < $count; $i++) {
@@ -48,21 +48,21 @@ class NewTimerTest extends TestCase
     /** @test */
     public function timerElapsedNotStarted(): void
     {
-        $timer = new NewTimer();
+        $timer = new Timer();
         $this->assertEquals('0.0ns', $timer->elapsed());
     }
 
     /** @test */
     public function timerReportsNotStarted(): void
     {
-        $timer = new NewTimer();
+        $timer = new Timer();
         $this->assertInstanceOf(TimerReport::class, $timer->getReport());
     }
 
     /** @test */
     public function timerElapsed(): void
     {
-        $timer = new NewTimer('someName');
+        $timer = new Timer('someName');
         $timer->start();
         usleep(2000);
         $this->assertIsString('' . $timer->getReport());
@@ -76,7 +76,7 @@ class NewTimerTest extends TestCase
     /** @test */
     public function timerValues(): void
     {
-        $timer = new NewTimer();
+        $timer = new Timer();
         $timer->start();
         $count = 6;
         for ($i = 1; $i <= $count; $i++) {
