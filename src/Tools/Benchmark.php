@@ -216,11 +216,10 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
                 )
             );
         }
-        $name = $this->refineName($func);
         $function =
             new BenchmarkFunction(
                 $func,
-                $name,
+                $this->refineName($func, $name),
                 $this->namingIndex++,
                 $args,
                 $this->comment,
@@ -234,10 +233,11 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     }
 
     /**
-     * @param $func
+     * @param callable $func
+     * @param string $name
      * @return string
      */
-    private function refineName($func): string
+    private function refineName($func, $name): string
     {
         if ($func instanceof \Closure) {
             $name = 'λ';

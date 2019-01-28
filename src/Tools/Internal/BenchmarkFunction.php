@@ -192,6 +192,4 @@ class BenchmarkFunction
         $this->rank = $rank;
         return $this;
     }
-
-
 }

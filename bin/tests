@@ -47,12 +47,12 @@ then
 
   ./psalm "$@"
 
-  ./phpcs "$@"
+  ./php-cs "$@"
 fi
 generate_report_file
 if [[ ${BEAUTY} == 1 ]]
 then
-  ./phpcbf "$@"
+  ./php-cbf "$@"
 fi
 
 

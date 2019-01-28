@@ -8,20 +8,20 @@
     "packages": [
         {
             "name": "alecrabbit/accessories",
-            "version": "0.2.3",
+            "version": "0.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/accessories.git",
-                "reference": "c9303890dfb4cb69faa25f2ef67986ed6654f2b4"
+                "reference": "a1aaa28807f7a370872b79c7878945dcdef234b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/accessories/zipball/c9303890dfb4cb69faa25f2ef67986ed6654f2b4",
-                "reference": "c9303890dfb4cb69faa25f2ef67986ed6654f2b4",
+                "url": "https://api.github.com/repos/alecrabbit/accessories/zipball/a1aaa28807f7a370872b79c7878945dcdef234b1",
+                "reference": "a1aaa28807f7a370872b79c7878945dcdef234b1",
                 "shasum": ""
             },
             "require": {
-                "alecrabbit/php-helpers": "^0.2.3",
+                "alecrabbit/php-helpers": "^0.2.4",
                 "php": ">=7.2"
             },
             "require-dev": {
@@ -50,7 +50,7 @@
                 "rewindable",
                 "time"
             ],
-            "time": "2019-01-23T13:38:55+00:00"
+            "time": "2019-01-28T16:10:14+00:00"
         },
         {
             "name": "alecrabbit/php-console-colour",
@@ -91,16 +91,16 @@
         },
         {
             "name": "alecrabbit/php-helpers",
-            "version": "0.2.3",
+            "version": "0.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-helpers.git",
-                "reference": "5e065db77d50647e1e1b87d4f65e3ff7968c9f49"
+                "reference": "b5334ce1e135c3014dbac68bc7c503a68becf10b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/5e065db77d50647e1e1b87d4f65e3ff7968c9f49",
-                "reference": "5e065db77d50647e1e1b87d4f65e3ff7968c9f49",
+                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/b5334ce1e135c3014dbac68bc7c503a68becf10b",
+                "reference": "b5334ce1e135c3014dbac68bc7c503a68becf10b",
                 "shasum": ""
             },
             "require": {
@@ -131,7 +131,7 @@
                 "MIT"
             ],
             "description": "PHP helpers functions",
-            "time": "2019-01-09T23:54:30+00:00"
+            "time": "2019-01-28T15:23:06+00:00"
         },
         {
             "name": "alecrabbit/php-traits",
@@ -1899,16 +1899,16 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "4.0.1",
+            "version": "4.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "febd209a219cea7b56ad799b30ebbea34b71eb8f"
+                "reference": "4a43e9af57b4afa663077b9bc85255dbc6e8a2bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/febd209a219cea7b56ad799b30ebbea34b71eb8f",
-                "reference": "febd209a219cea7b56ad799b30ebbea34b71eb8f",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/4a43e9af57b4afa663077b9bc85255dbc6e8a2bd",
+                "reference": "4a43e9af57b4afa663077b9bc85255dbc6e8a2bd",
                 "shasum": ""
             },
             "require": {
@@ -1945,7 +1945,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2018-11-25T09:31:21+00:00"
+            "time": "2019-01-28T15:26:03+00:00"
         },
         {
             "name": "sebastian/exporter",
