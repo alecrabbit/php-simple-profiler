@@ -2,41 +2,36 @@
 
 namespace Tests\Unit;
 
-use AlecRabbit\Tools\Reports\TimerReport;
-use AlecRabbit\Tools\Timer;
-use AlecRabbit\Tools\NewTimer;
+use AlecRabbit\Tools\HRTimer;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @group time-sensitive
- */
-class NewTimerTest extends TestCase
+class HRTimerTest extends TestCase
 {
 
     /** @test */
     public function classCreation(): void
     {
-        $timer = new NewTimer();
-        $this->assertInstanceOf(NewTimer::class, $timer);
+        $timer = new HRTimer();
+        $this->assertInstanceOf(HRTimer::class, $timer);
     }
 
     /** @test */
     public function timerDefaultCreation(): void
     {
-        $timer = new NewTimer();
+        $timer = new HRTimer();
         $this->assertEquals('default_name', $timer->getName());
-        $timer = new NewTimer('name');
+        $timer = new HRTimer('name');
         $this->assertEquals('name', $timer->getName());
     }
 
     /** @test */
     public function timerAvgValue(): void
     {
-        $timer = new NewTimer();
+        $timer = new HRTimer();
         $timer->start();
         $count = 5;
         for ($i = 0; $i < $count; $i++) {
-            sleep(1);
+            usleep(1000);
             $timer->check();
         }
         $this->assertEquals(1.0, $timer->getAverageValue(), 'getAvgValue');
@@ -49,7 +44,7 @@ class NewTimerTest extends TestCase
     /** @test */
     public function timerElapsedNotStarted(): void
     {
-        $timer = new NewTimer();
+        $timer = new HRTimer();
         $this->assertEquals('0.0ns', $timer->elapsed());
     }
 

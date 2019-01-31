@@ -7,10 +7,13 @@ use AlecRabbit\Tools\Contracts\TimerInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\TimerFields;
+use const AlecRabbit\Helpers\Constants\PHP_ARCH;
 
-class NewTimer implements TimerInterface, ReportableInterface
+class HRTimer implements TimerInterface, ReportableInterface
 {
     use TimerFields, Reportable;
+    /** @var bool */
+    private $is32bit = false;
 
     /**
      * Timer constructor.
@@ -20,15 +23,18 @@ class NewTimer implements TimerInterface, ReportableInterface
     {
         $this->name = $this->defaultName($name);
         $this->creation = $this->current();
+        if (PHP_ARCH === 32) {
+            $this->is32bit = true;
+        }
     }
 
     /**
-     * @return float
+     * @return int
      */
-    public function current(): float
+    public function current(): int
     {
         return
-            microtime(true);
+            hrtime(true);
     }
 
     /**
@@ -36,7 +42,7 @@ class NewTimer implements TimerInterface, ReportableInterface
      */
     public function prepareForReport(): void
     {
-        if (!$this->started) {
+        if (!$this->isStarted()) {
             $this->start();
             $this->mark();
         }
@@ -92,11 +98,11 @@ class NewTimer implements TimerInterface, ReportableInterface
      * Marks the elapsed time.
      * If timer was not started starts the timer.
      * @param int|null $iterationNumber
-     * @return Timer
+     * @return HRTimer
      */
-    public function check(?int $iterationNumber = null): NewTimer
+    public function check(?int $iterationNumber = null): HRTimer
     {
-        if (!$this->started) {
+        if (!$this->isStarted()) {
             $this->start();
         } else {
             $this->mark($iterationNumber);
@@ -114,6 +120,6 @@ class NewTimer implements TimerInterface, ReportableInterface
             $this->stop();
         }
         return
-            $pretty ? Pretty::time($this->getElapsed()) : $this->elapsed;
+            $pretty ? Pretty::time($this->getElapsed()/1000000000) : $this->elapsed;
     }
 }
