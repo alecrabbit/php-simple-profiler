@@ -7,13 +7,10 @@ use AlecRabbit\Tools\Contracts\TimerInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\TimerFields;
-use const AlecRabbit\Helpers\Constants\PHP_ARCH;
 
 class HRTimer implements TimerInterface, ReportableInterface
 {
     use TimerFields, Reportable;
-    /** @var bool */
-    private $is32bit = false;
 
     /**
      * Timer constructor.
@@ -23,18 +20,15 @@ class HRTimer implements TimerInterface, ReportableInterface
     {
         $this->name = $this->defaultName($name);
         $this->creation = $this->current();
-        if (PHP_ARCH === 32) {
-            $this->is32bit = true;
-        }
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function current(): int
+    public function current(): float
     {
         return
-            hrtime(true);
+            microtime(true);
     }
 
     /**
@@ -42,7 +36,7 @@ class HRTimer implements TimerInterface, ReportableInterface
      */
     public function prepareForReport(): void
     {
-        if (!$this->isStarted()) {
+        if ($this->isNotStarted()) {
             $this->start();
             $this->mark();
         }
@@ -56,7 +50,7 @@ class HRTimer implements TimerInterface, ReportableInterface
      */
     public function start(): void
     {
-        $this->previous = $this->start = $this->current();
+        $this->previous = $this->current();
         $this->started = true;
     }
 
@@ -69,6 +63,14 @@ class HRTimer implements TimerInterface, ReportableInterface
         $this->currentValue = $current - $this->previous;
         $this->previous = $current;
 
+        $this->compute($iterationNumber);
+    }
+
+    /**
+     * @param null|int $iterationNumber
+     */
+    private function compute(?int $iterationNumber): void
+    {
         if (0 !== $this->count) {
             ++$this->count;
             if ($this->currentValue < $this->minValue) {
@@ -102,11 +104,29 @@ class HRTimer implements TimerInterface, ReportableInterface
      */
     public function check(?int $iterationNumber = null): HRTimer
     {
-        if (!$this->isStarted()) {
+        if ($this->isNotStarted()) {
             $this->start();
         } else {
             $this->mark($iterationNumber);
         }
+        return $this;
+    }
+
+    /**
+     * @param float $start
+     * @param float $stop
+     * @param null|int $iterationNumber
+     * @return HRTimer
+     */
+    public function interval(float $start, float $stop, ?int $iterationNumber = null): HRTimer
+    {
+        if ($this->isNotStarted()) {
+            $this->start();
+        }
+        $this->currentValue = $stop - $start;
+        $this->previous = $stop;
+
+        $this->compute($iterationNumber);
         return $this;
     }
 
@@ -120,6 +140,6 @@ class HRTimer implements TimerInterface, ReportableInterface
             $this->stop();
         }
         return
-            $pretty ? Pretty::time($this->getElapsed()/1000000000) : $this->elapsed;
+            $pretty ? Pretty::seconds($this->getElapsed()) : $this->elapsed;
     }
 }

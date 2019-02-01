@@ -5,6 +5,9 @@ namespace Tests\Unit;
 use AlecRabbit\Tools\HRTimer;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @group time-sensitive
+ */
 class HRTimerTest extends TestCase
 {
 
@@ -31,8 +34,25 @@ class HRTimerTest extends TestCase
         $timer->start();
         $count = 5;
         for ($i = 0; $i < $count; $i++) {
-            usleep(1000);
+            sleep(1);
             $timer->check();
+        }
+        $this->assertEquals(1.0, $timer->getAverageValue(), 'getAvgValue');
+        $this->assertEquals(1.0, $timer->getMinValue(), 'getMinValue');
+        $this->assertEquals(1.0, $timer->getMaxValue(), 'getMaxValue');
+        $this->assertEquals(1.0, $timer->getLastValue(), 'getCurrentValue');
+        $this->assertEquals($count, $timer->getCount());
+    }
+    /** @test */
+    public function timerAvgValueInterval(): void
+    {
+        $timer = new HRTimer();
+        $count = 5;
+        for ($i = 0; $i < $count; $i++) {
+            $start = microtime(true);
+            sleep(1);
+            $stop = microtime(true);
+            $timer->interval($start, $stop);
         }
         $this->assertEquals(1.0, $timer->getAverageValue(), 'getAvgValue');
         $this->assertEquals(1.0, $timer->getMinValue(), 'getMinValue');

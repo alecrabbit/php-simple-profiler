@@ -50,7 +50,7 @@ class Timer implements TimerInterface, ReportableInterface
      */
     public function start(): void
     {
-        $this->previous = $this->start = $this->current();
+        $this->previous = $this->current();
         $this->started = true;
     }
 

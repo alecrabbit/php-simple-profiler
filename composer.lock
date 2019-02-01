@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "alecrabbit/accessories",
-            "version": "0.2.5-RC2",
+            "version": "0.2.5-RC3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/accessories.git",
-                "reference": "0df7429db6b24406af262c18c5e525fbff25de9e"
+                "reference": "5983ac30d7dcc227d0f5df3685f868c9be9a2f24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/accessories/zipball/0df7429db6b24406af262c18c5e525fbff25de9e",
-                "reference": "0df7429db6b24406af262c18c5e525fbff25de9e",
+                "url": "https://api.github.com/repos/alecrabbit/accessories/zipball/5983ac30d7dcc227d0f5df3685f868c9be9a2f24",
+                "reference": "5983ac30d7dcc227d0f5df3685f868c9be9a2f24",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +50,7 @@
                 "rewindable",
                 "time"
             ],
-            "time": "2019-01-30T17:21:01+00:00"
+            "time": "2019-01-31T14:49:03+00:00"
         },
         {
             "name": "alecrabbit/php-console-colour",
@@ -91,16 +91,16 @@
         },
         {
             "name": "alecrabbit/php-helpers",
-            "version": "0.2.5-RC2",
+            "version": "0.2.5-RC3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-helpers.git",
-                "reference": "c4dd0e6e4867df5deebec6a2b957736f2d1e45d7"
+                "reference": "57333162c98fec9bb3542f529da9d1ca6ff9aafd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/c4dd0e6e4867df5deebec6a2b957736f2d1e45d7",
-                "reference": "c4dd0e6e4867df5deebec6a2b957736f2d1e45d7",
+                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/57333162c98fec9bb3542f529da9d1ca6ff9aafd",
+                "reference": "57333162c98fec9bb3542f529da9d1ca6ff9aafd",
                 "shasum": ""
             },
             "require": {
@@ -131,7 +131,7 @@
                 "MIT"
             ],
             "description": "PHP helpers functions",
-            "time": "2019-01-30T17:17:38+00:00"
+            "time": "2019-01-31T15:26:01+00:00"
         },
         {
             "name": "alecrabbit/php-traits",

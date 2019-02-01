@@ -9,16 +9,13 @@ trait TimerFields
     use GettableName;
 
     /** @var float */
-    protected $previous;
+    protected $previous = 0.0;
 
     /** @var float */
-    protected $start;
+    protected $creation = 0.0;
 
     /** @var float */
-    protected $creation;
-
-    /** @var float */
-    protected $elapsed;
+    protected $elapsed = 0.0;
 
     /** @var bool */
     protected $stopped = false;
@@ -27,19 +24,19 @@ trait TimerFields
     protected $started = false;
 
     /** @var float */
-    protected $currentValue;
+    protected $currentValue = 0.0;
 
     /** @var float */
-    protected $avgValue;
+    protected $avgValue = 0.0;
 
     /** @var float */
-    protected $minValue;
+    protected $minValue = 100000000.0;
 
     /** @var int */
     protected $minValueIteration = 0;
 
     /** @var float */
-    protected $maxValue;
+    protected $maxValue = 0.0;
 
     /** @var int */
     protected $maxValueIteration = 0;
@@ -157,13 +154,5 @@ trait TimerFields
     public function getPrevious(): float
     {
         return $this->previous;
-    }
-
-    /**
-     * @return float
-     */
-    public function getStart(): float
-    {
-        return $this->start;
     }
 }
