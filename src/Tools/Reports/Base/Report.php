@@ -19,7 +19,6 @@ abstract class Report implements ReportInterface
 
     /**
      * Report constructor.
-     * @throws InvalidStyleException
      */
     public function __construct()
     {

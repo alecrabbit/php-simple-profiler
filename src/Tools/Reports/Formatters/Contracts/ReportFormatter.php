@@ -7,15 +7,8 @@
 
 namespace AlecRabbit\Tools\Reports\Formatters\Contracts;
 
-use AlecRabbit\Exception\InvalidStyleException;
-
 interface ReportFormatter
 {
-    /**
-     * @throws InvalidStyleException
-     */
-    public function setStyles(): void;
-
     /**
      * @return string
      */

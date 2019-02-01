@@ -21,15 +21,7 @@ use function AlecRabbit\typeOf;
 
 class Factory
 {
-    /** @var Themed|null */
-    protected static $theme;
-
-    /** @var bool */
-    protected static $colour = false;
-
-    /**
-     * @codeCoverageIgnore
-     */
+    /** @codeCoverageIgnore */
     private function __construct()
     {
         // Static class
@@ -38,7 +30,6 @@ class Factory
     /**
      * @param ReportableInterface $reportable
      * @return ReportInterface
-     * @throws InvalidStyleException
      */
     public static function makeReport(ReportableInterface $reportable): ReportInterface
     {
@@ -64,7 +55,6 @@ class Factory
     /**
      * @param ReportInterface $report
      * @return ReportFormatter
-     * @throws InvalidStyleException
      */
     public static function makeFormatter(ReportInterface $report): ReportFormatter
     {
@@ -85,25 +75,5 @@ class Factory
                 new BenchmarkReportFormatter($report);
         }
         throw new \RuntimeException('Attempt to create unimplemented formatter for: ' . typeOf($report));
-    }
-
-    /**
-     * @return Themed
-     * @throws InvalidStyleException
-     */
-    public static function getThemedObject(): Themed
-    {
-        if (null === static::$theme) {
-            static::$theme = new Themed(static::$colour);
-        }
-        return static::$theme;
-    }
-
-    /**
-     * @param bool $colour
-     */
-    public static function enableColour(bool $colour): void
-    {
-        self::$colour = $colour;
     }
 }

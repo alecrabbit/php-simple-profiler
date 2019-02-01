@@ -8,19 +8,14 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
+use AlecRabbit\Pretty;
 use AlecRabbit\Tools\Reports\TimerReport;
-use function AlecRabbit\format_time_auto;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
 class TimerReportFormatter extends Formatter
 {
     /** @var TimerReport */
     protected $report;
-
-    /** {@inheritdoc} */
-    public function setStyles(): void
-    {
-    }
 
     /**
      * @return string
@@ -29,52 +24,55 @@ class TimerReportFormatter extends Formatter
     public function getString(): string
     {
         if (DEFAULT_NAME === $this->report->getName()) {
-            return $this->elapsed();
+            return $this->simple();
         }
         return $this->full();
     }
 
     /**
+     * @param bool $eol
      * @return string
-     * @throws \Throwable
      */
-    public function elapsed(): string
+    public function simple(bool $eol = true): string
     {
         return
             sprintf(
-                'Elapsed: %s %s',
-                $this->themed->comment(format_time_auto($this->report->getElapsed())),
-                PHP_EOL
+                self::ELAPSED . ': %s %s',
+                $this->ftime($this->report->getElapsed()),
+                $eol ? PHP_EOL : ''
             );
     }
 
-    /**
-     * @return string
-     * @throws \Throwable
-     */
-    public function full(): string
+    protected function ftime(float $seconds): string
     {
-        $name =  $this->report->getName();
-        try {
-            $str = sprintf(
-                'Timer[%s]: Average: %s, Last: %s, Min(%s): %s, Max(%s): %s, Count: %s' . PHP_EOL,
-                $this->themed->info($name),
-                $this->themed->comment(format_time_auto($this->report->getAverageValue())),
-                format_time_auto($this->report->getLastValue()),
-                $this->report->getMinValueIteration(),
-                format_time_auto($this->report->getMinValue()),
-                $this->report->getMaxValueIteration(),
-                format_time_auto($this->report->getMaxValue()),
-                $this->report->getCount()
-            );
-        } catch (\Throwable $e) {
-            $str =
-                sprintf(
-                    'Timer[%s]: %s' . PHP_EOL,
-                    $this->themed->red($name),
-                    $this->themed->comment('Exception encountered')
-                );
-        }
-        return $str;
+        return Pretty::seconds($seconds);
+    }
+
+    /**
+     * @param bool $eol
+     * @return string
+     */
+    public function full(bool $eol = true): string
+    {
+        $r = $this->report;
+        return sprintf(
+            self::TIMER . '[%s]: ' .
+            self::AVERAGE . ': %s, ' .
+            self::LAST . ': %s, ' .
+            self::MIN . '(%s): %s, ' .
+            self::MAX . '(%s): %s, ' .
+            self::COUNT . ': %s, ' .
+            self::ELAPSED . ': %s%s',
+            $r->getName(),
+            $this->ftime($r->getAverageValue()),
+            $this->ftime($r->getLastValue()),
+            $r->getMinValueIteration(),
+            $this->ftime($r->getMinValue()),
+            $r->getMaxValueIteration(),
+            $this->ftime($r->getMaxValue()),
+            $r->getCount(),
+            $this->ftime($r->getElapsed()),
+            $eol ? PHP_EOL : ''
+        );
     }
 }
