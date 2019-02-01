@@ -4,24 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0cc2584e5978c58da89bd7cf8d8d0abd",
+    "content-hash": "2d3ec8bfea648d54be934dac3a21e955",
     "packages": [
         {
             "name": "alecrabbit/accessories",
-            "version": "0.2.4",
+            "version": "0.2.5-RC3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/accessories.git",
-                "reference": "a1aaa28807f7a370872b79c7878945dcdef234b1"
+                "reference": "5983ac30d7dcc227d0f5df3685f868c9be9a2f24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/accessories/zipball/a1aaa28807f7a370872b79c7878945dcdef234b1",
-                "reference": "a1aaa28807f7a370872b79c7878945dcdef234b1",
+                "url": "https://api.github.com/repos/alecrabbit/accessories/zipball/5983ac30d7dcc227d0f5df3685f868c9be9a2f24",
+                "reference": "5983ac30d7dcc227d0f5df3685f868c9be9a2f24",
                 "shasum": ""
             },
             "require": {
-                "alecrabbit/php-helpers": "^0.2.4",
+                "alecrabbit/php-helpers": "^0.2",
                 "php": ">=7.2"
             },
             "require-dev": {
@@ -50,7 +50,7 @@
                 "rewindable",
                 "time"
             ],
-            "time": "2019-01-28T16:10:14+00:00"
+            "time": "2019-01-31T14:49:03+00:00"
         },
         {
             "name": "alecrabbit/php-console-colour",
@@ -91,16 +91,16 @@
         },
         {
             "name": "alecrabbit/php-helpers",
-            "version": "0.2.4",
+            "version": "0.2.5-RC3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-helpers.git",
-                "reference": "b5334ce1e135c3014dbac68bc7c503a68becf10b"
+                "reference": "57333162c98fec9bb3542f529da9d1ca6ff9aafd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/b5334ce1e135c3014dbac68bc7c503a68becf10b",
-                "reference": "b5334ce1e135c3014dbac68bc7c503a68becf10b",
+                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/57333162c98fec9bb3542f529da9d1ca6ff9aafd",
+                "reference": "57333162c98fec9bb3542f529da9d1ca6ff9aafd",
                 "shasum": ""
             },
             "require": {
@@ -131,7 +131,7 @@
                 "MIT"
             ],
             "description": "PHP helpers functions",
-            "time": "2019-01-28T15:23:06+00:00"
+            "time": "2019-01-31T15:26:01+00:00"
         },
         {
             "name": "alecrabbit/php-traits",
@@ -273,22 +273,22 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.10.1",
+            "version": "2.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "39a8ebfffc2a75de9d2ade3f0e12c7e11669f7ce"
+                "reference": "48d211435ecb3671a2237614dc19fc2be185acb6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/39a8ebfffc2a75de9d2ade3f0e12c7e11669f7ce",
-                "reference": "39a8ebfffc2a75de9d2ade3f0e12c7e11669f7ce",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/48d211435ecb3671a2237614dc19fc2be185acb6",
+                "reference": "48d211435ecb3671a2237614dc19fc2be185acb6",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "php": "^7.1.8",
-                "symfony/translation": "^4.0"
+                "symfony/translation": "^3.4 || ^4.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.14 || ^3.0",
@@ -328,7 +328,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2019-01-14T09:25:45+00:00"
+            "time": "2019-01-29T16:35:35+00:00"
         },
         {
             "name": "symfony/contracts",
@@ -2714,7 +2714,7 @@
     "aliases": [],
     "minimum-stability": "beta",
     "stability-flags": [],
-    "prefer-stable": true,
+    "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": ">=7.2"

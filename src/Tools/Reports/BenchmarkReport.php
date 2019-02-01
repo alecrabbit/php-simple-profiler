@@ -70,15 +70,22 @@ class BenchmarkReport extends Report
         $averages = [];
         /** @var Timer $timer */
         foreach ($timers as $timer) {
-            if (DEFAULT_NAME !== $name = $timer->getName()) {
-                try {
-                    $averages[$name] = $timer->getAverageValue();
-                } catch (\Throwable $e) {
-                    // no action
-                }
+            if ((DEFAULT_NAME !== $name = $timer->getName())
+                && 0.0 !== $avg = $timer->getAverageValue()) {
+                $averages[$name] = $avg;
             }
         }
         return $averages;
+    }
+
+    private function getTimers(): array
+    {
+        $timers = [];
+        /** @var BenchmarkFunction $f */
+        foreach ($this->functions as $f) {
+            $timers[] = $f->getTimer();
+        }
+        return $timers;
     }
 
     /**
@@ -104,15 +111,5 @@ class BenchmarkReport extends Report
     public function getRelatives(): array
     {
         return $this->relatives;
-    }
-
-    private function getTimers(): array
-    {
-        $timers = [];
-        /** @var BenchmarkFunction $f */
-        foreach ($this->functions as $f) {
-            $timers[]=$f->getTimer();
-        }
-        return $timers;
     }
 }

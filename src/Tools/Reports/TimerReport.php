@@ -28,7 +28,6 @@ class TimerReport extends Report
         try {
             $count = $timer->getCount();
             $this->previous = $timer->getPrevious();
-            $this->start = $timer->getStart();
             $this->elapsed = $timer->getElapsed();
             $this->stopped = $timer->isStopped();
             $this->currentValue = $timer->getLastValue();

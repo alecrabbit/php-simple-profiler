@@ -8,7 +8,7 @@ use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\TimerFields;
 
-class Timer implements TimerInterface, ReportableInterface
+class HRTimer implements TimerInterface, ReportableInterface
 {
     use TimerFields, Reportable;
 
@@ -36,7 +36,7 @@ class Timer implements TimerInterface, ReportableInterface
      */
     public function prepareForReport(): void
     {
-        if (!$this->started) {
+        if ($this->isNotStarted()) {
             $this->start();
             $this->mark();
         }
@@ -63,6 +63,14 @@ class Timer implements TimerInterface, ReportableInterface
         $this->currentValue = $current - $this->previous;
         $this->previous = $current;
 
+        $this->compute($iterationNumber);
+    }
+
+    /**
+     * @param null|int $iterationNumber
+     */
+    private function compute(?int $iterationNumber): void
+    {
         if (0 !== $this->count) {
             ++$this->count;
             if ($this->currentValue < $this->minValue) {
@@ -92,15 +100,33 @@ class Timer implements TimerInterface, ReportableInterface
      * Marks the elapsed time.
      * If timer was not started starts the timer.
      * @param int|null $iterationNumber
-     * @return Timer
+     * @return HRTimer
      */
-    public function check(?int $iterationNumber = null): Timer
+    public function check(?int $iterationNumber = null): HRTimer
     {
-        if (!$this->started) {
+        if ($this->isNotStarted()) {
             $this->start();
         } else {
             $this->mark($iterationNumber);
         }
+        return $this;
+    }
+
+    /**
+     * @param float $start
+     * @param float $stop
+     * @param null|int $iterationNumber
+     * @return HRTimer
+     */
+    public function interval(float $start, float $stop, ?int $iterationNumber = null): HRTimer
+    {
+        if ($this->isNotStarted()) {
+            $this->start();
+        }
+        $this->currentValue = $stop - $start;
+        $this->previous = $stop;
+
+        $this->compute($iterationNumber);
         return $this;
     }
 
@@ -114,6 +140,6 @@ class Timer implements TimerInterface, ReportableInterface
             $this->stop();
         }
         return
-            $pretty ? Pretty::time($this->getElapsed()) : $this->elapsed;
+            $pretty ? Pretty::seconds($this->getElapsed()) : $this->elapsed;
     }
 }
