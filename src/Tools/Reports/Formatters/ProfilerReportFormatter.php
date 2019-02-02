@@ -4,24 +4,27 @@ declare(strict_types=1);
 namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Tools\Reports\ProfilerReport;
+use AlecRabbit\Tools\Reports\TimerReport;
+use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
 class ProfilerReportFormatter extends Formatter
 {
     /** @var ProfilerReport */
     protected $report;
 
-    public function setStyles(): void
-    {
-    }
-
     public function getString(): string
     {
         $r = '';
+        $elapsed = '';
         foreach ($this->report->getReports() as $reports) {
             foreach ($reports as $report) {
-                $r .= $report;
+                if ($report instanceof TimerReport && DEFAULT_NAME === $report->getName()) {
+                    $elapsed .= $report;
+                } else {
+                    $r .= $report;
+                }
             }
         }
-        return $r;
+        return $r. $elapsed;
     }
 }

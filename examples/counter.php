@@ -13,7 +13,7 @@ $counter->bump();
 $counter2->bumpReverse();
 
 
-dump($counter->getReport()); // symfony/var-dumper function dump()
+var_export($counter->getReport());
 echo PHP_EOL;
 dump($counter2->getReport()); // symfony/var-dumper function dump()
 echo PHP_EOL;
@@ -23,9 +23,9 @@ echo PHP_EOL;
 echo (string)$counter2->getReport();
 echo PHP_EOL;
 $counter->setStep(2)->bump();
-echo (string)$counter->getReport(true);
+echo (string)$counter->getReport();
 echo PHP_EOL;
 $counter->setStep(10)->bump();
+echo (string)$counter->getReport(false); // old report
 echo (string)$counter->getReport();
-echo (string)$counter->resetReportObject()->getReport();
 echo PHP_EOL;

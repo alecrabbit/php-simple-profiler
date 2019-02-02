@@ -52,6 +52,7 @@ class CounterTest extends TestCase
         $this->assertEquals(7, $c->getValue());
         $c->bumpReverse();
         $this->assertEquals(5, $c->getValue());
+        $this->assertEquals(0, $c->getInitialValue());
     }
 
     /** @test */
@@ -64,12 +65,15 @@ class CounterTest extends TestCase
         $this->assertEquals(2, $c->getValue());
         $c->bump();
         $this->assertEquals(4, $c->getValue());
+        $this->assertEquals(0, $c->getInitialValue());
 
         $c = (new Counter(null, 1, 10))->setStep(-1);
         $c->bump();
         $this->assertEquals(9, $c->getValue());
         $c->bump();
         $this->assertEquals(8, $c->getValue());
+        $this->assertEquals(10, $c->getInitialValue());
+
         $c = (new Counter())->setStep(-1);
         $c->bump();
         $this->assertEquals(-1, $c->getValue());

@@ -28,7 +28,6 @@ class ProfilerReport extends Report implements StringsInterface
     /**
      * ProfilerReport constructor.
      * @param Profiler $profiler
-     * @throws InvalidStyleException
      */
     public function __construct(Profiler $profiler)
     {

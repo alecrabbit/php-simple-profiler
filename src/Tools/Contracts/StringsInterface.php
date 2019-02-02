@@ -12,7 +12,7 @@ interface StringsInterface
     public const _COUNTERS = 'counters';
     public const _TIMERS = 'timers';
 
-    public const _NAME_FORMAT = '%s [%s]';
+    public const NAME_FORMAT = '%s [%s]';
 
     public const ELAPSED = 'Elapsed';
     public const COUNT = 'Count';

@@ -19,7 +19,6 @@ class TimerReportFormatter extends Formatter
 
     /**
      * @return string
-     * @throws \Throwable
      */
     public function getString(): string
     {
