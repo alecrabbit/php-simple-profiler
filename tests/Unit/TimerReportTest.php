@@ -1,9 +1,4 @@
 <?php
-/**
- * User: alec
- * Date: 27.12.18
- * Time: 17:48
- */
 declare(strict_types=1);
 
 namespace Tests\Unit;

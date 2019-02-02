@@ -19,7 +19,6 @@ class CounterReport extends Report
     /**
      * CounterReport constructor.
      * @param Counter $counter
-     * @throws InvalidStyleException
      */
     public function __construct(Counter $counter)
     {

@@ -19,13 +19,28 @@ class Counter implements CounterInterface, ReportableInterface
     /**
      * Counter constructor
      * @param string|null $name
-     * @param int $value
+     * @param int $step
+     * @param int $initialValue
      */
-    public function __construct(?string $name = null, int $value = 0)
+    public function __construct(?string $name = null, int $step = 1, int $initialValue = 0)
     {
         $this->name = $this->defaultName($name);
-        $this->value = $value;
-        $this->step = 1;
+        $this->value = $this->initialValue = $initialValue;
+        $this->step = $step;
+    }
+
+    /**
+     * @param int $value
+     * @return Counter
+     */
+    public function setInitialValue(int $value): Counter
+    {
+        if (false === $this->started) {
+            $this->value = $value;
+        } else {
+            throw new \RuntimeException('You can not set counter start value, it has been bumped already.');
+        }
+        return $this;
     }
 
     /**
@@ -33,15 +48,7 @@ class Counter implements CounterInterface, ReportableInterface
      */
     public function bump(): int
     {
-        return
-            $this->bumpUp();
-    }
-
-    /**
-     * @return int
-     */
-    public function bumpUp(): int
-    {
+        $this->start();
         $this->value += $this->step;
         return
             $this->value;
@@ -49,24 +56,9 @@ class Counter implements CounterInterface, ReportableInterface
 
     /**
      * @param int $step
-     * @param bool $setStep
      * @return int
      */
-    public function bumpWith(int $step, bool $setStep = false): int
-    {
-        $this->value += $this->checkStep($step);
-        if ($setStep) {
-            $this->setStep($step);
-        }
-        return
-            $this->value;
-    }
-
-    /**
-     * @param int $step
-     * @return int
-     */
-    private function checkStep(int $step): int
+    private function assertStep(int $step): int
     {
         if ($step === 0) {
             throw new \RuntimeException('Counter step should be non-zero integer.');
@@ -80,17 +72,23 @@ class Counter implements CounterInterface, ReportableInterface
      */
     public function setStep(int $step): Counter
     {
-        $this->step = $this->checkStep($step);
+        $this->step = $this->assertStep($step);
         return $this;
     }
 
     /**
      * @return int
      */
-    public function bumpDown(): int
+    public function bumpReverse(): int
     {
+        $this->start();
         $this->value -= $this->step;
         return
             $this->value;
+    }
+
+    private function start(): void
+    {
+        $this->started = true;
     }
 }

@@ -21,4 +21,7 @@ interface StringsInterface
     public const LAST = 'Last';
     public const AVERAGE = 'Average';
     public const TIMER = 'Timer';
+    public const COUNTER = 'Counter';
+    public const VALUE = 'Value';
+    public const STEP = 'Step';
 }

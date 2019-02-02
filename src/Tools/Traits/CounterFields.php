@@ -14,10 +14,16 @@ trait CounterFields
     use GettableName;
 
     /** @var int */
-    protected $value;
+    protected $value = 0;
 
     /** @var int */
-    protected $step;
+    protected $initialValue = 0;
+
+    /** @var int */
+    protected $step = 1;
+
+    /** @var bool */
+    protected $started = false;
 
     /**
      * @return int
@@ -33,5 +39,13 @@ trait CounterFields
     public function getValue(): int
     {
         return $this->value;
+    }
+
+    /**
+     * @return int
+     */
+    public function getInitialValue(): int
+    {
+        return $this->initialValue;
     }
 }

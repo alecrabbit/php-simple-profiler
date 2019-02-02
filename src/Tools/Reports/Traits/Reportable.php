@@ -17,13 +17,12 @@ trait Reportable
      * @param bool $rebuild Rebuild report object
      * @return ReportInterface
      */
-    public function getReport(bool $rebuild = false): ReportInterface
+    public function getReport(bool $rebuild = true): ReportInterface
     {
         if (null === $this->reportObject || true === $rebuild) {
             $this->prepareForReport();
-            /** @var ReportableInterface $that */
-            $that = $this; // for static analyzers
-            $this->reportObject = Factory::makeReport($that);
+            $this->reportObject =
+                Factory::makeReport($this);
         }
         return
             $this->reportObject;
@@ -34,10 +33,5 @@ trait Reportable
      */
     protected function prepareForReport(): void
     {
-    }
-
-    public function resetReportObject(): void
-    {
-        $this->reportObject = null;
     }
 }
