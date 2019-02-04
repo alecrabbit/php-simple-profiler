@@ -9,19 +9,14 @@ use AlecRabbit\Tools\Benchmark;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-const ITERATIONS = 900000;
+const ITERATIONS = 90000;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $output = new ConsoleOutput();
-
 $progressBar = new ProgressBar($output, 100);
 $progressBar->setBarWidth(80);
 $progressBar->setFormat('[%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%');
-/*
- * There are moments when you have to choose between two or more different approaches
- * Benchmark class is to help you choose which is faster :)
-*/
 
 $benchmark = new Benchmark(ITERATIONS);
 
@@ -51,7 +46,6 @@ $benchmark
 $benchmark->run();
 $report = $benchmark->getReport();
 echo $report . PHP_EOL;
-echo $benchmark->elapsed() . PHP_EOL;
 
 $benchmark->reset();
 $benchmark
@@ -70,7 +64,6 @@ $benchmark
 $benchmark->run();
 $report = $benchmark->getReport();
 echo $report . PHP_EOL;
-echo $benchmark->elapsed() . PHP_EOL;
 
 $benchmark->reset();
 $benchmark

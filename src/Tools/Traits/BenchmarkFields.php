@@ -8,6 +8,7 @@
 namespace AlecRabbit\Tools\Traits;
 
 use AlecRabbit\Tools\Profiler;
+use AlecRabbit\Tools\Timer;
 
 trait BenchmarkFields
 {
@@ -23,6 +24,9 @@ trait BenchmarkFields
     private $exceptionMessages = [];
     /** @var array */
     private $exceptions = [];
+    /** @var Timer */
+    private $timer;
+
 
     /**
      * Resets fields
@@ -82,5 +86,13 @@ trait BenchmarkFields
     public function getExceptions(): array
     {
         return $this->exceptions;
+    }
+
+    /**
+     * @return Timer
+     */
+    public function getTimer(): Timer
+    {
+        return $this->timer;
     }
 }

@@ -6,7 +6,6 @@ use AlecRabbit\Rewindable;
 use AlecRabbit\Tools\Contracts\BenchmarkInterface;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
-use AlecRabbit\Tools\Reports\Formatters\Helper;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
 use function AlecRabbit\brackets;
@@ -51,6 +50,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     public function __construct(int $iterations = 1000)
     {
         $this->iterations = $iterations;
+        $this->timer = new Timer();
         $this->reset();
     }
 
@@ -73,21 +73,19 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
         $this->resetFields();
     }
 
-    private function expectedTotalIterations(): int
-    {
-        return count($this->functions) * $this->iterations;
-    }
-
+//    private function expectedTotalIterations(): int
+//    {
+//        return count($this->functions) * $this->iterations;
+//    }
+//
     /**
      * Launch benchmarking
-     * @param bool $printReport
      */
-    public function run(bool $printReport = false): void
+    public function run(): void
     {
         if ($this->onStart) {
             ($this->onStart)();
         }
-        $this->advanceStep = (int)($this->expectedTotalIterations() / 100);
         $this->execute();
         if ($this->onFinish) {
             ($this->onFinish)();
@@ -110,6 +108,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
                 $this->iterationsToBench -= $this->iterations;
                 continue;
             }
+            $this->advanceStep = (int)($this->iterationsToBench / 100);
             foreach ($this->rewindable as $iteration) {
                 $this->bench($timer, $function, $args, $iteration);
             }
@@ -251,7 +250,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
         return
             sprintf(
                 'Done in: %s',
-                $this->getProfiler()->timer()->elapsed()
+                $this->getTimer()->elapsed()
             );
     }
 
