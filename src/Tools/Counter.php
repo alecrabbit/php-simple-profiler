@@ -30,40 +30,17 @@ class Counter implements CounterInterface, ReportableInterface
     }
 
     /**
-     * @param int $value
+     * @param int $initialValue
      * @return Counter
      */
-    public function setInitialValue(int $value): Counter
+    public function setInitialValue(int $initialValue): Counter
     {
         if (false === $this->started) {
-            $this->value = $value;
+            $this->value = $this->initialValue = $initialValue;
         } else {
             throw new \RuntimeException('You can not set counter start value, it has been bumped already.');
         }
         return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function bump(): int
-    {
-        $this->start();
-        $this->value += $this->step;
-        return
-            $this->value;
-    }
-
-    /**
-     * @param int $step
-     * @return int
-     */
-    private function assertStep(int $step): int
-    {
-        if ($step === 0) {
-            throw new \RuntimeException('Counter step should be non-zero integer.');
-        }
-        return $step;
     }
 
     /**
@@ -77,17 +54,49 @@ class Counter implements CounterInterface, ReportableInterface
     }
 
     /**
+     * @param int $step
      * @return int
      */
-    public function bumpReverse(): int
+    protected function assertStep(int $step): int
+    {
+        if ($step === 0) {
+            throw new \RuntimeException('Counter step should be non-zero integer.');
+        }
+        return $step;
+    }
+
+    /**
+     * @return int
+     */
+    public function bumpBack(): int
+    {
+        return
+            $this->bump(false);
+//        $this->start();
+//        $this->value -= $this->step;
+//        return
+//            $this->value;
+    }
+
+    /**
+     * @param bool $forward
+     * @return int
+     */
+    public function bump(bool $forward = true): int
     {
         $this->start();
-        $this->value -= $this->step;
+        if ($forward) {
+            $this->value += $this->step;
+            $this->bumpedForward++;
+        } else {
+            $this->value -= $this->step;
+            $this->bumpedBack++;
+        }
         return
             $this->value;
     }
 
-    private function start(): void
+    protected function start(): void
     {
         $this->started = true;
     }

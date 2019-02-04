@@ -24,4 +24,5 @@ interface StringsInterface
     public const COUNTER = 'Counter';
     public const VALUE = 'Value';
     public const STEP = 'Step';
+    public const DIFF = 'Diff';
 }

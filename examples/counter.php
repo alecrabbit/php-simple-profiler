@@ -6,16 +6,18 @@ use AlecRabbit\Tools\Reports\Factory;
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $counter = new Counter();
-$counter2 = new Counter('Added');
+$counter2 = new Counter('Added', 1, 12);
 $counter2->setStep(2);
 
 $counter->bump();
-$counter2->bumpReverse();
+$counter2->bump();
+$counter2->bump();
+$counter2->bumpBack();
 
 
-var_export($counter->getReport());
+dump($counter->getReport()); // use var_dump
 echo PHP_EOL;
-dump($counter2->getReport()); // symfony/var-dumper function dump()
+dump($counter2->getReport()); // use var_dump
 echo PHP_EOL;
 
 echo (string)$counter->getReport();

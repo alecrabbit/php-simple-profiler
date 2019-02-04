@@ -13,27 +13,75 @@ use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
 class CounterTest extends TestCase
 {
+    protected const NAME = 'name';
+
     /** @test */
     public function counterDefaultCreation(): void
     {
         $c = new Counter();
         $this->assertInstanceOf(Counter::class, $c);
         $this->assertEquals(DEFAULT_NAME, $c->getName());
-        $c = new Counter('name');
-        $this->assertEquals('name', $c->getName());
+        $this->assertEquals(0, $c->getValue());
+        $this->assertEquals(0, $c->getInitialValue());
+        $this->assertEquals(1, $c->getStep());
+        $this->assertEquals(0, $c->getDiff());
+
+        $c = new Counter(self::NAME);
+        $this->assertEquals(self::NAME, $c->getName());
+        $this->assertEquals(0, $c->getValue());
+        $this->assertEquals(0, $c->getInitialValue());
+        $this->assertEquals(1, $c->getStep());
+        $this->assertEquals(0, $c->getDiff());
     }
 
     /** @test */
     public function counterCreationWithParams(): void
     {
-        $c = new Counter('name', 1, 1);
-        $this->assertEquals('name', $c->getName());
-        $this->assertEquals(1, $c->getValue());
+        $c = new Counter(self::NAME, 2, 2);
+        $this->assertEquals(self::NAME, $c->getName());
+        $this->assertEquals(2, $c->getValue());
+        $this->assertEquals(2, $c->getInitialValue());
+        $this->assertEquals(2, $c->getStep());
+        $this->assertEquals(0, $c->getDiff());
+
         $c = new Counter(null, 2, 2);
         $this->assertEquals(DEFAULT_NAME, $c->getName());
         $this->assertEquals(2, $c->getValue());
+        $this->assertEquals(2, $c->getInitialValue());
+        $this->assertEquals(2, $c->getStep());
+        $this->assertEquals(0, $c->getDiff());
+
         $c->bump();
         $this->assertEquals(4, $c->getValue());
+        $this->assertEquals(2, $c->getInitialValue());
+        $this->assertEquals(2, $c->getStep());
+        $this->assertEquals(2, $c->getDiff());
+    }
+
+    /** @test */
+    public function counterDefaultCreationWithMethods(): void
+    {
+        $c = new Counter();
+        $c->setStep(2)->setInitialValue(2);
+        $this->assertInstanceOf(Counter::class, $c);
+        $this->assertEquals(DEFAULT_NAME, $c->getName());
+        $this->assertEquals(2, $c->getValue());
+        $this->assertEquals(2, $c->getInitialValue());
+        $this->assertEquals(2, $c->getStep());
+        $this->assertEquals(0, $c->getDiff());
+
+        $c = new Counter(self::NAME);
+        $c->setStep(2)->setInitialValue(2);
+        $this->assertEquals(self::NAME, $c->getName());
+        $this->assertEquals(2, $c->getValue());
+        $this->assertEquals(2, $c->getInitialValue());
+        $this->assertEquals(2, $c->getStep());
+        $this->assertEquals(0, $c->getDiff());
+        $c->bump();
+        $this->assertEquals(4, $c->getValue());
+        $this->assertEquals(2, $c->getInitialValue());
+        $this->assertEquals(2, $c->getStep());
+        $this->assertEquals(2, $c->getDiff());
     }
 
     /** @test */
@@ -50,9 +98,17 @@ class CounterTest extends TestCase
         $this->assertEquals(5, $c->getValue());
         $c->bump();
         $this->assertEquals(7, $c->getValue());
-        $c->bumpReverse();
+        $c->bumpBack();
         $this->assertEquals(5, $c->getValue());
         $this->assertEquals(0, $c->getInitialValue());
+        $this->assertEquals(5, $c->getDiff());
+        $this->assertEquals(4, $c->getBumpedForward());
+        $this->assertEquals(1, $c->getBumpedBack());
+        $c->bump(false);
+        $this->assertEquals(3, $c->getValue());
+        $this->assertEquals(3, $c->getDiff());
+        $this->assertEquals(4, $c->getBumpedForward());
+        $this->assertEquals(2, $c->getBumpedBack());
     }
 
     /** @test */
@@ -66,6 +122,19 @@ class CounterTest extends TestCase
         $c->bump();
         $this->assertEquals(4, $c->getValue());
         $this->assertEquals(0, $c->getInitialValue());
+        $this->assertEquals(4, $c->getDiff());
+
+        $c = (new Counter())
+            ->setStep(2)
+            ->setInitialValue(3);
+        $this->assertEquals(DEFAULT_NAME, $c->getName());
+
+        $c->bump();
+        $this->assertEquals(5, $c->getValue());
+        $c->bump();
+        $this->assertEquals(7, $c->getValue());
+        $this->assertEquals(3, $c->getInitialValue());
+        $this->assertEquals(4, $c->getDiff());
 
         $c = (new Counter(null, 1, 10))->setStep(-1);
         $c->bump();
@@ -73,85 +142,115 @@ class CounterTest extends TestCase
         $c->bump();
         $this->assertEquals(8, $c->getValue());
         $this->assertEquals(10, $c->getInitialValue());
+        $this->assertEquals(-2, $c->getDiff());
+
+        $c = new Counter(self::NAME, 1, 10);
+        $c->bump();
+        $this->assertEquals(11, $c->getValue());
+        $c->bump();
+        $this->assertEquals(12, $c->getValue());
+        $this->assertEquals(10, $c->getInitialValue());
+        $this->assertEquals(2, $c->getDiff());
 
         $c = (new Counter())->setStep(-1);
         $c->bump();
         $this->assertEquals(-1, $c->getValue());
         $c->bump();
         $this->assertEquals(-2, $c->getValue());
+        $this->assertEquals(0, $c->getInitialValue());
+        $this->assertEquals(-2, $c->getDiff());
+
         $this->expectException(\RuntimeException::class);
         $c->setStep(0);
     }
 
     /** @test */
-    public function counterWithSetStartValue(): void
+    public function counterWithSetInitialValue(): void
     {
         $c = (new Counter())
-            ->setStep(2)
             ->setInitialValue(2);
         $this->assertEquals(DEFAULT_NAME, $c->getName());
         $c->bump();
-        $this->assertEquals(4, $c->getValue());
+        $this->assertEquals(3, $c->getValue());
+        $this->assertEquals(1, $c->getBumpedForward());
+
         $c->bump();
-        $this->assertEquals(6, $c->getValue());
+        $this->assertEquals(4, $c->getValue());
+        $this->assertEquals(1, $c->getStep());
+        $this->assertEquals(2, $c->getDiff());
+        $this->assertEquals(2, $c->getBumpedForward());
         $c = (new Counter())
             ->setInitialValue(2);
         $c->bump();
         $this->assertEquals(3, $c->getValue());
+        $this->assertEquals(1, $c->getBumpedForward());
+
         $c->bump();
         $this->assertEquals(4, $c->getValue());
+        $this->assertEquals(1, $c->getStep());
+        $this->assertEquals(2, $c->getDiff());
+        $this->assertEquals(2, $c->getBumpedForward());
+        $c->bump(false);
+        $this->assertEquals(3, $c->getValue());
+        $this->assertEquals(2, $c->getBumpedForward());
+        $this->assertEquals(1, $c->getBumpedBack());
+
         $this->expectException(\RuntimeException::class);
         $c->setInitialValue(10);
     }
 
-// *******
+    /** @test */
+    public function counterWithSetInitialValueException(): void
+    {
+        $c = new Counter();
+        $c->bump();
+        $this->assertEquals(1, $c->getValue());
+        $this->expectException(\RuntimeException::class);
+        $c->setInitialValue(10);
+    }
 
+    /**
+     * @test
+     * @dataProvider counterDataProvider
+     * @param array $expected
+     * @param array $args
+     */
+    public function counterWithDataProvider(array $expected, array $args): void
+    {
+        $c = new Counter(...$args);
+        $c->bump();
+        [$name, $step, $initial] = $this->refineArgs(...$args);
 
-//    /** @test */
-//    public function counterWithException(): void
-//    {
-//        $this->expectException(\RuntimeException::class);
-//        (new Counter())->setStep(0);
-//    }
-//
-//    /** @test */
-//    public function counterWithExceptionTwo(): void
-//    {
-//        $counter = new Counter();
-//        $this->expectException(\RuntimeException::class);
-//        $counter->bumpWith(0, true);
-//    }
-//
-//    /** @test */
-//    public function counterWithExceptionThree(): void
-//    {
-//        $counter = new Counter();
-//        $this->expectException(\RuntimeException::class);
-//        $counter->bumpWith(0);
-//    }
-//
-//    /** @test */
-//    public function counterReport(): void
-//    {
-//        $name = 'name';
-//        $counter = new Counter($name);
-//        /** @var CounterReport $report */
-//        $report = $counter->getReport();
-//        $string = (string)$report;
-//        $this->assertContains($name, $string);
-//        $this->assertInstanceOf(CounterReport::class, $report);
-//        $this->assertEquals(0, $report->getValue());
-//        $this->assertEquals(1, $report->getStep());
-//    }
-//
-//    /** @test */
-//    public function counterReportDefault(): void
-//    {
-//        $counter = new Counter();
-//        /** @var CounterReport $report */
-//        $report = $counter->getReport();
-//        $this->assertInstanceOf(CounterReport::class, $report);
-//        $this->assertEquals(0, $report->getValue());
-//        $this->assertEquals(1, $report->getStep());
-//    }
+        [$expName, $expValue, $expStep, $expInitial, $expDiff] = $expected;
+        $this->assertEquals($expName, $name);
+        $this->assertEquals($expValue, $c->getValue());
+        $this->assertEquals($expStep, $c->getStep());
+        $this->assertEquals($expStep, $step);
+        $this->assertEquals($expInitial, $c->getInitialValue());
+        $this->assertEquals($expInitial, $initial);
+        $this->assertEquals($expDiff, $c->getDiff());
+    }
+
+    private function refineArgs($name = null, $step = null, $initial = null): array
+    {
+        $name = $name ?? DEFAULT_NAME;
+        $step = $step ?? 1;
+        $initial = $initial ?? 0;
+        return
+            [$name, $step, $initial];
+    }
+
+    public function counterDataProvider(): array
+    {
+        return [
+            // [$value, $step, $initial, $diff], [$name, $step, $initial]
+            [[DEFAULT_NAME, 1, 1, 0, 1], []],
+            [[DEFAULT_NAME, 1, 1, 0, 1], [null]],
+            [[DEFAULT_NAME, 2, 1, 1, 1], [null, 1, 1]],
+            [[self::NAME, 1, 1, 0, 1], [self::NAME]],
+            [['pop', 1, 1, 0, 1], ['pop']],
+            [['pop', 11, 1, 10, 1], ['pop', 1, 10]],
+        ];
+    }
+
 }
