@@ -27,4 +27,9 @@ interface StringsInterface
     public const DIFF = 'Diff';
     public const PATH = 'Path';
     public const LENGTH = 'Length';
+    public const BUMPED = 'Bumped';
+    public const FORWARD = '+';
+    public const BACKWARD = '-';
+
+    public const RESULT = 'result';
 }

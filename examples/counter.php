@@ -24,10 +24,10 @@ echo (string)$counter->getReport();
 echo PHP_EOL;
 echo (string)$counter2->getReport();
 echo PHP_EOL;
-$counter->setStep(2)->bump();
+$counter->bump(2);
 echo (string)$counter->getReport();
 echo PHP_EOL;
-$counter->setStep(10)->bump();
+$counter->bump(10);
 echo (string)$counter->getReport(false); // old report
 echo (string)$counter->getReport();
 echo PHP_EOL;

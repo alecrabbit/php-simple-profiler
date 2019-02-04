@@ -53,7 +53,7 @@ class Counter implements CounterInterface, ReportableInterface
         if (false === $this->isStarted()) {
             $this->step = $step;
         } else {
-            throw new \RuntimeException('You can\'t set counter initial value, it has been bumped already.');
+            throw new \RuntimeException('You can\'t set counter step value, it has been bumped already.');
         }
         return $this;
     }

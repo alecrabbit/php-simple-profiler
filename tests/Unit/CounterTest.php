@@ -294,6 +294,16 @@ class CounterTest extends TestCase
         $c->setInitialValue(10);
     }
 
+    /** @test */
+    public function counterWithSetStepException(): void
+    {
+        $c = new Counter();
+        $c->bump();
+        $this->assertEquals(1, $c->getValue());
+        $this->expectException(\RuntimeException::class);
+        $c->setStep(10);
+    }
+
     /**
      * @test
      * @dataProvider counterDataProvider

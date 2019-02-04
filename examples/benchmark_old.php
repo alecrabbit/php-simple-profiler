@@ -52,7 +52,6 @@ $benchmark
 $benchmark
     ->returnResults()
     ->verbose()
-    ->color()
     ->run(true);
 echo $benchmark->elapsed() . PHP_EOL;
 

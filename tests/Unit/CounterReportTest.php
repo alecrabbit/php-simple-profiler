@@ -69,6 +69,9 @@ class CounterReportTest extends TestCase
         $this->assertNotContains(StringsInterface::DIFF, $str);
         $this->assertNotContains(StringsInterface::PATH, $str);
         $this->assertNotContains(StringsInterface::LENGTH, $str);
+        $this->assertNotContains(StringsInterface::BUMPED, $str);
+        $this->assertNotContains(StringsInterface::FORWARD, $str);
+        $this->assertNotContains(StringsInterface::BACKWARD, $str);
 
 
         $this->assertEquals(DEFAULT_NAME, $report->getName());
@@ -99,6 +102,9 @@ class CounterReportTest extends TestCase
         $this->assertContains(StringsInterface::DIFF, $str);
         $this->assertContains(StringsInterface::PATH, $str);
         $this->assertContains(StringsInterface::LENGTH, $str);
+        $this->assertContains(StringsInterface::BUMPED, $str);
+        $this->assertContains(StringsInterface::FORWARD, $str);
+        $this->assertContains(StringsInterface::BACKWARD, $str);
 
         $this->assertEquals($name, $report->getName());
         $this->assertEquals(11, $report->getValue());

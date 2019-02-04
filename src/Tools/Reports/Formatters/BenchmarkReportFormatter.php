@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
+use AlecRabbit\Pretty;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
 use function AlecRabbit\brackets;
-use function AlecRabbit\format_time_auto;
 use function AlecRabbit\typeOf;
 
 class BenchmarkReportFormatter extends Formatter
@@ -15,13 +15,8 @@ class BenchmarkReportFormatter extends Formatter
     /** @var BenchmarkReport */
     protected $report;
 
-    public function setStyles(): void
-    {
-    }
-
     /**
      * {@inheritdoc}
-     * @throws \Throwable
      */
     public function getString(): string
     {
@@ -43,39 +38,26 @@ class BenchmarkReportFormatter extends Formatter
             }
             $r .= sprintf(
                 '%s. %s (%s) %s(%s) %s %s',
-                $this->themed->dark((string)$rank),
-                $this->themed->yellow(
-                    str_pad(
-                        format_time_auto($average),
-                        8,
-                        ' ',
-                        STR_PAD_LEFT
-                    )
-                ),
-                $this->colorize(
-                    str_pad(
-                        Helper::percent($relative),
-                        7,
-                        ' ',
-                        STR_PAD_LEFT
-                    ),
-                    $relative
-                ),
+                (string)$rank,
+                $this->average($average),
+                $this->relativePercent($relative),
                 $function->getHumanReadableName(),
                 implode(', ', $types),
-                $this->themed->comment($function->getComment()),
+                $function->getComment(),
                 PHP_EOL
             );
             if ($this->report->isWithResults()) {
                 $result = $function->getResult();
-                $r .= $this->themed->dark('return: ' . str_replace('double', 'float', typeOf($result)) . ' "'
-                        . var_export($function->getResult(), true) . '" ') . PHP_EOL;
+                var_dump($result);
+                dump($result);
+                $r .= self::RESULT . ': ' . $this->typeOf($result) . ' "'
+                    . var_export($function->getResult(), true) . '" ' . PHP_EOL;
             }
         }
         if (!empty($exceptionMessages = $this->report->getExceptionMessages())) {
             $r .= 'Exceptions:' . PHP_EOL;
             foreach ($exceptionMessages as $name => $exceptionMessage) {
-                $r .= brackets($name) . ': ' . $this->themed->red($exceptionMessage) . PHP_EOL;
+                $r .= brackets($name) . ': ' . $exceptionMessage . PHP_EOL;
             }
         }
         return
@@ -83,20 +65,39 @@ class BenchmarkReportFormatter extends Formatter
     }
 
     /**
-     * @param string $str
+     * @param float $average
+     * @return string
+     */
+    protected function average(float $average): string
+    {
+        return str_pad(
+            Pretty::time($average),
+            8,
+            ' ',
+            STR_PAD_LEFT
+        );
+    }
+
+    /**
      * @param float $relative
      * @return string
-     * @throws \Throwable
      */
-    private function colorize(string $str, float $relative): string
+    protected function relativePercent(float $relative): string
     {
-        if ($relative > 1) {
-            return $this->themed->red($str);
-        }
-        if ($relative >= 0.03) {
-            return $this->themed->yellow($str);
-        }
-        return
-            $this->themed->green($str);
+        return str_pad(
+            Pretty::percent($relative),
+            7,
+            ' ',
+            STR_PAD_LEFT
+        );
+    }
+
+    /**
+     * @param mixed $result
+     * @return string
+     */
+    protected function typeOf($result): string
+    {
+        return str_replace('double', 'float', typeOf($result));
     }
 }
