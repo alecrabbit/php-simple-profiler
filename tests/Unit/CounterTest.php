@@ -22,6 +22,8 @@ class CounterTest extends TestCase
         $this->assertInstanceOf(Counter::class, $c);
         $this->assertEquals(DEFAULT_NAME, $c->getName());
         $this->assertEquals(0, $c->getValue());
+        $this->assertEquals(0, $c->getPath());
+        $this->assertEquals(0, $c->getLength());
         $this->assertEquals(0, $c->getInitialValue());
         $this->assertEquals(1, $c->getStep());
         $this->assertEquals(0, $c->getDiff());
@@ -29,6 +31,8 @@ class CounterTest extends TestCase
         $c = new Counter(self::NAME);
         $this->assertEquals(self::NAME, $c->getName());
         $this->assertEquals(0, $c->getValue());
+        $this->assertEquals(0, $c->getPath());
+        $this->assertEquals(0, $c->getLength());
         $this->assertEquals(0, $c->getInitialValue());
         $this->assertEquals(1, $c->getStep());
         $this->assertEquals(0, $c->getDiff());
@@ -40,6 +44,8 @@ class CounterTest extends TestCase
         $c = new Counter(self::NAME, 2, 2);
         $this->assertEquals(self::NAME, $c->getName());
         $this->assertEquals(2, $c->getValue());
+        $this->assertEquals(0, $c->getPath());
+        $this->assertEquals(2, $c->getLength());
         $this->assertEquals(2, $c->getInitialValue());
         $this->assertEquals(2, $c->getStep());
         $this->assertEquals(0, $c->getDiff());
@@ -47,15 +53,27 @@ class CounterTest extends TestCase
         $c = new Counter(null, 2, 2);
         $this->assertEquals(DEFAULT_NAME, $c->getName());
         $this->assertEquals(2, $c->getValue());
+        $this->assertEquals(0, $c->getPath());
+        $this->assertEquals(2, $c->getLength());
         $this->assertEquals(2, $c->getInitialValue());
         $this->assertEquals(2, $c->getStep());
         $this->assertEquals(0, $c->getDiff());
 
         $c->bump();
         $this->assertEquals(4, $c->getValue());
+        $this->assertEquals(2, $c->getPath());
+        $this->assertEquals(4, $c->getLength());
         $this->assertEquals(2, $c->getInitialValue());
         $this->assertEquals(2, $c->getStep());
         $this->assertEquals(2, $c->getDiff());
+
+        $c->bumpBack();
+        $this->assertEquals(2, $c->getValue());
+        $this->assertEquals(4, $c->getPath());
+        $this->assertEquals(6, $c->getLength());
+        $this->assertEquals(2, $c->getInitialValue());
+        $this->assertEquals(2, $c->getStep());
+        $this->assertEquals(0, $c->getDiff());
     }
 
     /** @test */
@@ -92,23 +110,90 @@ class CounterTest extends TestCase
 
         $c->bump();
         $this->assertEquals(1, $c->getValue());
-        $c->setStep(2)->bump();
+        $this->assertEquals(1, $c->getPath());
+        $this->assertEquals(1, $c->getLength());
+
+        $c->bump(2);
         $this->assertEquals(3, $c->getValue());
-        $c->bump();
+        $this->assertEquals(3, $c->getPath());
+        $this->assertEquals(3, $c->getLength());
+
+        $c->bump( 2);
         $this->assertEquals(5, $c->getValue());
-        $c->bump();
+        $this->assertEquals(5, $c->getPath());
+        $this->assertEquals(5, $c->getLength());
+
+        $c->bump(2);
         $this->assertEquals(7, $c->getValue());
-        $c->bumpBack();
+        $this->assertEquals(7, $c->getPath());
+        $this->assertEquals(7, $c->getLength());
+
+        $c->bumpBack(2);
         $this->assertEquals(5, $c->getValue());
+        $this->assertEquals(9, $c->getPath());
+        $this->assertEquals(9, $c->getLength());
         $this->assertEquals(0, $c->getInitialValue());
         $this->assertEquals(5, $c->getDiff());
         $this->assertEquals(4, $c->getBumpedForward());
         $this->assertEquals(1, $c->getBumpedBack());
-        $c->bump(false);
+
+        $c->bump(2, false);
         $this->assertEquals(3, $c->getValue());
+        $this->assertEquals(11, $c->getPath());
+        $this->assertEquals(11, $c->getLength());
         $this->assertEquals(3, $c->getDiff());
         $this->assertEquals(4, $c->getBumpedForward());
         $this->assertEquals(2, $c->getBumpedBack());
+    }
+
+    /** @test */
+    public function counterBumpWithInitialValue(): void
+    {
+        $c = new Counter();
+        $c->setInitialValue(3);
+        $this->assertEquals(DEFAULT_NAME, $c->getName());
+
+        $c->bump();
+        $this->assertEquals(4, $c->getValue());
+        $this->assertEquals(1, $c->getPath());
+        $this->assertEquals(4, $c->getLength());
+
+        $c->bumpBack();
+        $this->assertEquals(3, $c->getValue());
+        $this->assertEquals(2, $c->getPath());
+        $this->assertEquals(5, $c->getLength());
+
+        $c->bump(2);
+        $this->assertEquals(5, $c->getValue());
+        $this->assertEquals(4, $c->getPath());
+        $this->assertEquals(7, $c->getLength());
+
+        $c->bump(2);
+        $this->assertEquals(7, $c->getValue());
+        $this->assertEquals(6, $c->getPath());
+        $this->assertEquals(9, $c->getLength());
+
+        $c->bump(2);
+        $this->assertEquals(9, $c->getValue());
+        $this->assertEquals(8, $c->getPath());
+        $this->assertEquals(11, $c->getLength());
+
+        $c->bumpBack(2);
+        $this->assertEquals(7, $c->getValue());
+        $this->assertEquals(10, $c->getPath());
+        $this->assertEquals(13, $c->getLength());
+        $this->assertEquals(3, $c->getInitialValue());
+        $this->assertEquals(4, $c->getDiff());
+        $this->assertEquals(4, $c->getBumpedForward());
+        $this->assertEquals(2, $c->getBumpedBack());
+
+        $c->bump(2, false);
+        $this->assertEquals(5, $c->getValue());
+        $this->assertEquals(12, $c->getPath());
+        $this->assertEquals(15, $c->getLength());
+        $this->assertEquals(2, $c->getDiff());
+        $this->assertEquals(4, $c->getBumpedForward());
+        $this->assertEquals(3, $c->getBumpedBack());
     }
 
     /** @test */
@@ -190,7 +275,7 @@ class CounterTest extends TestCase
         $this->assertEquals(1, $c->getStep());
         $this->assertEquals(2, $c->getDiff());
         $this->assertEquals(2, $c->getBumpedForward());
-        $c->bump(false);
+        $c->bump(1, false);
         $this->assertEquals(3, $c->getValue());
         $this->assertEquals(2, $c->getBumpedForward());
         $this->assertEquals(1, $c->getBumpedBack());

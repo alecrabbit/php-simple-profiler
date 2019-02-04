@@ -48,16 +48,20 @@ class CounterReportFormatter extends Formatter
      */
     public function full(bool $eol = true): string
     {
-        $value = $this->report->getValue();
-        $diff = $this->report->getDiff();
-        $diffStr = $value !== $diff ? sprintf(', ' . self::DIFF . ': %s ', $diff) : '';
         return
             sprintf(
-                self::COUNTER . '[%s]: ' . self::VALUE . ': %s, ' . self::STEP . ': %s %s %s',
+                self::COUNTER . '[%s]: ' .
+                self::VALUE . ': %s, ' .
+                self::STEP . ': %s, ' .
+                self::PATH . ': %s, ' .
+                self::LENGTH . ': %s, ' .
+                self::DIFF . ': %s %s',
                 $this->report->getName(),
-                (string)$value,
+                (string)$this->report->getValue(),
                 (string)$this->report->getStep(),
-                $diffStr,
+                (string)$this->report->getPath(),
+                (string)$this->report->getLength(),
+                (string)$this->report->getDiff(),
                 $eol ? PHP_EOL : ''
             );
     }

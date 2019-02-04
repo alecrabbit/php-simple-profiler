@@ -17,6 +17,12 @@ trait CounterFields
     protected $value = 0;
 
     /** @var int */
+    protected $path = 0;
+
+    /** @var int */
+    protected $length = 0;
+
+    /** @var int */
     protected $initialValue = 0;
 
     /** @var int */
@@ -37,17 +43,26 @@ trait CounterFields
     /**
      * @return int
      */
-    public function getStep(): int
+    public function getValue(): int
     {
-        return $this->step;
+        return $this->value;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getPath(): int
+    {
+        return $this->path;
     }
 
     /**
      * @return int
      */
-    public function getValue(): int
+    public function getLength(): int
     {
-        return $this->value;
+        return $this->length;
     }
 
     /**
@@ -66,13 +81,15 @@ trait CounterFields
         return $this->diff = $this->value - $this->initialValue;
     }
 
+
     /**
-     * @return bool
+     * @return int
      */
-    public function isStarted(): bool
+    public function getStep(): int
     {
-        return $this->started;
+        return $this->step;
     }
+
     /**
      * @return int
      */
@@ -87,5 +104,13 @@ trait CounterFields
     public function getBumpedBack(): int
     {
         return $this->bumpedBack;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStarted(): bool
+    {
+        return $this->started;
     }
 }

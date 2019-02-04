@@ -25,8 +25,8 @@ class Counter implements CounterInterface, ReportableInterface
     public function __construct(?string $name = null, int $step = 1, int $initialValue = 0)
     {
         $this->name = $this->defaultName($name);
-        $this->value = $this->initialValue = $initialValue;
-        $this->step = $step;
+        $this->setInitialValue($initialValue);
+        $this->setStep($step);
     }
 
     /**
@@ -35,10 +35,10 @@ class Counter implements CounterInterface, ReportableInterface
      */
     public function setInitialValue(int $initialValue): Counter
     {
-        if (false === $this->started) {
-            $this->value = $this->initialValue = $initialValue;
+        if (false === $this->isStarted()) {
+            $this->value = $this->initialValue = $this->length = $initialValue;
         } else {
-            throw new \RuntimeException('You can not set counter start value, it has been bumped already.');
+            throw new \RuntimeException('You can\'t set counter initial value, it has been bumped already.');
         }
         return $this;
     }
@@ -49,7 +49,12 @@ class Counter implements CounterInterface, ReportableInterface
      */
     public function setStep(int $step): Counter
     {
-        $this->step = $this->assertStep($step);
+        $step = $this->assertStep($step);
+        if (false === $this->isStarted()) {
+            $this->step = $step;
+        } else {
+            throw new \RuntimeException('You can\'t set counter initial value, it has been bumped already.');
+        }
         return $this;
     }
 
@@ -66,34 +71,43 @@ class Counter implements CounterInterface, ReportableInterface
     }
 
     /**
+     * @param int $times
      * @return int
      */
-    public function bumpBack(): int
+    public function bumpBack(int $times = 1): int
     {
         return
-            $this->bump(false);
-//        $this->start();
-//        $this->value -= $this->step;
-//        return
-//            $this->value;
+            $this->bump($times, false);
     }
 
     /**
+     * @param int $times
      * @param bool $forward
      * @return int
      */
-    public function bump(bool $forward = true): int
+    public function bump(int $times = 1, bool $forward = true): int
     {
+        $times = $this->assertTimes($times);
         $this->start();
+        $this->path += $times * $this->step;
+        $this->length += $times * $this->step;
         if ($forward) {
-            $this->value += $this->step;
+            $this->value += $times * $this->step;
             $this->bumpedForward++;
         } else {
-            $this->value -= $this->step;
+            $this->value -= $times * $this->step;
             $this->bumpedBack++;
         }
         return
             $this->value;
+    }
+
+    protected function assertTimes(int $times): int
+    {
+        if ($times < 1) {
+            throw new \RuntimeException(__METHOD__ . ' parameter 0 should be positive non-zero integer.');
+        }
+        return $times;
     }
 
     protected function start(): void

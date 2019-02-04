@@ -25,4 +25,6 @@ interface StringsInterface
     public const VALUE = 'Value';
     public const STEP = 'Step';
     public const DIFF = 'Diff';
+    public const PATH = 'Path';
+    public const LENGTH = 'Length';
 }

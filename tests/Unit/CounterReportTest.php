@@ -56,7 +56,7 @@ class CounterReportTest extends TestCase
         $c = new Counter();
         $c->bump();
         $c->bump();
-        $c->bump(false);
+        $c->bump(1, false);
         /** @var CounterReport $report */
         $report = $c->getReport();
         $this->assertInstanceOf(CounterReport::class, $report);
@@ -67,12 +67,16 @@ class CounterReportTest extends TestCase
         $this->assertNotContains(StringsInterface::VALUE, $str);
         $this->assertNotContains(StringsInterface::STEP, $str);
         $this->assertNotContains(StringsInterface::DIFF, $str);
+        $this->assertNotContains(StringsInterface::PATH, $str);
+        $this->assertNotContains(StringsInterface::LENGTH, $str);
 
 
         $this->assertEquals(DEFAULT_NAME, $report->getName());
         $this->assertEquals(1, $report->getValue());
         $this->assertEquals(1, $report->getStep());
         $this->assertEquals(1, $report->getDiff());
+        $this->assertEquals(3, $report->getPath());
+        $this->assertEquals(3, $report->getLength());
         $this->assertEquals(2, $report->getBumpedForward());
         $this->assertEquals(1, $report->getBumpedBack());
 
@@ -93,11 +97,15 @@ class CounterReportTest extends TestCase
         $this->assertContains(StringsInterface::VALUE, $str);
         $this->assertContains(StringsInterface::STEP, $str);
         $this->assertContains(StringsInterface::DIFF, $str);
+        $this->assertContains(StringsInterface::PATH, $str);
+        $this->assertContains(StringsInterface::LENGTH, $str);
 
         $this->assertEquals($name, $report->getName());
         $this->assertEquals(11, $report->getValue());
         $this->assertEquals(1, $report->getStep());
         $this->assertEquals(1, $report->getDiff());
+        $this->assertEquals(3, $report->getPath());
+        $this->assertEquals(13, $report->getLength());
         $this->assertEquals(2, $report->getBumpedForward());
         $this->assertEquals(1, $report->getBumpedBack());
     }

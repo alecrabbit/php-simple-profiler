@@ -24,6 +24,8 @@ class CounterReport extends Report
     {
         $this->name = $counter->getName();
         $this->value = $counter->getValue();
+        $this->path = $counter->getPath();
+        $this->length = $counter->getLength();
         $this->step = $counter->getStep();
         $this->started = $counter->isStarted();
         $this->diff = $counter->getDiff();
