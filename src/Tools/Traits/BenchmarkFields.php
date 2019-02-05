@@ -14,16 +14,13 @@ trait BenchmarkFields
 {
     /** @var array */
     protected $functions = [];
+
     /** @var Profiler */
     protected $profiler;
+
     /** @var int */
     protected $doneIterations = 0;
-    /** @var bool */
-    protected $withResults = false;
-    /** @var array */
-    private $exceptionMessages = [];
-    /** @var array */
-    private $exceptions = [];
+
     /** @var Timer */
     private $timer;
 
@@ -35,9 +32,6 @@ trait BenchmarkFields
     {
         $this->functions = [];
         $this->profiler = new Profiler();
-        $this->withResults = false;
-        $this->exceptionMessages = [];
-        $this->exceptions = [];
     }
 
     /**
@@ -62,30 +56,6 @@ trait BenchmarkFields
     public function getDoneIterations(): int
     {
         return $this->doneIterations;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isWithResults(): bool
-    {
-        return $this->withResults;
-    }
-
-    /**
-     * @return array
-     */
-    public function getExceptionMessages(): array
-    {
-        return $this->exceptionMessages;
-    }
-
-    /**
-     * @return array
-     */
-    public function getExceptions(): array
-    {
-        return $this->exceptions;
     }
 
     /**

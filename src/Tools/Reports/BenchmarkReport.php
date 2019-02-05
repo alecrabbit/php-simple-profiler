@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports;
 
-use AlecRabbit\Exception\InvalidStyleException;
 use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\Base\Report;
-use AlecRabbit\Tools\Timer;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
@@ -27,48 +25,48 @@ class BenchmarkReport extends Report
     public function __construct(Benchmark $benchmark)
     {
         $this->profiler = $benchmark->getProfiler();
-        $this->functions = $benchmark->getFunctions();
         $this->doneIterations = $benchmark->getDoneIterations();
-        $this->withResults = $benchmark->isWithResults();
-        $this->exceptionMessages = $benchmark->getExceptionMessages();
-        $this->exceptions = $benchmark->getExceptions();
-        $this->relatives = $this->computeRelatives();
+        $this->functions = $this->updateFunctions($benchmark->getFunctions());
 
         parent::__construct();
     }
 
     /**
-     * @return array
+     * @param iterable $functions
+     * @return iterable
      */
-    private function computeRelatives(): array
+    private function updateFunctions(iterable $functions): iterable
     {
-        $averages = $this->computeAverages($this->getTimers());
-        $relatives = [];
-        if (!empty($averages)) {
-            $min = min($averages);
-
-            foreach ($averages as $name => $average) {
-                $relatives[$name] = $average / $min;
-            }
-            asort($relatives);
-
-            /** @var  float|int $relative */
-            foreach ($relatives as $name => $relative) {
-                $relatives[$name] = new BenchmarkRelative((float)$relative - 1, $averages[$name]);
+        $averages = $this->computeAverages($functions);
+        $relatives = $this->computeRelatives($averages);
+        $updatedFunctions = [];
+        if (!empty($relatives)) {
+            $rank = 0;
+            /** @var BenchmarkFunction $function */
+            foreach ($functions as $name => $function) {
+                $relative = $relatives[$name] ?? null;
+                $average = $averages[$name] ?? null;
+                if (null !== $relative && null !== $average) {
+                    $function->setBenchmarkRelative(
+                        new BenchmarkRelative(++$rank, (float)$relative - 1, (float)$average)
+                    );
+                }
+                $updatedFunctions[$name] = $function;
             }
         }
-        return $relatives;
+        return $updatedFunctions;
     }
 
     /**
-     * @param array $timers
+     * @param iterable $functions
      * @return array
      */
-    private function computeAverages(array $timers): array
+    private function computeAverages(iterable $functions): array
     {
         $averages = [];
-        /** @var Timer $timer */
-        foreach ($timers as $timer) {
+        /** @var BenchmarkFunction $f */
+        foreach ($functions as $f) {
+            $timer = $f->getTimer();
             if ((DEFAULT_NAME !== $name = $timer->getName())
                 && 0.0 !== $avg = $timer->getAverageValue()) {
                 $averages[$name] = $avg;
@@ -77,38 +75,54 @@ class BenchmarkReport extends Report
         return $averages;
     }
 
-    private function getTimers(): array
+    private function computeRelatives(array $averages): array
     {
-        $timers = [];
-        /** @var BenchmarkFunction $f */
-        foreach ($this->functions as $f) {
-            $timers[] = $f->getTimer();
+        $rel = [];
+        if (!empty($averages)) {
+            $min = min($averages);
+
+            foreach ($averages as $name => $average) {
+                $rel[$name] = $average / $min;
+            }
+            asort($rel);
         }
-        return $timers;
+        return $rel;
     }
 
     /**
-     * @param string $name
-     * @return BenchmarkFunction
+     * @return array[BenchmarkFunction]
      */
-    public function getFunctionObject(string $name): BenchmarkFunction
-    {
-        return $this->functions[$name];
-    }
-
-    /**
-     * @return array
-     */
-    public function getFunctionObjects(): array
+    public function getFunctions(): array
     {
         return $this->functions;
     }
+//    /**
+//     * @param iterable $functions
+//     * @return iterable
+//     */
+//    private function updateFunctions(iterable $functions): iterable
+//    {
+//        $averages = $this->computeAverages($functions);
+//        $relatives = [];
+//        if (!empty($averages)) {
+//            $min = min($averages);
+//
+//            foreach ($averages as $name => $average) {
+//                $rel[$name] = $average / $min;
+//            }
+//            asort($rel);
+//            $rank = 0;
+//            /** @var BenchmarkFunction $f */
+//            foreach ($rel as $name => $r) {
+//                $f = $functions[$name];
+//                $relatives[$name] =
+//                    $f->setBenchmarkRelative(
+//                        new BenchmarkRelative(++$rank, (float)$r - 1, $averages[$name])
+//                    );
+//            }
+//        }
+//        return $functions;
+//    }
 
-    /**
-     * @return array
-     */
-    public function getRelatives(): array
-    {
-        return $this->relatives;
-    }
+
 }

@@ -8,15 +8,12 @@ use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
-use function AlecRabbit\brackets;
 use function AlecRabbit\typeOf;
 
 class Benchmark implements BenchmarkInterface, ReportableInterface
 {
-    protected const PG_WIDTH = 60;
     protected const ADDED = 'added';
     protected const BENCHMARKED = 'benchmarked';
-    protected const ADVANCE_STEP = 5000;
 
     use BenchmarkFields, Reportable;
 
@@ -73,11 +70,6 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
         $this->resetFields();
     }
 
-//    private function expectedTotalIterations(): int
-//    {
-//        return count($this->functions) * $this->iterations;
-//    }
-//
     /**
      * Launch benchmarking
      */
@@ -98,62 +90,49 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     private function execute(): void
     {
         /** @var  BenchmarkFunction $f */
-        foreach ($this->functions as $name => $f) {
-            $function = $f->getCallable();
-            $args = $f->getArgs();
-            $this->prepareResult($f, $function, $args);
-            $timer = $f->getTimer();
-            if ($f->getException()) {
-                $timer->check();
+        foreach ($this->functions as $f) {
+            if (!$f->execute()) {
                 $this->totalIterations -= $this->iterations;
                 continue;
             }
             $this->advanceStep = (int)($this->totalIterations / 100);
-            foreach ($this->rewindable as $iteration) {
-                $this->bench($timer, $function, $args, $iteration);
-            }
+            $this->bench($f);
             $this->profiler->counter(self::BENCHMARKED)->bump();
         }
     }
 
     /**
      * @param BenchmarkFunction $f
-     * @param callable $function
-     * @param array $args
      */
-    private function prepareResult(BenchmarkFunction $f, callable $function, array $args): void
+    private function bench(BenchmarkFunction $f): void
     {
-        try {
-            $result = $function(...$args);
-        } catch (\Throwable $e) {
-            $this->exceptionMessages[$f->getIndexedName()] = $result = brackets(typeOf($e)) . ': ' . $e->getMessage();
-            $this->exceptions[$f->getIndexedName()] = $e;
-            $f->setException($e);
+        $timer = $f->getTimer();
+        $function = $f->getCallable();
+        $args = $f->getArgs();
+        foreach ($this->rewindable as $iteration) {
+            $start = microtime(true);
+            /** @noinspection DisconnectedForeachInstructionInspection */
+            $function(...$args);
+            $stop = microtime(true);
+            $timer->bounds($start, $stop, $iteration);
+            /** @noinspection DisconnectedForeachInstructionInspection */
+            $this->progress();
         }
-        $f->setResult($result);
-    }
-
-    /**
-     * @param Timer $timer
-     * @param callable $function
-     * @param array $args
-     * @param int $iteration
-     */
-    private function bench(Timer $timer, callable $function, array $args, int $iteration): void
-    {
-        $timer->start();
-        $function(...$args);
-        $timer->check($iteration);
-        $this->progress();
     }
 
     private function progress(): void
     {
-        if ($this->onAdvance && 1 === ++$this->doneIterations % $this->advanceStep) {
+        if ($this->onAdvance && 0 === ++$this->doneIterations % $this->advanceStep) {
             ($this->onAdvance)();
         }
     }
 
+    /**
+     * @param callable|null $onStart
+     * @param callable|null $onAdvance
+     * @param callable|null $onFinish
+     * @return Benchmark
+     */
     public function progressBar(
         callable $onStart = null,
         callable $onAdvance = null,
@@ -230,15 +209,6 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
         }
         $this->names[] = $name;
         $this->humanReadableName = $name;
-        return $this;
-    }
-
-    /**
-     * @return Benchmark
-     */
-    public function returnResults(): self
-    {
-        $this->withResults = true;
         return $this;
     }
 

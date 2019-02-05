@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Pretty;
-use AlecRabbit\Tools\Internal\BenchmarkRelative;
+use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
-use function AlecRabbit\brackets;
 use function AlecRabbit\typeOf;
 
 class BenchmarkReportFormatter extends Formatter
@@ -20,15 +19,13 @@ class BenchmarkReportFormatter extends Formatter
      */
     public function getString(): string
     {
-        $rank = 0;
         $profilerReport = (string)$this->report->getProfiler()->getReport();
         $r = 'Benchmark:' . PHP_EOL;
-        /** @var BenchmarkRelative $result */
-        foreach ($this->report->getRelatives() as $indexName => $result) {
-            $relative = $result->getRelative();
-            $average = $result->getAverage();
-            $function = $this->report->getFunctionObject($indexName);
-            $function->setRank(++$rank);
+        $withException = '';
+        /** @var BenchmarkFunction $function */
+        foreach ($this->report->getFunctions() as $name => $function) {
+            dump($function);
+            $br = $function->getBenchmarkRelative();
             $arguments = $function->getArgs();
             $types = [];
             if (!empty($arguments)) {
@@ -36,32 +33,45 @@ class BenchmarkReportFormatter extends Formatter
                     $types[] = typeOf($argument);
                 }
             }
-            $r .= sprintf(
-                '%s. %s (%s) %s(%s) %s %s',
-                (string)$rank,
-                $this->average($average),
-                $this->relativePercent($relative),
-                $function->getHumanReadableName(),
-                implode(', ', $types),
-                $function->getComment(),
-                PHP_EOL
-            );
-            if ($this->report->isWithResults()) {
+
+            if ($br) {
+                $relative = $br->getRelative();
+                $average = $br->getAverage();
+                $rank = $br->getRank();
+                $r .=
+                    sprintf(
+                        '%s. %s (%s) %s(%s) %s %s',
+                        (string)$rank,
+                        $this->average($average),
+                        $this->relativePercent($relative),
+                        $function->humanReadableName(),
+                        implode(', ', $types),
+                        $function->comment(),
+                        PHP_EOL
+                    );
                 $result = $function->getResult();
-                var_dump($result);
-                dump($result);
-                $r .= self::RESULT . ': ' . $this->typeOf($result) . ' "'
-                    . var_export($function->getResult(), true) . '" ' . PHP_EOL;
-            }
-        }
-        if (!empty($exceptionMessages = $this->report->getExceptionMessages())) {
-            $r .= 'Exceptions:' . PHP_EOL;
-            foreach ($exceptionMessages as $name => $exceptionMessage) {
-                $r .= brackets($name) . ': ' . $exceptionMessage . PHP_EOL;
+                $r .=
+                    sprintf(
+                        '%s(%s) %s',
+                        $this->typeOf($result),
+                        var_export($result, true),
+                        PHP_EOL
+                    );
+            } else {
+                $withException .= sprintf(
+                    '%s(%s) %s %s %s',
+                    $function->humanReadableName(),
+                    implode(', ', $types),
+                    $function->comment(),
+                    $function->getException()->getMessage(),
+                    PHP_EOL
+                );
             }
         }
         return
-            $r . PHP_EOL . $profilerReport;
+            $r . PHP_EOL .
+            (empty($withException) ? '' : 'Exceptions:' . PHP_EOL . $withException) . PHP_EOL .
+            $profilerReport;
     }
 
     /**
