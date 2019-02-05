@@ -7,7 +7,6 @@
 
 namespace AlecRabbit\Tools\Reports;
 
-use AlecRabbit\Exception\InvalidStyleException;
 use AlecRabbit\Tools\Reports\Base\Report;
 use AlecRabbit\Tools\Timer;
 use AlecRabbit\Tools\Traits\TimerFields;
@@ -19,27 +18,24 @@ class TimerReport extends Report
     /**
      * TimerReport constructor.
      * @param Timer $timer
-     * @throws InvalidStyleException
      */
     public function __construct(Timer $timer)
     {
         $this->name = $timer->getName();
         $this->creation = $timer->getCreation();
-        try {
-            $count = $timer->getCount();
-            $this->previous = $timer->getPrevious();
-            $this->elapsed = $timer->getElapsed();
-            $this->stopped = $timer->isStopped();
-            $this->currentValue = $timer->getLastValue();
-            $this->minValueIteration = $timer->getMinValueIteration();
-            $this->maxValueIteration = $timer->getMaxValueIteration();
-            $this->avgValue = $timer->getAverageValue();
-            $this->minValue = ($count === 1) ? $timer->getLastValue() : $timer->getMinValue();
-            $this->maxValue = $timer->getMaxValue();
-            $this->count = $count;
-        } catch (\Throwable $e) {
-            // no further action
-        }
+        $count = $timer->getCount();
+        $this->previous = $timer->getPrevious();
+        $this->elapsed = $timer->getElapsed();
+        $this->stopped = $timer->isStopped();
+        $this->currentValue = $timer->getLastValue();
+        $this->minValueIteration = $timer->getMinValueIteration();
+        $this->maxValueIteration = $timer->getMaxValueIteration();
+        $this->avgValue = $timer->getAverageValue();
+        $this->minValue = ($count === 1) ? $timer->getLastValue() : $timer->getMinValue();
+        $this->maxValue = $timer->getMaxValue();
+        $this->started = $timer->isStarted();
+        $this->stopped = $timer->isStopped();
+        $this->count = $count;
         parent::__construct();
     }
 }

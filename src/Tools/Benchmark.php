@@ -2,13 +2,10 @@
 
 namespace AlecRabbit\Tools;
 
-use AlecRabbit\Exception\InvalidStyleException;
 use AlecRabbit\Rewindable;
 use AlecRabbit\Tools\Contracts\BenchmarkInterface;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
-use AlecRabbit\Tools\Reports\Factory;
-use AlecRabbit\Tools\Reports\Formatters\Helper;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
 use function AlecRabbit\brackets;
@@ -19,6 +16,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     protected const PG_WIDTH = 60;
     protected const ADDED = 'added';
     protected const BENCHMARKED = 'benchmarked';
+    protected const ADVANCE_STEP = 5000;
 
     use BenchmarkFields, Reportable;
 
@@ -30,16 +28,20 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     private $iterations;
     /** @var null|string */
     private $comment;
-    /** @var bool */
-    private $verbose;
-    /** @var int */
-    private $dots;
     /** @var array */
     private $names;
     /** @var string|null */
     private $humanReadableName;
     /** @var int */
     private $iterationsToBench;
+    /** @var null|callable */
+    private $onStart;
+    /** @var null|callable */
+    private $onAdvance;
+    /** @var null|callable */
+    private $onFinish;
+    /** @var int */
+    private $advanceStep;
 
     /**
      * Benchmark constructor.
@@ -48,6 +50,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     public function __construct(int $iterations = 1000)
     {
         $this->iterations = $iterations;
+        $this->timer = new Timer();
         $this->reset();
     }
 
@@ -58,8 +61,6 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     {
         $this->names = [];
         $this->humanReadableName = null;
-        $this->dots = 0;
-        $this->verbose = false;
         $this->rewindable =
             new Rewindable(
                 function (int $iterations, int $i = 1): \Generator {
@@ -70,37 +71,24 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
                 $this->iterations
             );
         $this->resetFields();
-        $this->resetReportObject();
     }
 
+//    private function expectedTotalIterations(): int
+//    {
+//        return count($this->functions) * $this->iterations;
+//    }
+//
     /**
      * Launch benchmarking
-     * @param bool $printReport
-     * @throws InvalidStyleException
      */
-    public function run(bool $printReport = false): void
+    public function run(): void
     {
-        if ($this->verbose) {
-            echo
-            sprintf(
-                'Running benchmarks(Functions: %s, Repeat: %s):',
-                $this->profiler->counter(self::ADDED)->getValue(),
-                $this->iterations
-            );
-            echo PHP_EOL;
+        if ($this->onStart) {
+            ($this->onStart)();
         }
         $this->execute();
-
-        if ($this->verbose) {
-            $this->erase();
-            echo ' 100%' . PHP_EOL;
-            echo '  λ   Done!' . PHP_EOL;
-        }
-
-        if ($printReport) {
-            echo PHP_EOL;
-            echo (string)$this->getReport();
-            echo PHP_EOL;
+        if ($this->onFinish) {
+            ($this->onFinish)();
         }
     }
 
@@ -120,6 +108,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
                 $this->iterationsToBench -= $this->iterations;
                 continue;
             }
+            $this->advanceStep = (int)($this->iterationsToBench / 100);
             foreach ($this->rewindable as $iteration) {
                 $this->bench($timer, $function, $args, $iteration);
             }
@@ -160,44 +149,19 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
 
     private function progress(): void
     {
-        if ($this->verbose && 1 === ++$this->totalIterations % 5000) {
-            $this->erase();
-            echo '.';
-            $a =
-                str_pad(
-                    Helper::percent($this->totalIterations / $this->iterationsToBench),
-                    6,
-                    ' ',
-                    STR_PAD_LEFT
-                );
-            echo $a;
-            if (++$this->dots > static::PG_WIDTH) {
-                echo PHP_EOL;
-                $this->dots = 0;
-            }
+        if ($this->onAdvance && 1 === ++$this->totalIterations % $this->advanceStep) {
+            ($this->onAdvance)();
         }
     }
 
-    private function erase(): void
-    {
-        echo "\e[6D";
-    }
-
-    /**
-     * @return Benchmark
-     */
-    public function verbose(): self
-    {
-        $this->verbose = true;
-        return $this;
-    }
-
-    /**
-     * @return Benchmark
-     */
-    public function color(): self
-    {
-        Factory::enableColour(true);
+    public function progressBar(
+        callable $onStart = null,
+        callable $onAdvance = null,
+        callable $onFinish = null
+    ): Benchmark {
+        $this->onStart = $onStart;
+        $this->onAdvance = $onAdvance;
+        $this->onFinish = $onFinish;
         return $this;
     }
 
@@ -280,15 +244,13 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
 
     /**
      * @return string
-     * @throws \Throwable
      */
     public function elapsed(): string
     {
-        $theme = Factory::getThemedObject();
         return
             sprintf(
                 'Done in: %s',
-                $theme->yellow($this->getProfiler()->timer()->elapsed())
+                $this->getTimer()->elapsed()
             );
     }
 

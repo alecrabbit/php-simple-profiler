@@ -23,7 +23,6 @@ class BenchmarkReport extends Report
     /**
      * BenchmarkReport constructor.
      * @param Benchmark $benchmark
-     * @throws InvalidStyleException
      */
     public function __construct(Benchmark $benchmark)
     {

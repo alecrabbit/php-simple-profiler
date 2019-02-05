@@ -19,13 +19,19 @@ class CounterReport extends Report
     /**
      * CounterReport constructor.
      * @param Counter $counter
-     * @throws InvalidStyleException
      */
     public function __construct(Counter $counter)
     {
         $this->name = $counter->getName();
         $this->value = $counter->getValue();
+        $this->path = $counter->getPath();
+        $this->length = $counter->getLength();
         $this->step = $counter->getStep();
+        $this->started = $counter->isStarted();
+        $this->diff = $counter->getDiff();
+        $this->initialValue = $counter->getInitialValue();
+        $this->bumpedForward = $counter->getBumpedForward();
+        $this->bumpedBack = $counter->getBumpedBack();
         parent::__construct();
     }
 }

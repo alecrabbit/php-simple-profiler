@@ -55,14 +55,6 @@ trait TimerFields
     /**
      * @return bool
      */
-    public function isNotStopped(): bool
-    {
-        return !$this->stopped;
-    }
-
-    /**
-     * @return bool
-     */
     public function isStarted(): bool
     {
         return $this->started;
@@ -138,6 +130,14 @@ trait TimerFields
     public function getElapsed(): float
     {
         return $this->elapsed;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNotStopped(): bool
+    {
+        return !$this->stopped;
     }
 
     /**

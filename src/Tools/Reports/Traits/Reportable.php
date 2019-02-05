@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Traits;
 
-use AlecRabbit\Exception\InvalidStyleException;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Factory;
@@ -15,25 +14,18 @@ trait Reportable
     protected $reportObject;
 
     /**
-     * @param bool $rebuild
+     * @param bool $rebuild Rebuild report object
      * @return ReportInterface
-     * @throws InvalidStyleException
      */
-    public function getReport(bool $rebuild = false): ReportInterface
+    public function getReport(bool $rebuild = true): ReportInterface
     {
         if (null === $this->reportObject || true === $rebuild) {
             $this->prepareForReport();
-            /** @var ReportableInterface $that */
-            $that = $this; // for static analyzers
-            $this->reportObject = Factory::makeReport($that);
+            $this->reportObject =
+                Factory::makeReport($this);
         }
         return
             $this->reportObject;
-    }
-
-    public function resetReportObject(): void
-    {
-        $this->reportObject = null;
     }
 
     /**

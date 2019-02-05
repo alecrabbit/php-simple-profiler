@@ -15,8 +15,7 @@ for ($i = 0; $i < $count; $i++) {
     $timer->check();
 }
 echo "\n";
-Factory::enableColour(true);
-dump($timer->getReport()); // symfony/var-dumper function dump()
+dump($timer->getReport()); // use var_dump
 echo PHP_EOL;
 
 echo (string)$timer->getReport();

@@ -10,6 +10,7 @@ namespace Tests\Unit;
 use AlecRabbit\Tools\Counter;
 use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Reports\ProfilerReport;
+use AlecRabbit\Tools\Timer;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -23,15 +24,23 @@ class ProfilerTest extends TestCase
     {
         $profiler = new Profiler();
         $this->assertInstanceOf(Profiler::class, $profiler);
+        $counters = $profiler->getCounters();
+        foreach ($counters as $counter) {
+            $this->assertInstanceOf(Counter::class, $counter);
+        }
+        $timers = $profiler->getTimers();
+        foreach ($timers as $timer) {
+            $this->assertInstanceOf(Timer::class, $timer);
+        }
     }
 
     /** @test */
     public function counterCreation(): void
     {
         $profiler = new Profiler();
-        $profiler->counter('new')->bumpUp();
+        $profiler->counter('new')->bump();
         $this->assertEquals(1, $profiler->counter('new')->getValue());
-        $profiler->counter('new', 'vol', 'buy', 'tor')->bumpUp();
+        $profiler->counter('new', 'vol', 'buy', 'tor')->bump();
         $this->assertStringMatchesFormat(
             '%s [%s, %s, %s]',
             $profiler
@@ -44,7 +53,7 @@ class ProfilerTest extends TestCase
     public function timerCreation(): void
     {
         $profiler = new Profiler();
-        $profiler->counter('new')->bumpUp();
+        $profiler->counter('new')->bump();
         $profiler->timer('new')->start();
         $profiler->timer('new')->check();
         $this->assertEquals('0.0ns', $profiler->timer('new')->elapsed());
@@ -57,30 +66,4 @@ class ProfilerTest extends TestCase
     }
 
 
-    /** @test */
-    public function profilerReport(): void
-    {
-        $profiler = new Profiler();
-        $profiler->counter('new')->bumpUp();
-        $profiler->counter()->bump();
-        $profiler->timer('new')->check();
-        sleep(1);
-        $profiler->timer('new')->check();
-        $profiler->timer()->check();
-        sleep(1);
-        $profiler->timer()->check();
-        $this->assertEquals(1, $profiler->counter('new')->getValue());
-
-        $this->assertIsString($profiler->timer('new')->elapsed());
-        $this->assertEquals('2.0s', $profiler->timer()->elapsed());
-        $this->assertEquals('2.0s', $profiler->timer('new')->elapsed());
-        $profiler->timer('new', 'vol', 'buy', 'tor');
-        $report = $profiler->getReport();
-        $this->assertInstanceOf(ProfilerReport::class, $report);
-
-        $counters = $profiler->getCounters();
-        foreach ($counters as $counter) {
-            $this->assertInstanceOf(Counter::class, $counter);
-        }
-    }
 }

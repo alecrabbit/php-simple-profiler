@@ -24,19 +24,34 @@ class ProfilerReport extends Report implements StringsInterface
     {
         return $this->reports;
     }
+    
+    /**
+     * @return array
+     */
+    public function getCountersReports(): array
+    {
+        return $this->reports[self::_COUNTERS];
+    }
+
+    /**
+     * @return array
+     */
+    public function getTimersReports(): array
+    {
+        return $this->reports[self::_TIMERS];
+    }
 
     /**
      * ProfilerReport constructor.
      * @param Profiler $profiler
-     * @throws InvalidStyleException
      */
     public function __construct(Profiler $profiler)
     {
         foreach ($profiler->getCounters() as $counter) {
-            $this->reports[static::_COUNTERS][$counter->getName()] = $counter->getReport();
+            $this->reports[self::_COUNTERS][$counter->getName()] = $counter->getReport();
         }
         foreach ($profiler->getTimers() as $timer) {
-            $this->reports[static::_TIMERS][$timer->getName()] = $timer->getReport();
+            $this->reports[self::_TIMERS][$timer->getName()] = $timer->getReport();
         }
         parent::__construct();
     }

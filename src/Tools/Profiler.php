@@ -64,7 +64,7 @@ class Profiler implements ProfilerInterface, ReportableInterface
     protected function formatName(string $name, array $suffixes): string
     {
         return
-            sprintf(static::_NAME_FORMAT, $name, implode(', ', $suffixes));
+            sprintf(static::NAME_FORMAT, $name, implode(', ', $suffixes));
     }
 
     /**

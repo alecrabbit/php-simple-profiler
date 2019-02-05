@@ -29,7 +29,6 @@ class BenchmarkTest extends TestCase
     /** @test */
     public function addFunctionWithComment(): void
     {
-        $this->assertInstanceOf(Benchmark::class, $this->bench);
         $this->bench
             ->withComment('Added First(1)')
             ->addFunction(function () {
@@ -51,18 +50,15 @@ class BenchmarkTest extends TestCase
                 usleep(521);
             });
         $this->bench
-            ->color()
             ->run();
-        $report = (string)$this->bench->getReport();
-//        dump($report);
-        $this->assertInstanceOf(BenchmarkReport::class, $this->bench->getReport());
-        $this->assertIsString($report);
-//        $this->assertContains('Timer', $report);
-//        $this->assertContains('Average:', $report);
-//        $this->assertContains('Last:', $report);
-//        $this->assertContains('Min', $report);
-//        $this->assertContains('Max', $report);
-//        $this->assertContains('Count:', $report);
+        $report = $this->bench->getReport();
+        $this->assertInstanceOf(BenchmarkReport::class, $report);
+        $str = (string)$report;
+        $this->assertIsString($str);
+        $this->assertContains('Added First(1)', $str);
+        $this->assertContains('Added Second(3)', $str);
+        $this->assertContains('Added Third(2)', $str);
+        $this->assertContains('Added Fours(2)', $str);
     }
 
     /** @test */
@@ -99,19 +95,11 @@ class BenchmarkTest extends TestCase
 
         $bench
             ->returnResults()
-            ->color()
-            ->verbose()
             ->run(true);
         $report = $bench->getReport();
         $this->assertInstanceOf(BenchmarkReport::class, $report);
-        $report = (string)$report;
-        $this->assertIsString($report);
-//        $this->assertContains('Timer', $report);
-//        $this->assertContains('Average:', $report);
-//        $this->assertContains('Last:', $report);
-//        $this->assertContains('Min', $report);
-//        $this->assertContains('Max', $report);
-//        $this->assertContains('Count:', $report);
+        $str = (string)$report;
+        $this->assertIsString($str);
         $this->assertContains('Done in', $bench->elapsed());
     }
 

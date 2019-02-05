@@ -19,59 +19,28 @@ class Counter implements CounterInterface, ReportableInterface
     /**
      * Counter constructor
      * @param string|null $name
-     * @param int $value
+     * @param int $step
+     * @param int $initialValue
      */
-    public function __construct(?string $name = null, int $value = 0)
+    public function __construct(?string $name = null, int $step = 1, int $initialValue = 0)
     {
         $this->name = $this->defaultName($name);
-        $this->value = $value;
-        $this->step = 1;
+        $this->setInitialValue($initialValue);
+        $this->setStep($step);
     }
 
     /**
-     * @return int
+     * @param int $initialValue
+     * @return Counter
      */
-    public function bump(): int
+    public function setInitialValue(int $initialValue): Counter
     {
-        return
-            $this->bumpUp();
-    }
-
-    /**
-     * @return int
-     */
-    public function bumpUp(): int
-    {
-        $this->value += $this->step;
-        return
-            $this->value;
-    }
-
-    /**
-     * @param int $step
-     * @param bool $setStep
-     * @return int
-     */
-    public function bumpWith(int $step, bool $setStep = false): int
-    {
-        $this->value += $this->checkStep($step);
-        if ($setStep) {
-            $this->setStep($step);
+        if (false === $this->isStarted()) {
+            $this->value = $this->initialValue = $this->length = $initialValue;
+        } else {
+            throw new \RuntimeException('You can\'t set counter initial value, it has been bumped already.');
         }
-        return
-            $this->value;
-    }
-
-    /**
-     * @param int $step
-     * @return int
-     */
-    private function checkStep(int $step): int
-    {
-        if ($step === 0) {
-            throw new \RuntimeException('Counter step should be non-zero integer.');
-        }
-        return $step;
+        return $this;
     }
 
     /**
@@ -80,17 +49,69 @@ class Counter implements CounterInterface, ReportableInterface
      */
     public function setStep(int $step): Counter
     {
-        $this->step = $this->checkStep($step);
+        $step = $this->assertStep($step);
+        if (false === $this->isStarted()) {
+            $this->step = $step;
+        } else {
+            throw new \RuntimeException('You can\'t set counter step value, it has been bumped already.');
+        }
         return $this;
     }
 
     /**
+     * @param int $step
      * @return int
      */
-    public function bumpDown(): int
+    protected function assertStep(int $step): int
     {
-        $this->value -= $this->step;
+        if ($step === 0) {
+            throw new \RuntimeException('Counter step should be non-zero integer.');
+        }
+        return $step;
+    }
+
+    /**
+     * @param int $times
+     * @return int
+     */
+    public function bumpBack(int $times = 1): int
+    {
+        return
+            $this->bump($times, false);
+    }
+
+    /**
+     * @param int $times
+     * @param bool $forward
+     * @return int
+     */
+    public function bump(int $times = 1, bool $forward = true): int
+    {
+        $times = $this->assertTimes($times);
+        $this->start();
+        $this->path += $times * $this->step;
+        $this->length += $times * $this->step;
+        if ($forward) {
+            $this->value += $times * $this->step;
+            $this->bumpedForward++;
+        } else {
+            $this->value -= $times * $this->step;
+            $this->bumpedBack++;
+        }
         return
             $this->value;
+    }
+
+    protected function assertTimes(int $times): int
+    {
+        if ($times < 1) {
+            throw new \RuntimeException(__METHOD__ . ' parameter 0 should be positive non-zero integer.');
+        }
+        return $times;
+    }
+
+    protected function start(): void
+    {
+        $this->started = true;
     }
 }
