@@ -28,7 +28,7 @@ class BenchmarkReport extends Report
     {
         $this->profiler = $benchmark->getProfiler();
         $this->functions = $benchmark->getFunctions();
-        $this->totalIterations = $benchmark->getTotalIterations();
+        $this->doneIterations = $benchmark->getDoneIterations();
         $this->withResults = $benchmark->isWithResults();
         $this->exceptionMessages = $benchmark->getExceptionMessages();
         $this->exceptions = $benchmark->getExceptions();

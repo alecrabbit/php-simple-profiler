@@ -9,7 +9,7 @@ use AlecRabbit\Tools\Benchmark;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-const ITERATIONS = 500000;
+const ITERATIONS = 5000;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

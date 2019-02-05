@@ -17,7 +17,7 @@ trait BenchmarkFields
     /** @var Profiler */
     protected $profiler;
     /** @var int */
-    protected $totalIterations = 0;
+    protected $doneIterations = 0;
     /** @var bool */
     protected $withResults = false;
     /** @var array */
@@ -59,9 +59,9 @@ trait BenchmarkFields
     /**
      * @return int
      */
-    public function getTotalIterations(): int
+    public function getDoneIterations(): int
     {
-        return $this->totalIterations;
+        return $this->doneIterations;
     }
 
     /**

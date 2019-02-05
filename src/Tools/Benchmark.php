@@ -21,7 +21,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     use BenchmarkFields, Reportable;
 
     /** @var int */
-    private $namingIndex = 1;
+    private $functionIndex = 1;
     /** @var Rewindable */
     private $rewindable;
     /** @var int */
@@ -33,7 +33,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     /** @var string|null */
     private $humanReadableName;
     /** @var int */
-    private $iterationsToBench;
+    private $totalIterations;
     /** @var null|callable */
     private $onStart;
     /** @var null|callable */
@@ -99,16 +99,16 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     {
         /** @var  BenchmarkFunction $f */
         foreach ($this->functions as $name => $f) {
-            $function = $f->getFunction();
+            $function = $f->getCallable();
             $args = $f->getArgs();
             $this->prepareResult($f, $function, $args);
             $timer = $f->getTimer();
             if ($f->getException()) {
                 $timer->check();
-                $this->iterationsToBench -= $this->iterations;
+                $this->totalIterations -= $this->iterations;
                 continue;
             }
-            $this->advanceStep = (int)($this->iterationsToBench / 100);
+            $this->advanceStep = (int)($this->totalIterations / 100);
             foreach ($this->rewindable as $iteration) {
                 $this->bench($timer, $function, $args, $iteration);
             }
@@ -149,7 +149,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
 
     private function progress(): void
     {
-        if ($this->onAdvance && 1 === ++$this->totalIterations % $this->advanceStep) {
+        if ($this->onAdvance && 1 === ++$this->doneIterations % $this->advanceStep) {
             ($this->onAdvance)();
         }
     }
@@ -184,7 +184,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
             new BenchmarkFunction(
                 $func,
                 $this->refineName($func, $name),
-                $this->namingIndex++,
+                $this->functionIndex++,
                 $args,
                 $this->comment,
                 $this->humanReadableName
@@ -193,7 +193,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
         $this->humanReadableName = null;
         $this->comment = null;
         $this->profiler->counter(self::ADDED)->bump();
-        $this->iterationsToBench += $this->iterations;
+        $this->totalIterations += $this->iterations;
     }
 
     /**

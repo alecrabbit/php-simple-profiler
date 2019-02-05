@@ -23,7 +23,8 @@ $progressAdvance = function () {
 };
 
 $progressFinish = function () {
-    echo PHP_EOL;
+    echo "\e[100D";
+    echo "\e[K";
 };
 
 $benchmark

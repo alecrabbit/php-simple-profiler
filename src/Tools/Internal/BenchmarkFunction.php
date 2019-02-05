@@ -22,32 +22,32 @@ class BenchmarkFunction
 {
     use GettableName;
 
-    /** @var null|string */
-    private $comment;
+    /** @var callable */
+    private $func;
 
     /** @var int */
     private $index;
 
-    /** @var null|int */
-    private $rank;
-
     /** @var array */
     private $args;
-
-    /** @var callable */
-    private $func;
 
     /** @var mixed */
     private $result;
 
-    /** @var Timer */
-    private $timer;
+    /** @var null|string */
+    private $comment;
+
+    /** @var null|string */
+    private $humanReadableName;
 
     /** @var \Throwable|null */
     private $exception;
 
-    /** @var null|string  */
-    private $humanReadableName;
+    /** @var Timer */
+    private $timer;
+
+    /** @var null|int */
+    private $rank;
 
     /**
      * BenchmarkFunction constructor.
@@ -67,12 +67,28 @@ class BenchmarkFunction
         ?string $humanReadableName = null
     ) {
         $this->func = $func;
-        $this->comment = $comment;
         $this->name = $name;
         $this->index = $index;
         $this->args = $args;
-        $this->timer = new Timer($this->getIndexedName());
+        $this->comment = $comment;
         $this->humanReadableName = $humanReadableName;
+        $this->timer = new Timer($this->getIndexedName());
+    }
+
+    /**
+     * @return string
+     */
+    public function getIndexedName(): string
+    {
+        return "⟨{$this->getIndex()}⟩ {$this->getName()}";
+    }
+
+    /**
+     * @return int
+     */
+    public function getIndex(): int
+    {
+        return $this->index;
     }
 
     /**
@@ -80,7 +96,8 @@ class BenchmarkFunction
      */
     public function getComment(): string
     {
-        return $this->comment ? str_decorate($this->comment, '"') : '';
+        return $this->comment;
+//        return $this->comment ? str_decorate($this->comment, '"') : '';
     }
 
     /**
@@ -94,15 +111,16 @@ class BenchmarkFunction
     /**
      * @return callable
      */
-    public function getFunction(): callable
+    public function getCallable(): callable
     {
         return $this->func;
     }
 
     public function enumeratedName(): string
     {
-        return
-            brackets((string)$this->index, BRACKETS_ANGLE) . ' ' . $this->name;
+        return $this->getIndexedName();
+//        return
+//            brackets((string)$this->index, BRACKETS_ANGLE) . ' ' . $this->name;
     }
 
     /**
@@ -119,26 +137,6 @@ class BenchmarkFunction
     public function setResult($result): void
     {
         $this->result = $result;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIndexedName(): string
-    {
-        return sprintf(
-            '⟨%s⟩ %s',
-            $this->getIndex(),
-            $this->getName()
-        );
-    }
-
-    /**
-     * @return int
-     */
-    public function getIndex(): int
-    {
-        return $this->index;
     }
 
     /**
