@@ -15,6 +15,7 @@ fi
 
 # reassign variables
 OPTION_ANALYZE=1
+OPTION_METRICS=1
 OPTION_COVERAGE=1
 OPTION_PHPUNIT=1
 OPTION_ALL=1
@@ -39,10 +40,12 @@ if [[ ${PHPUNIT} == 1 ]]
 then
   ./phpunit "$@"
 fi
-if [[ ${ANALYZE} == 1 ]]
+if [[ ${METRICS} == 1 ]]
 then
   ./phpmetrics "$@"
-
+fi
+if [[ ${ANALYZE} == 1 ]]
+then
   ./phpstan "$@"
 
   ./psalm "$@"
