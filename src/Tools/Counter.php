@@ -16,13 +16,15 @@ class Counter implements CounterInterface, ReportableInterface
 {
     use CounterFields, Reportable;
 
+    protected const DEFAULT_STEP = 1;
+
     /**
      * Counter constructor
-     * @param string|null $name
-     * @param int $step
+     * @param null|string $name
+     * @param null|int $step
      * @param int $initialValue
      */
-    public function __construct(?string $name = null, int $step = 1, int $initialValue = 0)
+    public function __construct(?string $name = null, ?int $step = null, int $initialValue = 0)
     {
         $this->name = $this->defaultName($name);
         $this->setInitialValue($initialValue);
@@ -44,10 +46,10 @@ class Counter implements CounterInterface, ReportableInterface
     }
 
     /**
-     * @param int $step
+     * @param null|int $step
      * @return Counter
      */
-    public function setStep(int $step): Counter
+    public function setStep(?int $step = null): Counter
     {
         $step = $this->assertStep($step);
         if (false === $this->isStarted()) {
@@ -59,11 +61,12 @@ class Counter implements CounterInterface, ReportableInterface
     }
 
     /**
-     * @param int $step
+     * @param null|int $step
      * @return int
      */
-    protected function assertStep(int $step): int
+    protected function assertStep(?int $step = null): int
     {
+        $step = $step ?? self::DEFAULT_STEP;
         if ($step === 0) {
             throw new \RuntimeException('Counter step should be non-zero integer.');
         }
@@ -105,7 +108,8 @@ class Counter implements CounterInterface, ReportableInterface
     protected function assertTimes(int $times): int
     {
         if ($times < 1) {
-            throw new \RuntimeException(__METHOD__ . ' parameter 0 should be positive non-zero integer.');
+            throw new
+            \RuntimeException('Parameter 0 for bump() or bumpBack()  should be positive non-zero integer.');
         }
         return $times;
     }
@@ -114,4 +118,22 @@ class Counter implements CounterInterface, ReportableInterface
     {
         $this->started = true;
     }
+
+//    // todo move to helpers
+//    private function callingMethod(int $depth = 2): string
+//    {
+//        $e = new \Exception();
+//        $trace = $e->getTrace();
+//        $caller = $trace[$depth];
+//        $r = '';
+//        $r .= $caller['function'] . '()';
+//        if (isset($caller['class'])) {
+//            $r .= ' in ' . $caller['class'];
+//        }
+//        if (isset($caller['object'])) {
+//            $r .= ' (' . get_class($caller['object']) . ')';
+//        }
+//        unset($e);
+//        return $r;
+//    }
 }

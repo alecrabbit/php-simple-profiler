@@ -118,7 +118,7 @@ class CounterTest extends TestCase
         $this->assertEquals(3, $c->getPath());
         $this->assertEquals(3, $c->getLength());
 
-        $c->bump( 2);
+        $c->bump(2);
         $this->assertEquals(5, $c->getValue());
         $this->assertEquals(5, $c->getPath());
         $this->assertEquals(5, $c->getLength());
@@ -306,6 +306,18 @@ class CounterTest extends TestCase
 
     /**
      * @test
+     * @dataProvider counterWithBumpExceptionDataProvider
+     * @param int $times
+     */
+    public function counterWithBumpException(int $times): void
+    {
+        $c = new Counter();
+        $this->expectException(\RuntimeException::class);
+        $c->bump($times);
+    }
+
+    /**
+     * @test
      * @dataProvider counterDataProvider
      * @param array $expected
      * @param array $args
@@ -345,6 +357,15 @@ class CounterTest extends TestCase
             [[self::NAME, 1, 1, 0, 1], [self::NAME]],
             [['pop', 1, 1, 0, 1], ['pop']],
             [['pop', 11, 1, 10, 1], ['pop', 1, 10]],
+        ];
+    }
+
+    public function counterWithBumpExceptionDataProvider(): array
+    {
+        return [
+            [0],
+            [-1],
+            [-10],
         ];
     }
 

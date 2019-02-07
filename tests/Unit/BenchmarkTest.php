@@ -94,8 +94,7 @@ class BenchmarkTest extends TestCase
             );
 
         $bench
-            ->returnResults()
-            ->run(true);
+            ->run();
         $report = $bench->getReport();
         $this->assertInstanceOf(BenchmarkReport::class, $report);
         $str = (string)$report;

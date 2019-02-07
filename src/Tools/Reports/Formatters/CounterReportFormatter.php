@@ -18,7 +18,6 @@ class CounterReportFormatter extends Formatter
 
     /**
      * {@inheritdoc}
-     * @throws \Throwable
      */
     public function getString(): string
     {
@@ -48,7 +47,6 @@ class CounterReportFormatter extends Formatter
      */
     public function full(bool $eol = true): string
     {
-        $bumped = $this->computeBumped();
         return
             sprintf(
                 self::COUNTER . '[%s]: ' .

@@ -22,7 +22,7 @@ class TimerReportFormatter extends Formatter
      */
     public function getString(): string
     {
-        if (DEFAULT_NAME === $this->report->getName()) {
+        if (0 === $this->report->getCount() && DEFAULT_NAME === $this->report->getName()) {
             return $this->simple();
         }
         return $this->full();
@@ -55,14 +55,14 @@ class TimerReportFormatter extends Formatter
     {
         $r = $this->report;
         return sprintf(
-            self::TIMER . '[%s]: ' .
+            self::TIMER . '%s: ' .
             self::AVERAGE . ': %s, ' .
             self::LAST . ': %s, ' .
             self::MIN . '(%s): %s, ' .
             self::MAX . '(%s): %s, ' .
             self::COUNT . ': %s, ' .
             self::ELAPSED . ': %s%s',
-            $r->getName(),
+            $this->fname($r->getName()),
             $this->ftime($r->getAverageValue()),
             $this->ftime($r->getLastValue()),
             $r->getMinValueIteration(),
@@ -73,5 +73,13 @@ class TimerReportFormatter extends Formatter
             $this->ftime($r->getElapsed()),
             $eol ? PHP_EOL : ''
         );
+    }
+
+    protected function fname(string $name): string
+    {
+        if (DEFAULT_NAME === $name) {
+            return '';
+        }
+        return '[' . $name . ']';
     }
 }
