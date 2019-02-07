@@ -15,6 +15,9 @@ PHP Simple profiler
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Percentage of issues still open")
 
+Preparing for v.0.3.0
+API will change
+
 ### Benchmark
 There are moments when you have to choose between two or more different approaches. Benchmark class is to help you choose which is faster :) 
 
