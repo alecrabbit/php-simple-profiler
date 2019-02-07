@@ -32,10 +32,10 @@ class BenchmarkReport extends Report
     }
 
     /**
-     * @param iterable $functions
-     * @return iterable
+     * @param array $functions
+     * @return array
      */
-    private function updateFunctions(iterable $functions): iterable
+    private function updateFunctions(array $functions): array
     {
         $averages = $this->computeAverages($functions);
         $relatives = $this->computeRelatives($averages);
@@ -58,10 +58,10 @@ class BenchmarkReport extends Report
     }
 
     /**
-     * @param iterable $functions
+     * @param array $functions
      * @return array
      */
-    private function computeAverages(iterable $functions): array
+    private function computeAverages(array $functions): array
     {
         $averages = [];
         /** @var BenchmarkFunction $f */
@@ -97,10 +97,10 @@ class BenchmarkReport extends Report
         return $this->functions;
     }
 //    /**
-//     * @param iterable $functions
-//     * @return iterable
+//     * @param array $functions
+//     * @return array
 //     */
-//    private function updateFunctions(iterable $functions): iterable
+//    private function updateFunctions(array $functions): array
 //    {
 //        $averages = $this->computeAverages($functions);
 //        $relatives = [];
@@ -123,6 +123,4 @@ class BenchmarkReport extends Report
 //        }
 //        return $functions;
 //    }
-
-
 }

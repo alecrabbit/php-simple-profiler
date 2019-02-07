@@ -24,15 +24,9 @@ class BenchmarkReportFormatter extends Formatter
         $withException = '';
         /** @var BenchmarkFunction $function */
         foreach ($this->report->getFunctions() as $name => $function) {
-            dump($function);
+//            dump($function);
             $br = $function->getBenchmarkRelative();
-            $arguments = $function->getArgs();
-            $types = [];
-            if (!empty($arguments)) {
-                foreach ($arguments as $argument) {
-                    $types[] = typeOf($argument);
-                }
-            }
+            $types = $this->extractArguments($function->getArgs());
 
             if ($br) {
                 $relative = $br->getRelative();
@@ -53,25 +47,45 @@ class BenchmarkReportFormatter extends Formatter
                 $r .=
                     sprintf(
                         '%s(%s) %s',
-                        $this->typeOf($result),
+                        typeOf($result),
                         var_export($result, true),
                         PHP_EOL
                     );
-            } else {
+            } elseif ($e = $function->getException()) {
                 $withException .= sprintf(
                     '%s(%s) %s %s %s',
                     $function->humanReadableName(),
                     implode(', ', $types),
                     $function->comment(),
-                    $function->getException()->getMessage(),
+                    $e->getMessage(),
                     PHP_EOL
                 );
+            } else {
+                // @codeCoverageIgnoreStart
+                // this should never be thrown otherwise something is terribly wrong
+                throw new \RuntimeException('BenchmarkFunction has no BenchmarkRelative nor Exception object.');
+                // @codeCoverageIgnoreEnd
             }
         }
         return
             $r . PHP_EOL .
             (empty($withException) ? '' : 'Exceptions:' . PHP_EOL . $withException) . PHP_EOL .
             $profilerReport;
+    }
+
+    /**
+     * @param array $arguments
+     * @return array
+     */
+    protected function extractArguments(array $arguments): array
+    {
+        $types = [];
+        if (!empty($arguments)) {
+            foreach ($arguments as $argument) {
+                $types[] = typeOf($argument);
+            }
+        }
+        return $types;
     }
 
     /**
@@ -100,14 +114,5 @@ class BenchmarkReportFormatter extends Formatter
             ' ',
             STR_PAD_LEFT
         );
-    }
-
-    /**
-     * @param mixed $result
-     * @return string
-     */
-    protected function typeOf($result): string
-    {
-        return str_replace('double', 'float', typeOf($result));
     }
 }

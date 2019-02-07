@@ -93,7 +93,7 @@ class BenchmarkFunction
      */
     public function comment(): string
     {
-        return $this->comment;
+        return $this->comment ?? '';
 //        return $this->comment ? str_decorate($this->comment, '"') : '';
     }
 
