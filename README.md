@@ -29,7 +29,7 @@ This package is suggested to be used in dev process for debugging of simple scri
 composer require --dev alecrabbit/php-simple-profiler
  ```
  
- If you wish you can use it in prod
+ or if you wish
  
 ```bash
 composer require alecrabbit/php-simple-profiler

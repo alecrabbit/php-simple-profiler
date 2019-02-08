@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 // BenchmarkSymfonyProgressBar
 class BenchmarkSymfonyPB extends Benchmark
 {
-    protected const PROGRESS_BAR_WIDTH = 80;
+    public const PROGRESS_BAR_WIDTH = 80;
 
     /** @var ConsoleOutput */
     protected $output;

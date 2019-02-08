@@ -15,6 +15,11 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringsInter
 {
     use BenchmarkFields, Reportable;
 
+    public const MIN_ITERATIONS = 100;
+    public const DEFAULT_STEPS = 100;
+
+    /** @var int */
+    protected $advanceSteps = self::DEFAULT_STEPS;
     /** @var int */
     private $functionIndex = 1;
     /** @var Rewindable */
@@ -23,8 +28,6 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringsInter
     private $iterations;
     /** @var null|string */
     private $comment;
-    /** @var array */
-    private $names;
     /** @var string|null */
     private $humanReadableName;
     /** @var int */
@@ -37,8 +40,6 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringsInter
     private $onFinish;
     /** @var int */
     private $advanceStep = 0;
-    /** @var int */
-    protected $advanceSteps = 100;
     /** @var \Closure */
     private $generatorFunction;
 
@@ -46,25 +47,27 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringsInter
      * Benchmark constructor.
      * @param int $iterations
      */
-    public function __construct(int $iterations = 1000)
+    public function __construct(?int $iterations = null)
     {
+        $this->iterations = $this->refineIterations($iterations);
+
         $this->generatorFunction = function (int $iterations, int $i = 1): \Generator {
             while ($i <= $iterations) {
                 yield $i++;
             }
         };
 
-        $this->iterations = $iterations;
         $this->timer = new Timer();
         $this->initialize();
     }
 
-    /**
-     * Resets Benchmark object clear
-     */
-    public function reset(): void
+    private function refineIterations(?int $iterations): int
     {
-        $this->initialize();
+        $iterations = $iterations ?? self::MIN_ITERATIONS;
+        if ($iterations < self::MIN_ITERATIONS) {
+            throw new \RuntimeException(__CLASS__ . ': Iterations should greater then ' . self::MIN_ITERATIONS);
+        }
+        return $iterations;
     }
 
     /**
@@ -72,7 +75,6 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringsInter
      */
     private function initialize(): void
     {
-        $this->names = [];
         $this->humanReadableName = null;
         $this->rewindable =
             new Rewindable(
@@ -81,6 +83,14 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringsInter
             );
         $this->functions = [];
         $this->profiler = new Profiler();
+    }
+
+    /**
+     * Resets Benchmark object clear
+     */
+    public function reset(): void
+    {
+        $this->initialize();
     }
 
     /**
@@ -218,10 +228,6 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringsInter
      */
     public function useName(string $name): self
     {
-        if (in_array($name, $this->names, true)) {
-            throw new \InvalidArgumentException(sprintf('Name "%s" is not unique', $name));
-        }
-        $this->names[] = $name;
         $this->humanReadableName = $name;
         return $this;
     }
