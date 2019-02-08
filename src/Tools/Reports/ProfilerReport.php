@@ -30,7 +30,7 @@ class ProfilerReport extends Report implements StringsInterface
      */
     public function getCountersReports(): array
     {
-        return $this->reports[self::_COUNTERS];
+        return $this->reports[self::COUNTERS];
     }
 
     /**
@@ -38,7 +38,7 @@ class ProfilerReport extends Report implements StringsInterface
      */
     public function getTimersReports(): array
     {
-        return $this->reports[self::_TIMERS];
+        return $this->reports[self::TIMERS];
     }
 
     /**
@@ -48,10 +48,10 @@ class ProfilerReport extends Report implements StringsInterface
     public function __construct(Profiler $profiler)
     {
         foreach ($profiler->getCounters() as $counter) {
-            $this->reports[self::_COUNTERS][$counter->getName()] = $counter->getReport();
+            $this->reports[self::COUNTERS][$counter->getName()] = $counter->getReport();
         }
         foreach ($profiler->getTimers() as $timer) {
-            $this->reports[self::_TIMERS][$timer->getName()] = $timer->getReport();
+            $this->reports[self::TIMERS][$timer->getName()] = $timer->getReport();
         }
         parent::__construct();
     }

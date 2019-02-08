@@ -9,7 +9,7 @@ use AlecRabbit\Tools\Benchmark;
 
 const ITERATIONS = 500000;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 /*
  * There are moments when you have to choose between two or more different approaches

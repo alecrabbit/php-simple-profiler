@@ -4,17 +4,15 @@ namespace AlecRabbit\Tools;
 
 use AlecRabbit\Rewindable;
 use AlecRabbit\Tools\Contracts\BenchmarkInterface;
+use AlecRabbit\Tools\Contracts\StringsInterface;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
 use function AlecRabbit\typeOf;
 
-class Benchmark implements BenchmarkInterface, ReportableInterface
+class Benchmark implements BenchmarkInterface, ReportableInterface, StringsInterface
 {
-    protected const ADDED = 'added';
-    protected const BENCHMARKED = 'benchmarked';
-
     use BenchmarkFields, Reportable;
 
     /** @var int */
@@ -39,6 +37,8 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     private $onFinish;
     /** @var int */
     private $advanceStep = 0;
+    /** @var int */
+    protected $advanceSteps = 100;
     /** @var \Closure */
     private $generatorFunction;
 
@@ -86,7 +86,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     /**
      * Launch benchmarking
      */
-    public function run(): void
+    public function run(): Benchmark
     {
         if ($this->onStart) {
             ($this->onStart)();
@@ -95,6 +95,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
         if ($this->onFinish) {
             ($this->onFinish)();
         }
+        return $this;
     }
 
     /**
@@ -108,7 +109,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
                 $this->totalIterations -= $this->iterations;
                 continue;
             }
-            $this->advanceStep = (int)($this->totalIterations / 100);
+            $this->advanceStep = (int)($this->totalIterations / $this->advanceSteps);
             $this->bench($f);
             $this->profiler->counter(self::BENCHMARKED)->bump();
         }

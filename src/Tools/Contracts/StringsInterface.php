@@ -9,8 +9,11 @@ namespace AlecRabbit\Tools\Contracts;
 
 interface StringsInterface
 {
-    public const _COUNTERS = 'counters';
-    public const _TIMERS = 'timers';
+    public const COUNTERS = 'counters';
+    public const TIMERS = 'timers';
+
+    public const ADDED = 'added';
+    public const BENCHMARKED = 'benchmarked';
 
     public const NAME_FORMAT = '%s [%s]';
 

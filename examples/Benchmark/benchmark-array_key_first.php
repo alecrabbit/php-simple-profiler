@@ -2,7 +2,7 @@
 
 use AlecRabbit\Tools\Benchmark;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 /*
  * Let's determine what is faster array_key_first or array_key_first
@@ -10,24 +10,21 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 $benchmark = new Benchmark(900);
 
-function array_key_first_old(array $data)
+function another_implementation(array $data)
 {
     reset($data);
     return key($data);
 }
 
 
-$a = [1, 2, 3, 4, 5, 6, 76, 7, 78, 4, 2, 2, 3, 4, 56, 6, 5, 3, 2,];
+$a = ['a' => 1, 2, 3, 4, 5, ];
 
 $benchmark
     ->addFunction('array_key_first', $a);
 
 $benchmark
-    ->addFunction('array_key_first_old', $a);
+    ->addFunction('another_implementation', $a);
 
-$benchmark
-    ->returnResults()
-    ->verbose()
-    ->run(true);
+echo $benchmark->run()->getReport() . PHP_EOL;
 echo $benchmark->elapsed() . PHP_EOL;
 //dump($benchmark);
