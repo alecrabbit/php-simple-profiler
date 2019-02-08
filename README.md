@@ -15,27 +15,48 @@ PHP Simple profiler
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Percentage of issues still open")
 
-Preparing for v.0.3.0
-API will change
+Progress so far:
+- [x] add classes wit embedded progress bars
+- [ ] separate Counter in two classes - SimpleCounter and ExtendedCounter
+- [ ] add memory usage to Benchmark class
 
-### Benchmark
-There are moments when you have to choose between two or more different approaches. Benchmark class is to help you choose which is faster :) 
+Docs for version 0.3.0 and above
 
-### Profiler
-If you need to count and/or time some repeating operations Profiler class will help you.
-```php
-$profiler = new Profiler();
-// in loop 
-    $profiler->counter()->bump();
-    $profiler->timer()->check();
+### Installation
+This package is suggested to be used in dev process for debugging of simple scripts
 
-$report = $profiler->getReport();
-```
-
-### Counter
-
-### Timer
-
+```bash
+composer require --dev alecrabbit/php-simple-profiler
+ ```
+ 
+ If you wish you can use it in prod
+ 
+```bash
+composer require alecrabbit/php-simple-profiler
+ ```
+ Counter and TImer classes can be useful
+ 
 ### Usage
-
 see [examples](https://github.com/alecrabbit/php-simple-profiler/tree/master/examples)
+<br>Note: Not all examples are up to date... work in progress 
+---
+old docs
+> ### Benchmark
+> There are moments when you have to choose between two or more different approaches. Benchmark class is to help you choose which is faster :) 
+> 
+> ### Profiler
+> If you need to count and/or time some repeating operations Profiler class will help you.
+> ```php
+> $profiler = new Profiler();
+> // in loop 
+>     $profiler->counter()->bump();
+>     $profiler->timer()->check();
+> 
+> $report = $profiler->getReport();
+> ```
+> 
+> ### Counter
+> 
+> ### Timer
+> 
+> 
