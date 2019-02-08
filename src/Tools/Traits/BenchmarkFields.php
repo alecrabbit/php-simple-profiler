@@ -8,33 +8,22 @@
 namespace AlecRabbit\Tools\Traits;
 
 use AlecRabbit\Tools\Profiler;
+use AlecRabbit\Tools\Timer;
 
 trait BenchmarkFields
 {
     /** @var array */
     protected $functions = [];
+
     /** @var Profiler */
     protected $profiler;
-    /** @var int */
-    protected $totalIterations = 0;
-    /** @var bool */
-    protected $withResults = false;
-    /** @var array */
-    private $exceptionMessages = [];
-    /** @var array */
-    private $exceptions = [];
 
-    /**
-     * Resets fields
-     */
-    protected function resetFields(): void
-    {
-        $this->functions = [];
-        $this->profiler = new Profiler();
-        $this->withResults = false;
-        $this->exceptionMessages = [];
-        $this->exceptions = [];
-    }
+    /** @var int */
+    protected $doneIterations = 0;
+
+    /** @var Timer */
+    private $timer;
+
 
     /**
      * @return array
@@ -55,32 +44,16 @@ trait BenchmarkFields
     /**
      * @return int
      */
-    public function getTotalIterations(): int
+    public function getDoneIterations(): int
     {
-        return $this->totalIterations;
+        return $this->doneIterations;
     }
 
     /**
-     * @return bool
+     * @return Timer
      */
-    public function isWithResults(): bool
+    public function getTimer(): Timer
     {
-        return $this->withResults;
-    }
-
-    /**
-     * @return array
-     */
-    public function getExceptionMessages(): array
-    {
-        return $this->exceptionMessages;
-    }
-
-    /**
-     * @return array
-     */
-    public function getExceptions(): array
-    {
-        return $this->exceptions;
+        return $this->timer;
     }
 }

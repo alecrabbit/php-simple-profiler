@@ -2,44 +2,45 @@
 
 namespace AlecRabbit\Tools;
 
-use AlecRabbit\Exception\InvalidStyleException;
 use AlecRabbit\Rewindable;
 use AlecRabbit\Tools\Contracts\BenchmarkInterface;
+use AlecRabbit\Tools\Contracts\StringsInterface;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
-use AlecRabbit\Tools\Reports\Factory;
-use AlecRabbit\Tools\Reports\Formatters\Helper;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
-use function AlecRabbit\brackets;
 use function AlecRabbit\typeOf;
 
-class Benchmark implements BenchmarkInterface, ReportableInterface
+class Benchmark implements BenchmarkInterface, ReportableInterface, StringsInterface
 {
-    protected const PG_WIDTH = 60;
-    protected const ADDED = 'added';
-    protected const BENCHMARKED = 'benchmarked';
-
     use BenchmarkFields, Reportable;
 
     /** @var int */
-    private $namingIndex = 1;
+    private $functionIndex = 1;
     /** @var Rewindable */
     private $rewindable;
     /** @var int */
     private $iterations;
     /** @var null|string */
     private $comment;
-    /** @var bool */
-    private $verbose;
-    /** @var int */
-    private $dots;
     /** @var array */
     private $names;
     /** @var string|null */
     private $humanReadableName;
     /** @var int */
-    private $iterationsToBench;
+    private $totalIterations = 0;
+    /** @var null|callable */
+    private $onStart;
+    /** @var null|callable */
+    private $onAdvance;
+    /** @var null|callable */
+    private $onFinish;
+    /** @var int */
+    private $advanceStep = 0;
+    /** @var int */
+    protected $advanceSteps = 100;
+    /** @var \Closure */
+    private $generatorFunction;
 
     /**
      * Benchmark constructor.
@@ -47,8 +48,15 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
      */
     public function __construct(int $iterations = 1000)
     {
+        $this->generatorFunction = function (int $iterations, int $i = 1): \Generator {
+            while ($i <= $iterations) {
+                yield $i++;
+            }
+        };
+
         $this->iterations = $iterations;
-        $this->reset();
+        $this->timer = new Timer();
+        $this->initialize();
     }
 
     /**
@@ -56,52 +64,38 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
      */
     public function reset(): void
     {
+        $this->initialize();
+    }
+
+    /**
+     * Resets Benchmark object clear
+     */
+    private function initialize(): void
+    {
         $this->names = [];
         $this->humanReadableName = null;
-        $this->dots = 0;
-        $this->verbose = false;
         $this->rewindable =
             new Rewindable(
-                function (int $iterations, int $i = 1): \Generator {
-                    while ($i <= $iterations) {
-                        yield $i++;
-                    }
-                },
+                $this->generatorFunction,
                 $this->iterations
             );
-        $this->resetFields();
-        $this->resetReportObject();
+        $this->functions = [];
+        $this->profiler = new Profiler();
     }
 
     /**
      * Launch benchmarking
-     * @param bool $printReport
-     * @throws InvalidStyleException
      */
-    public function run(bool $printReport = false): void
+    public function run(): Benchmark
     {
-        if ($this->verbose) {
-            echo
-            sprintf(
-                'Running benchmarks(Functions: %s, Repeat: %s):',
-                $this->profiler->counter(self::ADDED)->getValue(),
-                $this->iterations
-            );
-            echo PHP_EOL;
+        if ($this->onStart) {
+            ($this->onStart)();
         }
         $this->execute();
-
-        if ($this->verbose) {
-            $this->erase();
-            echo ' 100%' . PHP_EOL;
-            echo '  λ   Done!' . PHP_EOL;
+        if ($this->onFinish) {
+            ($this->onFinish)();
         }
-
-        if ($printReport) {
-            echo PHP_EOL;
-            echo (string)$this->getReport();
-            echo PHP_EOL;
-        }
+        return $this;
     }
 
     /**
@@ -110,99 +104,62 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     private function execute(): void
     {
         /** @var  BenchmarkFunction $f */
-        foreach ($this->functions as $name => $f) {
-            $function = $f->getFunction();
-            $args = $f->getArgs();
-            $this->prepareResult($f, $function, $args);
-            $timer = $f->getTimer();
-            if ($f->getException()) {
-                $timer->check();
-                $this->iterationsToBench -= $this->iterations;
+        foreach ($this->functions as $f) {
+            if (!$f->execute()) {
+                $this->totalIterations -= $this->iterations;
                 continue;
             }
-            foreach ($this->rewindable as $iteration) {
-                $this->bench($timer, $function, $args, $iteration);
-            }
+            $this->advanceStep = (int)($this->totalIterations / $this->advanceSteps);
+            $this->bench($f);
             $this->profiler->counter(self::BENCHMARKED)->bump();
         }
     }
 
     /**
      * @param BenchmarkFunction $f
-     * @param callable $function
-     * @param array $args
      */
-    private function prepareResult(BenchmarkFunction $f, callable $function, array $args): void
+    private function bench(BenchmarkFunction $f): void
     {
-        try {
-            $result = $function(...$args);
-        } catch (\Throwable $e) {
-            $this->exceptionMessages[$f->getIndexedName()] = $result = brackets(typeOf($e)) . ': ' . $e->getMessage();
-            $this->exceptions[$f->getIndexedName()] = $e;
-            $f->setException($e);
+        $timer = $f->getTimer();
+        $function = $f->getCallable();
+        $args = $f->getArgs();
+        foreach ($this->rewindable as $iteration) {
+            $start = microtime(true);
+            /** @noinspection DisconnectedForeachInstructionInspection */
+            $function(...$args);
+            $stop = microtime(true);
+            $timer->bounds($start, $stop, $iteration);
+            /** @noinspection DisconnectedForeachInstructionInspection */
+            $this->progress();
         }
-        $f->setResult($result);
-    }
-
-    /**
-     * @param Timer $timer
-     * @param callable $function
-     * @param array $args
-     * @param int $iteration
-     */
-    private function bench(Timer $timer, callable $function, array $args, int $iteration): void
-    {
-        $timer->start();
-        $function(...$args);
-        $timer->check($iteration);
-        $this->progress();
     }
 
     private function progress(): void
     {
-        if ($this->verbose && 1 === ++$this->totalIterations % 5000) {
-            $this->erase();
-            echo '.';
-            $a =
-                str_pad(
-                    Helper::percent($this->totalIterations / $this->iterationsToBench),
-                    6,
-                    ' ',
-                    STR_PAD_LEFT
-                );
-            echo $a;
-            if (++$this->dots > static::PG_WIDTH) {
-                echo PHP_EOL;
-                $this->dots = 0;
-            }
+        if ($this->onAdvance && 0 === ++$this->doneIterations % $this->advanceStep) {
+            ($this->onAdvance)();
         }
     }
 
-    private function erase(): void
-    {
-        echo "\e[6D";
-    }
-
     /**
+     * @param callable|null $onStart
+     * @param callable|null $onAdvance
+     * @param callable|null $onFinish
      * @return Benchmark
      */
-    public function verbose(): self
-    {
-        $this->verbose = true;
+    public function progressBar(
+        callable $onStart = null,
+        callable $onAdvance = null,
+        callable $onFinish = null
+    ): Benchmark {
+        $this->onStart = $onStart;
+        $this->onAdvance = $onAdvance;
+        $this->onFinish = $onFinish;
         return $this;
     }
 
     /**
-     * @return Benchmark
-     */
-    public function color(): self
-    {
-        Factory::enableColour(true);
-        return $this;
-    }
-
-    /**
-     * @param callable $func
+     * @param mixed $func
      * @param mixed ...$args
      */
     public function addFunction($func, ...$args): void
@@ -220,7 +177,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
             new BenchmarkFunction(
                 $func,
                 $this->refineName($func, $name),
-                $this->namingIndex++,
+                $this->functionIndex++,
                 $args,
                 $this->comment,
                 $this->humanReadableName
@@ -229,7 +186,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
         $this->humanReadableName = null;
         $this->comment = null;
         $this->profiler->counter(self::ADDED)->bump();
-        $this->iterationsToBench += $this->iterations;
+        $this->totalIterations += $this->iterations;
     }
 
     /**
@@ -270,25 +227,14 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     }
 
     /**
-     * @return Benchmark
-     */
-    public function returnResults(): self
-    {
-        $this->withResults = true;
-        return $this;
-    }
-
-    /**
      * @return string
-     * @throws \Throwable
      */
     public function elapsed(): string
     {
-        $theme = Factory::getThemedObject();
         return
             sprintf(
                 'Done in: %s',
-                $theme->yellow($this->getProfiler()->timer()->elapsed())
+                $this->getTimer()->elapsed()
             );
     }
 

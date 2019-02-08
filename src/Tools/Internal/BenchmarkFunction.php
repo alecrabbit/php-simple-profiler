@@ -9,9 +9,6 @@ namespace AlecRabbit\Tools\Internal;
 
 use AlecRabbit\Tools\Timer;
 use AlecRabbit\Traits\GettableName;
-use function AlecRabbit\brackets;
-use function AlecRabbit\str_decorate;
-use const AlecRabbit\Helpers\Constants\BRACKETS_ANGLE;
 
 /**
  * Class BenchmarkFunction
@@ -22,32 +19,32 @@ class BenchmarkFunction
 {
     use GettableName;
 
-    /** @var null|string */
-    private $comment;
+    /** @var callable */
+    private $callable;
 
     /** @var int */
     private $index;
 
-    /** @var null|int */
-    private $rank;
-
     /** @var array */
     private $args;
-
-    /** @var callable */
-    private $func;
 
     /** @var mixed */
     private $result;
 
-    /** @var Timer */
-    private $timer;
+    /** @var null|string */
+    private $comment;
+
+    /** @var null|string */
+    private $humanReadableName;
 
     /** @var \Throwable|null */
     private $exception;
 
-    /** @var null|string  */
-    private $humanReadableName;
+    /** @var Timer */
+    private $timer;
+
+    /** @var null|BenchmarkRelative */
+    private $benchmarkRelative;
 
     /**
      * BenchmarkFunction constructor.
@@ -66,21 +63,38 @@ class BenchmarkFunction
         ?string $comment = null,
         ?string $humanReadableName = null
     ) {
-        $this->func = $func;
-        $this->comment = $comment;
+        $this->callable = $func;
         $this->name = $name;
         $this->index = $index;
         $this->args = $args;
-        $this->timer = new Timer($this->getIndexedName());
+        $this->comment = $comment;
         $this->humanReadableName = $humanReadableName;
+        $this->timer = new Timer($this->getIndexedName());
     }
 
     /**
      * @return string
      */
-    public function getComment(): string
+    public function getIndexedName(): string
     {
-        return $this->comment ? str_decorate($this->comment, '"') : '';
+        return "⟨{$this->getIndex()}⟩ {$this->getName()}";
+    }
+
+    /**
+     * @return int
+     */
+    public function getIndex(): int
+    {
+        return $this->index;
+    }
+
+    /**
+     * @return string
+     */
+    public function comment(): string
+    {
+        return $this->comment ?? '';
+//        return $this->comment ? str_decorate($this->comment, '"') : '';
     }
 
     /**
@@ -94,15 +108,16 @@ class BenchmarkFunction
     /**
      * @return callable
      */
-    public function getFunction(): callable
+    public function getCallable(): callable
     {
-        return $this->func;
+        return $this->callable;
     }
 
     public function enumeratedName(): string
     {
-        return
-            brackets((string)$this->index, BRACKETS_ANGLE) . ' ' . $this->name;
+        return $this->getIndexedName();
+//        return
+//            brackets((string)$this->index, BRACKETS_ANGLE) . ' ' . $this->name;
     }
 
     /**
@@ -122,26 +137,6 @@ class BenchmarkFunction
     }
 
     /**
-     * @return string
-     */
-    public function getIndexedName(): string
-    {
-        return sprintf(
-            '⟨%s⟩ %s',
-            $this->getIndex(),
-            $this->getName()
-        );
-    }
-
-    /**
-     * @return int
-     */
-    public function getIndex(): int
-    {
-        return $this->index;
-    }
-
-    /**
      * @return Timer
      */
     public function getTimer(): Timer
@@ -152,7 +147,7 @@ class BenchmarkFunction
     /**
      * @return null|string
      */
-    public function getHumanReadableName(): ?string
+    public function humanReadableName(): ?string
     {
         return $this->humanReadableName ?? $this->getIndexedName();
     }
@@ -176,20 +171,36 @@ class BenchmarkFunction
     }
 
     /**
-     * @return null|int
+     * @return null|BenchmarkRelative
      */
-    public function getRank(): ?int
+    public function getBenchmarkRelative(): ?BenchmarkRelative
     {
-        return $this->rank;
+        return $this->benchmarkRelative;
     }
 
     /**
-     * @param null|int $rank
+     * @param null|BenchmarkRelative $benchmarkRelative
      * @return BenchmarkFunction
      */
-    public function setRank(?int $rank): BenchmarkFunction
+    public function setBenchmarkRelative(?BenchmarkRelative $benchmarkRelative): BenchmarkFunction
     {
-        $this->rank = $rank;
+        $this->benchmarkRelative = $benchmarkRelative;
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function execute(): bool
+    {
+        try {
+            $this->setResult(
+                ($this->callable)(...$this->args)
+            );
+            return true;
+        } catch (\Throwable $e) {
+            $this->setException($e);
+            return false;
+        }
     }
 }

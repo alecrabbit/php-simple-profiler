@@ -4,6 +4,7 @@ PROPAGATE=0
 ANALYZE=0
 BEAUTY=0
 PHPUNIT=0
+METRICS=0
 EXEC=1
 HELP=0
 RESTART_CONTAINER=1
@@ -57,6 +58,9 @@ do
             COVERAGE=1
             PHPUNIT=1
             BEAUTY=1
+            ;;
+        --metrics)
+            METRICS=1
             ;;
         *)
             if [[ ${PROPAGATE} == 1 ]]

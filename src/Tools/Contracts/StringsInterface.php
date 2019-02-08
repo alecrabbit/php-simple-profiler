@@ -9,8 +9,30 @@ namespace AlecRabbit\Tools\Contracts;
 
 interface StringsInterface
 {
-    public const _COUNTERS = 'counters';
-    public const _TIMERS = 'timers';
+    public const COUNTERS = 'counters';
+    public const TIMERS = 'timers';
 
-    public const _NAME_FORMAT = '%s [%s]';
+    public const ADDED = 'added';
+    public const BENCHMARKED = 'benchmarked';
+
+    public const NAME_FORMAT = '%s [%s]';
+
+    public const ELAPSED = 'Elapsed';
+    public const COUNT = 'Count';
+    public const MAX = 'Max';
+    public const MIN = 'Min';
+    public const LAST = 'Last';
+    public const AVERAGE = 'Average';
+    public const TIMER = 'Timer';
+    public const COUNTER = 'Counter';
+    public const VALUE = 'Value';
+    public const STEP = 'Step';
+    public const DIFF = 'Diff';
+    public const PATH = 'Path';
+    public const LENGTH = 'Length';
+    public const BUMPED = 'Bumped';
+    public const FORWARD = '+';
+    public const BACKWARD = '-';
+
+    public const RESULT = 'result';
 }

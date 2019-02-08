@@ -16,7 +16,8 @@
     "nunomaduro/collision": "^2.1",
     "phpunit/phpunit": "^7.5",
     "symfony/phpunit-bridge": "^4.2",
-    "symfony/var-dumper": "^4.2"
+    "symfony/var-dumper": "^4.2",
+    "symfony/console": "^4.2"
   },
   "autoload": {
     "psr-4": {
@@ -28,6 +29,5 @@
       "Tests\\": "tests"
     }
   },
-  "minimum-stability": "beta",
-  "prefer-stable": true
+  "minimum-stability": "beta"
 }

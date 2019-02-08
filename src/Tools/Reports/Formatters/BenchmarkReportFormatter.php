@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
-use AlecRabbit\Tools\Internal\BenchmarkRelative;
+use AlecRabbit\Pretty;
+use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
-use function AlecRabbit\brackets;
-use function AlecRabbit\format_time_auto;
 use function AlecRabbit\typeOf;
 
 class BenchmarkReportFormatter extends Formatter
@@ -15,88 +14,105 @@ class BenchmarkReportFormatter extends Formatter
     /** @var BenchmarkReport */
     protected $report;
 
-    public function setStyles(): void
-    {
-    }
-
     /**
      * {@inheritdoc}
-     * @throws \Throwable
      */
     public function getString(): string
     {
-        $rank = 0;
         $profilerReport = (string)$this->report->getProfiler()->getReport();
         $r = 'Benchmark:' . PHP_EOL;
-        /** @var BenchmarkRelative $result */
-        foreach ($this->report->getRelatives() as $indexName => $result) {
-            $relative = $result->getRelative();
-            $average = $result->getAverage();
-            $function = $this->report->getFunctionObject($indexName);
-            $function->setRank(++$rank);
-            $arguments = $function->getArgs();
-            $types = [];
-            if (!empty($arguments)) {
-                foreach ($arguments as $argument) {
-                    $types[] = typeOf($argument);
-                }
-            }
-            $r .= sprintf(
-                '%s. %s (%s) %s(%s) %s %s',
-                $this->themed->dark((string)$rank),
-                $this->themed->yellow(
-                    str_pad(
-                        format_time_auto($average),
-                        8,
-                        ' ',
-                        STR_PAD_LEFT
-                    )
-                ),
-                $this->colorize(
-                    str_pad(
-                        Helper::percent($relative),
-                        7,
-                        ' ',
-                        STR_PAD_LEFT
-                    ),
-                    $relative
-                ),
-                $function->getHumanReadableName(),
-                implode(', ', $types),
-                $this->themed->comment($function->getComment()),
-                PHP_EOL
-            );
-            if ($this->report->isWithResults()) {
+        $withException = '';
+        /** @var BenchmarkFunction $function */
+        foreach ($this->report->getFunctions() as $name => $function) {
+//            dump($function);
+            $br = $function->getBenchmarkRelative();
+            $types = $this->extractArguments($function->getArgs());
+
+            if ($br) {
+                $relative = $br->getRelative();
+                $average = $br->getAverage();
+                $rank = $br->getRank();
+                $r .=
+                    sprintf(
+                        '%s. %s (%s) %s(%s) %s %s',
+                        (string)$rank,
+                        $this->average($average),
+                        $this->relativePercent($relative),
+                        $function->humanReadableName(),
+                        implode(', ', $types),
+                        $function->comment(),
+                        PHP_EOL
+                    );
                 $result = $function->getResult();
-                $r .= $this->themed->dark('return: ' . str_replace('double', 'float', typeOf($result)) . ' "'
-                        . var_export($function->getResult(), true) . '" ') . PHP_EOL;
-            }
-        }
-        if (!empty($exceptionMessages = $this->report->getExceptionMessages())) {
-            $r .= 'Exceptions:' . PHP_EOL;
-            foreach ($exceptionMessages as $name => $exceptionMessage) {
-                $r .= brackets($name) . ': ' . $this->themed->red($exceptionMessage) . PHP_EOL;
+                $r .=
+                    sprintf(
+                        '%s(%s) %s',
+                        typeOf($result),
+                        var_export($result, true),
+                        PHP_EOL
+                    );
+            } elseif ($e = $function->getException()) {
+                $withException .= sprintf(
+                    '%s(%s) %s %s %s',
+                    $function->humanReadableName(),
+                    implode(', ', $types),
+                    $function->comment(),
+                    $e->getMessage(),
+                    PHP_EOL
+                );
+            } else {
+                // @codeCoverageIgnoreStart
+                // this should never be thrown otherwise something is terribly wrong
+                throw new \RuntimeException('BenchmarkFunction has no BenchmarkRelative nor Exception object.');
+                // @codeCoverageIgnoreEnd
             }
         }
         return
-            $r . PHP_EOL . $profilerReport;
+            $r . PHP_EOL .
+            (empty($withException) ? '' : 'Exceptions:' . PHP_EOL . $withException) . PHP_EOL .
+            $profilerReport;
     }
 
     /**
-     * @param string $str
+     * @param array $arguments
+     * @return array
+     */
+    protected function extractArguments(array $arguments): array
+    {
+        $types = [];
+        if (!empty($arguments)) {
+            foreach ($arguments as $argument) {
+                $types[] = typeOf($argument);
+            }
+        }
+        return $types;
+    }
+
+    /**
+     * @param float $average
+     * @return string
+     */
+    protected function average(float $average): string
+    {
+        return str_pad(
+            Pretty::time($average),
+            8,
+            ' ',
+            STR_PAD_LEFT
+        );
+    }
+
+    /**
      * @param float $relative
      * @return string
-     * @throws \Throwable
      */
-    private function colorize(string $str, float $relative): string
+    protected function relativePercent(float $relative): string
     {
-        if ($relative > 1) {
-            return $this->themed->red($str);
-        }
-        if ($relative >= 0.03) {
-            return $this->themed->yellow($str);
-        }
-        return
-            $this->themed->green($str);
+        return str_pad(
+            Pretty::percent($relative),
+            7,
+            ' ',
+            STR_PAD_LEFT
+        );
     }
 }

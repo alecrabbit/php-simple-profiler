@@ -15,24 +15,69 @@ PHP Simple profiler
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Percentage of issues still open")
 
-### Benchmark
-There are moments when you have to choose between two or more different approaches. Benchmark class is to help you choose which is faster :) 
+Progress so far:
+- [x] add classes with embedded progress bars
+- [ ] separate Counter in two classes - SimpleCounter and ExtendedCounter
+- [ ] add memory usage to Benchmark class
 
-### Profiler
-If you need to count and/or time some repeating operations Profiler class will help you.
-```php
-$profiler = new Profiler();
-// in loop 
-    $profiler->counter()->bump();
-    $profiler->timer()->check();
+Docs for version 0.3.0 and above
 
-$report = $profiler->getReport();
-```
+### Installation
+This package is suggested to be used in dev process for debugging of simple scripts
 
-### Counter
-
-### Timer
-
+```bash
+composer require --dev alecrabbit/php-simple-profiler
+ ```
+ 
+ If you wish you can use it in prod
+ 
+```bash
+composer require alecrabbit/php-simple-profiler
+ ```
+ 
+ Counter and Timer classes can be useful
+ 
 ### Usage
+##### Quickstart
+```php
+use AlecRabbit\Tools\BenchmarkSymfonyPB;
 
-see [examples](https://github.com/alecrabbit/php-simple-profiler/tree/master/examples)
+require_once __DIR__ . '/vendor/autoload.php';
+
+$benchmark = new BenchmarkSymfonyPB(900000);
+$benchmark
+    ->addFunction('hrtime', true); 
+$benchmark
+    ->addFunction('microtime', true);
+echo $benchmark->run()->getReport() . PHP_EOL;
+echo $benchmark->elapsed() . PHP_EOL;
+```
+##### For more details see [examples](https://github.com/alecrabbit/php-simple-profiler/tree/master/examples)
+##### Note: Not all examples are up to date... work in progress 
+
+### Benchmark classes
+ 
+There are moments when you have to choose between two or more different approaches. Benchmark classes is to help you choose which is faster :) 
+
+ * Benchmark
+ * BenchmarkSymfonyPB (with progress bar)
+ * BenchmarkSimplePB (with progress bar)
+ 
+---
+old docs
+> ### Profiler
+> If you need to count and/or time some repeating operations Profiler class will help you.
+> ```php
+> $profiler = new Profiler();
+> // in loop 
+>     $profiler->counter()->bump();
+>     $profiler->timer()->check();
+> 
+> $report = $profiler->getReport();
+> ```
+> 
+> ### Counter
+> 
+> ### Timer
+> 
+> 

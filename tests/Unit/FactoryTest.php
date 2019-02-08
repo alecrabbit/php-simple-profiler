@@ -7,23 +7,8 @@
 
 namespace Tests\Unit;
 
-use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
-use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Factory;
 use PHPUnit\Framework\TestCase;
-
-class UnimplementedReportable implements ReportableInterface
-{
-}
-
-class UnimplementedReport implements ReportInterface
-{
-    public function __toString()
-    {
-        return '';
-    }
-
-}
 
 class FactoryTest extends TestCase
 {

@@ -15,11 +15,15 @@ class Timer implements TimerInterface, ReportableInterface
     /**
      * Timer constructor.
      * @param null|string $name
+     * @param bool $start
      */
-    public function __construct(?string $name = null)
+    public function __construct(?string $name = null, bool $start = true)
     {
         $this->name = $this->defaultName($name);
         $this->creation = $this->current();
+        if ($start) {
+            $this->start($this->creation);
+        }
     }
 
     /**
@@ -32,26 +36,27 @@ class Timer implements TimerInterface, ReportableInterface
     }
 
     /**
+     * Starts the timer.
+     *
+     * @param null|float $point
+     * @return void
+     */
+    public function start(?float $point = null): void
+    {
+        $this->previous = $point ?? $this->current();
+        $this->started = true;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function prepareForReport(): void
     {
-        if (!$this->started) {
+        if ($this->isNotStarted()) {
             $this->start();
             $this->mark();
         }
         $this->stop();
-    }
-
-    /**
-     * Starts the timer.
-     *
-     * @return void
-     */
-    public function start(): void
-    {
-        $this->previous = $this->start = $this->current();
-        $this->started = true;
     }
 
     /**
@@ -63,44 +68,101 @@ class Timer implements TimerInterface, ReportableInterface
         $this->currentValue = $current - $this->previous;
         $this->previous = $current;
 
+        $this->compute($iterationNumber);
+    }
+
+    /**
+     * @param null|int $iterationNumber
+     */
+    private function compute(?int $iterationNumber): void
+    {
         if (0 !== $this->count) {
             ++$this->count;
-            if ($this->currentValue < $this->minValue) {
-                $this->minValue = $this->currentValue;
-                $this->minValueIteration = $iterationNumber ?? $this->count;
-            }
-            if ($this->currentValue > $this->maxValue) {
-                $this->maxValue = $this->currentValue;
-                $this->maxValueIteration = $iterationNumber ?? $this->count;
-            }
-            $this->avgValue = (($this->avgValue * ($this->count - 1)) + $this->currentValue) / $this->count;
+            $this->checkMinValue($iterationNumber);
+            $this->checkMaxValue($iterationNumber);
+            $this->computeAverage();
         } else {
-            $this->maxValueIteration = $this->minValueIteration = $this->count = 1;
-            $this->maxValue = $this->currentValue;
-            $this->minValue = $this->currentValue;
-            $this->avgValue = $this->currentValue;
+            $this->initValues();
         }
+    }
+
+    /**
+     * @param null|int $iterationNumber
+     */
+    private function checkMinValue(?int $iterationNumber): void
+    {
+        if ($this->currentValue < $this->minValue) {
+            $this->minValue = $this->currentValue;
+            $this->minValueIteration = $iterationNumber ?? $this->count;
+        }
+    }
+
+    /**
+     * @param null|int $iterationNumber
+     */
+    private function checkMaxValue(?int $iterationNumber): void
+    {
+        if ($this->currentValue > $this->maxValue) {
+            $this->maxValue = $this->currentValue;
+            $this->maxValueIteration = $iterationNumber ?? $this->count;
+        }
+    }
+
+    private function computeAverage(): void
+    {
+        $this->avgValue = (($this->avgValue * ($this->count - 1)) + $this->currentValue) / $this->count;
+    }
+
+    private function initValues(): void
+    {
+        $this->maxValueIteration = $this->minValueIteration = $this->count = 1;
+        $this->maxValue = $this->currentValue;
+        $this->minValue = $this->currentValue;
+        $this->avgValue = $this->currentValue;
     }
 
     public function stop(): void
     {
-        $this->elapsed = $this->current() - $this->creation;
+        $this->computeElapsed();
         $this->stopped = true;
     }
 
+    private function computeElapsed(): void
+    {
+        $this->elapsed = $this->current() - $this->creation;
+    }
+
     /**
-     * Marks the elapsed time.
+     * Marks the time.
      * If timer was not started starts the timer.
      * @param int|null $iterationNumber
      * @return Timer
      */
     public function check(?int $iterationNumber = null): Timer
     {
-        if (!$this->started) {
+        if ($this->isNotStarted()) {
             $this->start();
         } else {
             $this->mark($iterationNumber);
         }
+        return $this;
+    }
+
+    /**
+     * @param float $start
+     * @param float $stop
+     * @param null|int $iterationNumber
+     * @return Timer
+     */
+    public function bounds(float $start, float $stop, ?int $iterationNumber = null): Timer
+    {
+        if ($this->isNotStarted()) {
+            $this->start();
+        }
+        $this->currentValue = $stop - $start;
+        $this->previous = $stop;
+
+        $this->compute($iterationNumber);
         return $this;
     }
 
@@ -114,6 +176,17 @@ class Timer implements TimerInterface, ReportableInterface
             $this->stop();
         }
         return
-            $pretty ? Pretty::time($this->getElapsed()) : $this->elapsed;
+            $pretty ? Pretty::seconds($this->getElapsed()) : $this->elapsed;
+    }
+
+    /**
+     * @return float
+     */
+    public function getElapsed(): float
+    {
+        if ($this->isNotStopped()) {
+            $this->computeElapsed();
+        }
+        return $this->elapsed;
     }
 }

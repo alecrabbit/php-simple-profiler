@@ -8,33 +8,23 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
-use AlecRabbit\Exception\InvalidStyleException;
-use AlecRabbit\Themed;
+use AlecRabbit\Tools\Contracts\StringsInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
-use AlecRabbit\Tools\Reports\Factory;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\ReportFormatter;
 
-abstract class Formatter implements ReportFormatter
+abstract class Formatter implements ReportFormatter, StringsInterface
 {
     /** @var ReportInterface */
     protected $report;
-    /** @var Themed */
-    protected $themed;
 
     /**
      * Formatter constructor.
      * @param ReportInterface $report
-     * @throws InvalidStyleException
      */
     public function __construct(ReportInterface $report)
     {
         $this->report = $report;
-        $this->themed = Factory::getThemedObject();
-        $this->setStyles();
     }
-
-    /** {@inheritdoc} */
-    abstract public function setStyles(): void;
 
     /** {@inheritdoc} */
     abstract public function getString(): string;
