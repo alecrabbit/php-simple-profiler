@@ -29,6 +29,7 @@ class Counter implements CounterInterface, ReportableInterface
         $this->name = $this->defaultName($name);
         $this->setInitialValue($initialValue);
         $this->setStep($step);
+        $this->updateMaxAndMin();
     }
 
     /**
@@ -38,7 +39,7 @@ class Counter implements CounterInterface, ReportableInterface
     public function setInitialValue(int $initialValue): Counter
     {
         if (false === $this->isStarted()) {
-            $this->value = $this->initialValue = $this->length = $initialValue;
+            $this->value = $this->initialValue = $this->length = $this->max = $this->min = $initialValue;
         } else {
             throw new \RuntimeException('You can\'t set counter initial value, it has been bumped already.');
         }
@@ -73,6 +74,16 @@ class Counter implements CounterInterface, ReportableInterface
         return $step;
     }
 
+    private function updateMaxAndMin(): void
+    {
+        if ($this->value > $this->max) {
+            $this->max = $this->value;
+        }
+        if ($this->value < $this->min) {
+            $this->min = $this->value;
+        }
+    }
+
     /**
      * @param int $times
      * @return int
@@ -101,6 +112,7 @@ class Counter implements CounterInterface, ReportableInterface
             $this->value -= $times * $this->step;
             $this->bumpedBack++;
         }
+        $this->updateMaxAndMin();
         return
             $this->value;
     }

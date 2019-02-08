@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Traits;
 
-use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Factory;
 
@@ -22,7 +21,10 @@ trait Reportable
         if (null === $this->reportObject || true === $rebuild) {
             $this->prepareForReport();
             $this->reportObject =
-                Factory::makeReport($this);
+                Factory::makeReport(
+                    /** @scrutinizer ignore-type */
+                    $this
+                );
         }
         return
             $this->reportObject;

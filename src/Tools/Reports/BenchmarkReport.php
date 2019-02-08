@@ -15,9 +15,6 @@ class BenchmarkReport extends Report
 {
     use BenchmarkFields;
 
-    /** @var array */
-    protected $relatives;
-
     /**
      * BenchmarkReport constructor.
      * @param Benchmark $benchmark
@@ -27,6 +24,7 @@ class BenchmarkReport extends Report
         $this->profiler = $benchmark->getProfiler();
         $this->doneIterations = $benchmark->getDoneIterations();
         $this->functions = $this->updateFunctions($benchmark->getFunctions());
+        $this->timer = $benchmark->getTimer();
 
         parent::__construct();
     }
@@ -90,37 +88,10 @@ class BenchmarkReport extends Report
     }
 
     /**
-     * @return array[BenchmarkFunction]
+     * @return BenchmarkFunction[]
      */
     public function getFunctions(): array
     {
         return $this->functions;
     }
-//    /**
-//     * @param array $functions
-//     * @return array
-//     */
-//    private function updateFunctions(array $functions): array
-//    {
-//        $averages = $this->computeAverages($functions);
-//        $relatives = [];
-//        if (!empty($averages)) {
-//            $min = min($averages);
-//
-//            foreach ($averages as $name => $average) {
-//                $rel[$name] = $average / $min;
-//            }
-//            asort($rel);
-//            $rank = 0;
-//            /** @var BenchmarkFunction $f */
-//            foreach ($rel as $name => $r) {
-//                $f = $functions[$name];
-//                $relatives[$name] =
-//                    $f->setBenchmarkRelative(
-//                        new BenchmarkRelative(++$rank, (float)$r - 1, $averages[$name])
-//                    );
-//            }
-//        }
-//        return $functions;
-//    }
 }

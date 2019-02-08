@@ -26,15 +26,6 @@ trait BenchmarkFields
 
 
     /**
-     * Resets fields
-     */
-    protected function resetFields(): void
-    {
-        $this->functions = [];
-        $this->profiler = new Profiler();
-    }
-
-    /**
      * @return array
      */
     public function getFunctions(): array

@@ -30,7 +30,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     /** @var string|null */
     private $humanReadableName;
     /** @var int */
-    private $totalIterations;
+    private $totalIterations = 0;
     /** @var null|callable */
     private $onStart;
     /** @var null|callable */
@@ -38,7 +38,9 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     /** @var null|callable */
     private $onFinish;
     /** @var int */
-    private $advanceStep;
+    private $advanceStep = 0;
+    /** @var \Closure */
+    private $generatorFunction;
 
     /**
      * Benchmark constructor.
@@ -46,9 +48,15 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
      */
     public function __construct(int $iterations = 1000)
     {
+        $this->generatorFunction = function (int $iterations, int $i = 1): \Generator {
+            while ($i <= $iterations) {
+                yield $i++;
+            }
+        };
+
         $this->iterations = $iterations;
         $this->timer = new Timer();
-        $this->reset();
+        $this->initialize();
     }
 
     /**
@@ -56,18 +64,23 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
      */
     public function reset(): void
     {
+        $this->initialize();
+    }
+
+    /**
+     * Resets Benchmark object clear
+     */
+    private function initialize(): void
+    {
         $this->names = [];
         $this->humanReadableName = null;
         $this->rewindable =
             new Rewindable(
-                function (int $iterations, int $i = 1): \Generator {
-                    while ($i <= $iterations) {
-                        yield $i++;
-                    }
-                },
+                $this->generatorFunction,
                 $this->iterations
             );
-        $this->resetFields();
+        $this->functions = [];
+        $this->profiler = new Profiler();
     }
 
     /**
@@ -145,7 +158,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface
     }
 
     /**
-     * @param callable $func
+     * @param mixed $func
      * @param mixed ...$args
      */
     public function addFunction($func, ...$args): void

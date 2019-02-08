@@ -17,6 +17,12 @@ trait CounterFields
     protected $value = 0;
 
     /** @var int */
+    protected $max = 0;
+
+    /** @var int */
+    protected $min = 0;
+
+    /** @var int */
     protected $path = 0;
 
     /** @var int */
@@ -48,6 +54,21 @@ trait CounterFields
         return $this->value;
     }
 
+    /**
+     * @return int
+     */
+    public function getMax(): int
+    {
+        return $this->max;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMin(): int
+    {
+        return $this->min;
+    }
 
     /**
      * @return int
