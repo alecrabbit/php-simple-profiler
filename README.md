@@ -16,7 +16,7 @@ PHP Simple profiler
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Percentage of issues still open")
 
 Progress so far:
-- [x] add classes wit embedded progress bars
+- [x] add classes with embedded progress bars
 - [ ] separate Counter in two classes - SimpleCounter and ExtendedCounter
 - [ ] add memory usage to Benchmark class
 
@@ -34,16 +34,37 @@ composer require --dev alecrabbit/php-simple-profiler
 ```bash
 composer require alecrabbit/php-simple-profiler
  ```
- Counter and TImer classes can be useful
+ 
+ Counter and Timer classes can be useful
  
 ### Usage
-see [examples](https://github.com/alecrabbit/php-simple-profiler/tree/master/examples)
-<br>Note: Not all examples are up to date... work in progress 
+##### Quickstart
+```php
+use AlecRabbit\Tools\BenchmarkSymfonyPB;
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+$benchmark = new BenchmarkSymfonyPB(900000);
+$benchmark
+    ->addFunction('hrtime', true); 
+$benchmark
+    ->addFunction('microtime', true);
+echo $benchmark->run()->getReport() . PHP_EOL;
+echo $benchmark->elapsed() . PHP_EOL;
+```
+##### For more details see [examples](https://github.com/alecrabbit/php-simple-profiler/tree/master/examples)
+##### Note: Not all examples are up to date... work in progress 
+
+### Benchmark classes
+ 
+There are moments when you have to choose between two or more different approaches. Benchmark classes is to help you choose which is faster :) 
+
+ * Benchmark
+ * BenchmarkSymfonyPB (with progress bar)
+ * BenchmarkSimplePB (with progress bar)
+ 
 ---
 old docs
-> ### Benchmark
-> There are moments when you have to choose between two or more different approaches. Benchmark class is to help you choose which is faster :) 
-> 
 > ### Profiler
 > If you need to count and/or time some repeating operations Profiler class will help you.
 > ```php
