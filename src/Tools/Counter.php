@@ -74,7 +74,7 @@ class Counter implements CounterInterface, ReportableInterface
         return $step;
     }
 
-    private function updateMaxAndMin()
+    private function updateMaxAndMin(): void
     {
         if ($this->value > $this->max) {
             $this->max = $this->value;

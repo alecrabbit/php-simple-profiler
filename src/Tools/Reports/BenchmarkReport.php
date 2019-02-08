@@ -15,9 +15,6 @@ class BenchmarkReport extends Report
 {
     use BenchmarkFields;
 
-    /** @var array */
-    protected $relatives;
-
     /**
      * BenchmarkReport constructor.
      * @param Benchmark $benchmark
