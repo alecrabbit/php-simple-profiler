@@ -55,6 +55,8 @@ class CounterReportFormatter extends Formatter
                 self::BUMPED . ': %s, ' .
                 self::PATH . ': %s, ' .
                 self::LENGTH . ': %s, ' .
+                self::MAX . ': %s, ' .
+                self::MIN . ': %s, ' .
                 self::DIFF . ': %s %s',
                 $this->report->getName(),
                 (string)$this->report->getValue(),
@@ -62,6 +64,8 @@ class CounterReportFormatter extends Formatter
                 $this->computeBumped(),
                 (string)$this->report->getPath(),
                 (string)$this->report->getLength(),
+                (string)$this->report->getMax(),
+                (string)$this->report->getMin(),
                 (string)$this->report->getDiff(),
                 $eol ? PHP_EOL : ''
             );
