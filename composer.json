@@ -6,13 +6,11 @@
   "require": {
     "php": ">=7.2",
     "alecrabbit/php-helpers": "^0.2",
-    "alecrabbit/php-console-colour": "^0.0.4",
     "alecrabbit/accessories": "^0.2",
     "alecrabbit/php-traits": "^0.0.2"
   },
   "require-dev": {
     "krowinski/bcmath-extended": "^4.2",
-    "alecrabbit/php-output-a": "^0.0.1",
     "nunomaduro/collision": "^2.1",
     "phpunit/phpunit": "^7.5",
     "symfony/phpunit-bridge": "^4.2",
