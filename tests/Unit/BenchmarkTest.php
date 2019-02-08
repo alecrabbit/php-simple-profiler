@@ -62,21 +62,29 @@ class BenchmarkTest extends TestCase
     }
 
     /** @test */
-    public function addFunctionWithNameException(): void
+    public function addFunctionWithException(): void
     {
         $bench = new Benchmark(100);
 
+        $str_one = 'one';
+        $str_two = 'two';
+
+        $comment = 'some_comment';
+
         $bench
+            ->useName($str_one)
             ->addFunction(function () {
                 usleep(100);
                 return 1;
             });
         $bench
+            ->useName($str_two)
             ->addFunction(function () {
                 usleep(10);
                 return 2;
             });
         $bench
+            ->withComment($comment)
             ->addFunction(function () {
                 usleep(10);
                 return 2;
@@ -93,13 +101,77 @@ class BenchmarkTest extends TestCase
                 }
             );
 
-        $bench
-            ->run();
-        $report = $bench->getReport();
+        $bench->progressBar(
+            function () {
+            },
+            function () {
+            },
+            function () {
+            }
+        );
+        $report = $bench->run()->getReport();
         $this->assertInstanceOf(BenchmarkReport::class, $report);
         $str = (string)$report;
         $this->assertIsString($str);
         $this->assertContains('Done in', $bench->elapsed());
+        $this->assertContains($str_one, $str);
+        $this->assertContains($str_two, $str);
+        $this->assertContains($comment, $str);
+    }
+
+    /** @test */
+    public function addFunctionWithReset(): void
+    {
+        $str_one = 'one';
+        $str_two = 'two';
+        $comment = 'some_comment';
+        $this->bench->reset();
+        $this->bench
+            ->useName($str_one)
+            ->addFunction(function () {
+                usleep(100);
+                return 1;
+            });
+        $this->bench
+            ->useName($str_two)
+            ->addFunction(function () {
+                usleep(10);
+                return 2;
+            });
+        $this->bench
+            ->withComment($comment)
+            ->addFunction(function () {
+                usleep(10);
+                return 2;
+            });
+        $this->bench
+            ->addFunction(function () {
+                usleep(10);
+                return 2;
+            });
+        $this->bench
+            ->addFunction(
+                function () {
+                    throw new \Exception('Simulated Exception');
+                }
+            );
+
+        $this->bench->progressBar(
+            function () {
+            },
+            function () {
+            },
+            function () {
+            }
+        );
+        $report = $this->bench->run()->getReport();
+        $this->assertInstanceOf(BenchmarkReport::class, $report);
+        $str = (string)$report;
+        $this->assertIsString($str);
+        $this->assertContains('Done in', $this->bench->elapsed());
+        $this->assertContains($str_one, $str);
+        $this->assertContains($str_two, $str);
+        $this->assertContains($comment, $str);
     }
 
     /** @test */
@@ -111,9 +183,17 @@ class BenchmarkTest extends TestCase
             ->addFunction('notCallable');
     }
 
+    /** @test */
+    public function minIterations(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $b = new Benchmark(10);
+        $b->run();
+    }
+
     protected function setUp()
     {
         parent::setUp();
-        $this->bench = new Benchmark(10);
+        $this->bench = new Benchmark(100);
     }
 }
