@@ -7,7 +7,6 @@
 
 namespace AlecRabbit\Tools\Reports;
 
-use AlecRabbit\Exception\InvalidStyleException;
 use AlecRabbit\Tools\Contracts\StringsInterface;
 use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Reports\Base\Report;

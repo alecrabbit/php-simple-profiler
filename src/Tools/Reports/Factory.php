@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports;
 
-use AlecRabbit\Exception\InvalidStyleException;
-use AlecRabbit\Themed;
 use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Counter;
 use AlecRabbit\Tools\Profiler;

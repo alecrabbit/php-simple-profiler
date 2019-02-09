@@ -7,7 +7,6 @@
 
 namespace AlecRabbit\Tools\Reports;
 
-use AlecRabbit\Exception\InvalidStyleException;
 use AlecRabbit\Tools\Counter;
 use AlecRabbit\Tools\Reports\Base\Report;
 use AlecRabbit\Tools\Traits\CounterFields;
