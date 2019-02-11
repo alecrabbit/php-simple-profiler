@@ -4,24 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9792d33a44585058160ed2d5a7205171",
+    "content-hash": "acab0c24dc2b6955b2198647dd2db07a",
     "packages": [
         {
-            "name": "alecrabbit/accessories",
-            "version": "0.2.5-RC3",
+            "name": "alecrabbit/php-accessories",
+            "version": "0.3.0-BETA3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/alecrabbit/accessories.git",
-                "reference": "5983ac30d7dcc227d0f5df3685f868c9be9a2f24"
+                "url": "https://github.com/alecrabbit/php-accessories.git",
+                "reference": "7966d2065f7aba26338e6dc0575f1332c7d6f3db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/accessories/zipball/5983ac30d7dcc227d0f5df3685f868c9be9a2f24",
-                "reference": "5983ac30d7dcc227d0f5df3685f868c9be9a2f24",
+                "url": "https://api.github.com/repos/alecrabbit/php-accessories/zipball/7966d2065f7aba26338e6dc0575f1332c7d6f3db",
+                "reference": "7966d2065f7aba26338e6dc0575f1332c7d6f3db",
                 "shasum": ""
             },
             "require": {
-                "alecrabbit/php-helpers": "^0.2",
+                "alecrabbit/php-helpers": "^0.3",
                 "php": ">=7.2"
             },
             "require-dev": {
@@ -50,20 +50,20 @@
                 "rewindable",
                 "time"
             ],
-            "time": "2019-01-31T14:49:03+00:00"
+            "time": "2019-02-11T22:11:41+00:00"
         },
         {
             "name": "alecrabbit/php-helpers",
-            "version": "0.2.5-RC4",
+            "version": "0.3.0-BETA1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-helpers.git",
-                "reference": "9087e5a8e1129717088c07d8a83ebf22b49cf7a6"
+                "reference": "8602e913d90467c51c74b2c0413e4341332eb674"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/9087e5a8e1129717088c07d8a83ebf22b49cf7a6",
-                "reference": "9087e5a8e1129717088c07d8a83ebf22b49cf7a6",
+                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/8602e913d90467c51c74b2c0413e4341332eb674",
+                "reference": "8602e913d90467c51c74b2c0413e4341332eb674",
                 "shasum": ""
             },
             "require": {
@@ -73,6 +73,7 @@
                 "symfony/polyfill-php73": "^1.10"
             },
             "require-dev": {
+                "ext-curl": "*",
                 "nunomaduro/collision": "^2.1",
                 "phpunit/phpunit": "^7.5",
                 "symfony/var-dumper": "^4.2"
@@ -94,7 +95,7 @@
                 "MIT"
             ],
             "description": "PHP helpers functions",
-            "time": "2019-02-07T14:07:41+00:00"
+            "time": "2019-02-11T22:07:03+00:00"
         },
         {
             "name": "alecrabbit/php-traits",

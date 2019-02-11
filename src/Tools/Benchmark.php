@@ -2,7 +2,7 @@
 
 namespace AlecRabbit\Tools;
 
-use AlecRabbit\Rewindable;
+use AlecRabbit\Accessories\Rewindable;
 use AlecRabbit\Tools\Contracts\BenchmarkInterface;
 use AlecRabbit\Tools\Contracts\StringsInterface;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;

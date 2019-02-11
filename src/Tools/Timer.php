@@ -2,7 +2,7 @@
 
 namespace AlecRabbit\Tools;
 
-use AlecRabbit\Pretty;
+use AlecRabbit\Accessories\Pretty;
 use AlecRabbit\Tools\Contracts\TimerInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Traits\Reportable;

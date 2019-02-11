@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
-use AlecRabbit\Pretty;
+use AlecRabbit\Accessories\Pretty;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
 use function AlecRabbit\typeOf;

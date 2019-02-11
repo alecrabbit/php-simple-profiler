@@ -130,22 +130,4 @@ class Counter implements CounterInterface, ReportableInterface
     {
         $this->started = true;
     }
-
-//    // todo move to helpers
-//    private function callingMethod(int $depth = 2): string
-//    {
-//        $e = new \Exception();
-//        $trace = $e->getTrace();
-//        $caller = $trace[$depth];
-//        $r = '';
-//        $r .= $caller['function'] . '()';
-//        if (isset($caller['class'])) {
-//            $r .= ' in ' . $caller['class'];
-//        }
-//        if (isset($caller['object'])) {
-//            $r .= ' (' . get_class($caller['object']) . ')';
-//        }
-//        unset($e);
-//        return $r;
-//    }
 }
