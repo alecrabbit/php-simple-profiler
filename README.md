@@ -15,11 +15,6 @@ PHP Simple profiler
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Percentage of issues still open")
 
-Progress so far:
-- [x] add classes with embedded progress bars
-- [ ] separate Counter in two classes - SimpleCounter and ExtendedCounter
-- [ ] add memory usage to Benchmark class
-
 Docs for version 0.3.0 and above
 
 ### Installation
