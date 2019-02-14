@@ -21,6 +21,9 @@ trait BenchmarkFields
     /** @var int */
     protected $doneIterations = 0;
 
+    /** @var int */
+    protected $doneIterationsCombined = 0;
+
     /** @var Timer */
     private $timer;
 
@@ -55,5 +58,13 @@ trait BenchmarkFields
     public function getTimer(): Timer
     {
         return $this->timer;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDoneIterationsCombined(): int
+    {
+        return $this->doneIterationsCombined;
     }
 }

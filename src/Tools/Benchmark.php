@@ -30,10 +30,10 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringsInter
     private $comment;
     /** @var string|null */
     private $humanReadableName;
-    /** @var int */
-    private $totalIterations = 0;
     /** @var null|callable */
     private $onStart;
+    /** @var int */
+    private $totalIterations = 0;
     /** @var null|callable */
     private $onAdvance;
     /** @var null|callable */
@@ -83,6 +83,8 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringsInter
             );
         $this->functions = [];
         $this->profiler = new Profiler();
+        $this->doneIterations = 0;
+        $this->totalIterations = 0;
     }
 
     /**
@@ -105,6 +107,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringsInter
         if ($this->onFinish) {
             ($this->onFinish)();
         }
+        $this->doneIterationsCombined += $this->doneIterations;
         return $this;
     }
 
@@ -146,7 +149,8 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringsInter
 
     private function progress(): void
     {
-        if ($this->onAdvance && 0 === ++$this->doneIterations % $this->advanceStep) {
+        $this->doneIterations++;
+        if ($this->onAdvance && 0 === $this->doneIterations % $this->advanceStep) {
             ($this->onAdvance)();
         }
     }

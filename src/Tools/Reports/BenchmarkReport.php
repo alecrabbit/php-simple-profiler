@@ -23,6 +23,7 @@ class BenchmarkReport extends Report
     {
         $this->profiler = $benchmark->getProfiler();
         $this->doneIterations = $benchmark->getDoneIterations();
+        $this->doneIterationsCombined = $benchmark->getDoneIterationsCombined();
         $this->functions = $this->updateFunctions($benchmark->getFunctions());
         $this->timer = $benchmark->getTimer();
 
