@@ -26,5 +26,5 @@ $benchmark
     ->addFunction('another_implementation', $a);
 
 echo $benchmark->run()->getReport() . PHP_EOL;
-echo $benchmark->elapsed() . PHP_EOL;
+echo $benchmark->stat() . PHP_EOL;
 //dump($benchmark);

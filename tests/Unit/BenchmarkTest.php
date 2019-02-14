@@ -114,7 +114,10 @@ class BenchmarkTest extends TestCase
         $this->assertInstanceOf(BenchmarkReport::class, $report);
         $str = (string)$report;
         $this->assertIsString($str);
-        $this->assertContains('Done in', $bench->elapsed());
+        $this->assertContains('Done in', $bench->stat());
+        $this->assertContains('Memory', $bench->stat());
+        $this->assertContains('Real', $bench->stat());
+
         $this->assertContains($str_one, $str);
         $this->assertContains($str_two, $str);
         $this->assertContains($comment, $str);
@@ -184,7 +187,10 @@ class BenchmarkTest extends TestCase
         $this->assertContains('λ', $str);
         $this->assertContains('integer(1)', $str);
         $this->assertContains('integer(2)', $str);
-        $this->assertContains('Done in', $bench->elapsed());
+        $this->assertContains('Done in', $bench->stat());
+        $this->assertContains('Memory', $bench->stat());
+        $this->assertContains('Real', $bench->stat());
+
     }
 
     /** @test */
@@ -237,7 +243,10 @@ class BenchmarkTest extends TestCase
         $this->assertInstanceOf(BenchmarkReport::class, $report);
         $str = (string)$report;
         $this->assertIsString($str);
-        $this->assertContains('Done in', $this->bench->elapsed());
+        $this->assertContains('Done in', $this->bench->stat());
+        $this->assertContains('Memory', $this->bench->stat());
+        $this->assertContains('Real', $this->bench->stat());
+
         $this->assertContains($str_one, $str);
         $this->assertContains($str_two, $str);
         $this->assertContains($comment, $str);
@@ -279,7 +288,9 @@ class BenchmarkTest extends TestCase
         $this->assertInstanceOf(BenchmarkReport::class, $report);
         $str = (string)$report;
         $this->assertIsString($str);
-        $this->assertContains('Done in', $this->bench->elapsed());
+        $this->assertContains('Done in', $this->bench->stat());
+        $this->assertContains('Memory', $this->bench->stat());
+        $this->assertContains('Real', $this->bench->stat());
         $this->assertContains($str_one, $str);
         $this->assertContains($str_two, $str);
         $this->assertContains($comment, $str);

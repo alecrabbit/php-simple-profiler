@@ -2,6 +2,7 @@
 
 namespace AlecRabbit\Tools;
 
+use AlecRabbit\Accessories\MemoryUsage;
 use AlecRabbit\Accessories\Rewindable;
 use AlecRabbit\Tools\Contracts\BenchmarkInterface;
 use AlecRabbit\Tools\Contracts\StringsInterface;
@@ -75,6 +76,8 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringsInter
      */
     private function initialize(): void
     {
+        unset($this->functions, $this->humanReadableName, $this->rewindable, $this->profiler, $this->memoryUsageReport);
+
         $this->humanReadableName = null;
         $this->rewindable =
             new Rewindable(
@@ -83,6 +86,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringsInter
             );
         $this->functions = [];
         $this->profiler = new Profiler();
+        $this->memoryUsageReport = MemoryUsage::report();
         $this->doneIterations = 0;
         $this->totalIterations = 0;
     }
@@ -239,12 +243,13 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringsInter
     /**
      * @return string
      */
-    public function elapsed(): string
+    public function stat(): string
     {
         return
             sprintf(
-                'Done in: %s',
-                $this->getTimer()->elapsed()
+                'Done in: %s %s',
+                $this->getTimer()->elapsed(),
+                (string)$this->memoryUsageReport
             );
     }
 

@@ -20,5 +20,5 @@ $benchmark
     ->addFunction('microtime', true); // significantly faster on php7.2 (hrtime is a polyfill func for under 7.3)
 
 echo $benchmark->run()->getReport() . PHP_EOL;
-echo $benchmark->elapsed() . PHP_EOL;
+echo $benchmark->stat() . PHP_EOL;
 //dump($benchmark);

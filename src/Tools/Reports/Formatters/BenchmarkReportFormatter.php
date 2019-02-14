@@ -69,7 +69,8 @@ class BenchmarkReportFormatter extends Formatter
         }
         return
             $r . PHP_EOL .
-            (empty($withException) ? '' : 'Exceptions:' . PHP_EOL . $withException) . PHP_EOL .
+            (empty($withException) ? '' : 'Exceptions:' . PHP_EOL . $withException) .
+            $this->report->getMemoryUsageReport() . PHP_EOL .
             $profilerReport;
     }
 

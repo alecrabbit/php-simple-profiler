@@ -22,6 +22,7 @@ class BenchmarkReport extends Report
     public function __construct(Benchmark $benchmark)
     {
         $this->profiler = $benchmark->getProfiler();
+        $this->memoryUsageReport = $benchmark->getMemoryUsageReport();
         $this->doneIterations = $benchmark->getDoneIterations();
         $this->doneIterationsCombined = $benchmark->getDoneIterationsCombined();
         $this->functions = $this->updateFunctions($benchmark->getFunctions());

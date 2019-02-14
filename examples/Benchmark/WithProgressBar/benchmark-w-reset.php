@@ -68,4 +68,4 @@ $benchmark
 $benchmark->run();
 $report = $benchmark->getReport();
 echo $report . PHP_EOL;
-echo $benchmark->elapsed() . PHP_EOL;
+echo $benchmark->stat() . PHP_EOL;

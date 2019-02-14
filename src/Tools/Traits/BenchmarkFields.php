@@ -7,6 +7,7 @@
 
 namespace AlecRabbit\Tools\Traits;
 
+use AlecRabbit\Accessories\MemoryUsageReport;
 use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Timer;
 
@@ -17,6 +18,9 @@ trait BenchmarkFields
 
     /** @var Profiler */
     protected $profiler;
+
+    /** @var MemoryUsageReport */
+    protected $memoryUsageReport;
 
     /** @var int */
     protected $doneIterations = 0;
@@ -66,5 +70,13 @@ trait BenchmarkFields
     public function getDoneIterationsCombined(): int
     {
         return $this->doneIterationsCombined;
+    }
+
+    /**
+     * @return MemoryUsageReport
+     */
+    public function getMemoryUsageReport(): MemoryUsageReport
+    {
+        return $this->memoryUsageReport;
     }
 }
