@@ -13,8 +13,8 @@ function someOperation()
 
 $profiler = new Profiler();
 $timer = $profiler->timer(NAME);
-$timer2 = $profiler->timer('new');
-$counter = $profiler->counter(NAME);
+$timer2 = $profiler->timer('new', 'and', 'suffixes');
+$counter = $profiler->counter(NAME, 'and', 'suffixes');
 $timer->start();
 for ($i = 0; $i < 100; $i++) {
     $counter->bump();

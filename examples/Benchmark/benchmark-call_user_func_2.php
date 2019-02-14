@@ -12,31 +12,20 @@ echo 'PHP version: ' . PHP_VERSION . PHP_EOL;
 */
 
 $benchmark = new Benchmark(500000);
-$args = [1, 2, 3];
+$a = [1, 2, 3];
 
-$func = function ($a, $b, $c) {
-    return $a + $b + $c;
+$func = function (array $a) {
+    return array_sum($a);
 };
 
 $benchmark
-    ->withComment('\call_user_func($func, ...$args)')
-    ->useName('call_user_func')
-    ->addFunction(
-        function ($args) use ($func) {
-            return \call_user_func($func, ...$args);
-        },
-        $args
-    );
+    ->withComment('call_user_func($func, ...$args)')
+    ->addFunction('\call_user_func', $func, $a);
 
 $benchmark
     ->withComment('$func(...$args)')
     ->useName('$func')
-    ->addFunction(
-        function ($args) use ($func) {
-            return $func(...$args);
-        },
-        $args
-    );
+    ->addFunction($func, $a);
 
 $benchmark->run();
 echo $benchmark->getReport() . PHP_EOL;

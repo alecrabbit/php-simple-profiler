@@ -4,10 +4,12 @@ use AlecRabbit\Tools\Benchmark;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
+echo 'Benchmark with no progress output' . PHP_EOL;
+echo 'PHP version: ' . PHP_VERSION . PHP_EOL;
+
 /*
  * Let's determine what is faster hrtime or microtime
 */
-
 $benchmark = new Benchmark(900000);
 
 
