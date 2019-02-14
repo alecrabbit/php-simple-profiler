@@ -24,7 +24,7 @@ class BenchmarkSimplePB extends Benchmark
 
         $progressFinish =
             function (): void {
-                echo "\e[" . $this->advanceSteps . 'D';
+                echo "\e[" . $this->progressBarWidth . 'D';
                 echo "\e[K";
             };
 
