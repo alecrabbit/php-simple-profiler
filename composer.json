@@ -2,20 +2,28 @@
   "name": "alecrabbit/php-simple-profiler",
   "type": "library",
   "description": "PHP simple profiler",
+  "keywords": [
+    "counter",
+    "timer",
+    "simple",
+    "profiler",
+    "benchmark",
+    "microtime"
+  ],
   "license": "MIT",
   "require": {
     "php": ">=7.2",
-    "alecrabbit/php-helpers": "^0.3",
     "alecrabbit/php-accessories": "^0.4",
+    "alecrabbit/php-helpers": "^0.3",
     "alecrabbit/php-traits": "^0.0.2"
   },
   "require-dev": {
     "krowinski/bcmath-extended": "^4.2",
     "nunomaduro/collision": "^2.1",
     "phpunit/phpunit": "^7.5",
+    "symfony/console": "^4.2",
     "symfony/phpunit-bridge": "^4.2",
-    "symfony/var-dumper": "^4.2",
-    "symfony/console": "^4.2"
+    "symfony/var-dumper": "^4.2"
   },
   "autoload": {
     "psr-4": {

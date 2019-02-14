@@ -19,11 +19,12 @@ $func = function (array $a) {
 };
 
 $benchmark
-    ->withComment('call_user_func($func, ...$args)')
+    ->withComment('Call signature: call_user_func($func, ...$args)')
+    ->useName('call_user_func')
     ->addFunction('\call_user_func', $func, $a);
 
 $benchmark
-    ->withComment('$func(...$args)')
+    ->withComment('Call signature: $func(...$args)')
     ->useName('$func')
     ->addFunction($func, $a);
 

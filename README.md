@@ -18,7 +18,7 @@ PHP Simple profiler
 Docs for version 0.3.0 and above
 
 ### Installation
-This package is suggested to be used in dev process for debugging of simple scripts
+For now this package is suggested to be used in dev process for debugging of simple scripts
 
 ```bash
 composer require --dev alecrabbit/php-simple-profiler
@@ -30,10 +30,17 @@ composer require --dev alecrabbit/php-simple-profiler
 composer require alecrabbit/php-simple-profiler
  ```
  
- Counter and Timer classes can be useful
  
 ### Usage
-##### Quickstart
+
+ Benchmark classes are meant to define which function is faster
+ 
+ Separate Counter and Timer classes can be useful too
+ 
+ Profiler class combines Counter and Timer together for convenience 
+
+#### Quickstart
+##### Benchmark
 ```php
 use AlecRabbit\Tools\BenchmarkSymfonyPB;
 
@@ -47,8 +54,8 @@ $benchmark
 echo $benchmark->run()->getReport() . PHP_EOL;
 echo $benchmark->elapsed() . PHP_EOL;
 ```
-##### For more details see [examples](https://github.com/alecrabbit/php-simple-profiler/tree/master/examples)
-##### Note: Not all examples are up to date... work in progress 
+###### For more details see [examples](https://github.com/alecrabbit/php-simple-profiler/tree/master/examples)
+##### Note: Some examples could be not up to date... WIP
 
 ### Benchmark classes
  
