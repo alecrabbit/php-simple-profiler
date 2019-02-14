@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2a362821728ac82b74da3e8cffaf3484",
+    "content-hash": "ade4b51f32dd392ad6a1d1f0854bc397",
     "packages": [
         {
             "name": "alecrabbit/php-accessories",
-            "version": "0.3.0-BETA3",
+            "version": "0.4.1-RC1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-accessories.git",
-                "reference": "7966d2065f7aba26338e6dc0575f1332c7d6f3db"
+                "reference": "3ae0a715b1a249485291c750c125e911e50ba02f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-accessories/zipball/7966d2065f7aba26338e6dc0575f1332c7d6f3db",
-                "reference": "7966d2065f7aba26338e6dc0575f1332c7d6f3db",
+                "url": "https://api.github.com/repos/alecrabbit/php-accessories/zipball/3ae0a715b1a249485291c750c125e911e50ba02f",
+                "reference": "3ae0a715b1a249485291c750c125e911e50ba02f",
                 "shasum": ""
             },
             "require": {
@@ -43,18 +43,21 @@
             "keywords": [
                 "array",
                 "bytes",
+                "caller",
                 "circular",
                 "generator",
+                "iterator",
+                "percent",
                 "pretty",
                 "range",
                 "rewindable",
                 "time"
             ],
-            "time": "2019-02-11T22:11:41+00:00"
+            "time": "2019-02-13T14:17:51+00:00"
         },
         {
             "name": "alecrabbit/php-helpers",
-            "version": "0.3.0-BETA1",
+            "version": "0.3.0-RC1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-helpers.git",
