@@ -1,6 +1,7 @@
 - [ ] implement acceptance of custom formatters as parameters
 
 - [ ] improve ProfileReportFormatter
+- [ ] create BenchmarkFunctionReportFormatter
 - [ ] improve BenchmarkReportFormatter
 
 - [x] add memory usage to Benchmark class (0.3.3)

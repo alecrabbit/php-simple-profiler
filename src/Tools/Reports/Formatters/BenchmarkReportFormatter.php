@@ -24,7 +24,6 @@ class BenchmarkReportFormatter extends Formatter
         $withException = '';
         /** @var BenchmarkFunction $function */
         foreach ($this->report->getFunctions() as $name => $function) {
-//            dump($function);
             $br = $function->getBenchmarkRelative();
             $types = $this->extractArguments($function->getArgs());
 
