@@ -30,16 +30,6 @@ composer require alecrabbit/php-simple-profiler
  ```
  
  
-### Usage
-
-[Examples](https://github.com/alecrabbit/php-simple-profiler/tree/master/examples)
-
- Benchmark classes are meant to define which function is faster.
- 
- Separate Counter and Timer classes can be useful too.
- 
- Profiler class combines Counter and Timer together for convenience.
- 
 #### Quickstart
 ##### Benchmark
 ```php
