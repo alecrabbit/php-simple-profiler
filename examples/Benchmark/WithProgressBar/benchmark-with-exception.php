@@ -5,12 +5,9 @@
  * Time: 17:13
  */
 
-use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\BenchmarkSymfonyPB;
-use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Output\ConsoleOutput;
 
-const ITERATIONS = 90000;
+const ITERATIONS = 900000;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 

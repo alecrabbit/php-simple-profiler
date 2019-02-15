@@ -9,7 +9,7 @@ use AlecRabbit\Tools\Benchmark;
 
 const ITERATIONS = 500000;
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 /*
  * There are moments when you have to choose between two or more different approaches
@@ -63,4 +63,4 @@ $benchmark->progressBar(null, $progressAdvance, $progressFinish);
 $benchmark->run();
 $report = $benchmark->getReport();
 echo $report . PHP_EOL;
-echo $benchmark->elapsed() . PHP_EOL;
+echo $benchmark->stat() . PHP_EOL;

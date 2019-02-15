@@ -24,7 +24,6 @@ class BenchmarkReportFormatter extends Formatter
         $withException = '';
         /** @var BenchmarkFunction $function */
         foreach ($this->report->getFunctions() as $name => $function) {
-//            dump($function);
             $br = $function->getBenchmarkRelative();
             $types = $this->extractArguments($function->getArgs());
 
@@ -69,7 +68,8 @@ class BenchmarkReportFormatter extends Formatter
         }
         return
             $r . PHP_EOL .
-            (empty($withException) ? '' : 'Exceptions:' . PHP_EOL . $withException) . PHP_EOL .
+            (empty($withException) ? '' : 'Exceptions:' . PHP_EOL . $withException) .
+            $this->report->getMemoryUsageReport() . PHP_EOL .
             $profilerReport;
     }
 

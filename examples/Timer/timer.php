@@ -3,7 +3,7 @@
 use AlecRabbit\Tools\Reports\Factory;
 use AlecRabbit\Tools\Timer;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 echo 'Start...', PHP_EOL, 'wait 5 sec', PHP_EOL;
 $timer = new Timer('new');

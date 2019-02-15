@@ -48,5 +48,5 @@ $benchmark
     });
 $report = $benchmark->run()->getReport();
 echo $report . PHP_EOL;
-echo $benchmark->elapsed() . PHP_EOL;
+echo $benchmark->stat() . PHP_EOL;
 //dump($report);

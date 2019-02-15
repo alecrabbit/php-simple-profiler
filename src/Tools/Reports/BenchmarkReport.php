@@ -22,7 +22,9 @@ class BenchmarkReport extends Report
     public function __construct(Benchmark $benchmark)
     {
         $this->profiler = $benchmark->getProfiler();
+        $this->memoryUsageReport = $benchmark->getMemoryUsageReport();
         $this->doneIterations = $benchmark->getDoneIterations();
+        $this->doneIterationsCombined = $benchmark->getDoneIterationsCombined();
         $this->functions = $this->updateFunctions($benchmark->getFunctions());
         $this->timer = $benchmark->getTimer();
 
@@ -40,17 +42,20 @@ class BenchmarkReport extends Report
         $updatedFunctions = [];
         if (!empty($relatives)) {
             $rank = 0;
-            /** @var BenchmarkFunction $function */
-            foreach ($functions as $name => $function) {
-                $relative = $relatives[$name] ?? null;
+            foreach ($relatives as $name => $relative) {
+                $function = $functions[$name] ?? null;
                 $average = $averages[$name] ?? null;
-                if (null !== $relative && null !== $average) {
+                if (null !== $function && null !== $average) {
                     $function->setBenchmarkRelative(
                         new BenchmarkRelative(++$rank, (float)$relative - 1, (float)$average)
                     );
                 }
+                unset($functions[$name]);
                 $updatedFunctions[$name] = $function;
             }
+        }
+        foreach ($functions as $name => $function) {
+            $updatedFunctions[$name] = $function;
         }
         return $updatedFunctions;
     }

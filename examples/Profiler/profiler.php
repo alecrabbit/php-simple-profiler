@@ -26,4 +26,4 @@ $report = $profiler->getReport();
 dump($report); // symfony/var-dumper function dump()
 echo PHP_EOL;
 
-echo $report;
+echo $report . PHP_EOL;
