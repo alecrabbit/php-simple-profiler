@@ -24,27 +24,44 @@ class BenchmarkReportFormatter extends ReportFormatter
         }
         return
             sprintf(
-                '%s %s%s %s%s',
+                '%s%s%s%s',
                 $str,
-                PHP_EOL,
                 $this->countersStatistics(),
-                PHP_EOL,
-                $this->report->getMemoryUsageReport()
+                $this->report->getMemoryUsageReport(),
+                PHP_EOL
             );
     }
 
     private function countersStatistics(): string
     {
-        $addedCounter = $this->report->getProfiler()->counter(static::ADDED);
-        $benchmarkedCounter = $this->report->getProfiler()->counter(static::BENCHMARKED);
+        $added = $this->report->getProfiler()->counter(static::ADDED)->getValue();
+        $benchmarked = $this->report->getProfiler()->counter(static::BENCHMARKED)->getValue();
+        if ($added === $benchmarked) {
+            return '';
+        }
 
         return
             sprintf(
-                '%s: %s %s: %s',
-                self::ADDED,
-                $addedCounter->getValue(),
-                self::BENCHMARKED,
-                $benchmarkedCounter->getValue()
+                '%s: %s %s: %s %s %s',
+                static::ADDED,
+                $added,
+                static::BENCHMARKED,
+                $benchmarked,
+                $this->countedExceptions($added, $benchmarked),
+                PHP_EOL
             );
+    }
+
+    private function countedExceptions($added, $benchmarked): string
+    {
+        if (0 !== $exceptions = $added - $benchmarked) {
+            return
+                sprintf(
+                    '%s %s',
+                    static::EXCEPTIONS,
+                    $exceptions
+                );
+        }
+        return '';
     }
 }
