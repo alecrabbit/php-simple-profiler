@@ -101,6 +101,21 @@ Getting results
 echo $b->getReport() . PHP_EOL;
 echo $b->stat() . PHP_EOL;
 ```
+Results will be something like that
+```
+Benchmark:
+1.  175.5ns (  0.00%) $func(array)
+integer(6) 
+2.  294.4ns ( 67.71%) call_user_func(Closure, array) 
+integer(6) 
+
+Memory: 0.86MB(0.91MB) Real: 2.00MB(2.00MB)
+Counter[added]: Value: 2, Step: 1, Bumped: +2 -0, Path: 2, Length: 2, Max: 2, Min: 0, Diff: 2 
+Counter[benchmarked]: Value: 2, Step: 1, Bumped: +2 -0, Path: 2, Length: 2, Max: 2, Min: 0, Diff: 2 
+Elapsed: 1.1s 
+
+Done in: 1.1s Memory: 0.86MB(0.91MB) Real: 2.00MB(2.00MB)
+```
 ### Profiler::class
 Profiler is a kinda wrapper for Counter and Timer in case if you need them both.
 ```php
