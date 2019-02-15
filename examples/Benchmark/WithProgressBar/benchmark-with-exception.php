@@ -7,7 +7,7 @@
 
 use AlecRabbit\Tools\BenchmarkSymfonyPB;
 
-const ITERATIONS = 900000;
+const ITERATIONS = 9000;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -40,8 +40,8 @@ $counter = 0;
  * This function will be called only once
 */
 $benchmark
-    ->withComment('This func throws an exception')
     ->useName('it_throws')
+    ->withComment('This func throws an exception')
     ->addFunction(
         function () use (&$counter) {
             $counter++;
@@ -63,7 +63,7 @@ $benchmark
 $benchmark->run();
 $report = $benchmark->getReport();
 echo $report . PHP_EOL;
-echo 'Called: ' . $counter . PHP_EOL;
+echo 'Called one time: ' . ($counter === 1 ? 'YES' : 'NO') . PHP_EOL;
 
 // Benchmark:
 //1.   4.9μs (  0.00%) ⟨1⟩ λ(string) fast function

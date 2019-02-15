@@ -64,13 +64,12 @@ class BenchmarkFunctionFormatter implements Formatter
             );
         } else {
             // @codeCoverageIgnoreStart
-            // this should never be thrown otherwise something is terribly wrong
-            throw new \RuntimeException('BenchmarkFunction has no BenchmarkRelative nor Exception object.');
+            throw new \RuntimeException('BenchmarkFunction has no BenchmarkRelative' .
+                ' nor Exception object. Was it executed?');
             // @codeCoverageIgnoreEnd
         }
         return
-            $r . PHP_EOL .
-            (empty($withException) ? '' : 'Exceptions:' . PHP_EOL . $withException);
+            $r . (empty($withException) ? PHP_EOL : 'Exceptions:' . PHP_EOL . $withException);
     }
 
     /**
