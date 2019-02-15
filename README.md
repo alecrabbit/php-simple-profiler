@@ -14,7 +14,7 @@
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Percentage of issues still open")
 
-Docs for version 0.3.0 and above
+VERSION 0.4.0
 
 ### Installation
 For now this package is suggested to be used in dev process for debugging of simple scripts
@@ -87,7 +87,8 @@ $b->run();
 ```
 Getting results
 ```php
-echo $b->getReport() . PHP_EOL;
+$report = $b->getReport(); // you can get report object and use data from it 
+echo $report . PHP_EOL; // or you can print by default formatter
 echo $b->stat() . PHP_EOL;
 ```
 Results will be something like that
