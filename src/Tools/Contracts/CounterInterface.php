@@ -7,6 +7,6 @@
 
 namespace AlecRabbit\Tools\Contracts;
 
-interface CounterInterface extends StringsInterface
+interface CounterInterface extends StringConstants
 {
 }

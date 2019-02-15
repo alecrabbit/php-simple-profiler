@@ -7,13 +7,15 @@
 
 namespace AlecRabbit\Tools\Contracts;
 
-interface StringsInterface
+interface StringConstants
 {
     public const COUNTERS = 'counters';
     public const TIMERS = 'timers';
 
-    public const ADDED = 'added';
-    public const BENCHMARKED = 'benchmarked';
+    public const ADDED = 'Added';
+    public const BENCHMARKED = 'Benchmarked';
+    public const BENCHMARK = 'Benchmark:';
+    public const EXCEPTIONS = 'Exceptions:';
 
     public const NAME_FORMAT = '%s [%s]';
 

@@ -17,14 +17,34 @@ class BenchmarkReportFormatter extends ReportFormatter
      */
     public function getString(): string
     {
-        $r = 'Benchmark:' . PHP_EOL;
+        $str = self::BENCHMARK . PHP_EOL;
         /** @var BenchmarkFunction $function */
         foreach ($this->report->getFunctions() as $name => $function) {
-            $r .= (new  BenchmarkFunctionFormatter($function))->getString();
+            $str .= (new BenchmarkFunctionFormatter($function))->getString();
         }
         return
-            $r . PHP_EOL .
-            $this->report->getMemoryUsageReport() . PHP_EOL .
-            $this->report->getProfiler()->getReport();
+            sprintf(
+                '%s %s%s %s%s',
+                $str,
+                PHP_EOL,
+                $this->countersStatistics(),
+                PHP_EOL,
+                $this->report->getMemoryUsageReport()
+            );
+    }
+
+    private function countersStatistics(): string
+    {
+        $addedCounter = $this->report->getProfiler()->counter(static::ADDED);
+        $benchmarkedCounter = $this->report->getProfiler()->counter(static::BENCHMARKED);
+
+        return
+            sprintf(
+                '%s: %s %s: %s',
+                self::ADDED,
+                $addedCounter->getValue(),
+                self::BENCHMARKED,
+                $benchmarkedCounter->getValue()
+            );
     }
 }

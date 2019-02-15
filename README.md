@@ -110,11 +110,14 @@ Done in: 1.1s Memory: 0.86MB(0.91MB) Real: 2.00MB(2.00MB)
 Profiler is a kinda wrapper for Counter and Timer in case if you need them both.
 ```php
 $profiler = new Profiler();
-// in loop 
-    $profiler->counter()->bump();
-    $profiler->timer()->check();
 
-$report = $profiler->getReport();
+for ($i = 0; $i < 100; $i++) {
+    $profiler->counter()->bump();
+    someOperation();
+    $profiler->timer()->check();
+}
+
+echo $profiler->getReport() . PHP_EOL;
 ```
 ### Counter::class
 // todo 

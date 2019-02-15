@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use AlecRabbit\Tools\Contracts\StringsInterface;
+use AlecRabbit\Tools\Contracts\StringConstants;
 use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Reports\CounterReport;
 use AlecRabbit\Tools\Reports\ProfilerReport;
@@ -40,9 +40,9 @@ class ProfilerReportTest extends TestCase
         $this->assertInstanceOf(ProfilerReport::class, $report);
         $str = (string)$report;
         $this->assertContains(self::NAME, $str);
-        $this->assertContains(StringsInterface::COUNTER, $str);
-        $this->assertContains(StringsInterface::TIMER, $str);
-        $this->assertContains(StringsInterface::ELAPSED, $str);
+        $this->assertContains(StringConstants::COUNTER, $str);
+        $this->assertContains(StringConstants::TIMER, $str);
+        $this->assertContains(StringConstants::ELAPSED, $str);
 
         /** @var ProfilerReport $report */
         $reports = $report->getReports();

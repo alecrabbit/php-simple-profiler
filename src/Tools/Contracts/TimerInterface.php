@@ -7,6 +7,6 @@
 
 namespace AlecRabbit\Tools\Contracts;
 
-interface TimerInterface extends StringsInterface
+interface TimerInterface extends StringConstants
 {
 }

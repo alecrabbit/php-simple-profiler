@@ -12,6 +12,7 @@ function someOperation()
 }
 
 $profiler = new Profiler();
+
 $timer = $profiler->timer(NAME);
 $timer2 = $profiler->timer('new', 'and', 'suffixes');
 $counter = $profiler->counter(NAME, 'and', 'suffixes');
@@ -27,7 +28,7 @@ for ($i = 0; $i < 100; $i++) {
 
 //dump($profiler->getReport()); // symfony/var-dumper function dump()
 //echo PHP_EOL;
-echo 'First report' ;
+echo 'First report';
 echo PHP_EOL;
 echo $profiler->getReport();
 echo PHP_EOL;
@@ -35,7 +36,7 @@ echo PHP_EOL;
 
 $profiler = new Profiler();
 
-echo 'Second report' ;
+echo 'Second report';
 echo PHP_EOL;
 echo $profiler->getReport();
 echo PHP_EOL;

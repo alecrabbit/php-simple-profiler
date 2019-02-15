@@ -5,14 +5,14 @@ namespace AlecRabbit\Tools;
 use AlecRabbit\Accessories\MemoryUsage;
 use AlecRabbit\Accessories\Rewindable;
 use AlecRabbit\Tools\Contracts\BenchmarkInterface;
-use AlecRabbit\Tools\Contracts\StringsInterface;
+use AlecRabbit\Tools\Contracts\StringConstants;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
 use function AlecRabbit\typeOf;
 
-class Benchmark implements BenchmarkInterface, ReportableInterface, StringsInterface
+class Benchmark implements BenchmarkInterface, ReportableInterface, StringConstants
 {
     use BenchmarkFields, Reportable;
 
