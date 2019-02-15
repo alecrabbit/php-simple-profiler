@@ -33,12 +33,14 @@ composer require alecrabbit/php-simple-profiler
  
 ### Usage
 
- Benchmark classes are meant to define which function is faster
- 
- Separate Counter and Timer classes can be useful too
- 
- Profiler class combines Counter and Timer together for convenience 
+[Examples](https://github.com/alecrabbit/php-simple-profiler/tree/master/examples)
 
+ Benchmark classes are meant to define which function is faster.
+ 
+ Separate Counter and Timer classes can be useful too.
+ 
+ Profiler class combines Counter and Timer together for convenience.
+ 
 #### Quickstart
 ##### Benchmark
 ```php
@@ -52,7 +54,7 @@ $benchmark
 $benchmark
     ->addFunction('microtime', true);
 echo $benchmark->run()->getReport() . PHP_EOL;
-echo $benchmark->elapsed() . PHP_EOL;
+echo $benchmark->stat() . PHP_EOL;
 ```
 ###### For more details see [examples](https://github.com/alecrabbit/php-simple-profiler/tree/master/examples)
 ##### Note: Some examples could be not up to date... WIP
@@ -90,7 +92,15 @@ $b->addFunction('call_user_func', $func, $a);
 
 $b->addFunction($func, $a);
 ```
-
+And now you can run the benchmarking
+```php
+$b->run();
+```
+Getting results
+```php
+echo $b->getReport() . PHP_EOL;
+echo $b->stat() . PHP_EOL;
+```
 ### Profiler::class
 Profiler is a kinda wrapper for Counter and Timer in case if you need them both.
 ```php
