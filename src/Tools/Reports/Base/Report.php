@@ -9,11 +9,11 @@ namespace AlecRabbit\Tools\Reports\Base;
 
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Factory;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\ReportFormatter;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\Formatter;
 
 abstract class Report implements ReportInterface
 {
-    /** @var ReportFormatter */
+    /** @var Formatter */
     protected $formatter;
 
     /**

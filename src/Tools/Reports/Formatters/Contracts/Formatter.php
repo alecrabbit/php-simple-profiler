@@ -7,7 +7,7 @@
 
 namespace AlecRabbit\Tools\Reports\Formatters\Contracts;
 
-interface ReportFormatter
+interface Formatter
 {
     /**
      * @return string

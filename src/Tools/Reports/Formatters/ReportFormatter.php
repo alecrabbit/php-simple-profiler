@@ -10,9 +10,9 @@ namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Tools\Contracts\StringsInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\ReportFormatter;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\Formatter;
 
-abstract class Formatter implements ReportFormatter, StringsInterface
+abstract class ReportFormatter implements Formatter, StringsInterface
 {
     /** @var ReportInterface */
     protected $report;

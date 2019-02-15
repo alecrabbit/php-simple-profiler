@@ -12,7 +12,7 @@ use AlecRabbit\Accessories\Pretty;
 use AlecRabbit\Tools\Reports\TimerReport;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
-class TimerReportFormatter extends Formatter
+class TimerReportFormatter extends ReportFormatter
 {
     /** @var TimerReport */
     protected $report;

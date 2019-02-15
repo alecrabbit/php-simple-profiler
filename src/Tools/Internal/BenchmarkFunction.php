@@ -200,7 +200,7 @@ class BenchmarkFunction
             return true;
         } catch (\Throwable $e) {
             $this->setException($e);
-            return false;
         }
+        return false;
     }
 }

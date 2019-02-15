@@ -9,7 +9,7 @@ use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
 use function AlecRabbit\typeOf;
 
-class BenchmarkReportFormatter extends Formatter
+class BenchmarkReportFormatter extends ReportFormatter
 {
     /** @var BenchmarkReport */
     protected $report;

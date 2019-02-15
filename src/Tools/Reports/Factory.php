@@ -10,7 +10,7 @@ use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkReportFormatter;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\ReportFormatter;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\Formatter;
 use AlecRabbit\Tools\Reports\Formatters\CounterReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\ProfilerReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\TimerReportFormatter;
@@ -52,9 +52,9 @@ class Factory
 
     /**
      * @param ReportInterface $report
-     * @return ReportFormatter
+     * @return Formatter
      */
-    public static function makeFormatter(ReportInterface $report): ReportFormatter
+    public static function makeFormatter(ReportInterface $report): Formatter
     {
         if ($report instanceof TimerReport) {
             return
