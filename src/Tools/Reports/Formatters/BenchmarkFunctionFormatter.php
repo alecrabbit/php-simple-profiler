@@ -24,59 +24,53 @@ class BenchmarkFunctionFormatter implements Formatter
      */
     public function getString(): string
     {
-        $r = '';
-        $withException = '';
+        $exception = '';
         /** @var BenchmarkFunction $function */
         $function = $this->function;
-        $br = $function->getBenchmarkRelative();
-        $types = $this->extractArguments($function->getArgs());
-        if ($br) {
-            $relative = $br->getRelative();
-            $average = $br->getAverage();
-            $rank = $br->getRank();
-            $r .=
-                sprintf(
-                    '%s. %s (%s) %s(%s) %s %s',
-                    (string)$rank,
-                    $this->average($average),
-                    $this->relativePercent($relative),
-                    $function->humanReadableName(),
-                    implode(', ', $types),
-                    $function->comment(),
-                    PHP_EOL
-                );
-            $result = $function->getResult();
-            $r .=
-                sprintf(
-                    '%s(%s) %s',
-                    typeOf($result),
-                    var_export($result, true),
-                    PHP_EOL
-                );
-        } elseif ($e = $function->getException()) {
-            $withException .= sprintf(
-                '%s(%s) %s %s %s',
-                $function->humanReadableName(),
-                implode(', ', $types),
-                $function->comment(),
-                $e->getMessage(),
+        $str = $this->formatBenchmarkRelative();
+        $exception = $this->formatException();
+
+//        else {
+//            // @codeCoverageIgnoreStart
+//            throw new \RuntimeException('BenchmarkFunction has no BenchmarkRelative' .
+//                ' nor Exception object. Was it executed?');
+//            // @codeCoverageIgnoreEnd
+//        }
+        return
+            $str . (empty($exception) ? PHP_EOL : 'Exceptions:' . PHP_EOL . $exception);
+    }
+
+    /**
+     * @return string
+     */
+    protected function formatBenchmarkRelative(): string
+    {
+        if ($br = $this->function->getBenchmarkRelative()) {
+            $argumentsTypes = $this->extractArgumentsTypes($this->function->getArgs());
+            $executionReturn = $this->function->getReturn();
+
+            return sprintf(
+                '%s. %s (%s) %s(%s) %s %s %s(%s) %s',
+                (string)$br->getRank(),
+                $this->average($br->getAverage()),
+                $this->relativePercent($br->getRelative()),
+                $this->function->humanReadableName(),
+                implode(', ', $argumentsTypes),
+                $this->function->comment(),
+                PHP_EOL,
+                typeOf($executionReturn),
+                var_export($executionReturn, true),
                 PHP_EOL
             );
-        } else {
-            // @codeCoverageIgnoreStart
-            throw new \RuntimeException('BenchmarkFunction has no BenchmarkRelative' .
-                ' nor Exception object. Was it executed?');
-            // @codeCoverageIgnoreEnd
         }
-        return
-            $r . (empty($withException) ? PHP_EOL : 'Exceptions:' . PHP_EOL . $withException);
+        return '';
     }
 
     /**
      * @param array $arguments
      * @return array
      */
-    protected function extractArguments(array $arguments): array
+    protected function extractArgumentsTypes(array $arguments): array
     {
         $types = [];
         if (!empty($arguments)) {
@@ -113,5 +107,27 @@ class BenchmarkFunctionFormatter implements Formatter
             ' ',
             STR_PAD_LEFT
         );
+    }
+
+    /**
+     * @return string
+     */
+    protected function formatException(): string
+    {
+
+        if ($e = $this->function->getException()) {
+            $argumentsTypes = $this->extractArgumentsTypes($this->function->getArgs());
+
+            return sprintf(
+                '%s(%s) %s [%s] %s',
+                $this->function->humanReadableName(),
+                implode(', ', $argumentsTypes),
+                $this->function->comment(),
+                $e->getMessage(),
+                PHP_EOL
+            );
+        }
+
+        return '';
     }
 }

@@ -16,6 +16,18 @@ $benchmark = new BenchmarkSymfonyPB(ITERATIONS);
 $benchmark->getProgressBar()->setFormat('[%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%');
 
 $benchmark
+    ->withComment('slow function')
+    ->addFunction(
+        function ($n) {
+            for ($i = 20; $i > 0; $i--) {
+                $n++;
+            }
+            return $n;
+        },
+        1
+    );
+
+$benchmark
     ->useName('fast')
     ->withComment('first fast function')
     ->addFunction(
@@ -24,16 +36,6 @@ $benchmark
         },
         'a'
     );
-$benchmark
-    ->useName('fast')
-    ->withComment('second fast function')
-    ->addFunction(
-        function ($a) {
-            return $a;
-        },
-        'a'
-    );
-
 $counter = 0;
 /*
  * Automatically processes exceptions
@@ -49,21 +51,22 @@ $benchmark
         }
     );
 
+
 $benchmark
-    ->withComment('slow function')
+    ->useName('fast')
+    ->withComment('second fast function')
     ->addFunction(
-        function ($n) {
-            for ($i = 10; $i > 0; $i--) {
-                $n++;
-            }
-            return $n;
+        function ($a) {
+            return $a;
         },
-        1
+        'b'
     );
+
+
 $benchmark->run();
 $report = $benchmark->getReport();
 echo $report . PHP_EOL;
-echo 'Called one time: ' . ($counter === 1 ? 'YES' : 'NO') . PHP_EOL;
+echo 'it_throws() called one time: ' . ($counter === 1 ? 'YES' : 'NO') . PHP_EOL;
 
 // Benchmark:
 //1.   4.9μs (  0.00%) ⟨1⟩ λ(string) fast function

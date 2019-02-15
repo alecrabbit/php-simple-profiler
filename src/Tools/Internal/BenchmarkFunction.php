@@ -123,7 +123,7 @@ class BenchmarkFunction
     /**
      * @return mixed
      */
-    public function getResult()
+    public function getReturn()
     {
         return $this->result;
     }
