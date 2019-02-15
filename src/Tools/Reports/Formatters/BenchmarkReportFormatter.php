@@ -32,10 +32,17 @@ class BenchmarkReportFormatter extends ReportFormatter
             );
     }
 
+    /**
+     * @return string
+     */
     private function countersStatistics(): string
     {
-        $added = $this->report->getProfiler()->counter(static::ADDED)->getValue();
-        $benchmarked = $this->report->getProfiler()->counter(static::BENCHMARKED)->getValue();
+        $added =
+            $this->report->getProfiler()
+                ->counter(static::ADDED)->getValue();
+        $benchmarked =
+            $this->report->getProfiler()
+                ->counter(static::BENCHMARKED)->getValue();
         if ($added === $benchmarked) {
             return '';
         }
@@ -52,7 +59,12 @@ class BenchmarkReportFormatter extends ReportFormatter
             );
     }
 
-    private function countedExceptions($added, $benchmarked): string
+    /**
+     * @param int $added
+     * @param int $benchmarked
+     * @return string
+     */
+    private function countedExceptions(int $added, int $benchmarked): string
     {
         if (0 !== $exceptions = $added - $benchmarked) {
             return
@@ -62,6 +74,8 @@ class BenchmarkReportFormatter extends ReportFormatter
                     $exceptions
                 );
         }
+        // @codeCoverageIgnoreStart
         return '';
+        // @codeCoverageIgnoreEnd
     }
 }

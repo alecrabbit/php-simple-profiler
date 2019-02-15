@@ -37,4 +37,6 @@ interface StringConstants
     public const BACKWARD = '-';
 
     public const RESULT = 'result';
+    public const MEMORY = 'Memory';
+    public const REAL = 'Real';
 }
