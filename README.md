@@ -59,27 +59,50 @@ echo $benchmark->elapsed() . PHP_EOL;
 
 ### Benchmark classes
  
-There are moments when you have to choose between two or more different approaches. Benchmark classes is to help you choose which is faster :) 
+There are moments when you have to choose between two or more different approaches. Benchmark classes is to help you choose which is faster :)
+ * Benchmark (no default progress bar, silent measurements)
+ * BenchmarkSymfonyPB (with Symfony progress bar)
+ ```
+[=====>------------------------------------------------------]   9% 1 secs/12 sec
+```
+ * BenchmarkSimplePB (with star progress bar)
+  ```
+ ******************************
+ ```
+##### Example
+Let's say you want to know which is faster `call_user_func($func)` or `$func()`. First you need to create an instance of Benchmark class
+```php
+$b = new BenchmarkSymfonyPB(900000) // with Symfony Progress bar, 900000 measurments
+``` 
+###### Note: Xdebug extension slowing things down a lot! Disable it (I'm using two different images [w/o Xdebug](https://github.com/alecrabbit/php-simple-profiler/tree/master/docker-compose.yml) and [with Xdebug](https://github.com/alecrabbit/php-simple-profiler/tree/master/docker-compose-debug.yml))
 
- * Benchmark
- * BenchmarkSymfonyPB (with progress bar)
- * BenchmarkSimplePB (with progress bar)
- 
----
-old docs
-> ### Profiler
-> If you need to count and/or time some repeating operations Profiler class will help you.
-> ```php
-> $profiler = new Profiler();
-> // in loop 
->     $profiler->counter()->bump();
->     $profiler->timer()->check();
-> 
-> $report = $profiler->getReport();
-> ```
-> 
-> ### Counter
-> 
-> ### Timer
-> 
-> 
+Then you have to add functions to test. But first let's add a closure:
+```php
+$func = function (array $a) {
+    return array_sum($a);
+};
+```
+Now we are ready to add functions:
+```php
+$a = [1, 2, 3];
+
+$b->addFunction('call_user_func', $func, $a);
+
+$b->addFunction($func, $a);
+```
+
+### Profiler::class
+Profiler is a kinda wrapper for Counter and Timer in case if you need them both.
+```php
+$profiler = new Profiler();
+// in loop 
+    $profiler->counter()->bump();
+    $profiler->timer()->check();
+
+$report = $profiler->getReport();
+```
+### Counter::class
+// todo 
+
+### Timer::class
+// todo 

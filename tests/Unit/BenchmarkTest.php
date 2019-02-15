@@ -190,7 +190,6 @@ class BenchmarkTest extends TestCase
         $this->assertContains('Done in', $bench->stat());
         $this->assertContains('Memory', $bench->stat());
         $this->assertContains('Real', $bench->stat());
-
     }
 
     /** @test */

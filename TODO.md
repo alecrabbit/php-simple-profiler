@@ -1,5 +1,7 @@
+- [ ] improve ProfileReportFormatter
+- [ ] improve BenchmarkReportFormatter
 
-- [ ] add memory usage to Benchmark class
+- [x] add memory usage to Benchmark class (0.3.3)
 - [ ] separate Counter in two classes - SimpleCounter and ExtendedCounter
 
 - [x] improve Benchmark tests (0.3.2)

@@ -17,10 +17,6 @@ $output = new ConsoleOutput();
 
 $progressBar = new ProgressBar($output, 100);
 $progressBar->setBarWidth(80);
-/*
- * There are moments when you have to choose between two or more different approaches
- * Benchmark class is to help you choose which is faster :)
-*/
 
 $benchmark = new Benchmark(ITERATIONS);
 
