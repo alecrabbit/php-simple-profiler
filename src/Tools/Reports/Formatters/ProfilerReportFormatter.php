@@ -17,17 +17,37 @@ class ProfilerReportFormatter extends ReportFormatter
     {
         $r = '';
         $elapsed = '';
-        foreach ($this->report->getReports() as $reports) {
-            foreach ($reports as $report) {
-                if ($report instanceof TimerReport && DEFAULT_NAME === $report->getName()) {
-                    $elapsed .= $report;
-                } elseif ($report instanceof CounterReport && DEFAULT_NAME === $report->getName()) {
-                    $r .= $report->isStarted() ? $report : '';
-                } else {
-                    $r .= $report;
-                }
+        foreach ($this->report->getCountersReports() as $report) {
+            if ($report instanceof CounterReport && DEFAULT_NAME === $report->getName()) {
+                $r .= $report->isStarted() ? $report : '';
+            } else {
+                $r .= $report;
+            }
+        }
+        foreach ($this->report->getTimersReports() as $report) {
+            if ($report instanceof TimerReport && DEFAULT_NAME === $report->getName()) {
+                $elapsed .= $report;
+            } else {
+                $r .= $report;
             }
         }
         return $r . $elapsed;
     }
+//    public function getString(): string
+//    {
+//        $r = '';
+//        $elapsed = '';
+//        foreach ($this->report->getReports() as $reports) {
+//            foreach ($reports as $report) {
+//                if ($report instanceof TimerReport && DEFAULT_NAME === $report->getName()) {
+//                    $elapsed .= $report;
+//                } elseif ($report instanceof CounterReport && DEFAULT_NAME === $report->getName()) {
+//                    $r .= $report->isStarted() ? $report : '';
+//                } else {
+//                    $r .= $report;
+//                }
+//            }
+//        }
+//        return $r . $elapsed;
+//    }
 }
