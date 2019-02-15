@@ -1,8 +1,8 @@
 - [ ] implement acceptance of custom formatters as parameters
 
 - [ ] improve ProfileReportFormatter
-- [ ] create BenchmarkFunctionReportFormatter
 - [ ] improve BenchmarkReportFormatter
+- [x] add BenchmarkFunctionFormatter (0.4.1)
 
 - [x] add memory usage to Benchmark class (0.3.3)
 - [ ] separate Counter in two classes - SimpleCounter and ExtendedCounter

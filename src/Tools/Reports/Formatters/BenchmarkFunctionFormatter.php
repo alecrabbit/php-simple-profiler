@@ -24,20 +24,11 @@ class BenchmarkFunctionFormatter implements Formatter
      */
     public function getString(): string
     {
-        $exception = '';
-        /** @var BenchmarkFunction $function */
-        $function = $this->function;
-        $str = $this->formatBenchmarkRelative();
-        $exception = $this->formatException();
-
-//        else {
-//            // @codeCoverageIgnoreStart
-//            throw new \RuntimeException('BenchmarkFunction has no BenchmarkRelative' .
-//                ' nor Exception object. Was it executed?');
-//            // @codeCoverageIgnoreEnd
-//        }
         return
-            $str . (empty($exception) ? PHP_EOL : 'Exceptions:' . PHP_EOL . $exception);
+            $this->formatBenchmarkRelative() .
+            (empty($exception = $this->formatException()) ?
+                PHP_EOL :
+                'Exceptions:' . PHP_EOL . $exception);
     }
 
     /**
@@ -45,23 +36,25 @@ class BenchmarkFunctionFormatter implements Formatter
      */
     protected function formatBenchmarkRelative(): string
     {
-        if ($br = $this->function->getBenchmarkRelative()) {
-            $argumentsTypes = $this->extractArgumentsTypes($this->function->getArgs());
-            $executionReturn = $this->function->getReturn();
+        $function = $this->function;
+        if ($br = $function->getBenchmarkRelative()) {
+            $argumentsTypes = $this->extractArgumentsTypes($function->getArgs());
+            $executionReturn = $function->getReturn();
 
-            return sprintf(
-                '%s. %s (%s) %s(%s) %s %s %s(%s) %s',
-                (string)$br->getRank(),
-                $this->average($br->getAverage()),
-                $this->relativePercent($br->getRelative()),
-                $this->function->humanReadableName(),
-                implode(', ', $argumentsTypes),
-                $this->function->comment(),
-                PHP_EOL,
-                typeOf($executionReturn),
-                var_export($executionReturn, true),
-                PHP_EOL
-            );
+            return
+                sprintf(
+                    '%s. %s (%s) %s(%s) %s %s %s(%s) %s',
+                    (string)$br->getRank(),
+                    $this->average($br->getAverage()),
+                    $this->relativePercent($br->getRelative()),
+                    $function->humanReadableName(),
+                    implode(', ', $argumentsTypes),
+                    $function->comment(),
+                    PHP_EOL,
+                    typeOf($executionReturn),
+                    var_export($executionReturn, true),
+                    PHP_EOL
+                );
         }
         return '';
     }
@@ -118,14 +111,15 @@ class BenchmarkFunctionFormatter implements Formatter
         if ($e = $this->function->getException()) {
             $argumentsTypes = $this->extractArgumentsTypes($this->function->getArgs());
 
-            return sprintf(
-                '%s(%s) %s [%s] %s',
-                $this->function->humanReadableName(),
-                implode(', ', $argumentsTypes),
-                $this->function->comment(),
-                $e->getMessage(),
-                PHP_EOL
-            );
+            return
+                sprintf(
+                    '%s(%s) %s [%s] %s',
+                    $this->function->humanReadableName(),
+                    implode(', ', $argumentsTypes),
+                    $this->function->comment(),
+                    $e->getMessage(),
+                    PHP_EOL
+                );
         }
 
         return '';
