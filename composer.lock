@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "50e533d10aa28d6fccbab30e28674ba1",
+    "content-hash": "3e535153e0aceb00b12c728f12e5a061",
     "packages": [
         {
             "name": "alecrabbit/php-accessories",
@@ -102,16 +102,16 @@
         },
         {
             "name": "alecrabbit/php-traits",
-            "version": "0.0.2",
+            "version": "0.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-traits.git",
-                "reference": "c6dae7dfcce8a9208fb1658620440ef0fe0de39f"
+                "reference": "231a5839944ae46acea2c878c14882e374defa0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-traits/zipball/c6dae7dfcce8a9208fb1658620440ef0fe0de39f",
-                "reference": "c6dae7dfcce8a9208fb1658620440ef0fe0de39f",
+                "url": "https://api.github.com/repos/alecrabbit/php-traits/zipball/231a5839944ae46acea2c878c14882e374defa0b",
+                "reference": "231a5839944ae46acea2c878c14882e374defa0b",
                 "shasum": ""
             },
             "require": {
@@ -137,7 +137,7 @@
                 "MIT"
             ],
             "description": "PHP accessories Classes etc.",
-            "time": "2019-01-09T23:15:58+00:00"
+            "time": "2019-02-17T08:17:17+00:00"
         },
         {
             "name": "krowinski/bcmath-extended",
@@ -1398,16 +1398,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.5.4",
+            "version": "7.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "2896657da5fb237bc316bdfc18c2650efeee0dc0"
+                "reference": "23a200a60552cb9ba483a8d1e106c70fb0be0bb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/2896657da5fb237bc316bdfc18c2650efeee0dc0",
-                "reference": "2896657da5fb237bc316bdfc18c2650efeee0dc0",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/23a200a60552cb9ba483a8d1e106c70fb0be0bb9",
+                "reference": "23a200a60552cb9ba483a8d1e106c70fb0be0bb9",
                 "shasum": ""
             },
             "require": {
@@ -1478,7 +1478,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-02-07T14:15:04+00:00"
+            "time": "2019-02-15T14:00:34+00:00"
         },
         {
             "name": "psr/log",
