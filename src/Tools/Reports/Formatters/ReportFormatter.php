@@ -8,11 +8,11 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
-use AlecRabbit\Tools\Contracts\StringsInterface;
+use AlecRabbit\Tools\Contracts\StringConstants;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\Formatter;
 
-abstract class ReportFormatter implements Formatter, StringsInterface
+abstract class ReportFormatter implements Formatter, StringConstants
 {
     /** @var ReportInterface */
     protected $report;

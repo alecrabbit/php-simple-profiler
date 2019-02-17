@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Accessories\Pretty;
+use AlecRabbit\Tools\Contracts\StringConstants;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\Formatter;
 use function AlecRabbit\typeOf;
 
-class BenchmarkFunctionFormatter implements Formatter
+class BenchmarkFunctionFormatter implements Formatter, StringConstants
 {
     /** @var BenchmarkFunction */
     protected $function;
@@ -28,7 +29,7 @@ class BenchmarkFunctionFormatter implements Formatter
             $this->formatBenchmarkRelative() .
             (empty($exception = $this->formatException()) ?
                 PHP_EOL :
-                'Exceptions:' . PHP_EOL . $exception);
+                static::EXCEPTIONS . PHP_EOL . $exception);
     }
 
     /**

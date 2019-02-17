@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use AlecRabbit\Tools\Contracts\StringsInterface;
+use AlecRabbit\Tools\Contracts\StringConstants;
 use AlecRabbit\Tools\Reports\TimerReport;
 use AlecRabbit\Tools\Timer;
 use PHPUnit\Framework\TestCase;
@@ -36,13 +36,13 @@ class TimerReportTest extends TestCase
         $this->assertEquals(false, $report->isNotStopped());
         $str = (string)$report;
         $this->assertIsString($str);
-        $this->assertContains(StringsInterface::ELAPSED, $str);
-        $this->assertNotContains(StringsInterface::TIMER, $str);
-        $this->assertNotContains(StringsInterface::AVERAGE, $str);
-        $this->assertNotContains(StringsInterface::LAST, $str);
-        $this->assertNotContains(StringsInterface::MIN, $str);
-        $this->assertNotContains(StringsInterface::MAX, $str);
-        $this->assertNotContains(StringsInterface::COUNT, $str);
+        $this->assertContains(StringConstants::ELAPSED, $str);
+        $this->assertNotContains(StringConstants::TIMER, $str);
+        $this->assertNotContains(StringConstants::AVERAGE, $str);
+        $this->assertNotContains(StringConstants::LAST, $str);
+        $this->assertNotContains(StringConstants::MIN, $str);
+        $this->assertNotContains(StringConstants::MAX, $str);
+        $this->assertNotContains(StringConstants::COUNT, $str);
     }
 
 
@@ -55,13 +55,13 @@ class TimerReportTest extends TestCase
         $report = $t->getReport();
         $str = (string)$report;
         $this->assertIsString($str);
-        $this->assertContains(StringsInterface::ELAPSED, $str);
-        $this->assertContains(StringsInterface::TIMER, $str);
-        $this->assertContains(StringsInterface::AVERAGE, $str);
-        $this->assertContains(StringsInterface::LAST, $str);
-        $this->assertContains(StringsInterface::MIN, $str);
-        $this->assertContains(StringsInterface::MAX, $str);
-        $this->assertContains(StringsInterface::COUNT, $str);
+        $this->assertContains(StringConstants::ELAPSED, $str);
+        $this->assertContains(StringConstants::TIMER, $str);
+        $this->assertContains(StringConstants::AVERAGE, $str);
+        $this->assertContains(StringConstants::LAST, $str);
+        $this->assertContains(StringConstants::MIN, $str);
+        $this->assertContains(StringConstants::MAX, $str);
+        $this->assertContains(StringConstants::COUNT, $str);
         $this->assertEquals('2.0ms', $t->elapsed());
         $this->assertStringMatchesFormat(
             '%fms',
@@ -77,13 +77,13 @@ class TimerReportTest extends TestCase
         $report = $t->getReport();
         $str = (string)$report;
         $this->assertIsString($str);
-        $this->assertContains(StringsInterface::ELAPSED, $str);
-        $this->assertContains(StringsInterface::TIMER, $str);
-        $this->assertContains(StringsInterface::AVERAGE, $str);
-        $this->assertContains(StringsInterface::LAST, $str);
-        $this->assertContains(StringsInterface::MIN, $str);
-        $this->assertContains(StringsInterface::MAX, $str);
-        $this->assertContains(StringsInterface::COUNT, $str);
+        $this->assertContains(StringConstants::ELAPSED, $str);
+        $this->assertContains(StringConstants::TIMER, $str);
+        $this->assertContains(StringConstants::AVERAGE, $str);
+        $this->assertContains(StringConstants::LAST, $str);
+        $this->assertContains(StringConstants::MIN, $str);
+        $this->assertContains(StringConstants::MAX, $str);
+        $this->assertContains(StringConstants::COUNT, $str);
         $this->assertEquals('2.0ms', $t->elapsed());
         $this->assertStringMatchesFormat(
             '%fms',

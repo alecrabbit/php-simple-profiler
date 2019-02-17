@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use AlecRabbit\Tools\Contracts\StringsInterface;
+use AlecRabbit\Tools\Contracts\StringConstants;
 use AlecRabbit\Tools\Counter;
 use AlecRabbit\Tools\Reports\CounterReport;
 use PHPUnit\Framework\TestCase;
@@ -23,17 +23,17 @@ class CounterReportTest extends TestCase
         $this->assertInstanceOf(CounterReport::class, $report);
         $str = (string)$report;
         $this->assertNotContains(DEFAULT_NAME, $str);
-        $this->assertContains(StringsInterface::COUNTER, $str);
-        $this->assertNotContains(StringsInterface::VALUE, $str);
-        $this->assertNotContains(StringsInterface::STEP, $str);
-        $this->assertNotContains(StringsInterface::DIFF, $str);
-        $this->assertNotContains(StringsInterface::PATH, $str);
-        $this->assertNotContains(StringsInterface::LENGTH, $str);
-        $this->assertNotContains(StringsInterface::MIN, $str);
-        $this->assertNotContains(StringsInterface::MAX, $str);
-        $this->assertNotContains(StringsInterface::BUMPED, $str);
-        $this->assertNotContains(StringsInterface::FORWARD, $str);
-        $this->assertNotContains(StringsInterface::BACKWARD, $str);
+        $this->assertContains(StringConstants::COUNTER, $str);
+        $this->assertNotContains(StringConstants::VALUE, $str);
+        $this->assertNotContains(StringConstants::STEP, $str);
+        $this->assertNotContains(StringConstants::DIFF, $str);
+        $this->assertNotContains(StringConstants::PATH, $str);
+        $this->assertNotContains(StringConstants::LENGTH, $str);
+        $this->assertNotContains(StringConstants::MIN, $str);
+        $this->assertNotContains(StringConstants::MAX, $str);
+        $this->assertNotContains(StringConstants::BUMPED, $str);
+        $this->assertNotContains(StringConstants::FORWARD, $str);
+        $this->assertNotContains(StringConstants::BACKWARD, $str);
 
 
         $this->assertEquals(DEFAULT_NAME, $report->getName());
@@ -51,9 +51,9 @@ class CounterReportTest extends TestCase
         $this->assertInstanceOf(CounterReport::class, $report);
         $str = (string)$report;
         $this->assertContains(self::NAME, $str);
-        $this->assertContains(StringsInterface::COUNTER, $str);
-        $this->assertContains(StringsInterface::VALUE, $str);
-        $this->assertContains(StringsInterface::STEP, $str);
+        $this->assertContains(StringConstants::COUNTER, $str);
+        $this->assertContains(StringConstants::VALUE, $str);
+        $this->assertContains(StringConstants::STEP, $str);
         $this->assertEquals(self::NAME, $report->getName());
         $this->assertEquals(0, $report->getValue());
         $this->assertEquals(1, $report->getStep());
@@ -78,15 +78,15 @@ class CounterReportTest extends TestCase
 
         $str = (string)$report;
         $this->assertNotContains(DEFAULT_NAME, $str);
-        $this->assertContains(StringsInterface::COUNTER, $str);
-        $this->assertNotContains(StringsInterface::VALUE, $str);
-        $this->assertNotContains(StringsInterface::STEP, $str);
-        $this->assertNotContains(StringsInterface::DIFF, $str);
-        $this->assertNotContains(StringsInterface::PATH, $str);
-        $this->assertNotContains(StringsInterface::LENGTH, $str);
-        $this->assertNotContains(StringsInterface::BUMPED, $str);
-        $this->assertNotContains(StringsInterface::FORWARD, $str);
-        $this->assertNotContains(StringsInterface::BACKWARD, $str);
+        $this->assertContains(StringConstants::COUNTER, $str);
+        $this->assertNotContains(StringConstants::VALUE, $str);
+        $this->assertNotContains(StringConstants::STEP, $str);
+        $this->assertNotContains(StringConstants::DIFF, $str);
+        $this->assertNotContains(StringConstants::PATH, $str);
+        $this->assertNotContains(StringConstants::LENGTH, $str);
+        $this->assertNotContains(StringConstants::BUMPED, $str);
+        $this->assertNotContains(StringConstants::FORWARD, $str);
+        $this->assertNotContains(StringConstants::BACKWARD, $str);
 
 
         $this->assertEquals(DEFAULT_NAME, $report->getName());
@@ -113,17 +113,17 @@ class CounterReportTest extends TestCase
 
         $str = (string)$report;
         $this->assertContains(self::NAME, $str);
-        $this->assertContains(StringsInterface::COUNTER, $str);
-        $this->assertContains(StringsInterface::VALUE, $str);
-        $this->assertContains(StringsInterface::STEP, $str);
-        $this->assertContains(StringsInterface::DIFF, $str);
-        $this->assertContains(StringsInterface::PATH, $str);
-        $this->assertContains(StringsInterface::LENGTH, $str);
-        $this->assertContains(StringsInterface::MAX, $str);
-        $this->assertContains(StringsInterface::MIN, $str);
-        $this->assertContains(StringsInterface::BUMPED, $str);
-        $this->assertContains(StringsInterface::FORWARD, $str);
-        $this->assertContains(StringsInterface::BACKWARD, $str);
+        $this->assertContains(StringConstants::COUNTER, $str);
+        $this->assertContains(StringConstants::VALUE, $str);
+        $this->assertContains(StringConstants::STEP, $str);
+        $this->assertContains(StringConstants::DIFF, $str);
+        $this->assertContains(StringConstants::PATH, $str);
+        $this->assertContains(StringConstants::LENGTH, $str);
+        $this->assertContains(StringConstants::MAX, $str);
+        $this->assertContains(StringConstants::MIN, $str);
+        $this->assertContains(StringConstants::BUMPED, $str);
+        $this->assertContains(StringConstants::FORWARD, $str);
+        $this->assertContains(StringConstants::BACKWARD, $str);
 
         $this->assertEquals(self::NAME, $report->getName());
         $this->assertEquals(11, $report->getValue());
