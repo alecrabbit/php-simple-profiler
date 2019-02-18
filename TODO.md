@@ -1,3 +1,4 @@
+- [ ] throw an exception when Benchmark::getReport() called before run()
 - [ ] custom formatters as parameters
 
 - [x] improve ProfileReportFormatter (0.4.1)
