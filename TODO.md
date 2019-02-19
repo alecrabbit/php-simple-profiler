@@ -1,3 +1,4 @@
+- [ ] consider adding stopwatch() function
 - [ ] throw an exception when Benchmark::getReport() called before run()
 - [ ] custom formatters as parameters
 

@@ -27,9 +27,8 @@ header "Tests and coverage script"
 if [[ ${EXEC} == 0 ]]
 then
     echo "No-Exec selected."
-else
-    options_enabled
 fi
+options_enabled
 
 if [[ ${RESTART_CONTAINER} == 1 ]]
 then
