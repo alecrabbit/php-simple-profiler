@@ -137,5 +137,4 @@ class TimerReportTest extends TestCase
         $this->assertEquals(6, $report->getCount());
         $this->assertEqualsWithDelta(0.034, $report->getElapsed(), 0.0001);
     }
-
 }

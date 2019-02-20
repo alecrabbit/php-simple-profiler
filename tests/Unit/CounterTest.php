@@ -368,5 +368,4 @@ class CounterTest extends TestCase
             [-10],
         ];
     }
-
 }

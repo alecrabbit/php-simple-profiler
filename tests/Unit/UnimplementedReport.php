@@ -10,5 +10,4 @@ class UnimplementedReport implements ReportInterface
     {
         return '';
     }
-
 }

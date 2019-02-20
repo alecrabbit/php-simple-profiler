@@ -64,6 +64,4 @@ class ProfilerTest extends TestCase
                 ->getName()
         );
     }
-
-
 }
