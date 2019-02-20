@@ -1,6 +1,6 @@
 # PHP Simple profiler
 
-[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.2-8FA0BF.svg)](https://php.net/)
+[![PHP Version](https://img.shields.io/packagist/php-v/alecrabbit/php-simple-profiler.svg)](https://php.net/)
 [![Build Status](https://travis-ci.com/alecrabbit/php-simple-profiler.svg?branch=master)](https://travis-ci.com/alecrabbit/php-simple-profiler)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alecrabbit/php-simple-profiler/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/alecrabbit/php-simple-profiler/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/alecrabbit/php-simple-profiler/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/alecrabbit/php-simple-profiler/?branch=master)
@@ -14,7 +14,7 @@
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Percentage of issues still open")
 
-VERSION 0.4.0
+VERSION ^0.4
 
 ### Installation
 For now this package is suggested to be used in dev process for debugging of simple scripts
@@ -88,7 +88,7 @@ $b->run();
 Getting results
 ```php
 $report = $b->getReport(); // you can get report object and use data from it 
-echo $report . PHP_EOL; // or you can print by default formatter
+echo $report . PHP_EOL; // or you can print it by default formatter
 echo $b->stat() . PHP_EOL;
 ```
 Results will be something like that
