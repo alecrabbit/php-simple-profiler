@@ -88,7 +88,7 @@ $b->run();
 Getting results
 ```php
 $report = $b->getReport(); // you can get report object and use data from it 
-echo $report . PHP_EOL; // or you can print by default formatter
+echo $report . PHP_EOL; // or you can print it by default formatter
 echo $b->stat() . PHP_EOL;
 ```
 Results will be something like that
