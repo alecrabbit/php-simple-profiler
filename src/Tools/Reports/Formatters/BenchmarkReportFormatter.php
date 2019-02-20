@@ -11,6 +11,8 @@ class BenchmarkReportFormatter extends ReportFormatter
 {
     /** @var BenchmarkReport */
     protected $report;
+    /** @var mixed */
+    protected $lastReturn;
 
     /**
      * {@inheritdoc}
@@ -18,19 +20,78 @@ class BenchmarkReportFormatter extends ReportFormatter
     public function getString(): string
     {
         $str = self::BENCHMARK . PHP_EOL;
+        $equalReturns = $this->checkReturns();
         /** @var BenchmarkFunction $function */
         foreach ($this->report->getFunctions() as $name => $function) {
-            $str .= (new BenchmarkFunctionFormatter($function))->getString();
+            $str .=
+                (new BenchmarkFunctionFormatter($function))
+                    ->noResultsIf($equalReturns)
+                    ->getString();
         }
         return
             sprintf(
-                '%s%s%s%s',
+                '%s%s%s%s%s',
                 $str,
+                $this->allReturnsAreEqual($equalReturns),
                 $this->countersStatistics(),
                 $this->report->getMemoryUsageReport(),
                 PHP_EOL
             );
     }
+
+    /**
+     * @return bool
+     */
+    protected function checkReturns(): bool
+    {
+        return
+            $this->isHomogeneous($this->extractReturns());
+    }
+
+    /**
+     * @param array $arr
+     * @return bool
+     */
+    private function isHomogeneous(array $arr): bool
+    {
+        $firstValue = current($arr);
+        foreach ($arr as $val) {
+            if ($firstValue !== $val) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @return array
+     */
+    protected function extractReturns(): array
+    {
+        $returns = [];
+        /** @var BenchmarkFunction $function */
+        foreach ($this->report->getFunctions() as $name => $function) {
+            $returns[] = $this->lastReturn = $function->getReturn();
+        }
+        return $returns;
+    }
+
+    private function allReturnsAreEqual(bool $equalReturns): string
+    {
+        if (!$equalReturns) {
+            return '';
+        }
+        return
+            sprintf(
+                '%s %s%s %s',
+                'All returns are equal:',
+                PHP_EOL,
+                BenchmarkFunctionFormatter::returnToString($this->lastReturn),
+                PHP_EOL
+            );
+    }
+
+    // TODO move to php-helpers
 
     /**
      * @return string

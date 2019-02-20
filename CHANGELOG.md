@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - method progressBar() to showProgressBy()
+- BenchmarkReportFormatter: if results of all tested functions are equal result is printed only once
 
 ### Added
 - BenchmarkSymfonyPB::DEFAULT_PROGRESSBAR_FORMAT constant

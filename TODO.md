@@ -1,4 +1,4 @@
-- [ ] show 'All returns are equal: _result_' instead of actual results
+- [x] show 'All returns are equal: _result_' instead of actual results (0.5.0)
 - [x] change method progressBar() to showProgressBy() (0.5.0)
 - [ ] consider adding stopwatch() function
 - [ ] throw an exception when Benchmark::getReport() called before run()

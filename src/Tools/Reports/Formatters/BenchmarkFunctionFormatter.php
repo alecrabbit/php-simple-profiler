@@ -15,9 +15,22 @@ class BenchmarkFunctionFormatter implements Formatter, StringConstants
     /** @var BenchmarkFunction */
     protected $function;
 
+    /** @var bool */
+    protected $withResults = true;
+
     public function __construct(BenchmarkFunction $function)
     {
         $this->function = $function;
+    }
+
+    /**
+     * @param bool $equalReturns
+     * @return BenchmarkFunctionFormatter
+     */
+    public function noResultsIf(bool $equalReturns = false): BenchmarkFunctionFormatter
+    {
+        $this->withResults = !$equalReturns;
+        return $this;
     }
 
     /**
@@ -42,19 +55,30 @@ class BenchmarkFunctionFormatter implements Formatter, StringConstants
             $argumentsTypes = $this->extractArgumentsTypes($function->getArgs());
             $executionReturn = $function->getReturn();
 
+            if ($this->withResults) {
+                return
+                    sprintf(
+                        '%s. %s (%s) %s(%s) %s %s %s %s',
+                        (string)$br->getRank(),
+                        $this->average($br->getAverage()),
+                        $this->relativePercent($br->getRelative()),
+                        $function->humanReadableName(),
+                        implode(', ', $argumentsTypes),
+                        $function->comment(),
+                        PHP_EOL,
+                        static::returnToString($executionReturn),
+                        PHP_EOL
+                    );
+            }
             return
                 sprintf(
-                    '%s. %s (%s) %s(%s) %s %s %s(%s) %s',
+                    '%s. %s (%s) %s(%s) %s',
                     (string)$br->getRank(),
                     $this->average($br->getAverage()),
                     $this->relativePercent($br->getRelative()),
                     $function->humanReadableName(),
                     implode(', ', $argumentsTypes),
-                    $function->comment(),
-                    PHP_EOL,
-                    typeOf($executionReturn),
-                    var_export($executionReturn, true),
-                    PHP_EOL
+                    $function->comment()
                 );
         }
         return '';
@@ -101,6 +125,24 @@ class BenchmarkFunctionFormatter implements Formatter, StringConstants
             ' ',
             STR_PAD_LEFT
         );
+    }
+
+    /**
+     * @param mixed $executionReturn
+     * @return string
+     */
+    public static function returnToString($executionReturn): string
+    {
+        $type = typeOf($executionReturn);
+        $str = var_export($executionReturn, true);
+        return
+            $type === 'array' ?
+                $str :
+                sprintf(
+                    '%s(%s)',
+                    $type,
+                    $str
+                );
     }
 
     /**

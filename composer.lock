@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3e535153e0aceb00b12c728f12e5a061",
+    "content-hash": "6e951748dafb62b449621621b9b13b22",
     "packages": [
         {
             "name": "alecrabbit/php-accessories",
@@ -57,16 +57,16 @@
         },
         {
             "name": "alecrabbit/php-helpers",
-            "version": "0.3.0-RC1",
+            "version": "0.3.0-RC2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-helpers.git",
-                "reference": "8602e913d90467c51c74b2c0413e4341332eb674"
+                "reference": "a14d89cdeed17d457fd5e3d9cb7facd18e906053"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/8602e913d90467c51c74b2c0413e4341332eb674",
-                "reference": "8602e913d90467c51c74b2c0413e4341332eb674",
+                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/a14d89cdeed17d457fd5e3d9cb7facd18e906053",
+                "reference": "a14d89cdeed17d457fd5e3d9cb7facd18e906053",
                 "shasum": ""
             },
             "require": {
@@ -98,7 +98,7 @@
                 "MIT"
             ],
             "description": "PHP helpers functions",
-            "time": "2019-02-11T22:07:03+00:00"
+            "time": "2019-02-19T14:39:26+00:00"
         },
         {
             "name": "alecrabbit/php-traits",
@@ -198,16 +198,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.11.0",
+            "version": "2.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "48d211435ecb3671a2237614dc19fc2be185acb6"
+                "reference": "35dc8834ae9ad79b77c22d1e276fd838ca8c503d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/48d211435ecb3671a2237614dc19fc2be185acb6",
-                "reference": "48d211435ecb3671a2237614dc19fc2be185acb6",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/35dc8834ae9ad79b77c22d1e276fd838ca8c503d",
+                "reference": "35dc8834ae9ad79b77c22d1e276fd838ca8c503d",
                 "shasum": ""
             },
             "require": {
@@ -253,7 +253,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2019-01-29T16:35:35+00:00"
+            "time": "2019-02-06T21:23:55+00:00"
         },
         {
             "name": "symfony/contracts",
@@ -1300,16 +1300,16 @@
         },
         {
             "name": "phpunit/php-timer",
-            "version": "2.0.0",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-timer.git",
-                "reference": "8b8454ea6958c3dee38453d3bd571e023108c91f"
+                "reference": "8b389aebe1b8b0578430bda0c7c95a829608e059"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-timer/zipball/8b8454ea6958c3dee38453d3bd571e023108c91f",
-                "reference": "8b8454ea6958c3dee38453d3bd571e023108c91f",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-timer/zipball/8b389aebe1b8b0578430bda0c7c95a829608e059",
+                "reference": "8b389aebe1b8b0578430bda0c7c95a829608e059",
                 "shasum": ""
             },
             "require": {
@@ -1321,7 +1321,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0-dev"
+                    "dev-master": "2.1-dev"
                 }
             },
             "autoload": {
@@ -1345,7 +1345,7 @@
             "keywords": [
                 "timer"
             ],
-            "time": "2018-02-01T13:07:23+00:00"
+            "time": "2019-02-20T10:12:59+00:00"
         },
         {
             "name": "phpunit/php-token-stream",
@@ -1398,16 +1398,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.5.5",
+            "version": "7.5.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "23a200a60552cb9ba483a8d1e106c70fb0be0bb9"
+                "reference": "09c85e14994df92e5ff1f5ec0b481bdb7d3d3df9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/23a200a60552cb9ba483a8d1e106c70fb0be0bb9",
-                "reference": "23a200a60552cb9ba483a8d1e106c70fb0be0bb9",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/09c85e14994df92e5ff1f5ec0b481bdb7d3d3df9",
+                "reference": "09c85e14994df92e5ff1f5ec0b481bdb7d3d3df9",
                 "shasum": ""
             },
             "require": {
@@ -1478,7 +1478,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-02-15T14:00:34+00:00"
+            "time": "2019-02-18T09:24:50+00:00"
         },
         {
             "name": "psr/log",
@@ -2518,7 +2518,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.2"
+        "php": "^7.2"
     },
     "platform-dev": []
 }
