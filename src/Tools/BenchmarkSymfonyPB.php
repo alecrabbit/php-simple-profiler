@@ -10,12 +10,15 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 // BenchmarkSymfonyProgressBar
 class BenchmarkSymfonyPB extends Benchmark
 {
+    public const DEFAULT_PROGRESSBAR_FORMAT = '[%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%';
     public const PROGRESS_BAR_WIDTH = 80;
 
     /** @var ConsoleOutput */
     protected $output;
+
     /** @var ProgressBar */
     protected $progressBar;
+
     /** @var int */
     private $progressBarWidth;
 
@@ -48,7 +51,8 @@ class BenchmarkSymfonyPB extends Benchmark
                 $this->progressBar->clear();
             };
 
-        $this->progressBar($progressStart, $progressAdvance, $progressFinish);
+        $this->progressBar->setFormat(static::DEFAULT_PROGRESSBAR_FORMAT);
+        $this->showProgressBy($progressStart, $progressAdvance, $progressFinish);
     }
 
     /**

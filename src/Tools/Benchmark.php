@@ -165,7 +165,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringConsta
      * @param callable|null $onFinish
      * @return Benchmark
      */
-    public function progressBar(
+    public function showProgressBy(
         callable $onStart = null,
         callable $onAdvance = null,
         callable $onFinish = null

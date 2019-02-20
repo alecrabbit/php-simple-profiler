@@ -59,7 +59,7 @@ $benchmark
     ->addFunction(function () {
         return +'3';
     });
-$benchmark->progressBar(null, $progressAdvance, $progressFinish);
+$benchmark->showProgressBy(null, $progressAdvance, $progressFinish);
 $benchmark->run();
 $report = $benchmark->getReport();
 echo $report . PHP_EOL;

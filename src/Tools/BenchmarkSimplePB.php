@@ -28,7 +28,7 @@ class BenchmarkSimplePB extends Benchmark
                 echo "\e[K";
             };
 
-        $this->progressBar(null, $progressAdvance, $progressFinish);
+        $this->showProgressBy(null, $progressAdvance, $progressFinish);
     }
 
     /**

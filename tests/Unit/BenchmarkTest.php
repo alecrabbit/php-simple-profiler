@@ -102,7 +102,7 @@ class BenchmarkTest extends TestCase
                 }
             );
 
-        $bench->progressBar(
+        $bench->showProgressBy(
             function () {
             },
             function () {
@@ -229,7 +229,7 @@ class BenchmarkTest extends TestCase
                 }
             );
 
-        $this->bench->progressBar(
+        $this->bench->showProgressBy(
             function () {
             },
             function () {
