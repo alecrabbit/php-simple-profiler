@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0-BETA0] - 2019-02-20
+
+### Changed
+- method progressBar() to showProgressBy()
+
+### Added
+- BenchmarkSymfonyPB::DEFAULT_PROGRESSBAR_FORMAT constant
+
 ## [0.4.1-BETA2] - 2019-02-17
 
 ## 0.3.3-BETA1 - 2019-02-14
@@ -18,5 +26,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 0.0.15 - 2018-11-29
 
 
-[Unreleased]: https://github.com/alecrabbit/php-simple-profiler/compare/0.4.1-BETA2...HEAD
+[Unreleased]: https://github.com/alecrabbit/php-simple-profiler/compare/0.5.0-BETA0...HEAD
+[0.5.0-BETA0]: https://github.com/alecrabbit/php-simple-profiler/compare/0.4.1-BETA2...0.5.0-BETA0
 [0.4.1-BETA2]: https://github.com/alecrabbit/php-simple-profiler/compare/0.3.3-BETA1...0.4.1-BETA2
