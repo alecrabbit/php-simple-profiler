@@ -14,7 +14,7 @@
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Percentage of issues still open")
 
-VERSION ^0.4
+VERSION ^0.4 || ^0.5
 
 ### Installation
 For now this package is suggested to be used in dev process for debugging of simple scripts
