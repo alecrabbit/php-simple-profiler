@@ -57,22 +57,22 @@
         },
         {
             "name": "alecrabbit/php-helpers",
-            "version": "0.3.0-RC2",
+            "version": "0.3.1-BETA0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-helpers.git",
-                "reference": "a14d89cdeed17d457fd5e3d9cb7facd18e906053"
+                "reference": "0deb7aa4fc0bbe0c5474b0551c7629d6ca8edc31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/a14d89cdeed17d457fd5e3d9cb7facd18e906053",
-                "reference": "a14d89cdeed17d457fd5e3d9cb7facd18e906053",
+                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/0deb7aa4fc0bbe0c5474b0551c7629d6ca8edc31",
+                "reference": "0deb7aa4fc0bbe0c5474b0551c7629d6ca8edc31",
                 "shasum": ""
             },
             "require": {
                 "krowinski/bcmath-extended": "^4.2",
-                "nesbot/carbon": "^2.10",
-                "php": ">=7.2",
+                "nesbot/carbon": "^2.11",
+                "php": "^7.2",
                 "symfony/polyfill-php73": "^1.10"
             },
             "require-dev": {
@@ -98,7 +98,17 @@
                 "MIT"
             ],
             "description": "PHP helpers functions",
-            "time": "2019-02-19T14:39:26+00:00"
+            "keywords": [
+                "array",
+                "first",
+                "format",
+                "string",
+                "trim",
+                "unset",
+                "wrap",
+                "zeros"
+            ],
+            "time": "2019-02-20T16:30:01+00:00"
         },
         {
             "name": "alecrabbit/php-traits",

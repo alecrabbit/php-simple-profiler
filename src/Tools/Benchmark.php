@@ -104,6 +104,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringConsta
      */
     public function run(): Benchmark
     {
+        $this->launched = true;
         if ($this->onStart) {
             ($this->onStart)();
         }

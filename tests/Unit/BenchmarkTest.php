@@ -24,7 +24,10 @@ class BenchmarkTest extends TestCase
     public function instance(): void
     {
         $this->assertInstanceOf(Benchmark::class, $this->bench);
-        $this->assertInstanceOf(BenchmarkReport::class, $this->bench->getReport());
+        $this->assertInstanceOf(BenchmarkReport::class, $this->bench->run()->getReport());
+        $b = new Benchmark();
+        $this->expectException(\RuntimeException::class);
+        $this->assertInstanceOf(BenchmarkReport::class, $b->getReport());
     }
 
     /** @test */
@@ -263,7 +266,7 @@ class BenchmarkTest extends TestCase
             ->useName($str_two)
             ->addFunction(function () {
                 usleep(10);
-                return 2;
+                return [];
             });
         $this->bench
             ->withComment($comment)

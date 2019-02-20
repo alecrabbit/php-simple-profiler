@@ -1,7 +1,9 @@
 - [x] show 'All returns are equal: _result_' instead of actual results (0.5.0)
 - [x] change method progressBar() to showProgressBy() (0.5.0)
+- [ ] add BenchmarkReportTest:class
+- [ ] improve Benchmark::class test 
 - [ ] consider adding stopwatch() function
-- [ ] throw an exception when Benchmark::getReport() called before run()
+- [x] throw an exception when Benchmark::getReport() called before run() (0.5.0)
 - [ ] custom formatters as parameters
 
 - [x] improve ProfileReportFormatter (0.4.1)
