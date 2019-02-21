@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6e951748dafb62b449621621b9b13b22",
+    "content-hash": "b185adb891412f3ce90839e0d638f7d5",
     "packages": [
         {
             "name": "alecrabbit/php-accessories",
@@ -112,24 +112,23 @@
         },
         {
             "name": "alecrabbit/php-traits",
-            "version": "0.0.3",
+            "version": "0.2.0-BETA0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-traits.git",
-                "reference": "231a5839944ae46acea2c878c14882e374defa0b"
+                "reference": "8d7325a9e535f024b57562f659b0e46471b34963"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-traits/zipball/231a5839944ae46acea2c878c14882e374defa0b",
-                "reference": "231a5839944ae46acea2c878c14882e374defa0b",
+                "url": "https://api.github.com/repos/alecrabbit/php-traits/zipball/8d7325a9e535f024b57562f659b0e46471b34963",
+                "reference": "8d7325a9e535f024b57562f659b0e46471b34963",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2"
+                "php": "^7.2"
             },
             "require-dev": {
                 "nunomaduro/collision": "^2.1",
-                "phpstan/phpstan": "^0.10.8",
                 "phpunit/phpunit": "^7.5",
                 "symfony/var-dumper": "^4.2"
             },
@@ -146,8 +145,8 @@
             "license": [
                 "MIT"
             ],
-            "description": "PHP accessories Classes etc.",
-            "time": "2019-02-17T08:17:17+00:00"
+            "description": "PHP traits to use in every project :)",
+            "time": "2019-02-21T13:50:38+00:00"
         },
         {
             "name": "krowinski/bcmath-extended",
