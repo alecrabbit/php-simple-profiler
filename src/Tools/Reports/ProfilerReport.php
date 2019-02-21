@@ -47,10 +47,10 @@ class ProfilerReport extends Report implements StringConstants
     public function __construct(Profiler $profiler)
     {
         foreach ($profiler->getCounters() as $counter) {
-            $this->reports[self::COUNTERS][$counter->getName()] = $counter->getReport();
+            $this->reports[self::COUNTERS][$counter->getName()] = $counter->report();
         }
         foreach ($profiler->getTimers() as $timer) {
-            $this->reports[self::TIMERS][$timer->getName()] = $timer->getReport();
+            $this->reports[self::TIMERS][$timer->getName()] = $timer->report();
         }
         parent::__construct();
     }

@@ -15,9 +15,9 @@ for ($i = 0; $i < $count; $i++) {
     $timer->check();
 }
 echo "\n";
-dump($timer->getReport()); // use var_dump
+dump($timer->report()); // use var_dump
 echo PHP_EOL;
 
-echo (string)$timer->getReport();
+echo (string)$timer->report();
 // Timer:[new] Average: 1s, Last: 1s, Min(~): 1s, Max(~): 1s, Count: 5
 echo PHP_EOL;

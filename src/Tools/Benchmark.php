@@ -260,6 +260,6 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringConsta
      */
     protected function prepareForReport(): void
     {
-        $this->getProfiler()->getReport();
+        $this->getProfiler()->report();
     }
 }
