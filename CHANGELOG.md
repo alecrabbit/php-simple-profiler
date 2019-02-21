@@ -10,11 +10,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.5.0-BETA1] - 2019-02-20
 
 ### Changed
-- method progressBar() to showProgressBy()
-- BenchmarkReportFormatter: if results of all tested functions are equal result is printed only once
+- method `progressBar()` to `showProgressBy()`
+- BenchmarkReportFormatter: if results of all tested(in section) functions are equal result is printed only once
+```
+All returns are equal: 
+integer(3) 
+```
+- formatting of `stat()` string
+```
+Done in: 5.4s
+Memory: 1.06MB(1.10MB) Real: 2.00MB(2.00MB)
+```
 
 ### Added
-- BenchmarkSymfonyPB::DEFAULT_PROGRESSBAR_FORMAT constant
+- `report()` method alias of `getReport()`
+- `BenchmarkSymfonyPB::DEFAULT_PROGRESSBAR_FORMAT` constant
 
 ## [0.4.1-BETA2] - 2019-02-17
 

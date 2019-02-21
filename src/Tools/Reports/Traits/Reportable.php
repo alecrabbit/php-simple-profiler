@@ -20,7 +20,7 @@ trait Reportable
      * @param bool $rebuild Rebuild report object
      * @return ReportInterface
      */
-    public function getReport(bool $rebuild = true): ReportInterface
+    public function report(bool $rebuild = true): ReportInterface
     {
         if ($this instanceof Benchmark && $this->isNotLaunched()) {
             throw new \RuntimeException('You should launch a benchmark by run() before getting a report');
@@ -35,6 +35,16 @@ trait Reportable
         }
         return
             $this->reportObject;
+    }
+
+    /**
+     * @deprecated use report() instead
+     * @param bool $rebuild Rebuild report object
+     * @return ReportInterface
+     */
+    public function getReport(bool $rebuild = true): ReportInterface
+    {
+        return $this->report($rebuild);
     }
 
     /**

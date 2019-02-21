@@ -248,8 +248,9 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringConsta
     {
         return
             sprintf(
-                'Done in: %s %s',
+                'Done in: %s%s%s',
                 $this->getTimer()->elapsed(),
+                PHP_EOL,
                 (string)$this->memoryUsageReport
             );
     }
