@@ -77,8 +77,6 @@ class BenchmarkReportFormatter extends ReportFormatter
             );
     }
 
-    // TODO move to php-helpers
-
     /**
      * @return string
      */
