@@ -3,7 +3,7 @@
 use AlecRabbit\Tools\BenchmarkSymfonyPB as BenchmarkWithSymfonyProgressBar;
 use function AlecRabbit\tag;
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 const EMPTY_ELEMENTS = ['', null, false];
 

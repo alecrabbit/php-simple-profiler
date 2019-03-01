@@ -14,7 +14,7 @@ $counter2->bump();
 $counter2->bumpBack();
 
 
-dump($counter->getReport()); // use var_dump
+dump($counter->report()); // use var_dump
 // AlecRabbit\Tools\Reports\CounterReport {#4
 //  #formatter: AlecRabbit\Tools\Reports\Formatters\CounterReportFormatter {#5
 //    #report: AlecRabbit\Tools\Reports\CounterReport {#4}
@@ -31,7 +31,7 @@ dump($counter->getReport()); // use var_dump
 //  #name: "default_name"
 //}
 echo PHP_EOL;
-dump($counter2->getReport()); // use var_dump
+dump($counter2->report()); // use var_dump
 // AlecRabbit\Tools\Reports\CounterReport {#10
 //  #formatter: AlecRabbit\Tools\Reports\Formatters\CounterReportFormatter {#13
 //    #report: AlecRabbit\Tools\Reports\CounterReport {#10}
@@ -49,9 +49,9 @@ dump($counter2->getReport()); // use var_dump
 //}
 echo PHP_EOL;
 
-echo (string)$counter->getReport();
+echo (string)$counter->report();
 echo PHP_EOL;
-echo (string)$counter2->getReport();
+echo (string)$counter2->report();
 echo PHP_EOL;
 $counter->bump(2);
 echo (string)$counter->getReport();
