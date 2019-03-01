@@ -134,7 +134,11 @@ class BenchmarkFunctionFormatter implements Formatter, StringConstants
     public static function returnToString($executionReturn): string
     {
         $type = typeOf($executionReturn);
-        $str = var_export($executionReturn, true);
+        try {
+            $str = var_export($executionReturn, true);
+        } catch (\Exception $e) {
+            $str = '[' . typeOf($e) . ']' . $e->getMessage();
+        }
         return
             $type === 'array' ?
                 $str :
