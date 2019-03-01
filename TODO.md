@@ -1,4 +1,3 @@
-- [ ] consider deprecation of `getReport()` method
 - [ ] add more info to show by `stat()` method
 - [ ] add `BenchmarkReportTest:class`
 - [ ] improve `Benchmark::class` test 
@@ -6,6 +5,8 @@
 - [ ] consider adding `stopwatch()` function
 - [ ] custom formatters as parameters
 - [ ] separate `Counter` in two classes - `SimpleCounter` and `ExtendedCounter`
+
+- [x] Method `getReport()` deprecated  (0.5.1)
 
 - [x] show 'All returns are equal: _result_' instead of actual results (0.5.0)
 - [x] change method `progressBar()` to `showProgressBy()` (0.5.0)
