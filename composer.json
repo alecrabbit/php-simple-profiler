@@ -13,8 +13,8 @@
   "license": "MIT",
   "require": {
     "php": "^7.2",
-    "alecrabbit/php-accessories": "^0.4",
-    "alecrabbit/php-helpers": "^0.4",
+    "alecrabbit/php-accessories": "^0.5",
+    "alecrabbit/php-helpers": "^0.5",
     "alecrabbit/php-traits": "^0.2"
   },
   "require-dev": {

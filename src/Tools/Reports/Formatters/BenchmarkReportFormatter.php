@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
-use function AlecRabbit\is_homogeneous;
+use function AlecRabbit\array_is_homogeneous;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
 use AlecRabbit\Tools\Reports\Factory;
@@ -51,7 +51,7 @@ class BenchmarkReportFormatter extends ReportFormatter
     protected function checkReturns(): bool
     {
         return
-            is_homogeneous($this->functionsReturns());
+            array_is_homogeneous($this->functionsReturns());
     }
 
     /**

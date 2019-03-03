@@ -4,24 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "17ceb6dcbf2e046a84ba3eacfc9bee09",
+    "content-hash": "2eac28dbe8d026b1c26725a67070d580",
     "packages": [
         {
             "name": "alecrabbit/php-accessories",
-            "version": "0.4.3",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-accessories.git",
-                "reference": "c36448f3c319a0d7de86f5900d1eb4ef9b9e85b1"
+                "reference": "72b3e3c43c297a886bc8f96ddc3a0dc9f97e14ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-accessories/zipball/c36448f3c319a0d7de86f5900d1eb4ef9b9e85b1",
-                "reference": "c36448f3c319a0d7de86f5900d1eb4ef9b9e85b1",
+                "url": "https://api.github.com/repos/alecrabbit/php-accessories/zipball/72b3e3c43c297a886bc8f96ddc3a0dc9f97e14ce",
+                "reference": "72b3e3c43c297a886bc8f96ddc3a0dc9f97e14ce",
                 "shasum": ""
             },
             "require": {
-                "alecrabbit/php-helpers": "^0.4",
+                "alecrabbit/php-helpers": "^0.5",
                 "php": "^7.2"
             },
             "require-dev": {
@@ -53,20 +53,20 @@
                 "rewindable",
                 "time"
             ],
-            "time": "2019-03-01T09:33:20+00:00"
+            "time": "2019-03-03T18:27:24+00:00"
         },
         {
             "name": "alecrabbit/php-helpers",
-            "version": "0.4.2",
+            "version": "0.5.0-BETA0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-helpers.git",
-                "reference": "ae6cab7a3cc4cc1dd0c652636cabdd72fff47407"
+                "reference": "a8d0b27432c896929e35dc7da8c44585d9420d26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/ae6cab7a3cc4cc1dd0c652636cabdd72fff47407",
-                "reference": "ae6cab7a3cc4cc1dd0c652636cabdd72fff47407",
+                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/a8d0b27432c896929e35dc7da8c44585d9420d26",
+                "reference": "a8d0b27432c896929e35dc7da8c44585d9420d26",
                 "shasum": ""
             },
             "require": {
@@ -77,6 +77,7 @@
             },
             "require-dev": {
                 "ext-curl": "*",
+                "kylekatarnls/multi-tester": "^1.1",
                 "nunomaduro/collision": "^2.1",
                 "phpunit/phpunit": "^7.5",
                 "symfony/var-dumper": "^4.2"
@@ -108,7 +109,7 @@
                 "wrap",
                 "zeros"
             ],
-            "time": "2019-02-22T14:54:16+00:00"
+            "time": "2019-03-03T18:18:44+00:00"
         },
         {
             "name": "alecrabbit/php-traits",
