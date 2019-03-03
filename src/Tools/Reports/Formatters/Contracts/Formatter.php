@@ -12,5 +12,5 @@ interface Formatter
     /**
      * @return string
      */
-    public function getString(): string;
+    public function process(): string;
 }

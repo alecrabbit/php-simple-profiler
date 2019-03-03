@@ -8,14 +8,17 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 const EMPTY_ELEMENTS = ['', null, false];
 
 $args = [
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, null, 0],
+    [1, 2, 3, 4, 5, 6, 7, [8], 9, null, 0],
     3,
+    function (&$item, $key) {
+        $item = '[' . $key . '] ' . $item;
+    },
 ];
 $iterations = 1000000;
 
 $b = new BenchmarkWithSymfonyProgressBar($iterations);
 $o = $b->getOutput();
-$o->writeln(tag('Comparing 3 slightly different implementations of function.', 'comment'));
+$o->writeln(tag('Comparing 3 slightly different implementations of function `formatted_array()`.', 'comment'));
 $b->withComment('Using closure')->addFunction('formatted_array_2', ...$args);
 $b->withComment('Basic implementation')->addFunction('formatted_array_1', ...$args);
 $b->withComment('Using internal functions')->addFunction('formatted_array_3', ...$args);
@@ -32,10 +35,10 @@ function formatted_array_1(
     int $pad = STR_PAD_RIGHT
 ): array {
     $result = [];
-    if ($callback) {
-        \array_walk($data, $callback);
-    }
-    $maxLength = arr_el_max_length($data);
+//    if ($callback) {
+//        \array_walk($data, $callback);
+//    }
+    $maxLength = arr_el_max_length($data, $callback);
     $tmp = [];
     $rowEmpty = true;
     foreach ($data as $element) {
@@ -65,10 +68,10 @@ function formatted_array_2(
         $rowEmpty = true;
         $tmp = [];
     };
-    if ($callback) {
-        \array_walk($data, $callback);
-    }
-    $maxLength = arr_el_max_length($data);
+//    if ($callback) {
+//        \array_walk($data, $callback);
+//    }
+    $maxLength = arr_el_max_length($data, $callback);
     $tmp = [];
     $rowEmpty = true;
     foreach ($data as $element) {
@@ -91,10 +94,10 @@ function formatted_array_3(
     int $pad = STR_PAD_RIGHT
 ): array {
     $result = $tmp = [];
-    if ($callback) {
-        \array_walk($data, $callback);
-    }
-    $maxLength = arr_el_max_length($data);
+//    if ($callback) {
+//        \array_walk($data, $callback);
+//    }
+    $maxLength = arr_el_max_length($data, $callback);
     $rowEmpty = true;
     foreach ($data as $element) {
         $tmp[] = \str_pad((string)$element, $maxLength, ' ', $pad);
@@ -110,14 +113,17 @@ function formatted_array_3(
 }
 
 // internal functions
-
-function arr_el_max_length(array &$data): int
+function arr_el_max_length(array &$data, ?callable $callback = null): int
 {
     $maxLength = 0;
-    foreach ($data as &$element) {
+    foreach ($data as $key => &$element) {
         if (\is_array($element)) {
-            throw new \RuntimeException('Array to string conversion');
+            throw new \RuntimeException('Multidimensional arrays is not supported.');
         }
+        if ($callback) {
+            $callback($element, $key);
+        }
+
         $len = \strlen($element = (string)$element);
         if ($maxLength < $len) {
             $maxLength = $len;

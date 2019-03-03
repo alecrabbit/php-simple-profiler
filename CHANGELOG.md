@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Exception type is shown
+- In `ReportFormatter` renamed method `getString()` to `process()` 
+
+### Added
+- added `BenchmarkFunctionFormatterInterface`
+
+## [0.5.2] - 2019-03-03
+### Changed
+- dependencies versions up
+
 ## [0.5.1] - 2019-02-21
 ### Deprecated
 - method `getReport()` for `Reportable` trait

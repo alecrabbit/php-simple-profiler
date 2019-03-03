@@ -20,7 +20,7 @@ class TimerReportFormatter extends ReportFormatter
     /**
      * @return string
      */
-    public function getString(): string
+    public function process(): string
     {
         if (0 === $this->report->getCount() && DEFAULT_NAME === $this->report->getName()) {
             return $this->simple();

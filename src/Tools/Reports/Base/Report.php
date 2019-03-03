@@ -28,6 +28,6 @@ abstract class Report implements ReportInterface
     public function __toString(): string
     {
         return
-            $this->formatter->getString();
+            $this->formatter->process();
     }
 }

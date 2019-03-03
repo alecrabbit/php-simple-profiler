@@ -7,10 +7,11 @@ namespace AlecRabbit\Tools\Reports\Formatters;
 use AlecRabbit\Accessories\Pretty;
 use AlecRabbit\Tools\Contracts\StringConstants;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkFunctionFormatterInterface;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\Formatter;
 use function AlecRabbit\typeOf;
 
-class BenchmarkFunctionFormatter implements Formatter, StringConstants
+class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface, Formatter, StringConstants
 {
     /** @var BenchmarkFunction */
     protected $function;
@@ -24,8 +25,7 @@ class BenchmarkFunctionFormatter implements Formatter, StringConstants
     }
 
     /**
-     * @param bool $equalReturns
-     * @return BenchmarkFunctionFormatter
+     * {@inheritdoc}
      */
     public function noResultsIf(bool $equalReturns = false): BenchmarkFunctionFormatter
     {
@@ -36,7 +36,7 @@ class BenchmarkFunctionFormatter implements Formatter, StringConstants
     /**
      * {@inheritdoc}
      */
-    public function getString(): string
+    public function process(): string
     {
         return
             $this->formatBenchmarkRelative() .
@@ -128,8 +128,7 @@ class BenchmarkFunctionFormatter implements Formatter, StringConstants
     }
 
     /**
-     * @param mixed $executionReturn
-     * @return string
+     * {@inheritdoc}
      */
     public static function returnToString($executionReturn): string
     {
@@ -160,10 +159,11 @@ class BenchmarkFunctionFormatter implements Formatter, StringConstants
 
             return
                 sprintf(
-                    '%s(%s) %s [%s] %s',
+                    '%s(%s) %s [%s: %s] %s',
                     $this->function->humanReadableName(),
                     implode(', ', $argumentsTypes),
                     $this->function->comment(),
+                    typeOf($e),
                     $e->getMessage(),
                     PHP_EOL
                 );

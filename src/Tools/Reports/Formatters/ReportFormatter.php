@@ -1,10 +1,4 @@
-<?php
-/**
- * User: alec
- * Date: 10.12.18
- * Time: 14:25
- */
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
@@ -27,5 +21,5 @@ abstract class ReportFormatter implements Formatter, StringConstants
     }
 
     /** {@inheritdoc} */
-    abstract public function getString(): string;
+    abstract public function process(): string;
 }
