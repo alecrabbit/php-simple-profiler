@@ -7,7 +7,7 @@
 
 namespace AlecRabbit\Tools\Traits;
 
-use AlecRabbit\Accessories\MemoryUsageReport;
+use AlecRabbit\Accessories\MemoryUsage\MemoryUsageReport;
 use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Timer;
 

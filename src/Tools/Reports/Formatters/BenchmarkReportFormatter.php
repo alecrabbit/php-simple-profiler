@@ -7,6 +7,7 @@ namespace AlecRabbit\Tools\Reports\Formatters;
 use function AlecRabbit\is_homogeneous;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
+use AlecRabbit\Tools\Reports\Factory;
 
 class BenchmarkReportFormatter extends ReportFormatter
 {
@@ -25,9 +26,13 @@ class BenchmarkReportFormatter extends ReportFormatter
         /** @var BenchmarkFunction $function */
         foreach ($this->report->getFunctions() as $name => $function) {
             $str .=
-                (new BenchmarkFunctionFormatter($function))
+                Factory::getBenchmarkFunctionFormatter($function)
                     ->noResultsIf($equalReturns)
                     ->getString();
+//            $str .=
+//                (new BenchmarkFunctionFormatter($function))
+//                    ->noResultsIf($equalReturns)
+//                    ->getString();
         }
         return
             sprintf(
@@ -76,8 +81,6 @@ class BenchmarkReportFormatter extends ReportFormatter
                 PHP_EOL
             );
     }
-
-    // TODO move to php-helpers
 
     /**
      * @return string

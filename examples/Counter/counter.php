@@ -14,51 +14,55 @@ $counter2->bump();
 $counter2->bumpBack();
 
 
-dump($counter->getReport()); // use var_dump
+dump($counter->report()); // use var_dump
 // AlecRabbit\Tools\Reports\CounterReport {#4
-//  #formatter: AlecRabbit\Tools\Reports\Formatters\CounterReportFormatter {#5
-//    #report: AlecRabbit\Tools\Reports\CounterReport {#4}
-//  }
-//  #value: 1
-//  #path: 1
-//  #length: 1
-//  #initialValue: 0
-//  #diff: 1
-//  #step: 1
-//  #bumpedForward: 1
-//  #bumpedBack: 0
-//  #started: true
-//  #name: "default_name"
+//   #formatter: AlecRabbit\Tools\Reports\Formatters\CounterReportFormatter {#5
+//     #report: AlecRabbit\Tools\Reports\CounterReport {#4}
+//   }
+//   #value: 1
+//   #max: 1
+//   #min: 0
+//   #path: 1
+//   #length: 1
+//   #initialValue: 0
+//   #diff: 1
+//   #step: 1
+//   #bumpedForward: 1
+//   #bumpedBack: 0
+//   #started: true
+//   #name: "default_name"
 //}
 echo PHP_EOL;
-dump($counter2->getReport()); // use var_dump
-// AlecRabbit\Tools\Reports\CounterReport {#10
-//  #formatter: AlecRabbit\Tools\Reports\Formatters\CounterReportFormatter {#13
-//    #report: AlecRabbit\Tools\Reports\CounterReport {#10}
-//  }
-//  #value: 14
-//  #path: 6
-//  #length: 18
-//  #initialValue: 12
-//  #diff: 2
-//  #step: 2
-//  #bumpedForward: 2
-//  #bumpedBack: 1
-//  #started: true
-//  #name: "Added"
+dump($counter2->report()); // use var_dump
+//AlecRabbit\Tools\Reports\CounterReport {#10
+//   #formatter: AlecRabbit\Tools\Reports\Formatters\CounterReportFormatter {#13
+//     #report: AlecRabbit\Tools\Reports\CounterReport {#10}
+//   }
+//   #value: 14
+//   #max: 16
+//   #min: 12
+//   #path: 6
+//   #length: 18
+//   #initialValue: 12
+//   #diff: 2
+//   #step: 2
+//   #bumpedForward: 2
+//   #bumpedBack: 1
+//   #started: true
+//   #name: "Added"
 //}
 echo PHP_EOL;
 
-echo (string)$counter->getReport();
+echo (string)$counter->report();
 echo PHP_EOL;
-echo (string)$counter2->getReport();
+echo (string)$counter2->report();
 echo PHP_EOL;
 $counter->bump(2);
-echo (string)$counter->getReport();
+echo (string)$counter->report();
 echo PHP_EOL;
 $counter->bump(10);
-echo (string)$counter->getReport(false); // old report
-echo (string)$counter->getReport();
+echo (string)$counter->report(false); // old report
+echo (string)$counter->report();
 
 //$counter->bump(0); // will throw
 //$counter->bumpBack(-2); // will throw
