@@ -55,7 +55,7 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
             $argumentsTypes = $this->extractArgumentsTypes($function->getArgs());
             $executionReturn = $function->getReturn();
 
-            if ($this->withResults) {
+            if ($this->withResults && $this->function->isShowReturns()) {
                 return
                     sprintf(
                         '%s. %s (%s) %s(%s) %s %s %s %s',

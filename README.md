@@ -42,7 +42,7 @@ $benchmark
     ->addFunction('hrtime', true); 
 $benchmark
     ->addFunction('microtime', true);
-echo $benchmark->run()->getReport() . PHP_EOL;
+echo $benchmark->run()->report() . PHP_EOL;
 echo $benchmark->stat() . PHP_EOL;
 ```
 ###### For more details see [examples](https://github.com/alecrabbit/php-simple-profiler/tree/master/examples)
@@ -87,7 +87,7 @@ $b->run();
 ```
 Getting results
 ```php
-$report = $b->getReport(); // you can get report object and use data from it 
+$report = $b->report(); // you can get report object and use data from it 
 echo $report . PHP_EOL; // or you can print it by default formatter
 echo $b->stat() . PHP_EOL;
 ```
@@ -115,7 +115,7 @@ for ($i = 0; $i < 100; $i++) {
     $profiler->timer()->check();
 }
 
-echo $profiler->getReport() . PHP_EOL;
+echo $profiler->report() . PHP_EOL;
 ```
 ### Counter::class
 // todo 

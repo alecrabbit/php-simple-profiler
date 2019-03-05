@@ -43,6 +43,8 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringConsta
     private $advanceStep = 0;
     /** @var \Closure */
     private $generatorFunction;
+    /** @var bool */
+    private $showReturns = true;
 
     /**
      * Benchmark constructor.
@@ -201,6 +203,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringConsta
                 $this->comment,
                 $this->humanReadableName
             );
+        $function->setShowReturns($this->showReturns);
         $this->functions[$function->enumeratedName()] = $function;
         $this->humanReadableName = null;
         $this->comment = null;
@@ -253,6 +256,18 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringConsta
                 PHP_EOL,
                 (string)$this->memoryUsageReport
             );
+    }
+
+    public function noReturns()
+    {
+        $this->showReturns = false;
+        /** @var $function BenchmarkFunction */
+        if (!empty($this->functions)) {
+            foreach ($this->functions as $function) {
+                $function->setShowReturns(false);
+            }
+        }
+        return $this;
     }
 
     /**
