@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Traits;
 
-use AlecRabbit\Tools\Benchmark;
+use AlecRabbit\Tools\OldBenchmark;
 use AlecRabbit\Tools\Reports\Contracts\OldReportInterface;
 use AlecRabbit\Tools\Reports\Factory;
 
@@ -22,7 +22,7 @@ trait Reportable
      */
     public function report(bool $rebuild = true): OldReportInterface
     {
-        if ($this instanceof Benchmark && $this->isNotLaunched()) {
+        if ($this instanceof OldBenchmark && $this->isNotLaunched()) {
             throw new \RuntimeException('You should launch a benchmark by run() before getting a report');
         }
         if (null === $this->reportObject || true === $rebuild) {

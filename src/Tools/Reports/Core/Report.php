@@ -10,6 +10,7 @@ namespace AlecRabbit\Tools\Reports\Core;
 use AlecRabbit\Tools\Reports\Contracts\OldReportInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Factory;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\OldFormatter;
 
 abstract class Report implements ReportInterface
@@ -17,10 +18,7 @@ abstract class Report implements ReportInterface
     /** @var ReportInterface */
     protected $report;
 
-    public function process(ReportInterface $report): string
-    {
-        // TODO: Implement process() method.
-    }
+    abstract protected static function getFormatter(): FormatterInterface;
 
     /**
      * {@inheritdoc}
@@ -28,6 +26,6 @@ abstract class Report implements ReportInterface
     public function __toString(): string
     {
         return
-            $this->process($this->report);
+            static::getFormatter()->process($this->report);
     }
 }

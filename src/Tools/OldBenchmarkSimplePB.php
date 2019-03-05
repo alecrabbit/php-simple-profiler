@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AlecRabbit\Tools;
 
 // BenchmarkSimpleProgressBar
-class BenchmarkSimplePB extends Benchmark
+class OldBenchmarkSimplePB extends OldBenchmark
 {
     /** @var int */
     private $progressBarWidth;

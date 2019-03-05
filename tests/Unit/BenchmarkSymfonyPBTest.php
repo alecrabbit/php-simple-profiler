@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use AlecRabbit\Tools\BenchmarkSymfonyPB;
+use AlecRabbit\Tools\OldBenchmarkSymfonyPB;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -12,8 +12,8 @@ class BenchmarkSymfonyPBTest extends TestCase
     /** @test */
     public function init(): void
     {
-        $b = new BenchmarkSymfonyPB();
-        $this->assertInstanceOf(BenchmarkSymfonyPB::class, $b);
+        $b = new OldBenchmarkSymfonyPB();
+        $this->assertInstanceOf(OldBenchmarkSymfonyPB::class, $b);
         /** @noinspection UnnecessaryAssertionInspection */
         $this->assertInstanceOf(ConsoleOutput::class, $b->getOutput());
         /** @noinspection UnnecessaryAssertionInspection */
@@ -21,6 +21,6 @@ class BenchmarkSymfonyPBTest extends TestCase
         $b->addFunction(function () {
         });
         $b->run();
-        $this->assertEquals(BenchmarkSymfonyPB::PROGRESS_BAR_WIDTH, $b->getProgressBarWidth());
+        $this->assertEquals(OldBenchmarkSymfonyPB::PROGRESS_BAR_WIDTH, $b->getProgressBarWidth());
     }
 }

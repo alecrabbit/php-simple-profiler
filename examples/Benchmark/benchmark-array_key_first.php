@@ -1,6 +1,6 @@
 <?php
 
-use AlecRabbit\Tools\Benchmark;
+use AlecRabbit\Tools\OldBenchmark;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
@@ -8,7 +8,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
  * Let's determine what is faster array_key_first or array_key_first
 */
 
-$benchmark = new Benchmark(900);
+$benchmark = new OldBenchmark(900);
 
 function another_implementation(array $data)
 {

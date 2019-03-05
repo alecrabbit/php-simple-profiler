@@ -7,12 +7,13 @@ namespace AlecRabbit\Tools\Reports;
 use AlecRabbit\Tools\OldBenchmark;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
-use AlecRabbit\Tools\Reports\Core\OldReport;
 use AlecRabbit\Tools\Reports\Contracts\BenchmarkReportInterface;
+use AlecRabbit\Tools\Reports\Core\Report;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
-class OldBenchmarkReport extends OldReport implements BenchmarkReportInterface
+class BenchmarkReport extends Report implements BenchmarkReportInterface
 {
     use BenchmarkFields;
 
@@ -28,8 +29,6 @@ class OldBenchmarkReport extends OldReport implements BenchmarkReportInterface
         $this->doneIterationsCombined = $benchmark->getDoneIterationsCombined();
         $this->functions = $this->updateFunctions($benchmark->getFunctions());
         $this->timer = $benchmark->getTimer();
-
-        parent::__construct();
     }
 
     /**
@@ -91,6 +90,12 @@ class OldBenchmarkReport extends OldReport implements BenchmarkReportInterface
             asort($rel);
         }
         return $rel;
+    }
+
+    protected static function getFormatter(): FormatterInterface
+    {
+        return
+            Factory::getFormatterFor(static::class);
     }
 
     /**

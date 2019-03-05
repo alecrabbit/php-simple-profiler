@@ -5,7 +5,7 @@
  * Time: 17:13
  */
 
-use AlecRabbit\Tools\Benchmark;
+use AlecRabbit\Tools\OldBenchmark;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -18,7 +18,7 @@ $output = new ConsoleOutput();
 $progressBar = new ProgressBar($output, 100);
 $progressBar->setBarWidth(80);
 
-$benchmark = new Benchmark(ITERATIONS);
+$benchmark = new OldBenchmark(ITERATIONS);
 
 $progressStart = function () use ($progressBar) {
     $progressBar->start();

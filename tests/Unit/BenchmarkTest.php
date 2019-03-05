@@ -7,7 +7,7 @@
 
 namespace Tests\Unit;
 
-use AlecRabbit\Tools\Benchmark;
+use AlecRabbit\Tools\OldBenchmark;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\OldBenchmarkReport;
 use PHPUnit\Framework\TestCase;
@@ -17,15 +17,15 @@ use PHPUnit\Framework\TestCase;
  */
 class BenchmarkTest extends TestCase
 {
-    /** @var Benchmark */
+    /** @var OldBenchmark */
     private $bench;
 
     /** @test */
     public function instance(): void
     {
-        $this->assertInstanceOf(Benchmark::class, $this->bench);
+        $this->assertInstanceOf(OldBenchmark::class, $this->bench);
         $this->assertInstanceOf(OldBenchmarkReport::class, $this->bench->run()->report());
-        $b = new Benchmark();
+        $b = new OldBenchmark();
         $this->expectException(\RuntimeException::class);
         $this->assertInstanceOf(OldBenchmarkReport::class, $b->report());
     }
@@ -68,7 +68,7 @@ class BenchmarkTest extends TestCase
     /** @test */
     public function addFunctionWithException(): void
     {
-        $bench = new Benchmark(100);
+        $bench = new OldBenchmark(100);
 
         $str_one = 'one';
         $str_two = 'two';
@@ -132,7 +132,7 @@ class BenchmarkTest extends TestCase
         // this test is heavily hardcoded
 
         $iterations = 100;
-        $bench = new Benchmark($iterations);
+        $bench = new OldBenchmark($iterations);
 
         $str_one = 'one';
         $str_two = 'two';
@@ -313,13 +313,13 @@ class BenchmarkTest extends TestCase
     public function minIterations(): void
     {
         $this->expectException(\RuntimeException::class);
-        $b = new Benchmark(10);
+        $b = new OldBenchmark(10);
         $b->run();
     }
 
     protected function setUp()
     {
         parent::setUp();
-        $this->bench = new Benchmark(100);
+        $this->bench = new OldBenchmark(100);
     }
 }

@@ -5,13 +5,13 @@
  * Time: 17:13
  */
 
-use AlecRabbit\Tools\BenchmarkSimplePB;
+use AlecRabbit\Tools\OldBenchmarkSimplePB;
 
 const ITERATIONS = 900000;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
-$benchmark = new BenchmarkSimplePB(ITERATIONS);
+$benchmark = new OldBenchmarkSimplePB(ITERATIONS);
 
 $benchmark
     ->withComment('floatval()')

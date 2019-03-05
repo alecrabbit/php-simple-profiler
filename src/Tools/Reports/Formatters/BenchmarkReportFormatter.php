@@ -9,7 +9,7 @@ use AlecRabbit\Tools\Reports\Factory;
 use function AlecRabbit\array_is_homogeneous;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkReportFormatterInterface;
 
-class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkReportFormatterInterface
+class BenchmarkReportFormatter extends ReportFormatterInterface implements BenchmarkReportFormatterInterface
 {
     /** @var OldBenchmarkReport */
     protected $report;

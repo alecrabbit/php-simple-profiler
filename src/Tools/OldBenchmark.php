@@ -12,7 +12,7 @@ use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
 use function AlecRabbit\typeOf;
 
-class Benchmark implements BenchmarkInterface, ReportableInterface, StringConstants
+class OldBenchmark implements BenchmarkInterface, ReportableInterface, StringConstants
 {
     use BenchmarkFields, Reportable;
 
@@ -166,13 +166,13 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringConsta
      * @param callable|null $onStart
      * @param callable|null $onAdvance
      * @param callable|null $onFinish
-     * @return Benchmark
+     * @return OldBenchmark
      */
     public function showProgressBy(
         callable $onStart = null,
         callable $onAdvance = null,
         callable $onFinish = null
-    ): Benchmark {
+    ): OldBenchmark {
         $this->onStart = $onStart;
         $this->onAdvance = $onAdvance;
         $this->onFinish = $onFinish;
@@ -226,7 +226,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringConsta
 
     /**
      * @param string $comment
-     * @return Benchmark
+     * @return OldBenchmark
      */
     public function withComment(string $comment): self
     {
@@ -236,7 +236,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringConsta
 
     /**
      * @param string $name
-     * @return Benchmark
+     * @return OldBenchmark
      */
     public function useName(string $name): self
     {
@@ -257,21 +257,6 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringConsta
                 (string)$this->memoryUsageReport
             );
     }
-
-//    /**
-//     * @return $this
-//     */
-//    public function noReturns(): self
-//    {
-//        $this->showReturns = false;
-//        /** @var $function BenchmarkFunction */
-//        if (!empty($this->functions)) {
-//            foreach ($this->functions as $function) {
-//                $function->setShowReturns(false);
-//            }
-//        }
-//        return $this;
-//    }
 
     /**
      * {@inheritdoc}

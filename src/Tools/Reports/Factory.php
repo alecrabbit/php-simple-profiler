@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports;
 
-use AlecRabbit\Tools\Benchmark;
+use AlecRabbit\Tools\OldBenchmark;
 use AlecRabbit\Tools\Counter;
 use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\OldReportInterface;
+use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionFormatter;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkReportFormatterInterface;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
 use AlecRabbit\Tools\Reports\Formatters\OldBenchmarkReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkFunctionFormatterInterface;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\OldFormatter;
@@ -62,7 +64,7 @@ class Factory
             return
                 new ProfilerReport($reportable);
         }
-        if ($reportable instanceof Benchmark) {
+        if ($reportable instanceof OldBenchmark) {
             return
                 new OldBenchmarkReport($reportable);
         }
@@ -151,9 +153,9 @@ class Factory
      */
     public static function getBenchmarkReportFormatter(): BenchmarkReportFormatterInterface
     {
-//        if (null === static::$benchmarkReportFormatter) {
-//            static::$benchmarkReportFormatter = new BenchmarkReportFormatter($report);
-//        }
+        if (null === static::$benchmarkReportFormatter) {
+            static::$benchmarkReportFormatter = new BenchmarkReportFormatter();
+        }
         return
             new BenchmarkReportFormatter();
     }
@@ -177,6 +179,31 @@ class Factory
         BenchmarkFunctionFormatterInterface $benchmarkFunctionFormatter
     ): void {
         self::$benchmarkFunctionFormatter = $benchmarkFunctionFormatter;
+    }
+
+    /**
+     * @param ReportInterface $report
+     * @return FormatterInterface
+     */
+    public static function getFormatterFor(ReportInterface $report): FormatterInterface
+    {
+//        if ($report instanceof TimerReport) {
+//            return
+//                self::getTimerReportFormatter($report);
+//        }
+//        if ($report instanceof CounterReport) {
+//            return
+//                self::getCounterReportFormatter($report);
+//        }
+//        if ($report instanceof ProfilerReport) {
+//            return
+//                self::getProfilerReportFormatter($report);
+//        }
+        if ($report instanceof BenchmarkReport) {
+            return
+                self::getBenchmarkReportFormatter();
+        }
+        throw new \RuntimeException('Attempt to create unimplemented formatter for: ' . typeOf($report));
     }
 
 

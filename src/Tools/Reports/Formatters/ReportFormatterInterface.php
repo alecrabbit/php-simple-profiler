@@ -4,9 +4,9 @@ namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Tools\Contracts\StringConstants;
 use AlecRabbit\Tools\Reports\Contracts\OldReportInterface;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\Formatter;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
 
-abstract class ReportFormatter implements Formatter, StringConstants
+abstract class ReportFormatterInterface implements FormatterInterface, StringConstants
 {
     /** {@inheritdoc} */
     abstract public function process(OldReportInterface $report): string;

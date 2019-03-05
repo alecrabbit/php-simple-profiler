@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use AlecRabbit\Tools\Benchmark;
-use AlecRabbit\Tools\BenchmarkSimplePB;
+use AlecRabbit\Tools\OldBenchmark;
+use AlecRabbit\Tools\OldBenchmarkSimplePB;
 use PHPUnit\Framework\TestCase;
 
 class BenchmarkSimplePBTest extends TestCase
@@ -13,11 +13,11 @@ class BenchmarkSimplePBTest extends TestCase
     /** @test */
     public function init(): void
     {
-        $b = new BenchmarkSimplePB();
-        $this->assertInstanceOf(BenchmarkSimplePB::class, $b);
+        $b = new OldBenchmarkSimplePB();
+        $this->assertInstanceOf(OldBenchmarkSimplePB::class, $b);
         $b->addFunction(function () {
         });
         $b->run();
-        $this->assertEquals(Benchmark::DEFAULT_STEPS, $b->getProgressBarWidth());
+        $this->assertEquals(OldBenchmark::DEFAULT_STEPS, $b->getProgressBarWidth());
     }
 }

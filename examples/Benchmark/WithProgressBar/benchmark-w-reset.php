@@ -5,8 +5,8 @@
  * Time: 17:13
  */
 
-use AlecRabbit\Tools\Benchmark;
-use AlecRabbit\Tools\BenchmarkSymfonyPB;
+use AlecRabbit\Tools\OldBenchmark;
+use AlecRabbit\Tools\OldBenchmarkSymfonyPB;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -14,7 +14,7 @@ const ITERATIONS = 900000;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
-$benchmark = new BenchmarkSymfonyPB(ITERATIONS);
+$benchmark = new OldBenchmarkSymfonyPB(ITERATIONS);
 $progressBar = $benchmark->getProgressBar();
 $progressBar->setBarWidth(60);
 $progressBar->setFormat('[%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%');

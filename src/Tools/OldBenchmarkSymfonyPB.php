@@ -8,7 +8,7 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 // BenchmarkSymfonyProgressBar
-class BenchmarkSymfonyPB extends Benchmark
+class OldBenchmarkSymfonyPB extends OldBenchmark
 {
     public const DEFAULT_PROGRESSBAR_FORMAT = '[%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%';
     public const PROGRESS_BAR_WIDTH = 80;
