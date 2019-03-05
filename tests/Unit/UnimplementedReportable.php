@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
+use AlecRabbit\Tools\Reports\Contracts\OldReportableInterface;
 
-class UnimplementedReportable implements ReportableInterface
+class UnimplementedReportable implements OldReportableInterface
 {
 }

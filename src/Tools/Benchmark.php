@@ -4,17 +4,17 @@ namespace AlecRabbit\Tools;
 
 use AlecRabbit\Accessories\MemoryUsage;
 use AlecRabbit\Accessories\Rewindable;
-use AlecRabbit\Tools\Contracts\OldBenchmarkInterface;
+use AlecRabbit\Tools\Contracts\BenchmarkInterface;
 use AlecRabbit\Tools\Contracts\StringConstants;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
-use AlecRabbit\Tools\Reports\Contracts\OldReportableInterface;
-use AlecRabbit\Tools\Reports\Traits\OldReportable;
+use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
+use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
 use function AlecRabbit\typeOf;
 
-class OldBenchmark implements OldBenchmarkInterface, OldReportableInterface, StringConstants
+class Benchmark implements BenchmarkInterface, ReportableInterface, StringConstants
 {
-    use BenchmarkFields, OldReportable;
+    use BenchmarkFields, Reportable;
 
     public const MIN_ITERATIONS = 100;
     public const DEFAULT_STEPS = 100;
@@ -166,13 +166,13 @@ class OldBenchmark implements OldBenchmarkInterface, OldReportableInterface, Str
      * @param callable|null $onStart
      * @param callable|null $onAdvance
      * @param callable|null $onFinish
-     * @return OldBenchmark
+     * @return Benchmark
      */
     public function showProgressBy(
         callable $onStart = null,
         callable $onAdvance = null,
         callable $onFinish = null
-    ): OldBenchmark {
+    ): Benchmark {
         $this->onStart = $onStart;
         $this->onAdvance = $onAdvance;
         $this->onFinish = $onFinish;
@@ -226,7 +226,7 @@ class OldBenchmark implements OldBenchmarkInterface, OldReportableInterface, Str
 
     /**
      * @param string $comment
-     * @return OldBenchmark
+     * @return Benchmark
      */
     public function withComment(string $comment): self
     {
@@ -236,7 +236,7 @@ class OldBenchmark implements OldBenchmarkInterface, OldReportableInterface, Str
 
     /**
      * @param string $name
-     * @return OldBenchmark
+     * @return Benchmark
      */
     public function useName(string $name): self
     {

@@ -1,7 +1,7 @@
 <?php
 
 use AlecRabbit\Tools\Counter;
-use AlecRabbit\Tools\Reports\Factory;
+use AlecRabbit\Tools\Reports\OldFactory;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 

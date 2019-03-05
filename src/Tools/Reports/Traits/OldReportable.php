@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Traits;
 
-use AlecRabbit\Tools\Benchmark;
-use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
-use AlecRabbit\Tools\Reports\Factory;
+use AlecRabbit\Tools\OldBenchmark;
+use AlecRabbit\Tools\Reports\Contracts\OldReportInterface;
+use AlecRabbit\Tools\Reports\OldFactory;
 
-trait Reportable
+trait OldReportable
 {
-    /** @var ReportInterface|null */
+    /** @var OldReportInterface|null */
     protected $reportObject;
 
     /** @var bool */
@@ -18,23 +18,33 @@ trait Reportable
 
     /**
      * @param bool $rebuild Rebuild report object
-     * @return ReportInterface
+     * @return OldReportInterface
      */
-    public function report(bool $rebuild = true): ReportInterface
+    public function report(bool $rebuild = true): OldReportInterface
     {
-        if ($this instanceof Benchmark && $this->isNotLaunched()) {
+        if ($this instanceof OldBenchmark && $this->isNotLaunched()) {
             throw new \RuntimeException('You should launch a benchmark by run() before getting a report');
         }
         if (null === $this->reportObject || true === $rebuild) {
             $this->prepareForReport();
             $this->reportObject =
-                Factory::makeReport(
+                OldFactory::makeReport(
                     /** @scrutinizer ignore-type */
                     $this
                 );
         }
         return
             $this->reportObject;
+    }
+
+    /**
+     * @deprecated use report() instead
+     * @param bool $rebuild Rebuild report object
+     * @return OldReportInterface
+     */
+    public function getReport(bool $rebuild = true): OldReportInterface
+    {
+        return $this->report($rebuild);
     }
 
     /**

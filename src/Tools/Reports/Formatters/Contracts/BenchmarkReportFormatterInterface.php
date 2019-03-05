@@ -3,6 +3,6 @@
 
 namespace AlecRabbit\Tools\Reports\Formatters\Contracts;
 
-interface BenchmarkReportFormatterInterface
+interface BenchmarkReportFormatterInterface extends FormatterInterface
 {
 }

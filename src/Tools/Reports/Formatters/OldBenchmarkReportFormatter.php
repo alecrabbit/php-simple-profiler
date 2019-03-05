@@ -4,7 +4,7 @@ namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\OldBenchmarkReport;
-use AlecRabbit\Tools\Reports\Factory;
+use AlecRabbit\Tools\Reports\OldFactory;
 use function AlecRabbit\array_is_homogeneous;
 
 class OldBenchmarkReportFormatter extends OldReportFormatter
@@ -30,7 +30,7 @@ class OldBenchmarkReportFormatter extends OldReportFormatter
         /** @var BenchmarkFunction $function */
         foreach ($this->report->getFunctions() as $name => $function) {
             $str .=
-                Factory::getBenchmarkFunctionFormatter()
+                OldFactory::getBenchmarkFunctionFormatter()
                     ->noReturnIf($equalReturns)
                     ->process($function);
         }

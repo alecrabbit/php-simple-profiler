@@ -7,7 +7,7 @@
 
 namespace Tests\Unit;
 
-use AlecRabbit\Tools\Reports\Factory;
+use AlecRabbit\Tools\Reports\OldFactory;
 use PHPUnit\Framework\TestCase;
 
 class FactoryTest extends TestCase
@@ -18,7 +18,7 @@ class FactoryTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->assertInstanceOf(
             UnimplementedReportable::class,
-            Factory::makeReport(new UnimplementedReportable())
+            OldFactory::makeReport(new UnimplementedReportable())
         );
     }
     /** @test */
@@ -27,7 +27,7 @@ class FactoryTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->assertInstanceOf(
             UnimplementedReport::class,
-            Factory::makeFormatter(new UnimplementedReport())
+            OldFactory::makeFormatter(new UnimplementedReport())
         );
     }
 }

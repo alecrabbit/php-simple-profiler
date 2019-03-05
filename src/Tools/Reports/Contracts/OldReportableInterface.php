@@ -7,6 +7,7 @@
 
 namespace AlecRabbit\Tools\Reports\Contracts;
 
-interface ReportableInterface
+interface OldReportableInterface
 {
+
 }

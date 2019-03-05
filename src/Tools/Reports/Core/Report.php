@@ -9,15 +9,12 @@ namespace AlecRabbit\Tools\Reports\Core;
 
 use AlecRabbit\Tools\Reports\Contracts\OldReportInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
-use AlecRabbit\Tools\Reports\Factory;
+use AlecRabbit\Tools\Reports\OldFactory;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\OldFormatter;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\OldFormatterInterface;
 
 abstract class Report implements ReportInterface
 {
-    /** @var ReportInterface */
-    protected $report;
-
     abstract protected static function getFormatter(): FormatterInterface;
 
     /**
@@ -26,6 +23,6 @@ abstract class Report implements ReportInterface
     public function __toString(): string
     {
         return
-            static::getFormatter()->process($this->report);
+            static::getFormatter()->process($this);
     }
 }

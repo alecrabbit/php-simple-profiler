@@ -3,9 +3,11 @@
 namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
+use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
+use AlecRabbit\Tools\Reports\Factory;
 use AlecRabbit\Tools\Reports\OldBenchmarkReport;
 use AlecRabbit\Tools\Reports\Contracts\OldReportInterface;
-use AlecRabbit\Tools\Reports\Factory;
+use AlecRabbit\Tools\Reports\OldFactory;
 use function AlecRabbit\array_is_homogeneous;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkReportFormatterInterface;
 
@@ -19,7 +21,7 @@ class BenchmarkReportFormatter extends ReportFormatterInterface implements Bench
     /**
      * {@inheritdoc}
      */
-    public function process(OldReportInterface $report): string
+    public function process(ReportInterface $report): string
     {
         $this->report = $report;
         $str = 'Results:' . PHP_EOL;

@@ -8,12 +8,12 @@
 namespace AlecRabbit\Tools\Reports\Core;
 
 use AlecRabbit\Tools\Reports\Contracts\OldReportInterface;
-use AlecRabbit\Tools\Reports\Factory;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\OldFormatter;
+use AlecRabbit\Tools\Reports\OldFactory;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\OldFormatterInterface;
 
 abstract class OldReport implements OldReportInterface
 {
-    /** @var OldFormatter */
+    /** @var OldFormatterInterface */
     protected $formatter;
 
     /**
@@ -21,7 +21,7 @@ abstract class OldReport implements OldReportInterface
      */
     public function __construct()
     {
-        $this->formatter = Factory::makeFormatter($this);
+        $this->formatter = OldFactory::makeFormatter($this);
     }
 
     /** {@inheritdoc} */

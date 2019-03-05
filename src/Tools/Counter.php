@@ -8,13 +8,13 @@
 namespace AlecRabbit\Tools;
 
 use AlecRabbit\Tools\Contracts\CounterInterface;
-use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
-use AlecRabbit\Tools\Reports\Traits\Reportable;
+use AlecRabbit\Tools\Reports\Contracts\OldReportableInterface;
+use AlecRabbit\Tools\Reports\Traits\OldReportable;
 use AlecRabbit\Tools\Traits\CounterFields;
 
-class Counter implements CounterInterface, ReportableInterface
+class Counter implements CounterInterface, OldReportableInterface
 {
-    use CounterFields, Reportable;
+    use CounterFields, OldReportable;
 
     protected const DEFAULT_STEP = 1;
 

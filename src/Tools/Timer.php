@@ -4,13 +4,13 @@ namespace AlecRabbit\Tools;
 
 use AlecRabbit\Accessories\Pretty;
 use AlecRabbit\Tools\Contracts\TimerInterface;
-use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
-use AlecRabbit\Tools\Reports\Traits\Reportable;
+use AlecRabbit\Tools\Reports\Contracts\OldReportableInterface;
+use AlecRabbit\Tools\Reports\Traits\OldReportable;
 use AlecRabbit\Tools\Traits\TimerFields;
 
-class Timer implements TimerInterface, ReportableInterface
+class Timer implements TimerInterface, OldReportableInterface
 {
-    use TimerFields, Reportable;
+    use TimerFields, OldReportable;
 
     /**
      * Timer constructor.

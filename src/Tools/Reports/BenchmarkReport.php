@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports;
 
+use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\OldBenchmark;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
@@ -19,9 +20,9 @@ class BenchmarkReport extends Report implements BenchmarkReportInterface
 
     /**
      * BenchmarkReport constructor.
-     * @param OldBenchmark $benchmark
+     * @param Benchmark $benchmark
      */
-    public function __construct(OldBenchmark $benchmark)
+    public function __construct(Benchmark $benchmark)
     {
         $this->profiler = $benchmark->getProfiler();
         $this->memoryUsageReport = $benchmark->getMemoryUsageReport();
@@ -95,7 +96,7 @@ class BenchmarkReport extends Report implements BenchmarkReportInterface
     protected static function getFormatter(): FormatterInterface
     {
         return
-            Factory::getFormatterFor(static::class);
+            Factory::getBenchmarkReportFormatter();
     }
 
     /**
