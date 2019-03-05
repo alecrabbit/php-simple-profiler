@@ -6,12 +6,12 @@ namespace AlecRabbit\Tools\Reports;
 
 use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Counter;
-use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionFormatter;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkReportFormatter;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkFunctionFormatterInterface;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\Formatter;
 use AlecRabbit\Tools\Reports\Formatters\CounterReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\ProfilerReportFormatter;
@@ -145,9 +145,9 @@ class Factory
     }
 
     /**
-     * @return BenchmarkFunctionFormatter
+     * @return BenchmarkFunctionFormatterInterface
      */
-    public static function getBenchmarkFunctionFormatter(): BenchmarkFunctionFormatter
+    public static function getBenchmarkFunctionFormatter(): BenchmarkFunctionFormatterInterface
     {
         if (null === static::$benchmarkFunctionFormatter) {
             static::$benchmarkFunctionFormatter = new BenchmarkFunctionFormatter();
@@ -155,4 +155,15 @@ class Factory
         return
             static::$benchmarkFunctionFormatter->resetEqualReturns();
     }
+
+    /**
+     * @param BenchmarkFunctionFormatterInterface $benchmarkFunctionFormatter
+     */
+    public static function setBenchmarkFunctionFormatter(
+        BenchmarkFunctionFormatterInterface $benchmarkFunctionFormatter
+    ): void {
+        self::$benchmarkFunctionFormatter = $benchmarkFunctionFormatter;
+    }
+
+
 }
