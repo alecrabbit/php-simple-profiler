@@ -113,7 +113,7 @@ class BenchmarkTest extends TestCase
             function () {
             }
         );
-        $report = $bench->run()->getReport();
+        $report = $bench->run()->report();
         $this->assertInstanceOf(BenchmarkReport::class, $report);
         $str = (string)$report;
         $this->assertIsString($str);
@@ -157,7 +157,7 @@ class BenchmarkTest extends TestCase
                 }
             );
         /** @var BenchmarkReport $report */
-        $report = $bench->run()->getReport();
+        $report = $bench->run()->report();
         $this->assertInstanceOf(BenchmarkReport::class, $report);
         $this->assertEquals($iterations * 2, $report->getDoneIterationsCombined());
         $this->assertEquals($iterations * 2, $report->getDoneIterations());
@@ -241,7 +241,7 @@ class BenchmarkTest extends TestCase
             }
         );
         /** @var BenchmarkReport $report */
-        $report = $this->bench->run()->getReport();
+        $report = $this->bench->run()->report();
         $this->assertInstanceOf(BenchmarkReport::class, $report);
         $str = (string)$report;
         $this->assertIsString($str);
@@ -286,7 +286,7 @@ class BenchmarkTest extends TestCase
                 }
             );
         /** @var BenchmarkReport $report */
-        $report = $this->bench->run()->getReport();
+        $report = $this->bench->run()->report();
         $this->assertInstanceOf(BenchmarkReport::class, $report);
         $str = (string)$report;
         $this->assertIsString($str);
