@@ -42,8 +42,20 @@ $benchmark
     ->addFunction('hrtime', true); 
 $benchmark
     ->addFunction('microtime', true);
-echo $benchmark->run()->report() . PHP_EOL;
+echo $benchmark->run()->noReturns()->report() . PHP_EOL;
 echo $benchmark->stat() . PHP_EOL;
+```
+Output will be something like:
+```
+Results:
+Benchmark:
+1.  150.1ns (  0.00%) ⟨1⟩ hrtime(boolean) 
+2.  157.7ns (  5.07%) ⟨2⟩ microtime(boolean) 
+Benchmarked: 2 
+Memory: 0.88MB(0.92MB) Real: 2.00MB(2.00MB)
+
+Done in: 2.0s
+
 ```
 ###### For more details see [examples](https://github.com/alecrabbit/php-simple-profiler/tree/master/examples)
 > Note: Some examples could be not up to date... WIP
