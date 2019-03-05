@@ -145,14 +145,14 @@ class Factory
     }
 
     /**
-     * @param BenchmarkFunction $function
      * @return BenchmarkFunctionFormatter
      */
-    public static function getBenchmarkFunctionFormatter(BenchmarkFunction $function): BenchmarkFunctionFormatter
+    public static function getBenchmarkFunctionFormatter(): BenchmarkFunctionFormatter
     {
-//        if (null === static::$benchmarkFunctionFormatter) {
-//            static::$benchmarkFunctionFormatter = new BenchmarkFunctionFormatter($function);
-//        }
-        return new BenchmarkFunctionFormatter($function);
+        if (null === static::$benchmarkFunctionFormatter) {
+            static::$benchmarkFunctionFormatter = new BenchmarkFunctionFormatter();
+        }
+        return
+            static::$benchmarkFunctionFormatter->resetEqualReturns();
     }
 }

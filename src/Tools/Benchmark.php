@@ -258,20 +258,20 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringConsta
             );
     }
 
-    /**
-     * @return $this
-     */
-    public function noReturns(): self
-    {
-        $this->showReturns = false;
-        /** @var $function BenchmarkFunction */
-        if (!empty($this->functions)) {
-            foreach ($this->functions as $function) {
-                $function->setShowReturns(false);
-            }
-        }
-        return $this;
-    }
+//    /**
+//     * @return $this
+//     */
+//    public function noReturns(): self
+//    {
+//        $this->showReturns = false;
+//        /** @var $function BenchmarkFunction */
+//        if (!empty($this->functions)) {
+//            foreach ($this->functions as $function) {
+//                $function->setShowReturns(false);
+//            }
+//        }
+//        return $this;
+//    }
 
     /**
      * {@inheritdoc}

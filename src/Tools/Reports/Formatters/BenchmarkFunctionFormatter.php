@@ -20,11 +20,6 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
     /** @var bool */
     protected $withResults = true;
 
-    public function __construct(BenchmarkFunction $function)
-    {
-        $this->function = $function;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -37,8 +32,18 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
     /**
      * {@inheritdoc}
      */
-    public function process(): string
+    public function resetEqualReturns(): BenchmarkFunctionFormatter
     {
+        return
+            $this->noResultsIf();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function process(BenchmarkFunction $function = null): string
+    {
+        $this->function = $function;
         return
             $this->formatBenchmarkRelative() .
             (empty($exception = $this->formatException()) ?

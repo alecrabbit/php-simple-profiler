@@ -8,10 +8,11 @@ use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\Base\Report;
+use AlecRabbit\Tools\Reports\Contracts\BenchmarkReportInterface;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
-class BenchmarkReport extends Report
+class BenchmarkReport extends Report implements BenchmarkReportInterface
 {
     use BenchmarkFields;
 
@@ -98,5 +99,13 @@ class BenchmarkReport extends Report
     public function getFunctions(): array
     {
         return $this->functions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function noReturns(): BenchmarkReportInterface
+    {
+        return $this;
     }
 }

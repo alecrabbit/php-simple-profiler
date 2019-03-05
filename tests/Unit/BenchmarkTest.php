@@ -24,10 +24,10 @@ class BenchmarkTest extends TestCase
     public function instance(): void
     {
         $this->assertInstanceOf(Benchmark::class, $this->bench);
-        $this->assertInstanceOf(BenchmarkReport::class, $this->bench->run()->getReport());
+        $this->assertInstanceOf(BenchmarkReport::class, $this->bench->run()->report());
         $b = new Benchmark();
         $this->expectException(\RuntimeException::class);
-        $this->assertInstanceOf(BenchmarkReport::class, $b->getReport());
+        $this->assertInstanceOf(BenchmarkReport::class, $b->report());
     }
 
     /** @test */

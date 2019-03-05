@@ -30,9 +30,9 @@ class BenchmarkReportFormatter extends ReportFormatter
         /** @var BenchmarkFunction $function */
         foreach ($this->report->getFunctions() as $name => $function) {
             $str .=
-                Factory::getBenchmarkFunctionFormatter($function)
+                Factory::getBenchmarkFunctionFormatter()
                     ->noResultsIf($equalReturns)
-                    ->process();
+                    ->process($function);
         }
         return
             sprintf(
