@@ -104,7 +104,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringConsta
     /**
      * Launch benchmarking
      */
-    public function run(): Benchmark
+    public function run(): self
     {
         $this->launched = true;
         if ($this->onStart) {
@@ -258,7 +258,10 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringConsta
             );
     }
 
-    public function noReturns()
+    /**
+     * @return $this
+     */
+    public function noReturns(): self
     {
         $this->showReturns = false;
         /** @var $function BenchmarkFunction */
