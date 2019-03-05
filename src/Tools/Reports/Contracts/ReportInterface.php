@@ -9,6 +9,14 @@ namespace AlecRabbit\Tools\Reports\Contracts;
 
 interface ReportInterface
 {
-    /** @return string */
-    public function __toString();
+    /**
+     * @return string
+     */
+    public function __toString(): string;
+
+    /**
+     * @param ReportInterface $report
+     * @return string
+     */
+    public function process(ReportInterface $report): string;
 }

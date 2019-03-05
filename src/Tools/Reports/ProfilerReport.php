@@ -9,9 +9,9 @@ namespace AlecRabbit\Tools\Reports;
 
 use AlecRabbit\Tools\Contracts\StringConstants;
 use AlecRabbit\Tools\Profiler;
-use AlecRabbit\Tools\Reports\Base\Report;
+use AlecRabbit\Tools\Reports\Core\OldReport;
 
-class ProfilerReport extends Report implements StringConstants
+class ProfilerReport extends OldReport implements StringConstants
 {
     /** @var array */
     private $reports = [];

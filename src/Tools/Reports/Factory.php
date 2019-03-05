@@ -8,7 +8,7 @@ use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Counter;
 use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
-use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
+use AlecRabbit\Tools\Reports\Contracts\OldReportInterface;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionFormatter;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkReportFormatterInterface;
@@ -46,9 +46,9 @@ class Factory
 
     /**
      * @param ReportableInterface $reportable
-     * @return ReportInterface
+     * @return OldReportInterface
      */
-    public static function makeReport(ReportableInterface $reportable): ReportInterface
+    public static function makeReport(ReportableInterface $reportable): OldReportInterface
     {
         if ($reportable instanceof Timer) {
             return
@@ -70,10 +70,10 @@ class Factory
     }
 
     /**
-     * @param ReportInterface $report
+     * @param OldReportInterface $report
      * @return OldFormatter
      */
-    public static function makeFormatter(ReportInterface $report): OldFormatter
+    public static function makeFormatter(OldReportInterface $report): OldFormatter
     {
         if ($report instanceof TimerReport) {
             return

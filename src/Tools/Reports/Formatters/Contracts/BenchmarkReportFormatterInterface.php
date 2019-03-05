@@ -5,5 +5,4 @@ namespace AlecRabbit\Tools\Reports\Formatters\Contracts;
 
 interface BenchmarkReportFormatterInterface
 {
-
 }

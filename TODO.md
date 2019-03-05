@@ -6,10 +6,12 @@
 - [ ] custom formatters as parameters
 - [ ] separate `Counter` in two classes - `SimpleCounter` and `ExtendedCounter`
 
+- [ ] Delete method `getReport()` (0.6.0)
+
 - [x] Method `getReport()` deprecated  (0.5.1)
 
-- [x] show 'All returns are equal: _result_' instead of actual results (0.5.0)
-- [x] change method `progressBar()` to `showProgressBy()` (0.5.0)
+- [x] show 'All returns are equal: _result_' instead of actual results for each function (0.5.0)
+- [x] rename method `progressBar()` to `showProgressBy()` (0.5.0)
 - [x] throw an exception when `Benchmark::getReport()` called before `run()` (0.5.0)
 
 - [x] improve `ProfileReportFormatter` (0.4.1)

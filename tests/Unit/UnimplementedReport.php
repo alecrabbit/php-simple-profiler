@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
+use AlecRabbit\Tools\Reports\Contracts\OldReportInterface;
 
-class UnimplementedReport implements ReportInterface
+class UnimplementedReport implements OldReportInterface
 {
     public function __toString()
     {

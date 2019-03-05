@@ -3,19 +3,19 @@
 namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Tools\Contracts\StringConstants;
-use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
+use AlecRabbit\Tools\Reports\Contracts\OldReportInterface;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\OldFormatter;
 
 abstract class OldReportFormatter implements OldFormatter, StringConstants
 {
-    /** @var ReportInterface */
+    /** @var OldReportInterface */
     protected $report;
 
     /**
      * Formatter constructor.
-     * @param ReportInterface $report
+     * @param OldReportInterface $report
      */
-    public function __construct(ReportInterface $report)
+    public function __construct(OldReportInterface $report)
     {
         $this->report = $report;
     }

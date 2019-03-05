@@ -5,29 +5,29 @@
  * Time: 20:57
  */
 
-namespace AlecRabbit\Tools\Reports\Base;
+namespace AlecRabbit\Tools\Reports\Core;
 
+use AlecRabbit\Tools\Reports\Contracts\OldReportInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Factory;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\OldFormatter;
 
 abstract class Report implements ReportInterface
 {
-    /** @var OldFormatter */
-    protected $formatter;
+    /** @var ReportInterface */
+    protected $report;
 
-    /**
-     * Report constructor.
-     */
-    public function __construct()
+    public function process(ReportInterface $report): string
     {
-        $this->formatter = Factory::makeFormatter($this);
+        // TODO: Implement process() method.
     }
 
-    /** {@inheritdoc} */
+    /**
+     * {@inheritdoc}
+     */
     public function __toString(): string
     {
         return
-            $this->formatter->process();
+            $this->process($this->report);
     }
 }

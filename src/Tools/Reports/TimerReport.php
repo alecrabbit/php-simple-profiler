@@ -7,11 +7,11 @@
 
 namespace AlecRabbit\Tools\Reports;
 
-use AlecRabbit\Tools\Reports\Base\Report;
+use AlecRabbit\Tools\Reports\Core\OldReport;
 use AlecRabbit\Tools\Timer;
 use AlecRabbit\Tools\Traits\TimerFields;
 
-class TimerReport extends Report
+class TimerReport extends OldReport
 {
     use TimerFields;
 
