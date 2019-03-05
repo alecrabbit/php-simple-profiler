@@ -3,13 +3,13 @@
 namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
-use AlecRabbit\Tools\Reports\BenchmarkReport;
+use AlecRabbit\Tools\Reports\OldBenchmarkReport;
 use AlecRabbit\Tools\Reports\Factory;
 use function AlecRabbit\array_is_homogeneous;
 
 class OldBenchmarkReportFormatter extends OldReportFormatter
 {
-    /** @var BenchmarkReport */
+    /** @var OldBenchmarkReport */
     protected $report;
     /** @var mixed */
     protected $lastReturn;

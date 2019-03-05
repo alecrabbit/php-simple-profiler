@@ -12,7 +12,7 @@ use AlecRabbit\Tools\Reports\Contracts\BenchmarkReportInterface;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
-class BenchmarkReport extends OldReport implements BenchmarkReportInterface
+class OldBenchmarkReport extends OldReport implements BenchmarkReportInterface
 {
     use BenchmarkFields;
 

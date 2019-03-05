@@ -3,7 +3,7 @@
 namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
-use AlecRabbit\Tools\Reports\BenchmarkReport;
+use AlecRabbit\Tools\Reports\OldBenchmarkReport;
 use AlecRabbit\Tools\Reports\Contracts\OldReportInterface;
 use AlecRabbit\Tools\Reports\Factory;
 use function AlecRabbit\array_is_homogeneous;
@@ -11,7 +11,7 @@ use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkReportFormatterInterf
 
 class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkReportFormatterInterface
 {
-    /** @var BenchmarkReport */
+    /** @var OldBenchmarkReport */
     protected $report;
     /** @var mixed */
     protected $lastReturn;

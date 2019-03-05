@@ -9,7 +9,7 @@ namespace Tests\Unit;
 
 use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
-use AlecRabbit\Tools\Reports\BenchmarkReport;
+use AlecRabbit\Tools\Reports\OldBenchmarkReport;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -24,10 +24,10 @@ class BenchmarkTest extends TestCase
     public function instance(): void
     {
         $this->assertInstanceOf(Benchmark::class, $this->bench);
-        $this->assertInstanceOf(BenchmarkReport::class, $this->bench->run()->report());
+        $this->assertInstanceOf(OldBenchmarkReport::class, $this->bench->run()->report());
         $b = new Benchmark();
         $this->expectException(\RuntimeException::class);
-        $this->assertInstanceOf(BenchmarkReport::class, $b->report());
+        $this->assertInstanceOf(OldBenchmarkReport::class, $b->report());
     }
 
     /** @test */
@@ -56,7 +56,7 @@ class BenchmarkTest extends TestCase
         $this->bench
             ->run();
         $report = $this->bench->getReport();
-        $this->assertInstanceOf(BenchmarkReport::class, $report);
+        $this->assertInstanceOf(OldBenchmarkReport::class, $report);
         $str = (string)$report;
         $this->assertIsString($str);
         $this->assertContains('Added First(1)', $str);
@@ -114,7 +114,7 @@ class BenchmarkTest extends TestCase
             }
         );
         $report = $bench->run()->report();
-        $this->assertInstanceOf(BenchmarkReport::class, $report);
+        $this->assertInstanceOf(OldBenchmarkReport::class, $report);
         $str = (string)$report;
         $this->assertIsString($str);
         $this->assertContains('Done in', $bench->stat());
@@ -156,9 +156,9 @@ class BenchmarkTest extends TestCase
                     throw new \Exception($str_exception);
                 }
             );
-        /** @var BenchmarkReport $report */
+        /** @var OldBenchmarkReport $report */
         $report = $bench->run()->report();
-        $this->assertInstanceOf(BenchmarkReport::class, $report);
+        $this->assertInstanceOf(OldBenchmarkReport::class, $report);
         $this->assertEquals($iterations * 2, $report->getDoneIterationsCombined());
         $this->assertEquals($iterations * 2, $report->getDoneIterations());
         foreach ($report->getFunctions() as $name => $function) {
@@ -240,9 +240,9 @@ class BenchmarkTest extends TestCase
             function () {
             }
         );
-        /** @var BenchmarkReport $report */
+        /** @var OldBenchmarkReport $report */
         $report = $this->bench->run()->report();
-        $this->assertInstanceOf(BenchmarkReport::class, $report);
+        $this->assertInstanceOf(OldBenchmarkReport::class, $report);
         $str = (string)$report;
         $this->assertIsString($str);
         $this->assertContains('Done in', $this->bench->stat());
@@ -285,9 +285,9 @@ class BenchmarkTest extends TestCase
                     throw new \Exception('Simulated Exception');
                 }
             );
-        /** @var BenchmarkReport $report */
+        /** @var OldBenchmarkReport $report */
         $report = $this->bench->run()->report();
-        $this->assertInstanceOf(BenchmarkReport::class, $report);
+        $this->assertInstanceOf(OldBenchmarkReport::class, $report);
         $str = (string)$report;
         $this->assertIsString($str);
         $this->assertContains('Done in', $this->bench->stat());

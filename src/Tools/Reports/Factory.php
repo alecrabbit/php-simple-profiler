@@ -64,7 +64,7 @@ class Factory
         }
         if ($reportable instanceof Benchmark) {
             return
-                new BenchmarkReport($reportable);
+                new OldBenchmarkReport($reportable);
         }
         throw new \RuntimeException('Attempt to create unimplemented report for: ' . typeOf($reportable));
     }
@@ -87,7 +87,7 @@ class Factory
             return
                 self::getProfilerReportFormatter($report);
         }
-        if ($report instanceof BenchmarkReport) {
+        if ($report instanceof OldBenchmarkReport) {
             return
                 self::getOldBenchmarkReportFormatter($report);
         }
@@ -134,10 +134,10 @@ class Factory
     }
 
     /**
-     * @param BenchmarkReport $report
+     * @param OldBenchmarkReport $report
      * @return OldBenchmarkReportFormatter
      */
-    protected static function getOldBenchmarkReportFormatter(BenchmarkReport $report): OldBenchmarkReportFormatter
+    protected static function getOldBenchmarkReportFormatter(OldBenchmarkReport $report): OldBenchmarkReportFormatter
     {
 //        if (null === static::$benchmarkReportFormatter) {
 //            static::$benchmarkReportFormatter = new BenchmarkReportFormatter($report);
