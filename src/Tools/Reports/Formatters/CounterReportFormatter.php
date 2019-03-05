@@ -19,7 +19,7 @@ class CounterReportFormatter extends ReportFormatter
     /**
      * {@inheritdoc}
      */
-    public function getString(): string
+    public function process(): string
     {
         if (DEFAULT_NAME === $this->report->getName()) {
             return $this->simple();

@@ -17,7 +17,7 @@
 VERSION ^0.4 || ^0.5
 
 ### Installation
-For now this package is suggested to be used in dev process for debugging of simple scripts
+For now this package is suggested to be used in dev process
 
 ```bash
 composer require --dev alecrabbit/php-simple-profiler
@@ -42,11 +42,11 @@ $benchmark
     ->addFunction('hrtime', true); 
 $benchmark
     ->addFunction('microtime', true);
-echo $benchmark->run()->getReport() . PHP_EOL;
+echo $benchmark->run()->report() . PHP_EOL;
 echo $benchmark->stat() . PHP_EOL;
 ```
 ###### For more details see [examples](https://github.com/alecrabbit/php-simple-profiler/tree/master/examples)
-##### Note: Some examples could be not up to date... WIP
+> Note: Some examples could be not up to date... WIP
 
 ### Benchmark classes
  
@@ -65,7 +65,7 @@ Let's say you want to know which is faster `call_user_func($func)` or `$func()`.
 ```php
 $b = new BenchmarkSymfonyPB(900000) // with Symfony Progress bar, 900000 measurments
 ``` 
-###### Note: Xdebug extension slowing things down a lot! Disable it (I'm using two different images [w/o Xdebug](https://github.com/alecrabbit/php-simple-profiler/tree/master/docker-compose.yml) and [with Xdebug](https://github.com/alecrabbit/php-simple-profiler/tree/master/docker-compose-debug.yml))
+> Note: Xdebug extension slowing things down a lot! Disable it (I'm using two different images [w/o Xdebug](https://github.com/alecrabbit/php-simple-profiler/tree/master/docker-compose.yml) and [with Xdebug](https://github.com/alecrabbit/php-simple-profiler/tree/master/docker-compose-debug.yml))
 
 Then you have to add functions to test. But first let's add a closure:
 ```php
@@ -87,24 +87,22 @@ $b->run();
 ```
 Getting results
 ```php
-$report = $b->getReport(); // you can get report object and use data from it 
+$report = $b->report(); // you can get report object and use data from it 
 echo $report . PHP_EOL; // or you can print it by default formatter
 echo $b->stat() . PHP_EOL;
 ```
 Results will be something like that
 ```
+Results:
 Benchmark:
-1.  175.5ns (  0.00%) $func(array)
+1.  219.3ns (  0.00%) $func(array) $func(...$args)
+2.  287.4ns ( 31.09%) call_user_func(array) \call_user_func($func, ...$args)
+All returns are equal: 
 integer(6) 
-2.  294.4ns ( 67.71%) call_user_func(Closure, array) 
-integer(6) 
+Benchmarked: 2 
+Memory: 0.87MB(0.91MB) Real: 2.00MB(2.00MB)
 
-Memory: 0.86MB(0.91MB) Real: 2.00MB(2.00MB)
-Counter[added]: Value: 2, Step: 1, Bumped: +2 -0, Path: 2, Length: 2, Max: 2, Min: 0, Diff: 2 
-Counter[benchmarked]: Value: 2, Step: 1, Bumped: +2 -0, Path: 2, Length: 2, Max: 2, Min: 0, Diff: 2 
-Elapsed: 1.1s 
-
-Done in: 1.1s Memory: 0.86MB(0.91MB) Real: 2.00MB(2.00MB)
+Done in: 1.1s
 ```
 ### Profiler::class
 Profiler is a kinda wrapper for Counter and Timer in case if you need them both.
@@ -117,7 +115,7 @@ for ($i = 0; $i < 100; $i++) {
     $profiler->timer()->check();
 }
 
-echo $profiler->getReport() . PHP_EOL;
+echo $profiler->report() . PHP_EOL;
 ```
 ### Counter::class
 // todo 

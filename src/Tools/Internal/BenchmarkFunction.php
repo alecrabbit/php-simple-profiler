@@ -46,6 +46,9 @@ class BenchmarkFunction
     /** @var null|BenchmarkRelative */
     private $benchmarkRelative;
 
+    /** @var bool */
+    protected $showReturns = true;
+
     /**
      * BenchmarkFunction constructor.
      * @param callable $func
@@ -202,5 +205,21 @@ class BenchmarkFunction
             $this->setException($e);
         }
         return false;
+    }
+
+    /**
+     * @param bool $showReturns
+     */
+    public function setShowReturns(bool $showReturns): void
+    {
+        $this->showReturns = $showReturns;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowReturns(): bool
+    {
+        return $this->showReturns;
     }
 }

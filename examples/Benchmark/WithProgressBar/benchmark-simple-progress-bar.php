@@ -51,7 +51,7 @@ $benchmark
         return +'3';
     });
 
-$report = $benchmark->run()->getReport();
+$report = $benchmark->run()->report();
 echo $report . PHP_EOL;
 echo $benchmark->stat() . PHP_EOL;
 // dump($report);

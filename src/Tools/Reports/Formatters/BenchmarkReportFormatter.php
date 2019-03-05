@@ -1,13 +1,11 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
-use function AlecRabbit\is_homogeneous;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
 use AlecRabbit\Tools\Reports\Factory;
+use function AlecRabbit\array_is_homogeneous;
 
 class BenchmarkReportFormatter extends ReportFormatter
 {
@@ -19,30 +17,62 @@ class BenchmarkReportFormatter extends ReportFormatter
     /**
      * {@inheritdoc}
      */
-    public function getString(): string
+    public function process(): string
     {
-        $str = self::BENCHMARK . PHP_EOL;
+        $str = 'Results:' . PHP_EOL;
+        $added = $this->added();
+        $benchmarked = $this->benchmarked();
+        $benchmarkedAny = $this->benchmarkedAny($added, $benchmarked);
+        if ($benchmarkedAny) {
+            $str .= self::BENCHMARK . PHP_EOL;
+        }
         $equalReturns = $this->checkReturns();
         /** @var BenchmarkFunction $function */
         foreach ($this->report->getFunctions() as $name => $function) {
             $str .=
                 Factory::getBenchmarkFunctionFormatter($function)
                     ->noResultsIf($equalReturns)
-                    ->getString();
-//            $str .=
-//                (new BenchmarkFunctionFormatter($function))
-//                    ->noResultsIf($equalReturns)
-//                    ->getString();
+                    ->process();
         }
         return
             sprintf(
                 '%s%s%s%s%s',
                 $str,
-                $this->allReturnsAreEqual($equalReturns),
-                $this->countersStatistics(),
+                $benchmarkedAny ? $this->allReturnsAreEqual($equalReturns) : '',
+                $this->countersStatistics($added, $benchmarked),
                 $this->report->getMemoryUsageReport(),
                 PHP_EOL
             );
+    }
+
+    /**
+     * @return int
+     */
+    private function added(): int
+    {
+        return
+            $this->report->getProfiler()
+                ->counter(static::ADDED)->getValue();
+    }
+
+    /**
+     * @return int
+     */
+    private function benchmarked(): int
+    {
+        return
+            $this->report->getProfiler()
+                ->counter(static::BENCHMARKED)->getValue();
+    }
+
+    /**
+     * @param int $added
+     * @param int $benchmarked
+     * @return bool
+     */
+    private function benchmarkedAny(int $added, int $benchmarked): bool
+    {
+        return $added !== $added - $benchmarked;
     }
 
     /**
@@ -51,7 +81,7 @@ class BenchmarkReportFormatter extends ReportFormatter
     protected function checkReturns(): bool
     {
         return
-            is_homogeneous($this->functionsReturns());
+            array_is_homogeneous($this->functionsReturns());
     }
 
     /**
@@ -69,32 +99,33 @@ class BenchmarkReportFormatter extends ReportFormatter
 
     private function allReturnsAreEqual(bool $equalReturns): string
     {
-        if (!$equalReturns) {
-            return '';
+        if ($equalReturns) {
+            return
+                sprintf(
+                    '%s %s%s %s',
+                    'All returns are equal:',
+                    PHP_EOL,
+                    BenchmarkFunctionFormatter::returnToString($this->lastReturn),
+                    PHP_EOL
+                );
         }
-        return
-            sprintf(
-                '%s %s%s %s',
-                'All returns are equal:',
-                PHP_EOL,
-                BenchmarkFunctionFormatter::returnToString($this->lastReturn),
-                PHP_EOL
-            );
+        return '';
     }
 
     /**
+     * @param int $added
+     * @param int $benchmarked
      * @return string
      */
-    private function countersStatistics(): string
+    private function countersStatistics(int $added, int $benchmarked): string
     {
-        $added =
-            $this->report->getProfiler()
-                ->counter(static::ADDED)->getValue();
-        $benchmarked =
-            $this->report->getProfiler()
-                ->counter(static::BENCHMARKED)->getValue();
         if ($added === $benchmarked) {
-            return '';
+            return sprintf(
+                '%s: %s %s',
+                static::BENCHMARKED,
+                $benchmarked,
+                PHP_EOL
+            );
         }
 
         return

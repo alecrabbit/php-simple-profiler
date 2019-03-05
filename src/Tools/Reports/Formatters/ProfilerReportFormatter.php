@@ -16,7 +16,7 @@ class ProfilerReportFormatter extends ReportFormatter
     /** @var string */
     protected $elapsed = '';
 
-    public function getString(): string
+    public function process(): string
     {
         return
             sprintf(
