@@ -136,7 +136,7 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
         try {
             $str = var_export($executionReturn, true);
         } catch (\Exception $e) {
-            $str = '[' . typeOf($e) . ']' . $e->getMessage();
+            $str = '[' . typeOf($e) . '] ' . $e->getMessage();
         }
         return
             $type === 'array' ?
