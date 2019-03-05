@@ -7,6 +7,7 @@ namespace AlecRabbit\Tools\Reports\Formatters;
 use AlecRabbit\Accessories\Pretty;
 use AlecRabbit\Tools\Contracts\StringConstants;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
+use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkFunctionFormatterInterface;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\Formatter;
 use function AlecRabbit\typeOf;
@@ -58,28 +59,14 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
             if ($this->withResults && $this->function->isShowReturns()) {
                 return
                     sprintf(
-                        '%s. %s (%s) %s(%s) %s %s %s %s',
-                        (string)$br->getRank(),
-                        $this->average($br->getAverage()),
-                        $this->relativePercent($br->getRelative()),
-                        $function->humanReadableName(),
-                        implode(', ', $argumentsTypes),
-                        $function->comment(),
+                        '%s %s %s %s',
+                        $this->preformatFunction($br, $function, $argumentsTypes),
                         PHP_EOL,
                         static::returnToString($executionReturn),
                         PHP_EOL
                     );
             }
-            return
-                sprintf(
-                    '%s. %s (%s) %s(%s) %s',
-                    (string)$br->getRank(),
-                    $this->average($br->getAverage()),
-                    $this->relativePercent($br->getRelative()),
-                    $function->humanReadableName(),
-                    implode(', ', $argumentsTypes),
-                    $function->comment()
-                );
+            return $this->preformatFunction($br, $function, $argumentsTypes);
         }
         return '';
     }
@@ -146,6 +133,29 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
                     $type,
                     $str
                 );
+    }
+
+    /**
+     * @param BenchmarkRelative $br
+     * @param BenchmarkFunction $function
+     * @param array $argumentsTypes
+     * @return string
+     */
+    protected function preformatFunction(
+        BenchmarkRelative $br,
+        BenchmarkFunction $function,
+        array $argumentsTypes
+    ): string {
+        return
+            sprintf(
+                '%s. %s (%s) %s(%s) %s',
+                (string)$br->getRank(),
+                $this->average($br->getAverage()),
+                $this->relativePercent($br->getRelative()),
+                $function->humanReadableName(),
+                implode(', ', $argumentsTypes),
+                $function->comment()
+            );
     }
 
     /**
