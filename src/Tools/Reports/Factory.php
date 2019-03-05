@@ -14,7 +14,7 @@ use AlecRabbit\Tools\Reports\Formatters\BenchmarkReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkReportFormatterInterface;
 use AlecRabbit\Tools\Reports\Formatters\OldBenchmarkReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkFunctionFormatterInterface;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\Formatter;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\OldFormatter;
 use AlecRabbit\Tools\Reports\Formatters\CounterReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\ProfilerReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\TimerReportFormatter;
@@ -71,9 +71,9 @@ class Factory
 
     /**
      * @param ReportInterface $report
-     * @return Formatter
+     * @return OldFormatter
      */
-    public static function makeFormatter(ReportInterface $report): Formatter
+    public static function makeFormatter(ReportInterface $report): OldFormatter
     {
         if ($report instanceof TimerReport) {
             return

@@ -4,9 +4,9 @@ namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Tools\Contracts\StringConstants;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\Formatter;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\OldFormatter;
 
-abstract class OldReportFormatter implements Formatter, StringConstants
+abstract class OldReportFormatter implements OldFormatter, StringConstants
 {
     /** @var ReportInterface */
     protected $report;

@@ -9,10 +9,10 @@ use AlecRabbit\Tools\Contracts\StringConstants;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkFunctionFormatterInterface;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\Formatter;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\OldFormatter;
 use function AlecRabbit\typeOf;
 
-class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface, Formatter, StringConstants
+class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface, OldFormatter, StringConstants
 {
     /** @var BenchmarkFunction */
     protected $function;
