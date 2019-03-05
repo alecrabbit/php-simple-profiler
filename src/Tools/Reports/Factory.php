@@ -11,6 +11,8 @@ use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionFormatter;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkReportFormatter;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkReportFormatterInterface;
+use AlecRabbit\Tools\Reports\Formatters\OldBenchmarkReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkFunctionFormatterInterface;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\Formatter;
 use AlecRabbit\Tools\Reports\Formatters\CounterReportFormatter;
@@ -30,7 +32,7 @@ class Factory
     /** @var ProfilerReportFormatter */
     protected static $profilerReportFormatter;
 
-    /** @var BenchmarkReportFormatter */
+    /** @var OldBenchmarkReportFormatter */
     protected static $benchmarkReportFormatter;
 
     /** @var BenchmarkFunctionFormatter */
@@ -87,7 +89,7 @@ class Factory
         }
         if ($report instanceof BenchmarkReport) {
             return
-                self::getBenchmarkReportFormatter($report);
+                self::getOldBenchmarkReportFormatter($report);
         }
         throw new \RuntimeException('Attempt to create unimplemented formatter for: ' . typeOf($report));
     }
@@ -133,15 +135,27 @@ class Factory
 
     /**
      * @param BenchmarkReport $report
-     * @return BenchmarkReportFormatter
+     * @return OldBenchmarkReportFormatter
      */
-    protected static function getBenchmarkReportFormatter(BenchmarkReport $report): BenchmarkReportFormatter
+    protected static function getOldBenchmarkReportFormatter(BenchmarkReport $report): OldBenchmarkReportFormatter
     {
 //        if (null === static::$benchmarkReportFormatter) {
 //            static::$benchmarkReportFormatter = new BenchmarkReportFormatter($report);
 //        }
         return
-            new BenchmarkReportFormatter($report);
+            new OldBenchmarkReportFormatter($report);
+    }
+
+    /**
+     * @return BenchmarkReportFormatterInterface
+     */
+    public static function getBenchmarkReportFormatter(): BenchmarkReportFormatterInterface
+    {
+//        if (null === static::$benchmarkReportFormatter) {
+//            static::$benchmarkReportFormatter = new BenchmarkReportFormatter($report);
+//        }
+        return
+            new BenchmarkReportFormatter();
     }
 
     /**

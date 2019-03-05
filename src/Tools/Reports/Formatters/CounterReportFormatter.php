@@ -11,7 +11,7 @@ namespace AlecRabbit\Tools\Reports\Formatters;
 use AlecRabbit\Tools\Reports\CounterReport;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
-class CounterReportFormatter extends ReportFormatter
+class CounterReportFormatter extends OldReportFormatter
 {
     /** @var CounterReport */
     protected $report;

@@ -8,7 +8,7 @@ use AlecRabbit\Tools\Reports\ProfilerReport;
 use AlecRabbit\Tools\Reports\TimerReport;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
-class ProfilerReportFormatter extends ReportFormatter
+class ProfilerReportFormatter extends OldReportFormatter
 {
     /** @var ProfilerReport */
     protected $report;

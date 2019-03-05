@@ -6,7 +6,7 @@ use AlecRabbit\Tools\Contracts\StringConstants;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\Formatter;
 
-abstract class ReportFormatter implements Formatter, StringConstants
+abstract class OldReportFormatter implements Formatter, StringConstants
 {
     /** @var ReportInterface */
     protected $report;

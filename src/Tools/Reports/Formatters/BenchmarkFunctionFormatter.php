@@ -23,7 +23,7 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
     /**
      * {@inheritdoc}
      */
-    public function noResultsIf(bool $equalReturns = false): BenchmarkFunctionFormatter
+    public function noReturnIf(bool $equalReturns = false): BenchmarkFunctionFormatter
     {
         $this->withResults = !$equalReturns;
         return $this;
@@ -35,7 +35,7 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
     public function resetEqualReturns(): BenchmarkFunctionFormatter
     {
         return
-            $this->noResultsIf();
+            $this->noReturnIf();
     }
 
     /**
