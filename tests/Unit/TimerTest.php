@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
+use AlecRabbit\Tools\Reports\TimerReport;
 use AlecRabbit\Tools\Timer;
 use PHPUnit\Framework\TestCase;
 
@@ -98,6 +99,7 @@ class TimerTest extends TestCase
         $this->assertEquals(1.0, $timer->getLastValue(), 'getCurrentValue');
         $this->assertEquals($count, $timer->getCount());
     }
+
     /** @test */
     public function timerAvgValueBoundsNotStarted(): void
     {
@@ -121,5 +123,12 @@ class TimerTest extends TestCase
     {
         $timer = new Timer();
         $this->assertEquals('0.0ns', $timer->elapsed());
+    }
+
+    /** @test */
+    public function timerReturnsReport(): void
+    {
+        $timer = new Timer();
+        $this->assertInstanceOf(TimerReport::class, $timer->report());
     }
 }
