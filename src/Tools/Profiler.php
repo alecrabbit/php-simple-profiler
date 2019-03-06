@@ -8,13 +8,13 @@
 namespace AlecRabbit\Tools;
 
 use AlecRabbit\Tools\Contracts\ProfilerInterface;
-use AlecRabbit\Tools\Reports\Contracts\OldReportableInterface;
-use AlecRabbit\Tools\Reports\Traits\OldReportable;
+use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
+use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Traits\DefaultableName;
 
-class Profiler implements ProfilerInterface, OldReportableInterface
+class Profiler implements ProfilerInterface, ReportableInterface
 {
-    use OldReportable, DefaultableName;
+    use Reportable, DefaultableName;
 
     /** @var Timer[] */
     private $timers = [];

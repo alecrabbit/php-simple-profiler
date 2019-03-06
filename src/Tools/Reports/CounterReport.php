@@ -8,10 +8,10 @@
 namespace AlecRabbit\Tools\Reports;
 
 use AlecRabbit\Tools\Counter;
-use AlecRabbit\Tools\Reports\Core\OldReport;
+use AlecRabbit\Tools\Reports\Core\Report;
 use AlecRabbit\Tools\Traits\CounterFields;
 
-class CounterReport extends OldReport
+class CounterReport extends Report
 {
     use CounterFields;
 

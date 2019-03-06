@@ -67,9 +67,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringConsta
     private function refineIterations(?int $iterations): int
     {
         $iterations = $iterations ?? self::MIN_ITERATIONS;
-        if ($iterations < self::MIN_ITERATIONS) {
-            throw new \RuntimeException(__CLASS__ . ': Iterations should greater then ' . self::MIN_ITERATIONS);
-        }
+        $this->assertIterations($iterations);
         return $iterations;
     }
 
@@ -264,5 +262,19 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringConsta
     protected function prepareForReport(): void
     {
         $this->getProfiler()->report();
+    }
+
+    /**
+     * @param int $iterations
+     */
+    protected function assertIterations(int $iterations): void
+    {
+        if ($iterations < self::MIN_ITERATIONS) {
+            throw new \RuntimeException(
+                __CLASS__ .
+                ': Number of Iterations should be greater then ' .
+                self::MIN_ITERATIONS
+            );
+        }
     }
 }

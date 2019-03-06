@@ -7,11 +7,8 @@
 
 namespace AlecRabbit\Tools\Reports\Core;
 
-use AlecRabbit\Tools\Reports\Contracts\OldReportInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
-use AlecRabbit\Tools\Reports\OldFactory;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\OldFormatterInterface;
 
 abstract class Report implements ReportInterface
 {

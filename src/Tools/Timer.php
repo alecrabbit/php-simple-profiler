@@ -4,13 +4,13 @@ namespace AlecRabbit\Tools;
 
 use AlecRabbit\Accessories\Pretty;
 use AlecRabbit\Tools\Contracts\TimerInterface;
-use AlecRabbit\Tools\Reports\Contracts\OldReportableInterface;
-use AlecRabbit\Tools\Reports\Traits\OldReportable;
+use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
+use AlecRabbit\Tools\Reports\Traits\Reportable;
 use AlecRabbit\Tools\Traits\TimerFields;
 
-class Timer implements TimerInterface, OldReportableInterface
+class Timer implements TimerInterface, ReportableInterface
 {
-    use TimerFields, OldReportable;
+    use TimerFields, Reportable;
 
     /**
      * Timer constructor.
@@ -62,7 +62,7 @@ class Timer implements TimerInterface, OldReportableInterface
     /**
      * @param int|null $iterationNumber
      */
-    private function mark(?int $iterationNumber = null): void
+    protected function mark(?int $iterationNumber = null): void
     {
         $current = $this->current();
         $this->currentValue = $current - $this->previous;
@@ -74,7 +74,7 @@ class Timer implements TimerInterface, OldReportableInterface
     /**
      * @param null|int $iterationNumber
      */
-    private function compute(?int $iterationNumber): void
+    protected function compute(?int $iterationNumber): void
     {
         if (0 !== $this->count) {
             ++$this->count;
@@ -89,7 +89,7 @@ class Timer implements TimerInterface, OldReportableInterface
     /**
      * @param null|int $iterationNumber
      */
-    private function checkMinValue(?int $iterationNumber): void
+    protected function checkMinValue(?int $iterationNumber): void
     {
         if ($this->currentValue < $this->minValue) {
             $this->minValue = $this->currentValue;
@@ -100,7 +100,7 @@ class Timer implements TimerInterface, OldReportableInterface
     /**
      * @param null|int $iterationNumber
      */
-    private function checkMaxValue(?int $iterationNumber): void
+    protected function checkMaxValue(?int $iterationNumber): void
     {
         if ($this->currentValue > $this->maxValue) {
             $this->maxValue = $this->currentValue;
@@ -108,12 +108,12 @@ class Timer implements TimerInterface, OldReportableInterface
         }
     }
 
-    private function computeAverage(): void
+    protected function computeAverage(): void
     {
         $this->avgValue = (($this->avgValue * ($this->count - 1)) + $this->currentValue) / $this->count;
     }
 
-    private function initValues(): void
+    protected function initValues(): void
     {
         $this->maxValueIteration = $this->minValueIteration = $this->count = 1;
         $this->maxValue = $this->currentValue;
@@ -127,7 +127,7 @@ class Timer implements TimerInterface, OldReportableInterface
         $this->stopped = true;
     }
 
-    private function computeElapsed(): void
+    protected function computeElapsed(): void
     {
         $this->elapsed = $this->current() - $this->creation;
     }
