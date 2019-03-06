@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AlecRabbit\Tools\Reports;
 
 use AlecRabbit\Tools\Benchmark;
-use AlecRabbit\Tools\OldBenchmark;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\Contracts\BenchmarkReportInterface;
@@ -100,7 +99,7 @@ class BenchmarkReport extends Report implements BenchmarkReportInterface
     }
 
     /**
-     * @return BenchmarkFunction[]
+     * {@inheritdoc}
      */
     public function getFunctions(): array
     {

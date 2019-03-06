@@ -40,7 +40,7 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
     /**
      * {@inheritdoc}
      */
-    public function process(BenchmarkFunction $function = null): string
+    public function process(BenchmarkFunction $function): string
     {
         $this->function = $function;
         return
