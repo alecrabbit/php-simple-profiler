@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Accessories\Pretty;
-use AlecRabbit\Tools\Contracts\StringConstants;
+use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkFunctionFormatterInterface;
 use function AlecRabbit\typeOf;
 
-class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface, StringConstants
+class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface, Strings
 {
     /** @var BenchmarkFunction */
     protected $function;

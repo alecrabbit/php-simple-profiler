@@ -7,7 +7,7 @@
 
 namespace AlecRabbit\Tools\Contracts;
 
-interface StringConstants
+interface Strings
 {
     public const COUNTERS = 'counters';
     public const TIMERS = 'timers';

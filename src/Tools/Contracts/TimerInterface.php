@@ -7,7 +7,7 @@
 
 namespace AlecRabbit\Tools\Contracts;
 
-interface TimerInterface extends StringConstants
+interface TimerInterface extends TimerValuesInterface
 {
     /**
      * @return mixed

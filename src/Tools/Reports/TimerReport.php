@@ -43,6 +43,8 @@ class TimerReport extends Report implements TimerReportInterface
             $this->elapsed = $reportable->getElapsed();
             return $this;
         }
-        throw new \RuntimeException(AbstractTimer::class . ' expected ' . typeOf($reportable) . ' given');
+        throw new \RuntimeException(
+            'Instance of ' . AbstractTimer::class . ' expected ' . typeOf($reportable) . ' given.'
+        );
     }
 }

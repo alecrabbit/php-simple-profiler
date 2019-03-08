@@ -7,15 +7,8 @@
 
 namespace AlecRabbit\Tools\Traits;
 
-use AlecRabbit\Traits\GettableName;
-
-trait CounterFields
+trait ExtendedCounterFields
 {
-    use GettableName;
-
-    /** @var int */
-    protected $value = 0;
-
     /** @var int */
     protected $max = 0;
 
@@ -29,30 +22,10 @@ trait CounterFields
     protected $length = 0;
 
     /** @var int */
-    protected $initialValue = 0;
-
-    /** @var int */
     protected $diff = 0;
 
     /** @var int */
-    protected $step = 1;
-
-    /** @var int */
-    protected $bumpedForward = 0;
-
-    /** @var int */
     protected $bumpedBack = 0;
-
-    /** @var bool */
-    protected $started = false;
-
-    /**
-     * @return int
-     */
-    public function getValue(): int
-    {
-        return $this->value;
-    }
 
     /**
      * @return int
@@ -89,34 +62,10 @@ trait CounterFields
     /**
      * @return int
      */
-    public function getInitialValue(): int
-    {
-        return $this->initialValue;
-    }
-
-    /**
-     * @return int
-     */
     public function getDiff(): int
     {
-        return $this->diff = $this->value - $this->initialValue;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getStep(): int
-    {
-        return $this->step;
-    }
-
-    /**
-     * @return int
-     */
-    public function getBumpedForward(): int
-    {
-        return $this->bumpedForward;
+        return $this->diff;
+//        return $this->diff = $this->value - $this->initialValue;
     }
 
     /**
@@ -125,13 +74,5 @@ trait CounterFields
     public function getBumpedBack(): int
     {
         return $this->bumpedBack;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isStarted(): bool
-    {
-        return $this->started;
     }
 }

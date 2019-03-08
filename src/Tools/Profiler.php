@@ -19,7 +19,7 @@ class Profiler implements ProfilerInterface, ReportableInterface
     /** @var Timer[] */
     private $timers = [];
 
-    /** @var Counter[] */
+    /** @var ExtendedCounter[] */
     private $counters = [];
 
     public function __construct()
@@ -33,13 +33,13 @@ class Profiler implements ProfilerInterface, ReportableInterface
     /**
      * @param null|string $name
      * @param string ...$suffixes
-     * @return Counter
+     * @return ExtendedCounter
      */
-    public function counter(?string $name = null, string ...$suffixes): Counter
+    public function counter(?string $name = null, string ...$suffixes): ExtendedCounter
     {
         $name = $this->prepareName($name, $suffixes);
         return
-            $this->counters[$name] ?? $this->counters[$name] = new Counter($name);
+            $this->counters[$name] ?? $this->counters[$name] = new ExtendedCounter($name);
     }
 
     /**
@@ -88,7 +88,7 @@ class Profiler implements ProfilerInterface, ReportableInterface
     }
 
     /**
-     * @return Counter[]
+     * @return ExtendedCounter[]
      */
     public function getCounters(): array
     {

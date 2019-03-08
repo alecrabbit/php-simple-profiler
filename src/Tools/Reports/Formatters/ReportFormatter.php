@@ -2,11 +2,11 @@
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
-use AlecRabbit\Tools\Contracts\StringConstants;
+use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
 
-abstract class ReportFormatter implements FormatterInterface, StringConstants
+abstract class ReportFormatter implements FormatterInterface, Strings
 {
     /** @var ReportInterface */
     protected $report;

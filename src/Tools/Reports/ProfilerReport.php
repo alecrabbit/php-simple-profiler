@@ -7,11 +7,11 @@
 
 namespace AlecRabbit\Tools\Reports;
 
-use AlecRabbit\Tools\Contracts\StringConstants;
+use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Reports\Core\Report;
 
-class ProfilerReport extends Report implements StringConstants
+class ProfilerReport extends Report implements Strings
 {
     /** @var array */
     private $reports = [];

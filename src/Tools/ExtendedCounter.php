@@ -1,20 +1,12 @@
-<?php
-/**
- * User: alec
- * Date: 14.10.18
- * Time: 2:18
- */
+<?php declare(strict_types=1);
 
 namespace AlecRabbit\Tools;
 
-use AlecRabbit\Tools\Contracts\CounterInterface;
-use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
-use AlecRabbit\Tools\Reports\Traits\HasReport;
-use AlecRabbit\Tools\Traits\CounterFields;
+use AlecRabbit\Tools\Traits\ExtendedCounterFields;
 
-class Counter implements CounterInterface, ReportableInterface
+class ExtendedCounter extends SimpleCounter
 {
-    use CounterFields, HasReport;
+    use ExtendedCounterFields;
 
     protected const DEFAULT_STEP = 1;
 
@@ -34,9 +26,9 @@ class Counter implements CounterInterface, ReportableInterface
 
     /**
      * @param int $initialValue
-     * @return Counter
+     * @return ExtendedCounter
      */
-    public function setInitialValue(int $initialValue): Counter
+    public function setInitialValue(int $initialValue): ExtendedCounter
     {
         if (false === $this->isStarted()) {
             $this->value = $this->initialValue = $this->length = $this->max = $this->min = $initialValue;
@@ -48,9 +40,9 @@ class Counter implements CounterInterface, ReportableInterface
 
     /**
      * @param null|int $step
-     * @return Counter
+     * @return ExtendedCounter
      */
-    public function setStep(?int $step = null): Counter
+    public function setStep(?int $step = null): ExtendedCounter
     {
         $step = $this->assertStep($step);
         if (false === $this->isStarted()) {
@@ -120,14 +112,11 @@ class Counter implements CounterInterface, ReportableInterface
     protected function assertTimes(int $times): int
     {
         if ($times < 1) {
-            throw new
-            \RuntimeException('Parameter 0 for bump() or bumpBack()  should be positive non-zero integer.');
+            throw new \RuntimeException(
+                'Parameter 0 for bump() or bumpBack() should be positive non-zero integer.'
+            );
         }
         return $times;
     }
 
-    protected function start(): void
-    {
-        $this->started = true;
-    }
 }
