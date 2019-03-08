@@ -11,20 +11,22 @@ use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
  */
 class HRTimerTest extends TestCase
 {
-    /** @var bool */
-    private $below73 = false;
-
     /**
      * @test
      * @throws \Exception
      */
     public function instance(): void
     {
-        if ($this->below73) {
-            $this->expectException(\RuntimeException::class);
-        }
+        $this->assertEnvironment();
         $timer = new HRTimer();
         $this->assertInstanceOf(HRTimer::class, $timer);
+    }
+
+    protected function assertEnvironment(): void
+    {
+        if (PHP_VERSION_ID < 70300 && false === HRTimer::$ignoreVersionRestrictions) {
+            $this->expectException(\RuntimeException::class);
+        }
     }
 
     /**
@@ -33,20 +35,18 @@ class HRTimerTest extends TestCase
      */
     public function timerAvgValueBounds(): void
     {
-        if ($this->below73) {
-            $this->expectException(\RuntimeException::class);
-        }
+        $this->assertEnvironment();
         $timer = new HRTimer();
-        $count = 5;
+        $count = 15;
         for ($i = 0; $i < $count; $i++) {
             $start = hrtime(true);
             $stop = $start + 1000000000;
             $timer->bounds($start, $stop);
         }
-        $this->assertEquals(1.0, $timer->getAverageValue(), 'getAvgValue');
-        $this->assertEquals(1.0, $timer->getMinValue(), 'getMinValue');
-        $this->assertEquals(1.0, $timer->getMaxValue(), 'getMaxValue');
-        $this->assertEquals(1.0, $timer->getLastValue(), 'getCurrentValue');
+        $this->assertEqualsWithDelta(1.0, $timer->getAverageValue(), 0.001);
+        $this->assertEqualsWithDelta(1.0, $timer->getMinValue(), 0.001);
+        $this->assertEqualsWithDelta(1.0, $timer->getMaxValue(), 0.001);
+        $this->assertEqualsWithDelta(1.0, $timer->getLastValue(), 0.001);
         $this->assertEquals($count, $timer->getCount());
     }
 
@@ -56,11 +56,9 @@ class HRTimerTest extends TestCase
      */
     public function timerAvgValueBoundsUSleep(): void
     {
-        if ($this->below73) {
-            $this->expectException(\RuntimeException::class);
-        }
+        $this->assertEnvironment();
         $timer = new HRTimer();
-        $count = 5;
+        $count = 15;
         for ($i = 0; $i < $count; $i++) {
             $start = hrtime(true);
             $stop = $start + 10000000;
@@ -81,43 +79,82 @@ class HRTimerTest extends TestCase
      * @test
      * @throws \Exception
      */
-    public function instanceParams(): void
+    public function timerAvgValueBoundsUSleepBelow73(): void
     {
-        if ($this->below73) {
-            $this->expectException(\RuntimeException::class);
-        }
+        HRTimer::$ignoreVersionRestrictions = true;
+        $this->assertEnvironment();
         $timer = new HRTimer();
-        $this->assertEquals(DEFAULT_NAME, $timer->getName());
-        $this->assertEquals(true, $timer->isStarted());
-        $this->assertEquals(false, $timer->isNotStarted());
-        $this->assertEquals(false, $timer->isStopped());
-        $this->assertEquals(true, $timer->isNotStopped());
-        $timer = new HRTimer(null);
-        $this->assertEquals(DEFAULT_NAME, $timer->getName());
-        $this->assertEquals(true, $timer->isStarted());
-        $this->assertEquals(false, $timer->isNotStarted());
-        $this->assertEquals(false, $timer->isStopped());
-        $this->assertEquals(true, $timer->isNotStopped());
-
-        $name = 'name';
-        $timer = new HRTimer($name, false);
-        $this->assertEquals($name, $timer->getName());
-        $this->assertEquals(false, $timer->isStarted());
-        $this->assertEquals(true, $timer->isNotStarted());
-        $this->assertEquals(false, $timer->isStopped());
-        $this->assertEquals(true, $timer->isNotStopped());
-        $timer = new HRTimer(null, false);
-        $this->assertEquals(DEFAULT_NAME, $timer->getName());
-        $this->assertEquals(false, $timer->isStarted());
-        $this->assertEquals(true, $timer->isNotStarted());
-        $this->assertEquals(false, $timer->isStopped());
-        $this->assertEquals(true, $timer->isNotStopped());
-    }
-
-    protected function setUp()
-    {
-        if (PHP_VERSION_ID < 70300) {
-            $this->below73 = true;
+        $count = 5;
+        for ($i = 0; $i < $count; $i++) {
+            $start = hrtime(true);
+            $stop = $start + 10000000;
+            $timer->bounds($start, $stop);
         }
+        $this->assertEqualsWithDelta(0.01, $timer->getAverageValue(), 0.001);
+        $this->assertEqualsWithDelta(0.01, $timer->getMinValue(), 0.001);
+        $this->assertEqualsWithDelta(0.01, $timer->getMaxValue(), 0.001);
+        $this->assertEqualsWithDelta(0.01, $timer->getLastValue(), 0.001);
+        $this->assertEquals($count, $timer->getCount());
+        $start = hrtime(true);
+        $stop = $start + 50000000;
+        $timer->bounds($start, $stop);
+        $this->assertEqualsWithDelta(0.05, $timer->getMaxValue(), 0.001);
     }
+
+    /**
+     * @test
+     * @dataProvider parametersHRTimer
+     * @param array $expected
+     * @param array $params
+     * @throws \Exception
+     */
+    public function instanceParams(array $expected, array $params): void
+    {
+        $this->assertEnvironment();
+        $timer = new HRTimer(...$params);
+        [$name, $isStarted, $isNotStarted, $isStopped, $isNotStopped] = $expected;
+        $this->assertEquals($name, $timer->getName());
+        $this->assertEquals($isStarted, $timer->isStarted());
+        $this->assertEquals($isNotStarted, $timer->isNotStarted());
+        $this->assertEquals($isStopped, $timer->isStopped());
+        $this->assertEquals($isNotStopped, $timer->isNotStopped());
+    }
+
+    /**
+     * @test
+     * @dataProvider parametersHRTimer
+     * @param array $expected
+     * @param array $params
+     * @throws \Exception
+     */
+    public function instanceParamsBelow73(array $expected, array $params): void
+    {
+        HRTimer::$ignoreVersionRestrictions = true;
+        $this->assertEnvironment();
+        $timer = new HRTimer(...$params);
+        [$name, $isStarted, $isNotStarted, $isStopped, $isNotStopped] = $expected;
+        $this->assertEquals($name, $timer->getName());
+        $this->assertEquals($isStarted, $timer->isStarted());
+        $this->assertEquals($isNotStarted, $timer->isNotStarted());
+        $this->assertEquals($isStopped, $timer->isStopped());
+        $this->assertEquals($isNotStopped, $timer->isNotStopped());
+    }
+
+    /**
+     * @return array
+     */
+    public function parametersHRTimer(): array
+    {
+        $name = 'name';
+        return [
+            [[DEFAULT_NAME, true, false, false, true], []],
+            [[DEFAULT_NAME, true, false, false, true], [null, true]],
+            [[DEFAULT_NAME, true, false, false, true], [DEFAULT_NAME]],
+            [[$name, true, false, false, true], [$name]],
+            [[$name, true, false, false, true], [$name, true]],
+            [[$name, false, true, false, true], [$name, false]],
+            [[DEFAULT_NAME, false, true, false, true], [null, false]],
+        ];
+    }
+
 }

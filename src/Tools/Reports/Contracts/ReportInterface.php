@@ -16,8 +16,9 @@ interface ReportInterface
 
     /**
      * @param ReportableInterface $reportable
+     * @return ReportInterface
      * @throws \RuntimeException
      * @throws \Exception
      */
-    public function buildOn(ReportableInterface $reportable): void;
+    public function buildOn(ReportableInterface $reportable): ReportInterface;
 }

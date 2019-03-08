@@ -4,10 +4,10 @@ namespace AlecRabbit\Tools\Reports;
 
 use AlecRabbit\Tools\AbstractTimer;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
+use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Contracts\TimerReportInterface;
 use AlecRabbit\Tools\Reports\Core\Report;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
-use AlecRabbit\Tools\Traits\HasStartAndStop;
 use AlecRabbit\Tools\Traits\TimerFields;
 use function AlecRabbit\typeOf;
 
@@ -22,28 +22,27 @@ class TimerReport extends Report implements TimerReportInterface
 
     /**
      * @param ReportableInterface $reportable
+     * @return Contracts\ReportInterface
      * @throws \RuntimeException
      * @throws \Exception
      */
-    public function buildOn(ReportableInterface $reportable): void
+    public function buildOn(ReportableInterface $reportable): ReportInterface
     {
         if ($reportable instanceof AbstractTimer) {
             $this->name = $reportable->getName();
             $this->creationTime = $reportable->getCreation();
-            $count = $reportable->getCount();
-            $this->elapsed = $reportable->getElapsed();
-            $this->stopped = $reportable->isStopped();
-            $this->currentValue = $reportable->getLastValue();
-            $this->minValueIteration = $reportable->getMinValueIteration();
-            $this->maxValueIteration = $reportable->getMaxValueIteration();
-            $this->avgValue = $reportable->getAverageValue();
+            $this->count = $count = $reportable->getCount();
             $this->minValue = ($count === 1) ? $reportable->getLastValue() : $reportable->getMinValue();
             $this->maxValue = $reportable->getMaxValue();
+            $this->maxValueIteration = $reportable->getMaxValueIteration();
+            $this->minValueIteration = $reportable->getMinValueIteration();
             $this->started = $reportable->isStarted();
             $this->stopped = $reportable->isStopped();
-            $this->count = $count;
-        } else {
-            throw new \RuntimeException(AbstractTimer::class . ' expected ' . typeOf($reportable) . ' given');
+            $this->avgValue = $reportable->getAverageValue();
+            $this->currentValue = $reportable->getLastValue();
+            $this->elapsed = $reportable->getElapsed();
+            return $this;
         }
+        throw new \RuntimeException(AbstractTimer::class . ' expected ' . typeOf($reportable) . ' given');
     }
 }

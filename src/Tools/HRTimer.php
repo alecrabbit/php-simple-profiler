@@ -8,7 +8,7 @@ class HRTimer extends AbstractTimer
 {
     public const VALUE_COEFFICIENT = HRTIMER_VALUE_COEFFICIENT;
 
-    public static $forceInstance = false;
+    public static $ignoreVersionRestrictions = false;
 
     /**
      * @return int
@@ -19,22 +19,21 @@ class HRTimer extends AbstractTimer
             (int)hrtime(true);
     }
 
-    protected function checkConditions(): void
+    protected function checkEnvironment(): void
     {
-        if (PHP_VERSION_ID < 70300 && false === static::$forceInstance) {
-            throw new \RuntimeException(
-                'Your php version is below 7.3.' .
-                ' ' . static::class . ' uses hrtime() function of PHP ^7.3.' .
-                ' There no sense in using polyfill function.' .
-                ' Use Timer::class instance instead.'
-            );
+        if (PHP_VERSION_ID < 70300 && false === static::$ignoreVersionRestrictions) {
+            // `HRTimer::class` uses `hrtime()` function of PHP ^7.3.
+            // There is almost no sense in using polyfill function.
+            // If you're REALLY need to use HRTimer set `$ignoreVersionRestrictions` to true.
+            // Otherwise use `Timer::class` instance instead.
+            throw new \RuntimeException('[' . static::class . '] Your php version is below 7.3.0.');
         }
         // @codeCoverageIgnoreStart
         if (PHP_INT_SIZE < INT_SIZE_64BIT) {
-            throw new \RuntimeException(
-                ' ' . static::class . ' can be used in 64bit environments only.' .
-                ' You\'re using 32bit php installation'
-            );
+            // `HRTimer::class` is designed and tested in 64bit environment
+            // So it can be used in 64bit environments only
+            // Maybe with some minor modification it can run on 32bit installations too
+            throw new \RuntimeException(' You\'re using 32bit php installation.');
         }
         // @codeCoverageIgnoreEnd
     }

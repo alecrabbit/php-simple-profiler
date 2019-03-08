@@ -15,7 +15,7 @@ abstract class Report implements ReportInterface
 {
     abstract protected static function getFormatter(): FormatterInterface;
 
-    abstract public function buildOn(ReportableInterface $reportable): void;
+    abstract public function buildOn(ReportableInterface $reportable): ReportInterface;
 
     /**
      * {@inheritdoc}

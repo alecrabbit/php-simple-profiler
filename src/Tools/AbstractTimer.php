@@ -22,17 +22,16 @@ abstract class AbstractTimer implements TimerInterface, ReportableInterface
      */
     public function __construct(?string $name = null, bool $start = true)
     {
-        $this->checkConditions();
+        $this->checkEnvironment();
         $this->name = $this->defaultName($name);
         $this->creationTime = new \DateTimeImmutable();
-        $this->report = new TimerReport();
-        $this->report->buildOn($this);
+        $this->report = (new TimerReport())->buildOn($this);
         if ($start) {
             $this->start();
         }
     }
 
-    protected function checkConditions(): void
+    protected function checkEnvironment(): void
     {
     }
 
