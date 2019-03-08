@@ -8,13 +8,13 @@ use AlecRabbit\Tools\Contracts\BenchmarkInterface;
 use AlecRabbit\Tools\Contracts\StringConstants;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
-use AlecRabbit\Tools\Reports\Traits\Reportable;
+use AlecRabbit\Tools\Reports\Traits\HasReport;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
 use function AlecRabbit\typeOf;
 
 class Benchmark implements BenchmarkInterface, ReportableInterface, StringConstants
 {
-    use BenchmarkFields, Reportable;
+    use BenchmarkFields, HasReport;
 
     public const MIN_ITERATIONS = 100;
     public const DEFAULT_STEPS = 100;

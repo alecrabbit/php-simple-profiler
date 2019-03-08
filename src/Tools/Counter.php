@@ -9,12 +9,12 @@ namespace AlecRabbit\Tools;
 
 use AlecRabbit\Tools\Contracts\CounterInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
-use AlecRabbit\Tools\Reports\Traits\Reportable;
+use AlecRabbit\Tools\Reports\Traits\HasReport;
 use AlecRabbit\Tools\Traits\CounterFields;
 
 class Counter implements CounterInterface, ReportableInterface
 {
-    use CounterFields, Reportable;
+    use CounterFields, HasReport;
 
     protected const DEFAULT_STEP = 1;
 

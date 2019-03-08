@@ -32,7 +32,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\": "tests"
+      "AlecRabbit\\Tests\\Tools\\": "tests/"
     }
   },
   "minimum-stability": "beta"

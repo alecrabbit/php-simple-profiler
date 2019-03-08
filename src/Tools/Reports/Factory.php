@@ -9,13 +9,14 @@ use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionFormatter;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkFunctionFormatterInterface;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
+use AlecRabbit\Tools\Reports\Formatters\TimerReportFormatter;
 use function AlecRabbit\typeOf;
 
 class Factory
 {
-//    /** @var null|TimerReportFormatter */
-//    protected static $timerReportFormatter;
-//
+    /** @var null|TimerReportFormatter */
+    protected static $timerReportFormatter;
+
 //    /** @var null|CounterReportFormatter */
 //    protected static $counterReportFormatter;
 //
@@ -60,19 +61,26 @@ class Factory
     }
 
 
-//    /**
-//     * @param TimerReport $report
-//     * @return TimerReportFormatter
-//     */
-//    protected static function getTimerReportFormatter(TimerReport $report): TimerReportFormatter
-//    {
-////        if (null === static::$timerReportFormatter) {
-////            static::$timerReportFormatter = new TimerReportFormatter($report);
-////        }
-//        return
-//            new TimerReportFormatter($report);
-//    }
-//
+    /**
+     * @return TimerReportFormatter
+     */
+    public static function getTimerReportFormatter(): TimerReportFormatter
+    {
+        if (null === static::$timerReportFormatter) {
+            static::$timerReportFormatter = new TimerReportFormatter();
+        }
+        return
+            static::$timerReportFormatter;
+    }
+
+    /**
+     * @param null|TimerReportFormatter $timerReportFormatter
+     */
+    public static function setTimerReportFormatter(?TimerReportFormatter $timerReportFormatter): void
+    {
+        self::$timerReportFormatter = $timerReportFormatter;
+    }
+
 //    /**
 //     * @param CounterReport $report
 //     * @return CounterReportFormatter

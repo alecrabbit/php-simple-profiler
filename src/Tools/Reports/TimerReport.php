@@ -1,41 +1,49 @@
-<?php
-/**
- * User: alec
- * Date: 29.11.18
- * Time: 21:02
- */
+<?php declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports;
 
+use AlecRabbit\Tools\AbstractTimer;
+use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
+use AlecRabbit\Tools\Reports\Contracts\TimerReportInterface;
 use AlecRabbit\Tools\Reports\Core\Report;
-use AlecRabbit\Tools\Timer;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
+use AlecRabbit\Tools\Traits\HasStartAndStop;
 use AlecRabbit\Tools\Traits\TimerFields;
+use function AlecRabbit\typeOf;
 
-class TimerReport extends Report
+class TimerReport extends Report implements TimerReportInterface
 {
-    use TimerFields;
+    use TimerFields, HasStartAndStop;
+
+    protected static function getFormatter(): FormatterInterface
+    {
+        return Factory::getTimerReportFormatter();
+    }
 
     /**
-     * TimerReport constructor.
-     * @param Timer $timer
+     * @param ReportableInterface $reportable
+     * @throws \RuntimeException
+     * @throws \Exception
      */
-    public function __construct(Timer $timer)
+    public function buildOn(ReportableInterface $reportable): void
     {
-        $this->name = $timer->getName();
-        $this->creation = $timer->getCreation();
-        $count = $timer->getCount();
-        $this->previous = $timer->getPrevious();
-        $this->elapsed = $timer->getElapsed();
-        $this->stopped = $timer->isStopped();
-        $this->currentValue = $timer->getLastValue();
-        $this->minValueIteration = $timer->getMinValueIteration();
-        $this->maxValueIteration = $timer->getMaxValueIteration();
-        $this->avgValue = $timer->getAverageValue();
-        $this->minValue = ($count === 1) ? $timer->getLastValue() : $timer->getMinValue();
-        $this->maxValue = $timer->getMaxValue();
-        $this->started = $timer->isStarted();
-        $this->stopped = $timer->isStopped();
-        $this->count = $count;
-        parent::__construct();
+        if ($reportable instanceof AbstractTimer) {
+            $this->name = $reportable->getName();
+            $this->creationTime = $reportable->getCreation();
+            $count = $reportable->getCount();
+            $this->elapsed = $reportable->getElapsed();
+            $this->stopped = $reportable->isStopped();
+            $this->currentValue = $reportable->getLastValue();
+            $this->minValueIteration = $reportable->getMinValueIteration();
+            $this->maxValueIteration = $reportable->getMaxValueIteration();
+            $this->avgValue = $reportable->getAverageValue();
+            $this->minValue = ($count === 1) ? $reportable->getLastValue() : $reportable->getMinValue();
+            $this->maxValue = $reportable->getMaxValue();
+            $this->started = $reportable->isStarted();
+            $this->stopped = $reportable->isStopped();
+            $this->count = $count;
+        } else {
+            throw new \RuntimeException(AbstractTimer::class . ' expected ' . typeOf($reportable) . ' given');
+        }
     }
 }

@@ -9,4 +9,8 @@ namespace AlecRabbit\Tools\Contracts;
 
 interface TimerInterface extends StringConstants
 {
+    /**
+     * @return mixed
+     */
+    public function current();
 }

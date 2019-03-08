@@ -13,4 +13,11 @@ interface ReportInterface
      * @return string
      */
     public function __toString(): string;
+
+    /**
+     * @param ReportableInterface $reportable
+     * @throws \RuntimeException
+     * @throws \Exception
+     */
+    public function buildOn(ReportableInterface $reportable): void;
 }
