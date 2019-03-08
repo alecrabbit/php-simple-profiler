@@ -13,7 +13,7 @@ use function AlecRabbit\typeOf;
 
 class TimerReport extends Report implements TimerReportInterface
 {
-    use TimerFields, HasStartAndStop;
+    use TimerFields;
 
     protected static function getFormatter(): FormatterInterface
     {

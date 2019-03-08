@@ -8,12 +8,11 @@ use AlecRabbit\Tools\Reports\Factory;
 use AlecRabbit\Tools\Reports\TimerReport;
 use AlecRabbit\Tools\Reports\Traits\HasReport;
 use AlecRabbit\Tools\Traits\TimerFields;
-use AlecRabbit\Traits\GettableName;
 use function AlecRabbit\typeOf;
 
 abstract class AbstractTimer implements TimerInterface, ReportableInterface
 {
-    use GettableName, TimerFields, HasReport;
+    use TimerFields, HasReport;
 
     /**
      * Timer constructor.
@@ -23,6 +22,7 @@ abstract class AbstractTimer implements TimerInterface, ReportableInterface
      */
     public function __construct(?string $name = null, bool $start = true)
     {
+        $this->checkConditions();
         $this->name = $this->defaultName($name);
         $this->creationTime = new \DateTimeImmutable();
         $this->report = new TimerReport();
@@ -30,6 +30,10 @@ abstract class AbstractTimer implements TimerInterface, ReportableInterface
         if ($start) {
             $this->start();
         }
+    }
+
+    protected function checkConditions(): void
+    {
     }
 
     /**

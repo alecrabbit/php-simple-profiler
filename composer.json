@@ -28,7 +28,8 @@
   "autoload": {
     "psr-4": {
       "AlecRabbit\\": "src"
-    }
+    },
+    "files": [ "src/Tools/bootstrap.php" ]
   },
   "autoload-dev": {
     "psr-4": {
