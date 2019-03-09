@@ -3,10 +3,11 @@
 namespace AlecRabbit\Tools\Traits;
 
 use AlecRabbit\Traits\GettableName;
+use AlecRabbit\Traits\Startable;
 
 trait SimpleCounterFields
 {
-    use GettableName, HasStart;
+    use GettableName, Startable;
 
     /** @var int */
     protected $value = 0;

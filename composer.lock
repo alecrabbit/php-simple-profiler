@@ -113,22 +113,23 @@
         },
         {
             "name": "alecrabbit/php-traits",
-            "version": "0.2.2",
+            "version": "0.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-traits.git",
-                "reference": "2cc31c49c9340c3851ea8694c14e5275881fc037"
+                "reference": "c7a78093258ea0e7ec1887cfbde855f0e849c138"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-traits/zipball/2cc31c49c9340c3851ea8694c14e5275881fc037",
-                "reference": "2cc31c49c9340c3851ea8694c14e5275881fc037",
+                "url": "https://api.github.com/repos/alecrabbit/php-traits/zipball/c7a78093258ea0e7ec1887cfbde855f0e849c138",
+                "reference": "c7a78093258ea0e7ec1887cfbde855f0e849c138",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2"
             },
             "require-dev": {
+                "kylekatarnls/multi-tester": "^1.1",
                 "nunomaduro/collision": "^2.1",
                 "phpunit/phpunit": "^7.5",
                 "symfony/var-dumper": "^4.2"
@@ -147,7 +148,7 @@
                 "MIT"
             ],
             "description": "PHP traits to use in every project :)",
-            "time": "2019-02-22T13:25:28+00:00"
+            "time": "2019-03-09T11:15:59+00:00"
         },
         {
             "name": "krowinski/bcmath-extended",

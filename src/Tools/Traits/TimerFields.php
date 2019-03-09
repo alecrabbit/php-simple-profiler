@@ -4,10 +4,11 @@ namespace AlecRabbit\Tools\Traits;
 
 use AlecRabbit\Tools\HRTimer;
 use AlecRabbit\Traits\GettableName;
+use AlecRabbit\Traits\StartableAndStoppable;
 
 trait TimerFields
 {
-    use GettableName, HasStartAndStop;
+    use GettableName, StartableAndStoppable;
 
     /** @var int|float */
     protected $previous = 0.0;
