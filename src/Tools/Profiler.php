@@ -10,7 +10,7 @@ use AlecRabbit\Traits\DefaultableName;
 
 class Profiler implements ProfilerInterface, ReportableInterface, Strings
 {
-    use HasReport, DefaultableName;
+    use DefaultableName, HasReport;
 
     /** @var Timer[] */
     private $timers = [];
@@ -24,18 +24,16 @@ class Profiler implements ProfilerInterface, ReportableInterface, Strings
      */
     public function __construct()
     {
-        // Create "default" counter
-        $this->counter();
-        // Create "default" timer
-        $this->timer();
+        $this->counter(); // Create default counter
+        $this->timer(); // Create default timer
     }
 
     /**
      * @param null|string $name
      * @param string ...$suffixes
-     * @return ExtendedCounter
+     * @return AbstractCounter
      */
-    public function counter(?string $name = null, string ...$suffixes): ExtendedCounter
+    public function counter(?string $name = null, string ...$suffixes): AbstractCounter
     {
         $name = $this->prepareName($name, $suffixes);
         return

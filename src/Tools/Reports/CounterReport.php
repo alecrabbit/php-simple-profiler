@@ -11,12 +11,12 @@ use AlecRabbit\Tools\Reports\Core\Report;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
 use AlecRabbit\Tools\SimpleCounter;
 use AlecRabbit\Tools\Traits\ExtendedCounterFields;
-use AlecRabbit\Tools\Traits\SimpleCounterFields;
+use AlecRabbit\Tools\Traits\CounterFields;
 use function AlecRabbit\typeOf;
 
 class CounterReport extends Report
 {
-    use ExtendedCounterFields, SimpleCounterFields;
+    use ExtendedCounterFields, CounterFields;
 
     protected static function getFormatter(): FormatterInterface
     {
