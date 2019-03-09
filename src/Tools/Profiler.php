@@ -3,11 +3,12 @@
 namespace AlecRabbit\Tools;
 
 use AlecRabbit\Tools\Contracts\ProfilerInterface;
+use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Traits\HasReport;
 use AlecRabbit\Traits\DefaultableName;
 
-class Profiler implements ProfilerInterface, ReportableInterface
+class Profiler implements ProfilerInterface, ReportableInterface, Strings
 {
     use HasReport, DefaultableName;
 
@@ -17,6 +18,10 @@ class Profiler implements ProfilerInterface, ReportableInterface
     /** @var ExtendedCounter[] */
     private $counters = [];
 
+    /**
+     * Profiler constructor.
+     * @throws \Exception
+     */
     public function __construct()
     {
         // Create "default" counter
@@ -66,6 +71,7 @@ class Profiler implements ProfilerInterface, ReportableInterface
      * @param null|string $name
      * @param string ...$suffixes
      * @return Timer
+     * @throws \Exception
      */
     public function timer(?string $name = null, string ...$suffixes): Timer
     {

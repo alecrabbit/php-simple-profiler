@@ -89,6 +89,4 @@ class SimpleCounter extends AbstractCounter
         }
         return $step;
     }
-
-
 }

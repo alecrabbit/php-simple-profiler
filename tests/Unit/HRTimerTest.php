@@ -156,5 +156,4 @@ class HRTimerTest extends TestCase
             [[DEFAULT_NAME, false, true, false, true], [null, false]],
         ];
     }
-
 }

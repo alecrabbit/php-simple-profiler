@@ -2,6 +2,6 @@
 
 namespace AlecRabbit\Tools\Contracts;
 
-interface ProfilerInterface extends Strings
+interface ProfilerInterface
 {
 }

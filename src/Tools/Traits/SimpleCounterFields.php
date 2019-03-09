@@ -51,5 +51,4 @@ trait SimpleCounterFields
     {
         return $this->bumped;
     }
-
 }

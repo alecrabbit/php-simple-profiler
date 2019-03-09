@@ -182,6 +182,4 @@ class Factory
 //        }
 //        throw new \RuntimeException('Attempt to create unimplemented formatter for: ' . typeOf($report));
 //    }
-
-
 }
