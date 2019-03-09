@@ -10,4 +10,6 @@ use AlecRabbit\Tools\Reports\Traits\HasReport;
 abstract class AbstractCounter implements CounterInterface, ReportableInterface, Strings
 {
     use HasReport;
+
+    protected const DEFAULT_STEP = 1;
 }

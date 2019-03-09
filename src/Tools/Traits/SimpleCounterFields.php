@@ -1,9 +1,4 @@
-<?php
-/**
- * User: alec
- * Date: 30.11.18
- * Time: 17:42
- */
+<?php declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Traits;
 
@@ -23,7 +18,7 @@ trait SimpleCounterFields
     protected $step = 1;
 
     /** @var int */
-    protected $bumpedForward = 0;
+    protected $bumped = 0;
 
     /**
      * @return int
@@ -52,9 +47,9 @@ trait SimpleCounterFields
     /**
      * @return int
      */
-    public function getBumpedForward(): int
+    public function getBumped(): int
     {
-        return $this->bumpedForward;
+        return $this->bumped;
     }
 
 }

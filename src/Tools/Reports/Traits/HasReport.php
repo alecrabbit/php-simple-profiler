@@ -21,7 +21,7 @@ trait HasReport
     {
         $this->meetConditions();
         if (null === $this->report || true === $rebuild) {
-            $this->prepareForReport();
+            $this->beforeReport();
             /** @var ReportableInterface $that */
             $that = $this;
             $this->report->buildOn($that); // $that used for static analysis
@@ -33,10 +33,13 @@ trait HasReport
     /**
      * Makes all necessary actions before report
      */
-    protected function prepareForReport(): void
+    protected function beforeReport(): void
     {
     }
 
+    /**
+     * Checks if all needed conditions are met
+     */
     protected function meetConditions(): void
     {
     }

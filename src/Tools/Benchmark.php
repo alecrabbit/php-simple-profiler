@@ -259,7 +259,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
     /**
      * {@inheritdoc}
      */
-    protected function prepareForReport(): void
+    protected function beforeReport(): void
     {
         $this->getProfiler()->report();
     }

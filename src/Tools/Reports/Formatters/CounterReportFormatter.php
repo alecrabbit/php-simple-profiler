@@ -1,51 +1,44 @@
-<?php
-/**
- * User: alec
- * Date: 10.12.18
- * Time: 14:22
- */
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
-use AlecRabbit\Tools\Reports\CounterReport;
+use AlecRabbit\Tools\Contracts\CounterValuesInterface;
+use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
 class CounterReportFormatter extends ReportFormatter
 {
-    /** @var CounterReport */
-    protected $report;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function process(): string
+    /** {@inheritdoc} */
+    public function process(ReportInterface $report): string
     {
-        if (DEFAULT_NAME === $this->report->getName()) {
-            return $this->simple();
+        if (DEFAULT_NAME === $report->getName()) {
+            return $this->simple($report);
         }
-        return $this->full();
+        return $this->full($report);
     }
 
     /**
+     * @param ReportInterface $report
      * @param bool $eol
      * @return string
      */
-    public function simple(bool $eol = true): string
+    public function simple(ReportInterface $report, bool $eol = true): string
     {
+        /** @var CounterValuesInterface $report */
         return
             sprintf(
                 self::COUNTER . ': %s%s',
-                (string)$this->report->getValue(),
+                (string)$report->getValue(),
                 $eol ? PHP_EOL : ''
             );
     }
 
     /**
+     * @param ReportInterface $report
      * @param bool $eol
      * @return string
      */
-    public function full(bool $eol = true): string
+    public function full(ReportInterface $report, bool $eol = true): string
     {
         return
             sprintf(
@@ -58,28 +51,29 @@ class CounterReportFormatter extends ReportFormatter
                 self::MAX . ': %s, ' .
                 self::MIN . ': %s, ' .
                 self::DIFF . ': %s %s',
-                $this->report->getName(),
-                (string)$this->report->getValue(),
-                (string)$this->report->getStep(),
-                $this->computeBumped(),
-                (string)$this->report->getPath(),
-                (string)$this->report->getLength(),
-                (string)$this->report->getMax(),
-                (string)$this->report->getMin(),
-                (string)$this->report->getDiff(),
+                $report->getName(),
+                (string)$report->getValue(),
+                (string)$report->getStep(),
+                $this->computeBumped($report),
+                (string)$report->getPath(),
+                (string)$report->getLength(),
+                (string)$report->getMax(),
+                (string)$report->getMin(),
+                (string)$report->getDiff(),
                 $eol ? PHP_EOL : ''
             );
     }
 
     /**
+     * @param ReportInterface $report
      * @return string
      */
-    private function computeBumped(): string
+    private function computeBumped(ReportInterface $report): string
     {
         return sprintf(
             self::FORWARD . '%s ' . self::BACKWARD . '%s',
-            $this->report->getBumpedForward(),
-            $this->report->getBumpedBack()
+            $report->getBumped(),
+            $report->getBumpedBack()
         );
     }
 }

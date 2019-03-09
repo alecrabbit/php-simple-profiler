@@ -2,26 +2,22 @@
 
 namespace AlecRabbit\Tools\Reports;
 
-use AlecRabbit\Tools\Benchmark;
-use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
-use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionFormatter;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkReportFormatter;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkFunctionFormatterInterface;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
+use AlecRabbit\Tools\Reports\Formatters\CounterReportFormatter;
+use AlecRabbit\Tools\Reports\Formatters\ProfilerReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\TimerReportFormatter;
-use function AlecRabbit\typeOf;
 
 class Factory
 {
     /** @var null|TimerReportFormatter */
     protected static $timerReportFormatter;
 
-//    /** @var null|CounterReportFormatter */
-//    protected static $counterReportFormatter;
-//
-//    /** @var null|ProfilerReportFormatter */
-//    protected static $profilerReportFormatter;
+    /** @var null|CounterReportFormatter */
+    protected static $counterReportFormatter;
+
+    /** @var null|ProfilerReportFormatter */
+    protected static $profilerReportFormatter;
 
     /** @var null|BenchmarkReportFormatter */
     protected static $benchmarkReportFormatter;
@@ -34,32 +30,6 @@ class Factory
     {
         // Static class
     }
-
-    /**
-     * @param ReportableInterface $reportable
-     * @return ReportInterface
-     */
-    public static function makeReport(ReportableInterface $reportable): ReportInterface
-    {
-//        if ($reportable instanceof Timer) {
-//            return
-//                new TimerReport($reportable);
-//        }
-//        if ($reportable instanceof Counter) {
-//            return
-//                new CounterReport($reportable);
-//        }
-//        if ($reportable instanceof Profiler) {
-//            return
-//                new ProfilerReport($reportable);
-//        }
-        if ($reportable instanceof Benchmark) {
-            return
-                new BenchmarkReport($reportable);
-        }
-        throw new \RuntimeException('Attempt to create unimplemented report for: ' . typeOf($reportable));
-    }
-
 
     /**
      * @return TimerReportFormatter
@@ -81,31 +51,25 @@ class Factory
         self::$timerReportFormatter = $timerReportFormatter;
     }
 
-//    /**
-//     * @param CounterReport $report
-//     * @return CounterReportFormatter
-//     */
-//    protected static function getCounterReportFormatter(CounterReport $report): CounterReportFormatter
-//    {
-////        if (null === static::$counterReportFormatter) {
-////            static::$counterReportFormatter = new CounterReportFormatter($report);
-////        }
-//        return
-//            new CounterReportFormatter($report);
-//    }
-//
-//    /**
-//     * @param ProfilerReport $report
-//     * @return ProfilerReportFormatter
-//     */
-//    protected static function getProfilerReportFormatter(ProfilerReport $report): ProfilerReportFormatter
-//    {
-////        if (null === static::$profilerReportFormatter) {
-////            static::$profilerReportFormatter = new ProfilerReportFormatter($report);
-////        }
-//        return
-//            new ProfilerReportFormatter($report);
-//    }
+    /**
+     * @return CounterReportFormatter
+     */
+    public static function getCounterReportFormatter(): CounterReportFormatter
+    {
+        if (null === static::$counterReportFormatter) {
+            static::$counterReportFormatter = new CounterReportFormatter();
+        }
+        return
+            new CounterReportFormatter();
+    }
+
+    /**
+     * @param null|CounterReportFormatter $counterReportFormatter
+     */
+    public static function setCounterReportFormatter(?CounterReportFormatter $counterReportFormatter): void
+    {
+        self::$counterReportFormatter = $counterReportFormatter;
+    }
 
     /**
      * @return BenchmarkFunctionFormatter
@@ -129,31 +93,6 @@ class Factory
     }
 
     /**
-     * @param ReportInterface $report
-     * @return FormatterInterface
-     */
-    public static function getFormatterFor(ReportInterface $report): FormatterInterface
-    {
-//        if ($report instanceof TimerReport) {
-//            return
-//                self::getTimerReportFormatter($report);
-//        }
-//        if ($report instanceof CounterReport) {
-//            return
-//                self::getCounterReportFormatter($report);
-//        }
-//        if ($report instanceof ProfilerReport) {
-//            return
-//                self::getProfilerReportFormatter($report);
-//        }
-        if ($report instanceof BenchmarkReport) {
-            return
-                self::getBenchmarkReportFormatter();
-        }
-        throw new \RuntimeException('Attempt to create unimplemented formatter for: ' . typeOf($report));
-    }
-
-    /**
      * @return BenchmarkReportFormatter
      */
     public static function getBenchmarkReportFormatter(): BenchmarkReportFormatter
@@ -164,4 +103,85 @@ class Factory
         return
             new BenchmarkReportFormatter();
     }
+
+    /**
+     * @param null|BenchmarkReportFormatter $benchmarkReportFormatter
+     */
+    public static function setBenchmarkReportFormatter(?BenchmarkReportFormatter $benchmarkReportFormatter): void
+    {
+        self::$benchmarkReportFormatter = $benchmarkReportFormatter;
+    }
+
+    /**
+     * @return ProfilerReportFormatter
+     */
+    protected static function getProfilerReportFormatter(): ProfilerReportFormatter
+    {
+        if (null === static::$profilerReportFormatter) {
+            static::$profilerReportFormatter = new ProfilerReportFormatter();
+        }
+        return
+            new ProfilerReportFormatter();
+    }
+
+    /**
+     * @param null|ProfilerReportFormatter $profilerReportFormatter
+     */
+    public static function setProfilerReportFormatter(?ProfilerReportFormatter $profilerReportFormatter): void
+    {
+        self::$profilerReportFormatter = $profilerReportFormatter;
+    }
+
+    //    /**
+//     * @param ReportableInterface $reportable
+//     * @return ReportInterface
+//     */
+//    public static function makeReport(ReportableInterface $reportable): ReportInterface
+//    {
+////        if ($reportable instanceof Timer) {
+////            return
+////                new TimerReport($reportable);
+////        }
+////        if ($reportable instanceof Counter) {
+////            return
+////                new CounterReport($reportable);
+////        }
+////        if ($reportable instanceof Profiler) {
+////            return
+////                new ProfilerReport($reportable);
+////        }
+//        if ($reportable instanceof Benchmark) {
+//            return
+//                new BenchmarkReport($reportable);
+//        }
+//        throw new \RuntimeException('Attempt to create unimplemented report for: ' . typeOf($reportable));
+//    }
+
+
+//    /**
+//     * @param ReportInterface $report
+//     * @return FormatterInterface
+//     */
+//    public static function getFormatterFor(ReportInterface $report): FormatterInterface
+//    {
+////        if ($report instanceof TimerReport) {
+////            return
+////                self::getTimerReportFormatter($report);
+////        }
+////        if ($report instanceof CounterReport) {
+////            return
+////                self::getCounterReportFormatter($report);
+////        }
+////        if ($report instanceof ProfilerReport) {
+////            return
+////                self::getProfilerReportFormatter($report);
+////        }
+//        if ($report instanceof BenchmarkReport) {
+//            return
+//                self::getBenchmarkReportFormatter();
+//        }
+//        throw new \RuntimeException('Attempt to create unimplemented formatter for: ' . typeOf($report));
+//    }
+
+
 }

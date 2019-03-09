@@ -1,36 +1,26 @@
-<?php
-/**
- * User: alec
- * Date: 29.11.18
- * Time: 21:02
- */
+<?php declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports;
 
+use AlecRabbit\Tools\AbstractCounter;
 use AlecRabbit\Tools\Contracts\CounterInterface;
 use AlecRabbit\Tools\ExtendedCounter;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Core\Report;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
+use AlecRabbit\Tools\SimpleCounter;
 use AlecRabbit\Tools\Traits\ExtendedCounterFields;
+use AlecRabbit\Tools\Traits\SimpleCounterFields;
 use function AlecRabbit\typeOf;
 
 class CounterReport extends Report
 {
-    use ExtendedCounterFields;
-
-    /**
-     * CounterReport constructor.
-     * @param ExtendedCounter $counter
-     */
-    public function __construct(ExtendedCounter $counter)
-    {
-    }
+    use ExtendedCounterFields, SimpleCounterFields;
 
     protected static function getFormatter(): FormatterInterface
     {
-        return Factory::getTimerReportFormatter();
+        return Factory::getCounterReportFormatter();
     }
 
     /**
@@ -41,21 +31,23 @@ class CounterReport extends Report
      */
     public function buildOn(ReportableInterface $counter): ReportInterface
     {
-        if ($counter instanceof CounterInterface) {
+        if ($counter instanceof SimpleCounter) {
             $this->name = $counter->getName();
             $this->value = $counter->getValue();
-            $this->max = $counter->getMax();
-            $this->min = $counter->getMin();
-            $this->path = $counter->getPath();
-            $this->length = $counter->getLength();
             $this->step = $counter->getStep();
             $this->started = $counter->isStarted();
-            $this->diff = $counter->getDiff();
             $this->initialValue = $counter->getInitialValue();
-            $this->bumpedForward = $counter->getBumpedForward();
-            $this->bumpedBack = $counter->getBumpedBack();
+            $this->bumped = $counter->getBumped();
+            if ($counter instanceof ExtendedCounter) {
+                $this->max = $counter->getMax();
+                $this->min = $counter->getMin();
+                $this->path = $counter->getPath();
+                $this->length = $counter->getLength();
+                $this->diff = $counter->getDiff();
+                $this->bumpedBack = $counter->getBumpedBack();
+            }
             return $this;
         }
-        throw new \RuntimeException(CounterInterface::class . ' expected ' . typeOf($counter) . ' given');
+        throw new \RuntimeException(AbstractCounter::class . ' instance expected ' . typeOf($counter) . ' given');
     }
 }

@@ -243,7 +243,7 @@ abstract class AbstractTimer implements TimerInterface, ReportableInterface
      * {@inheritdoc}
      * @throws \Exception
      */
-    protected function prepareForReport(): void
+    protected function beforeReport(): void
     {
         if ($this->isNotStarted()) {
             $this->start();

@@ -8,9 +8,6 @@ use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
 
 abstract class ReportFormatter implements FormatterInterface, Strings
 {
-    /** @var ReportInterface */
-    protected $report;
-
     /** {@inheritdoc} */
     abstract public function process(ReportInterface $report): string;
 }
