@@ -7,6 +7,7 @@ use AlecRabbit\Accessories\Rewindable;
 use AlecRabbit\Tools\Contracts\BenchmarkInterface;
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
+use AlecRabbit\Tools\Reports\BenchmarkReport;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Traits\HasReport;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
@@ -49,6 +50,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
     /**
      * Benchmark constructor.
      * @param int $iterations
+     * @throws \Exception
      */
     public function __construct(?int $iterations = null)
     {
@@ -73,6 +75,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
 
     /**
      * Resets Benchmark object clear
+     * @throws \Exception
      */
     private function initialize(): void
     {
@@ -89,10 +92,12 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
         $this->memoryUsageReport = MemoryUsage::report();
         $this->doneIterations = 0;
         $this->totalIterations = 0;
+        $this->report = (new BenchmarkReport())->buildOn($this);
     }
 
     /**
      * Resets Benchmark object clear
+     * @throws \Exception
      */
     public function reset(): void
     {
@@ -244,6 +249,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
 
     /**
      * @return string
+     * @throws \Exception
      */
     public function stat(): string
     {
@@ -261,7 +267,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
      */
     protected function beforeReport(): void
     {
-        $this->getProfiler()->report();
+//        $this->getProfiler()->report();
     }
 
     /**

@@ -8,6 +8,8 @@ use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\Contracts\BenchmarkReportInterface;
+use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
+use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Core\Report;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
@@ -16,20 +18,6 @@ use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 class BenchmarkReport extends Report implements BenchmarkReportInterface
 {
     use BenchmarkFields;
-
-    /**
-     * BenchmarkReport constructor.
-     * @param Benchmark $benchmark
-     */
-    public function __construct(Benchmark $benchmark)
-    {
-        $this->profiler = $benchmark->getProfiler();
-        $this->memoryUsageReport = $benchmark->getMemoryUsageReport();
-        $this->doneIterations = $benchmark->getDoneIterations();
-        $this->doneIterationsCombined = $benchmark->getDoneIterationsCombined();
-        $this->functions = $this->updateFunctions($benchmark->getFunctions());
-        $this->timer = $benchmark->getTimer();
-    }
 
     /**
      * @param array $functions
@@ -96,6 +84,24 @@ class BenchmarkReport extends Report implements BenchmarkReportInterface
     {
         return
             Factory::getBenchmarkReportFormatter();
+    }
+
+    /**
+     * @param ReportableInterface $benchmark
+     * @return Contracts\ReportInterface
+     * @throws \RuntimeException
+     * @throws \Exception
+     */
+    public function buildOn(ReportableInterface $benchmark): ReportInterface
+    {
+        /** @var Benchmark $benchmark */
+        $this->profiler = $benchmark->getProfiler();
+        $this->memoryUsageReport = $benchmark->getMemoryUsageReport();
+        $this->doneIterations = $benchmark->getDoneIterations();
+        $this->doneIterationsCombined = $benchmark->getDoneIterationsCombined();
+        $this->functions = $this->updateFunctions($benchmark->getFunctions());
+        $this->timer = $benchmark->getTimer();
+        return $this;
     }
 
     /**

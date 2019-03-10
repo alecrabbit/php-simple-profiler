@@ -10,8 +10,6 @@ namespace AlecRabbit\Tools\Traits;
 use AlecRabbit\Tools\AbstractCounter;
 use AlecRabbit\Tools\AbstractTimer;
 use AlecRabbit\Tools\Profiler;
-use AlecRabbit\Tools\Reports\ProfilerReport;
-use AlecRabbit\Tools\Timer;
 use PHPUnit\Framework\TestCase;
 
 /**
