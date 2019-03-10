@@ -34,7 +34,6 @@ class BenchmarkReport extends Report implements BenchmarkReportInterface
     public function buildOn(ReportableInterface $benchmark): ReportInterface
     {
         if ($benchmark instanceof Benchmark) {
-//            $this->profiler = $benchmark->getProfiler();
             $this->added = $benchmark->getAdded();
             $this->benchmarked = $benchmark->getBenchmarked();
             $this->memoryUsageReport = $benchmark->getMemoryUsageReport();

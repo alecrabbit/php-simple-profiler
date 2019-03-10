@@ -14,7 +14,7 @@ use AlecRabbit\Tools\Traits\ExtendedCounterFields;
 use AlecRabbit\Tools\Traits\CounterFields;
 use function AlecRabbit\typeOf;
 
-class CounterReport extends Report
+class SimpleCounterReport extends Report
 {
     use ExtendedCounterFields, CounterFields;
 

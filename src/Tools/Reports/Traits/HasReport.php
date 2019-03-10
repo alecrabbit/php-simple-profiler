@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Traits;
 
-use AlecRabbit\Accessories\Caller;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 
@@ -20,9 +19,8 @@ trait HasReport
      */
     public function report(bool $rebuild = true): ReportInterface
     {
-        dump((string)Caller::get());
-        $this->meetConditions();
         if (true === $rebuild) {
+            $this->meetConditions();
             $this->beforeReport();
             /** @var ReportableInterface $that */
             $that = $this;
@@ -40,7 +38,7 @@ trait HasReport
     }
 
     /**
-     * Checks if all needed conditions are met
+     * Checks if all conditions needed for report are met
      */
     protected function meetConditions(): void
     {

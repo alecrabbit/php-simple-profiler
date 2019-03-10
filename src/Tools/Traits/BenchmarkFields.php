@@ -3,13 +3,14 @@
 namespace AlecRabbit\Tools\Traits;
 
 use AlecRabbit\Accessories\MemoryUsage\MemoryUsageReport;
+use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\SimpleCounter;
 use AlecRabbit\Tools\Timer;
 
 trait BenchmarkFields
 {
-    /** @var array */
+    /** @var BenchmarkFunction[] */
     protected $functions = [];
 
 //    /** @var Profiler */
@@ -35,7 +36,7 @@ trait BenchmarkFields
 
 
     /**
-     * @return array
+     * @return BenchmarkFunction[]
      */
     public function getFunctions(): array
     {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
-use AlecRabbit\Tools\Reports\CounterReport;
+use AlecRabbit\Tools\Reports\SimpleCounterReport;
 use AlecRabbit\Tools\Reports\ProfilerReport;
 use AlecRabbit\Tools\Reports\TimerReport;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
@@ -37,7 +37,7 @@ class ProfilerReportFormatter extends ReportFormatter
     {
         $r = '';
         foreach ($report->getCountersReports() as $countersReport) {
-            if ($countersReport instanceof CounterReport && DEFAULT_NAME === $countersReport->getName()) {
+            if ($countersReport instanceof SimpleCounterReport && DEFAULT_NAME === $countersReport->getName()) {
                 $r .= $countersReport->isStarted() ? $countersReport : '';
             } else {
                 $r .= $countersReport;
