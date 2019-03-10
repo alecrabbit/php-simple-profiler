@@ -13,7 +13,7 @@ abstract class Report implements ReportInterface
     abstract public function buildOn(ReportableInterface $reportable): ReportInterface;
 
     /** {@inheritdoc} */
-public function __toString(): string
+    public function __toString(): string
     {
         return
             static::getFormatter()->process($this);

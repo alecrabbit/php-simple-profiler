@@ -108,7 +108,7 @@ class BenchmarkReport extends Report implements BenchmarkReportInterface
     }
 
     /** {@inheritdoc} */
-public function noReturns(): BenchmarkReportInterface
+    public function noReturns(): BenchmarkReportInterface
     {
         return $this;
     }

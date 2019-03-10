@@ -19,7 +19,7 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
     protected $lastReturn;
 
     /** {@inheritdoc} */
-public function process(ReportInterface $report): string
+    public function process(ReportInterface $report): string
     {
         if ($report instanceof BenchmarkReport) {
             $this->report = $report;

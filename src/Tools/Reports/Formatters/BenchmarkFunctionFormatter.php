@@ -20,21 +20,21 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
     protected $withResults = true;
 
     /** {@inheritdoc} */
-public function resetEqualReturns(): BenchmarkFunctionFormatter
+    public function resetEqualReturns(): BenchmarkFunctionFormatter
     {
         return
             $this->noReturnIf();
     }
 
     /** {@inheritdoc} */
-public function noReturnIf(bool $equalReturns = false): BenchmarkFunctionFormatter
+    public function noReturnIf(bool $equalReturns = false): BenchmarkFunctionFormatter
     {
         $this->withResults = !$equalReturns;
         return $this;
     }
 
     /** {@inheritdoc} */
-public function process(BenchmarkFunction $function): string
+    public function process(BenchmarkFunction $function): string
     {
         $this->function = $function;
         return
@@ -136,7 +136,7 @@ public function process(BenchmarkFunction $function): string
     }
 
     /** {@inheritdoc} */
-public static function returnToString($executionReturn): string
+    public static function returnToString($executionReturn): string
     {
         $type = typeOf($executionReturn);
         try {
