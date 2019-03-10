@@ -63,12 +63,12 @@ Done in: 2.0s
 ### Benchmark classes
  
 There are moments when you have to choose between two or more different approaches. Benchmark classes is to help you choose which is faster :)
- * Benchmark (no default progress bar, silent measurements)
- * BenchmarkSymfonyPB (with Symfony progress bar)
+ * `Benchmark::class` (no default progress bar, silent measurements)
+ * `BenchmarkSymfonyPB::class` (with Symfony progress bar)
  ```
 [=====>------------------------------------------------------]   9% 1 secs/12 sec
 ```
- * BenchmarkSimplePB (with star progress bar)
+ * `BenchmarkSimplePB::class` (with star progress bar)
   ```
  ******************************
  ```
