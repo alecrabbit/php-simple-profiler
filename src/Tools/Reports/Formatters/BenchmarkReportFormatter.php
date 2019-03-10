@@ -12,7 +12,7 @@ use function AlecRabbit\array_is_homogeneous;
 
 class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkReportFormatterInterface
 {
-    /** @var BenchmarkReportInterface */
+    /** @var BenchmarkReport */
     protected $report;
 
     /** @var mixed */
@@ -58,10 +58,8 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
      */
     private function added(): int
     {
-        // todo use dedicated counter 'ADDED'
         return
-            $this->report->getProfiler()
-                ->counter(static::ADDED)->getValue();
+            $this->report->getAdded()->getValue();
     }
 
     /**
@@ -71,8 +69,7 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
     {
         // todo use dedicated counter 'BENCHMARKED'
         return
-            $this->report->getProfiler()
-                ->counter(static::BENCHMARKED)->getValue();
+            $this->report->getBenchmarked()->getValue();
     }
 
     /**

@@ -8,6 +8,7 @@ class HRTimer extends AbstractTimer
 {
     public const VALUE_COEFFICIENT = HRTIMER_VALUE_COEFFICIENT;
 
+    /** @var bool */
     public static $ignoreVersionRestrictions = false;
 
     /**

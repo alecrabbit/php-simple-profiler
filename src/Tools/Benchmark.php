@@ -25,29 +25,29 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
     /** @var int */
     private $functionIndex = 1;
     /** @var Rewindable */
-    private $rewindable;
+    protected $rewindable;
     /** @var int */
-    private $iterations;
+    protected $iterations;
     /** @var null|string */
-    private $comment;
+    protected $comment;
     /** @var string|null */
-    private $humanReadableName;
-    /** @var null|callable */
-    private $onStart;
+    protected $humanReadableName;
     /** @var int */
-    private $totalIterations = 0;
+    protected $totalIterations = 0;
     /** @var null|callable */
-    private $onAdvance;
+    protected $onStart;
     /** @var null|callable */
-    private $onFinish;
+    protected $onAdvance;
+    /** @var null|callable */
+    protected $onFinish;
     /** @var int */
-    private $advanceStep = 0;
+    protected $advanceStep = 0;
     /** @var \Closure */
-    private $generatorFunction;
+    protected $generatorFunction;
     /** @var bool */
-    private $showReturns = true;
+    protected $showReturns = true;
     /** @var bool */
-    private $launched = false;
+    protected $launched = false;
 
     /**
      * Benchmark constructor.
@@ -76,12 +76,26 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
     }
 
     /**
+     * @param int $iterations
+     */
+    protected function assertIterations(int $iterations): void
+    {
+        if ($iterations < self::MIN_ITERATIONS) {
+            throw new \RuntimeException(
+                __CLASS__ .
+                ': Number of Iterations should be greater then ' .
+                self::MIN_ITERATIONS
+            );
+        }
+    }
+
+    /**
      * Resets Benchmark object clear
      * @throws \Exception
      */
     private function initialize(): void
     {
-        unset($this->functions, $this->humanReadableName, $this->rewindable, $this->profiler, $this->memoryUsageReport);
+        unset($this->functions, $this->humanReadableName, $this->rewindable, $this->memoryUsageReport);
 
         $this->humanReadableName = null;
         $this->rewindable =
@@ -90,7 +104,9 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
                 $this->iterations
             );
         $this->functions = [];
-        $this->profiler = new Profiler();
+//        $this->profiler = new Profiler();
+        $this->added = new SimpleCounter('added');
+        $this->benchmarked = new SimpleCounter('benchmarked');
         $this->memoryUsageReport = MemoryUsage::report();
         $this->doneIterations = 0;
         $this->totalIterations = 0;
@@ -136,7 +152,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
             }
             $this->advanceStep = (int)($this->totalIterations / $this->advanceSteps);
             $this->bench($f);
-            $this->profiler->counter(self::BENCHMARKED)->bump();
+            $this->benchmarked->bump();
         }
     }
 
@@ -212,7 +228,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
         $this->functions[$function->enumeratedName()] = $function;
         $this->humanReadableName = null;
         $this->comment = null;
-        $this->profiler->counter(self::ADDED)->bump();
+        $this->added->bump();
         $this->totalIterations += $this->iterations;
     }
 
@@ -270,19 +286,5 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
     protected function beforeReport(): void
     {
 //        $this->getProfiler()->report();
-    }
-
-    /**
-     * @param int $iterations
-     */
-    protected function assertIterations(int $iterations): void
-    {
-        if ($iterations < self::MIN_ITERATIONS) {
-            throw new \RuntimeException(
-                __CLASS__ .
-                ': Number of Iterations should be greater then ' .
-                self::MIN_ITERATIONS
-            );
-        }
     }
 }

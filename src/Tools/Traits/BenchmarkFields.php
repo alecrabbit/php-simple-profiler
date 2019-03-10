@@ -4,6 +4,7 @@ namespace AlecRabbit\Tools\Traits;
 
 use AlecRabbit\Accessories\MemoryUsage\MemoryUsageReport;
 use AlecRabbit\Tools\Profiler;
+use AlecRabbit\Tools\SimpleCounter;
 use AlecRabbit\Tools\Timer;
 
 trait BenchmarkFields
@@ -11,9 +12,9 @@ trait BenchmarkFields
     /** @var array */
     protected $functions = [];
 
-    /** @var Profiler */
-    protected $profiler;
-
+//    /** @var Profiler */
+//    protected $profiler;
+//
     /** @var MemoryUsageReport */
     protected $memoryUsageReport;
 
@@ -24,7 +25,13 @@ trait BenchmarkFields
     protected $doneIterationsCombined = 0;
 
     /** @var Timer */
-    private $timer;
+    protected $timer;
+
+    /** @var SimpleCounter */
+    protected $added;
+
+    /** @var SimpleCounter */
+    protected $benchmarked;
 
 
     /**
@@ -35,14 +42,14 @@ trait BenchmarkFields
         return $this->functions;
     }
 
-    /**
-     * @return Profiler
-     */
-    public function getProfiler(): Profiler
-    {
-        return $this->profiler;
-    }
-
+//    /**
+//     * @return Profiler
+//     */
+//    public function getProfiler(): Profiler
+//    {
+//        return $this->profiler;
+//    }
+//
     /**
      * @return int
      */
@@ -73,5 +80,21 @@ trait BenchmarkFields
     public function getMemoryUsageReport(): MemoryUsageReport
     {
         return $this->memoryUsageReport;
+    }
+
+    /**
+     * @return SimpleCounter
+     */
+    public function getAdded(): SimpleCounter
+    {
+        return $this->added;
+    }
+
+    /**
+     * @return SimpleCounter
+     */
+    public function getBenchmarked(): SimpleCounter
+    {
+        return $this->benchmarked;
     }
 }

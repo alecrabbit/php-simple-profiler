@@ -16,6 +16,12 @@ class ExtendedCounter extends SimpleCounter implements ExtendedCounterValuesInte
         $this->updateExtendedValues();
     }
 
+    protected function updateExtendedValues(): void
+    {
+        $this->updateMaxAndMin();
+        $this->updateDiff();
+    }
+
     protected function updateMaxAndMin(): void
     {
         if ($this->value > $this->max) {
@@ -24,6 +30,11 @@ class ExtendedCounter extends SimpleCounter implements ExtendedCounterValuesInte
         if ($this->value < $this->min) {
             $this->min = $this->value;
         }
+    }
+
+    protected function updateDiff(): void
+    {
+        $this->diff = $this->value - $this->initialValue;
     }
 
     /**
@@ -73,17 +84,5 @@ class ExtendedCounter extends SimpleCounter implements ExtendedCounterValuesInte
             throw new \RuntimeException('You can\'t set counter initial value, it has been bumped already.');
         }
         return $this;
-    }
-
-
-    protected function updateExtendedValues(): void
-    {
-        $this->updateMaxAndMin();
-        $this->updateDiff();
-    }
-
-    protected function updateDiff()
-    {
-        $this->diff = $this->value - $this->initialValue;
     }
 }
