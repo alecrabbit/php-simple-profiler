@@ -96,8 +96,9 @@ class TimerReportFormatter extends ReportFormatter
         return '[' . $name . ']';
     }
 
-    protected function refineSeconds(float $seconds): string
+    protected function refineSeconds(?float $seconds): string
     {
-        return Pretty::seconds($seconds);
+        return
+            $seconds ? Pretty::seconds($seconds) : 'NULL';
     }
 }

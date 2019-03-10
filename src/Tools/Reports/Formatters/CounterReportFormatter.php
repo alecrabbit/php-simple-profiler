@@ -70,10 +70,11 @@ class CounterReportFormatter extends ReportFormatter
      */
     private function computeBumped(ReportInterface $report): string
     {
-        return sprintf(
-            self::FORWARD . '%s ' . self::BACKWARD . '%s',
-            $report->getBumped(),
-            $report->getBumpedBack()
-        );
+        return
+            sprintf(
+                self::FORWARD . '%s ' . self::BACKWARD . '%s',
+                $report->getBumped(),
+                $report->getBumpedBack()
+            );
     }
 }

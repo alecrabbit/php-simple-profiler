@@ -19,6 +19,31 @@ class BenchmarkReport extends Report implements BenchmarkReportInterface
 {
     use BenchmarkFields;
 
+    protected static function getFormatter(): FormatterInterface
+    {
+        return
+            Factory::getBenchmarkReportFormatter();
+    }
+
+    /**
+     * @param ReportableInterface $benchmark
+     * @return Contracts\ReportInterface
+     * @throws \RuntimeException
+     * @throws \Exception
+     */
+    public function buildOn(ReportableInterface $benchmark): ReportInterface
+    {
+        if ($benchmark instanceof Benchmark) {
+            $this->profiler = $benchmark->getProfiler();
+            $this->memoryUsageReport = $benchmark->getMemoryUsageReport();
+            $this->doneIterations = $benchmark->getDoneIterations();
+            $this->doneIterationsCombined = $benchmark->getDoneIterationsCombined();
+            $this->functions = $this->updateFunctions($benchmark->getFunctions());
+            $this->timer = $benchmark->getTimer();
+        }
+        return $this;
+    }
+
     /**
      * @param array $functions
      * @return array
@@ -78,30 +103,6 @@ class BenchmarkReport extends Report implements BenchmarkReportInterface
             asort($rel);
         }
         return $rel;
-    }
-
-    protected static function getFormatter(): FormatterInterface
-    {
-        return
-            Factory::getBenchmarkReportFormatter();
-    }
-
-    /**
-     * @param ReportableInterface $benchmark
-     * @return Contracts\ReportInterface
-     * @throws \RuntimeException
-     * @throws \Exception
-     */
-    public function buildOn(ReportableInterface $benchmark): ReportInterface
-    {
-        /** @var Benchmark $benchmark */
-        $this->profiler = $benchmark->getProfiler();
-        $this->memoryUsageReport = $benchmark->getMemoryUsageReport();
-        $this->doneIterations = $benchmark->getDoneIterations();
-        $this->doneIterationsCombined = $benchmark->getDoneIterationsCombined();
-        $this->functions = $this->updateFunctions($benchmark->getFunctions());
-        $this->timer = $benchmark->getTimer();
-        return $this;
     }
 
     /**

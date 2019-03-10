@@ -46,6 +46,8 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
     private $generatorFunction;
     /** @var bool */
     private $showReturns = true;
+    /** @var bool */
+    private $launched = false;
 
     /**
      * Benchmark constructor.

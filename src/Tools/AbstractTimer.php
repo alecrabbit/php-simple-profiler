@@ -210,7 +210,7 @@ abstract class AbstractTimer implements TimerInterface, ReportableInterface
      * @param int|float $start
      * @param int|float $stop
      */
-    protected function assertStartAndStop($start, $stop)
+    protected function assertStartAndStop($start, $stop): void
     {
         // todo optimize (make abstract here?)
         $start_ok = false;

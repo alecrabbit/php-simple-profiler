@@ -11,25 +11,30 @@ use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
 class ProfilerReportFormatter extends ReportFormatter
 {
+    /** @var string */
+    private $elapsed = '';
+
     /** {@inheritdoc} */
     public function process(ReportInterface $report): string
     {
-        return
-            sprintf(
-                '%s %s %s ',
-                $this->countersStrings($report),
-                $this->timersStrings(),
-                $this->elapsed
-            );
+        if ($report instanceof ProfilerReport) {
+            return
+                sprintf(
+                    '%s %s %s',
+                    $this->countersStrings($report),
+                    $this->timersStrings($report),
+                    $this->elapsed
+                );
+        }
+        return '';
     }
 
     /**
-     * @param ReportInterface $report
+     * @param ProfilerReport $report
      * @return string
      */
-    protected function countersStrings(ReportInterface $report): string
+    protected function countersStrings(ProfilerReport $report): string
     {
-        /** @var ProfilerReport $report */
         $r = '';
         foreach ($report->getCountersReports() as $countersReport) {
             if ($countersReport instanceof CounterReport && DEFAULT_NAME === $countersReport->getName()) {
@@ -42,16 +47,17 @@ class ProfilerReportFormatter extends ReportFormatter
     }
 
     /**
+     * @param ProfilerReport $report
      * @return string
      */
-    protected function timersStrings(): string
+    protected function timersStrings(ProfilerReport $report): string
     {
         $r = '';
-        foreach ($this->report->getTimersReports() as $report) {
-            if ($report instanceof TimerReport && DEFAULT_NAME === $report->getName()) {
-                $this->elapsed = (string)$report;
+        foreach ($report->getTimersReports() as $timerReport) {
+            if ($timerReport instanceof TimerReport && DEFAULT_NAME === $timerReport->getName()) {
+                $this->elapsed = (string)$timerReport;
             } else {
-                $r .= $report;
+                $r .= $timerReport;
             }
         }
         return $r;

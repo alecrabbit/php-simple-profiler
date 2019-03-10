@@ -25,10 +25,10 @@ trait TimerFields
     /** @var float */
     protected $avgValue = 0.0;
 
-    /** @var float|null */
+    /** @var float|int|null */
     protected $minValue;
 
-    /** @var float|null */
+    /** @var float|int|null */
     protected $maxValue;
 
     /** @var int */

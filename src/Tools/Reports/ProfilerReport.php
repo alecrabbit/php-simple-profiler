@@ -14,15 +14,6 @@ class ProfilerReport extends Report implements Strings
     /** @var array */
     private $reports = [];
 
-    /**
-     * ProfilerReport constructor.
-     * @param Profiler $profiler
-     * @throws \Exception
-     */
-    public function __construct(Profiler $profiler)
-    {
-    }
-
     protected static function getFormatter(): FormatterInterface
     {
         return Factory::getProfilerReportFormatter();
@@ -38,12 +29,13 @@ class ProfilerReport extends Report implements Strings
 
     public function buildOn(ReportableInterface $profiler): ReportInterface
     {
-        /** @var Profiler $profiler */
-        foreach ($profiler->getCounters() as $counter) {
-            $this->reports[self::COUNTERS][$counter->getName()] = $counter->report();
-        }
-        foreach ($profiler->getTimers() as $timer) {
-            $this->reports[self::TIMERS][$timer->getName()] = $timer->report();
+        if ($profiler instanceof Profiler) {
+            foreach ($profiler->getCounters() as $counter) {
+                $this->reports[self::COUNTERS][$counter->getName()] = $counter->report();
+            }
+            foreach ($profiler->getTimers() as $timer) {
+                $this->reports[self::TIMERS][$timer->getName()] = $timer->report();
+            }
         }
         return $this;
     }
