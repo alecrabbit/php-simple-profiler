@@ -3,6 +3,7 @@
 namespace AlecRabbit\Tools;
 
 use AlecRabbit\Tools\Contracts\ExtendedCounterValuesInterface;
+use AlecRabbit\Tools\Reports\SimpleCounterReport;
 use AlecRabbit\Tools\Traits\ExtendedCounterFields;
 
 class ExtendedCounter extends SimpleCounter implements ExtendedCounterValuesInterface
@@ -14,6 +15,13 @@ class ExtendedCounter extends SimpleCounter implements ExtendedCounterValuesInte
     {
         parent::__construct($name, $step, $initialValue);
         $this->updateExtendedValues();
+    }
+
+    /** {@inheritdoc} */
+    protected function buildReport(): void
+    {
+        // todo change to ExtendedCounterReport
+        $this->report = (new SimpleCounterReport())->buildOn($this);
     }
 
     protected function updateExtendedValues(): void
