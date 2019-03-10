@@ -42,14 +42,6 @@ trait BenchmarkFields
         return $this->functions;
     }
 
-//    /**
-//     * @return Profiler
-//     */
-//    public function getProfiler(): Profiler
-//    {
-//        return $this->profiler;
-//    }
-//
     /**
      * @return int
      */

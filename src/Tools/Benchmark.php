@@ -104,7 +104,6 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
                 $this->iterations
             );
         $this->functions = [];
-//        $this->profiler = new Profiler();
         $this->added = new SimpleCounter('added');
         $this->benchmarked = new SimpleCounter('benchmarked');
         $this->memoryUsageReport = MemoryUsage::report();
@@ -278,13 +277,5 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
                 PHP_EOL,
                 (string)$this->memoryUsageReport
             );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function beforeReport(): void
-    {
-//        $this->getProfiler()->report();
     }
 }
