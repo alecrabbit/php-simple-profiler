@@ -6,11 +6,11 @@ use AlecRabbit\Tools\Contracts\CounterInterface;
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Traits\HasReport;
-use AlecRabbit\Tools\Traits\CounterFields;
+use AlecRabbit\Tools\Traits\SimpleCounterFields;
 
 abstract class AbstractCounter implements CounterInterface, ReportableInterface
 {
-    use CounterFields, HasReport;
+    use SimpleCounterFields, HasReport;
 
 
     protected const DEFAULT_STEP = 1;

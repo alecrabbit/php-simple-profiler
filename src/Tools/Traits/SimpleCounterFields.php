@@ -5,7 +5,7 @@ namespace AlecRabbit\Tools\Traits;
 use AlecRabbit\Traits\GettableName;
 use AlecRabbit\Traits\Startable;
 
-trait CounterFields
+trait SimpleCounterFields
 {
     use GettableName, Startable;
 
