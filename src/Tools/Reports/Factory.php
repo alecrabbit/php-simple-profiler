@@ -115,7 +115,7 @@ class Factory
     /**
      * @return ProfilerReportFormatter
      */
-    protected static function getProfilerReportFormatter(): ProfilerReportFormatter
+    public static function getProfilerReportFormatter(): ProfilerReportFormatter
     {
         if (null === static::$profilerReportFormatter) {
             static::$profilerReportFormatter = new ProfilerReportFormatter();

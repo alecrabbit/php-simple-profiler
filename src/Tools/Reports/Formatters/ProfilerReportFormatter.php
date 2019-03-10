@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
+use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\CounterReport;
 use AlecRabbit\Tools\Reports\ProfilerReport;
 use AlecRabbit\Tools\Reports\TimerReport;
@@ -10,34 +11,31 @@ use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
 class ProfilerReportFormatter extends ReportFormatter
 {
-    /** @var ProfilerReport */
-    protected $report;
-
-    /** @var string */
-    protected $elapsed = '';
-
-    public function process(): string
+    /** {@inheritdoc} */
+    public function process(ReportInterface $report): string
     {
         return
             sprintf(
                 '%s %s %s ',
-                $this->countersStrings(),
+                $this->countersStrings($report),
                 $this->timersStrings(),
                 $this->elapsed
             );
     }
 
     /**
+     * @param ReportInterface $report
      * @return string
      */
-    protected function countersStrings(): string
+    protected function countersStrings(ReportInterface $report): string
     {
+        /** @var ProfilerReport $report */
         $r = '';
-        foreach ($this->report->getCountersReports() as $report) {
-            if ($report instanceof CounterReport && DEFAULT_NAME === $report->getName()) {
-                $r .= $report->isStarted() ? $report : '';
+        foreach ($report->getCountersReports() as $countersReport) {
+            if ($countersReport instanceof CounterReport && DEFAULT_NAME === $countersReport->getName()) {
+                $r .= $countersReport->isStarted() ? $countersReport : '';
             } else {
-                $r .= $report;
+                $r .= $countersReport;
             }
         }
         return $r;
