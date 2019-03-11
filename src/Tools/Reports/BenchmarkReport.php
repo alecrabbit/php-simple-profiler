@@ -41,6 +41,8 @@ class BenchmarkReport extends Report implements BenchmarkReportInterface
             $this->doneIterationsCombined = $benchmark->getDoneIterationsCombined();
             $this->functions = $this->updateFunctions($benchmark->getFunctions());
             $this->timer = $benchmark->getTimer();
+        } else {
+            $this->wrongReportable(Benchmark::class, $benchmark);
         }
         return $this;
     }

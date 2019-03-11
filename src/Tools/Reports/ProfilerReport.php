@@ -36,6 +36,8 @@ class ProfilerReport extends Report implements Strings
             foreach ($profiler->getTimers() as $timer) {
                 $this->reports[self::TIMERS][$timer->getName()] = $timer->report();
             }
+        } else {
+            $this->wrongReportable(Profiler::class, $profiler);
         }
         return $this;
     }

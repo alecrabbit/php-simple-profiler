@@ -2,6 +2,7 @@
 
 namespace AlecRabbit\Tools;
 
+use function AlecRabbit\typeOf;
 use const AlecRabbit\Helpers\Constants\INT_SIZE_64BIT;
 
 class HRTimer extends AbstractTimer
@@ -22,6 +23,7 @@ class HRTimer extends AbstractTimer
 
     protected function checkEnvironment(): void
     {
+        // @codeCoverageIgnoreStart
         if (PHP_VERSION_ID < 70300 && false === static::$ignoreVersionRestrictions) {
             // `HRTimer::class` uses `hrtime()` function of PHP ^7.3.
             // There is almost no sense in using polyfill function.
@@ -29,7 +31,6 @@ class HRTimer extends AbstractTimer
             // Otherwise use `Timer::class` instance instead.
             throw new \RuntimeException('[' . static::class . '] Your php version is below 7.3.0.');
         }
-        // @codeCoverageIgnoreStart
         if (PHP_INT_SIZE < INT_SIZE_64BIT) {
             // `HRTimer::class` is designed and tested in 64bit environment
             // So it can be used in 64bit environments only
@@ -38,4 +39,35 @@ class HRTimer extends AbstractTimer
         }
         // @codeCoverageIgnoreEnd
     }
+
+    /**
+     * @param int $start
+     * @param int $stop
+     */
+    protected function assertStartAndStop($start, $stop): void
+    {
+        $this->assertStart($start);
+        $this->assertStop($stop);
+    }
+
+    /**
+     * @param $start
+     */
+    protected function assertStart($start): void
+    {
+        if (!\is_int($start)) {
+            throw new \RuntimeException('Start value is NOT ok. [' . typeOf($start) . ']');
+        }
+    }
+
+    /**
+     * @param $stop
+     */
+    protected function assertStop($stop): void
+    {
+        if (!is_int($stop)) {
+            throw new \RuntimeException('Stop value is NOT ok. [' . typeOf($stop) . ']');
+        }
+    }
+
 }

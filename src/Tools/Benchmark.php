@@ -22,8 +22,6 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
 
     /** @var int */
     protected $advanceSteps = self::DEFAULT_STEPS;
-    /** @var int */
-    private $functionIndex = 1;
     /** @var Rewindable */
     protected $rewindable;
     /** @var int */
@@ -48,6 +46,8 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
     protected $showReturns = true;
     /** @var bool */
     protected $launched = false;
+    /** @var int */
+    private $functionIndex = 1;
 
     /**
      * Benchmark constructor.
@@ -119,67 +119,6 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
     public function reset(): void
     {
         $this->initialize();
-    }
-
-    /**
-     * Launch benchmarking
-     */
-    public function run(): self
-    {
-        $this->launched = true;
-        if ($this->onStart) {
-            ($this->onStart)();
-        }
-        $this->execute();
-        if ($this->onFinish) {
-            ($this->onFinish)();
-        }
-        $this->doneIterationsCombined += $this->doneIterations;
-        return $this;
-    }
-
-    /**
-     * Benchmarking
-     */
-    private function execute(): void
-    {
-        /** @var  BenchmarkFunction $f */
-        foreach ($this->functions as $f) {
-            if (!$f->execute()) {
-                $this->totalIterations -= $this->iterations;
-                continue;
-            }
-            $this->advanceStep = (int)($this->totalIterations / $this->advanceSteps);
-            $this->bench($f);
-            $this->benchmarked->bump();
-        }
-    }
-
-    /**
-     * @param BenchmarkFunction $f
-     */
-    private function bench(BenchmarkFunction $f): void
-    {
-        $timer = $f->getTimer();
-        $function = $f->getCallable();
-        $args = $f->getArgs();
-        foreach ($this->rewindable as $iteration) {
-            $start = microtime(true);
-            /** @noinspection DisconnectedForeachInstructionInspection */
-            $function(...$args);
-            $stop = microtime(true);
-            $timer->bounds($start, $stop, $iteration);
-            /** @noinspection DisconnectedForeachInstructionInspection */
-            $this->progress();
-        }
-    }
-
-    private function progress(): void
-    {
-        $this->doneIterations++;
-        if ($this->onAdvance && 0 === $this->doneIterations % $this->advanceStep) {
-            ($this->onAdvance)();
-        }
     }
 
     /**
@@ -278,4 +217,89 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
                 (string)$this->memoryUsageReport
             );
     }
+
+    protected function meetConditions(): void
+    {
+        if ($this->isNotLaunched()) {
+            $this->run();
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNotLaunched(): bool
+    {
+        return !$this->isLaunched();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLaunched(): bool
+    {
+        return $this->launched;
+    }
+
+    /**
+     * Launch benchmarking
+     */
+    public function run(): self
+    {
+        $this->launched = true;
+        if ($this->onStart) {
+            ($this->onStart)();
+        }
+        $this->execute();
+        if ($this->onFinish) {
+            ($this->onFinish)();
+        }
+        $this->doneIterationsCombined += $this->doneIterations;
+        return $this;
+    }
+
+    /**
+     * Benchmarking
+     */
+    private function execute(): void
+    {
+        /** @var  BenchmarkFunction $f */
+        foreach ($this->functions as $f) {
+            if (!$f->execute()) {
+                $this->totalIterations -= $this->iterations;
+                continue;
+            }
+            $this->advanceStep = (int)($this->totalIterations / $this->advanceSteps);
+            $this->bench($f);
+            $this->benchmarked->bump();
+        }
+    }
+
+    /**
+     * @param BenchmarkFunction $f
+     */
+    private function bench(BenchmarkFunction $f): void
+    {
+        $timer = $f->getTimer();
+        $function = $f->getCallable();
+        $args = $f->getArgs();
+        foreach ($this->rewindable as $iteration) {
+            $start = microtime(true);
+            /** @noinspection DisconnectedForeachInstructionInspection */
+            $function(...$args);
+            $stop = microtime(true);
+            $timer->bounds($start, $stop, $iteration);
+            /** @noinspection DisconnectedForeachInstructionInspection */
+            $this->progress();
+        }
+    }
+
+    private function progress(): void
+    {
+        $this->doneIterations++;
+        if ($this->onAdvance && 0 === $this->doneIterations % $this->advanceStep) {
+            ($this->onAdvance)();
+        }
+    }
+
 }

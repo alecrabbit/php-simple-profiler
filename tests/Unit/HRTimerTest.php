@@ -4,6 +4,7 @@ namespace AlecRabbit\Tests\Tools;
 
 use AlecRabbit\Tools\HRTimer;
 use PHPUnit\Framework\TestCase;
+use const AlecRabbit\Tools\HRTIMER_VALUE_COEFFICIENT;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
 /**
@@ -17,6 +18,7 @@ class HRTimerTest extends TestCase
      */
     public function instance(): void
     {
+        $this->assertEquals(HRTimer::VALUE_COEFFICIENT, HRTIMER_VALUE_COEFFICIENT);
         $this->assertEnvironment();
         $timer = new HRTimer();
         $this->assertInstanceOf(HRTimer::class, $timer);
@@ -28,6 +30,31 @@ class HRTimerTest extends TestCase
             $this->expectException(\RuntimeException::class);
         }
     }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function timerBoundsStart(): void
+    {
+        $this->assertEnvironment();
+        $timer = new HRTimer();
+        $this->expectException(\RuntimeException::class);
+        $timer->bounds(null, 1);
+    }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function timerBoundsStop(): void
+    {
+        $this->assertEnvironment();
+        $timer = new HRTimer();
+        $this->expectException(\RuntimeException::class);
+        $timer->bounds(1, null);
+    }
+
 
     /**
      * @test

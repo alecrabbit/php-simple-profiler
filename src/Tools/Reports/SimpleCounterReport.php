@@ -16,7 +16,7 @@ use function AlecRabbit\typeOf;
 
 class SimpleCounterReport extends Report
 {
-    use SimpleCounterFields, SimpleCounterFields;
+    use SimpleCounterFields;
 
     protected static function getFormatter(): FormatterInterface
     {
