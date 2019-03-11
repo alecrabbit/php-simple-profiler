@@ -18,10 +18,10 @@ class HRTimerTest extends TestCase
      */
     public function instance(): void
     {
+        $this->assertEquals(HRTimer::VALUE_COEFFICIENT, HRTIMER_VALUE_COEFFICIENT);
         $this->assertEnvironment();
         $timer = new HRTimer();
         $this->assertInstanceOf(HRTimer::class, $timer);
-        $this->assertEquals(HRTimer::VALUE_COEFFICIENT, HRTIMER_VALUE_COEFFICIENT);
     }
 
     protected function assertEnvironment(): void
@@ -37,6 +37,7 @@ class HRTimerTest extends TestCase
      */
     public function timerBoundsStart(): void
     {
+        $this->assertEnvironment();
         $timer = new HRTimer();
         $this->expectException(\RuntimeException::class);
         $timer->bounds(null, 1);
@@ -48,6 +49,7 @@ class HRTimerTest extends TestCase
      */
     public function timerBoundsStop(): void
     {
+        $this->assertEnvironment();
         $timer = new HRTimer();
         $this->expectException(\RuntimeException::class);
         $timer->bounds(1, null);
