@@ -3,8 +3,8 @@
 namespace AlecRabbit\Tests\Tools;
 
 use AlecRabbit\Tools\Timer;
-use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 use PHPUnit\Framework\TestCase;
+use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
 /**
  * @group time-sensitive
@@ -40,12 +40,12 @@ class TimerTest extends TestCase
         $this->assertEquals(0, $timer->getCount());
         $this->assertEquals(0, $timer->getMinValueIteration());
         $this->assertEquals(0, $timer->getMaxValueIteration());
-        $this->assertInstanceOf(\DateInterval::class, $timer->getElapsed());
-        $this->assertInstanceOf(\DateTimeImmutable::class, $timer->getCreation());
         $this->assertEquals(false, $timer->isStarted());
         $this->assertEquals(true, $timer->isNotStarted());
         $this->assertEquals(false, $timer->isStopped());
         $this->assertEquals(true, $timer->isNotStopped());
+        $this->assertInstanceOf(\DateInterval::class, $timer->getElapsed());
+        $this->assertInstanceOf(\DateTimeImmutable::class, $timer->getCreation());
     }
 
     /**
@@ -90,7 +90,7 @@ class TimerTest extends TestCase
     {
         $timer = new Timer();
         $this->expectException(\RuntimeException::class);
-        $timer->bounds(1, null);
+        $timer->bounds(1.0, null);
     }
 
     /**
@@ -111,13 +111,15 @@ class TimerTest extends TestCase
         $this->assertEquals(1.0, $timer->getMaxValue());
         $this->assertEquals(1.0, $timer->getLastValue());
         $this->assertEquals($count, $timer->getCount());
-        $this->assertInstanceOf(\DateInterval::class, $timer->getElapsed());
+        $dateInterval = $timer->getElapsed();
+        $this->assertInstanceOf(\DateInterval::class, $dateInterval);
         sleep(5);
         $timer->check();
         $this->assertEquals(5.0, $timer->getMaxValue());
         usleep(100000);
         $timer->check();
         $this->assertEqualsWithDelta(0.1, $timer->getMinValue(), 0.001);
+//        dump($dateInterval);
     }
 
     /**

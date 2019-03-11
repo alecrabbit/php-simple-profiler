@@ -9,16 +9,10 @@ use AlecRabbit\Tools\Reports\Contracts\TimerReportInterface;
 use AlecRabbit\Tools\Reports\Core\Report;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
 use AlecRabbit\Tools\Traits\TimerFields;
-use function AlecRabbit\typeOf;
 
 class TimerReport extends Report implements TimerReportInterface
 {
     use TimerFields;
-
-    protected static function getFormatter(): FormatterInterface
-    {
-        return Factory::getTimerReportFormatter();
-    }
 
     /**
      * TimerReport constructor.
@@ -29,6 +23,11 @@ class TimerReport extends Report implements TimerReportInterface
         // This lines here keep vimeo/psalm quiet
         $this->creationTime = new \DateTimeImmutable();
         $this->elapsed = (new \DateTimeImmutable())->diff($this->creationTime);
+    }
+
+    protected static function getFormatter(): FormatterInterface
+    {
+        return Factory::getTimerReportFormatter();
     }
 
     /**
@@ -52,10 +51,9 @@ class TimerReport extends Report implements TimerReportInterface
             $this->avgValue = $reportable->getAverageValue();
             $this->currentValue = $reportable->getLastValue();
             $this->elapsed = $reportable->getElapsed();
-            return $this;
+        } else {
+            $this->wrongReportable('Instance of ' . AbstractTimer::class, $reportable);
         }
-        throw new \RuntimeException(
-            'Instance of ' . AbstractTimer::class . ' expected ' . typeOf($reportable) . ' given.'
-        );
+        return $this;
     }
 }
