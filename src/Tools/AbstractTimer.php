@@ -8,7 +8,6 @@ use AlecRabbit\Tools\Reports\Factory;
 use AlecRabbit\Tools\Reports\TimerReport;
 use AlecRabbit\Tools\Reports\Traits\HasReport;
 use AlecRabbit\Tools\Traits\TimerFields;
-use function AlecRabbit\typeOf;
 
 abstract class AbstractTimer implements TimerInterface, ReportableInterface
 {
@@ -34,6 +33,14 @@ abstract class AbstractTimer implements TimerInterface, ReportableInterface
 
     protected function checkEnvironment(): void
     {
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function computeElapsed(): void
+    {
+        $this->elapsed = (new \DateTimeImmutable())->diff($this->creationTime);
     }
 
     /**
@@ -160,14 +167,6 @@ abstract class AbstractTimer implements TimerInterface, ReportableInterface
     }
 
     /**
-     * @throws \Exception
-     */
-    protected function computeElapsed(): void
-    {
-        $this->elapsed = (new \DateTimeImmutable())->diff($this->creationTime);
-    }
-
-    /**
      * @return string
      * @throws \Exception
      */
@@ -207,28 +206,7 @@ abstract class AbstractTimer implements TimerInterface, ReportableInterface
         return $this;
     }
 
-    /**
-     * @param int|float $start
-     * @param int|float $stop
-     */
-    protected function assertStartAndStop($start, $stop): void
-    {
-        // todo optimize (make abstract here?)
-        $start_ok = false;
-        $stop_ok = false;
-        if (is_int($start) || is_float($start)) {
-            $start_ok = true;
-        }
-        if (is_int($stop) || is_float($stop)) {
-            $stop_ok = true;
-        }
-        if (!$start_ok) {
-            throw new \RuntimeException('Start value is NOT ok. [' . typeOf($start) . ']');
-        }
-        if (!$stop_ok) {
-            throw new \RuntimeException('Stop value is NOT ok. [' . typeOf($stop) . ']');
-        }
-    }
+    abstract protected function assertStartAndStop($start, $stop): void;
 
     /**
      * @param float $start

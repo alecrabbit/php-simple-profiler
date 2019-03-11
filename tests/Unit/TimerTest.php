@@ -78,7 +78,19 @@ class TimerTest extends TestCase
     public function timerBoundsStart(): void
     {
         $timer = new Timer();
-        $timer->bounds(null, null);
+        $this->expectException(\RuntimeException::class);
+        $timer->bounds(null, 1);
+    }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function timerBoundsStop(): void
+    {
+        $timer = new Timer();
+        $this->expectException(\RuntimeException::class);
+        $timer->bounds(1, null);
     }
 
     /**

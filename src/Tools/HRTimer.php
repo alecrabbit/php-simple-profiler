@@ -3,6 +3,7 @@
 namespace AlecRabbit\Tools;
 
 use const AlecRabbit\Helpers\Constants\INT_SIZE_64BIT;
+use function AlecRabbit\typeOf;
 
 class HRTimer extends AbstractTimer
 {
@@ -38,4 +39,27 @@ class HRTimer extends AbstractTimer
         }
         // @codeCoverageIgnoreEnd
     }
+
+    /**
+     * @param int $start
+     * @param int $stop
+     */
+    protected function assertStartAndStop($start, $stop): void
+    {
+        $start_ok = false;
+        $stop_ok = false;
+        if (is_int($start)) {
+            $start_ok = true;
+        }
+        if (is_int($stop)) {
+            $stop_ok = true;
+        }
+        if (!$start_ok) {
+            throw new \RuntimeException('Start value is NOT ok. [' . typeOf($start) . ']');
+        }
+        if (!$stop_ok) {
+            throw new \RuntimeException('Stop value is NOT ok. [' . typeOf($stop) . ']');
+        }
+    }
+
 }
