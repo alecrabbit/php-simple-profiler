@@ -26,6 +26,8 @@ abstract class Report implements ReportInterface
      */
     protected function wrongReportable(string $expected, ReportableInterface $reportable): void
     {
-        throw new \RuntimeException($expected . ' instance expected ' . typeOf($reportable) . ' given');
+        throw new \RuntimeException(
+            'Instance of [' . $expected . '] expected, [' . typeOf($reportable) . '] given'
+        );
     }
 }
