@@ -21,6 +21,17 @@ class TimerReport extends Report implements TimerReportInterface
     }
 
     /**
+     * TimerReport constructor.
+     * @throws \Exception
+     */
+    public function __construct()
+    {
+        // This lines here keep pslam quiet
+        $this->creationTime = new \DateTimeImmutable();
+//        $this->elapsed = (new \DateTimeImmutable())->diff($this->creationTime);
+    }
+
+    /**
      * @param ReportableInterface $reportable
      * @return Contracts\ReportInterface
      * @throws \RuntimeException

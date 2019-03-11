@@ -5,6 +5,7 @@ namespace AlecRabbit\Tools\Reports;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionFormatter;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
+use AlecRabbit\Tools\Reports\Formatters\ExtendedCounterReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\ProfilerReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\SimpleCounterReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\TimerReportFormatter;

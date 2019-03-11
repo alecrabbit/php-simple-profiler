@@ -13,9 +13,9 @@ use function AlecRabbit\typeOf;
 
 class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface, Strings
 {
-    /** @var BenchmarkFunction */
-    protected $function;
-
+//    /** @var BenchmarkFunction */
+//    protected $function;
+//
     /** @var bool */
     protected $withResults = true;
 
@@ -36,25 +36,24 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
     /** {@inheritdoc} */
     public function process(BenchmarkFunction $function): string
     {
-        $this->function = $function;
         return
-            $this->formatBenchmarkRelative() .
-            (empty($exception = $this->formatException()) ?
+            $this->formatBenchmarkRelative($function) .
+            (empty($exception = $this->formatException($function)) ?
                 PHP_EOL :
                 static::EXCEPTIONS . PHP_EOL . $exception);
     }
 
     /**
+     * @param BenchmarkFunction $function
      * @return string
      */
-    protected function formatBenchmarkRelative(): string
+    protected function formatBenchmarkRelative(BenchmarkFunction $function): string
     {
-        $function = $this->function;
         if ($br = $function->getBenchmarkRelative()) {
             $argumentsTypes = $this->extractArgumentsTypes($function->getArgs());
             $executionReturn = $function->getReturn();
 
-            if ($this->withResults && $this->function->isShowReturns()) {
+            if ($this->withResults && $function->isShowReturns()) {
                 return
                     sprintf(
                         '%s %s %s %s',
@@ -155,20 +154,21 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
     }
 
     /**
+     * @param BenchmarkFunction $function
      * @return string
      */
-    protected function formatException(): string
+    protected function formatException(BenchmarkFunction $function): string
     {
 
-        if ($e = $this->function->getException()) {
-            $argumentsTypes = $this->extractArgumentsTypes($this->function->getArgs());
+        if ($e = $function->getException()) {
+            $argumentsTypes = $this->extractArgumentsTypes($function->getArgs());
 
             return
                 sprintf(
                     '%s(%s) %s [%s: %s] %s',
-                    $this->function->humanReadableName(),
+                    $function->humanReadableName(),
                     implode(', ', $argumentsTypes),
-                    $this->function->comment(),
+                    $function->comment(),
                     typeOf($e),
                     $e->getMessage(),
                     PHP_EOL

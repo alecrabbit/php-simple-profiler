@@ -4,6 +4,7 @@ namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Tools\Contracts\CounterValuesInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
+use AlecRabbit\Tools\Reports\ExtendedCounterReport;
 use AlecRabbit\Tools\Reports\SimpleCounterReport;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
@@ -12,7 +13,7 @@ class ExtendedCounterReportFormatter extends ReportFormatter
     /** {@inheritdoc} */
     public function process(ReportInterface $report): string
     {
-        if ($report instanceof SimpleCounterReport) {
+        if ($report instanceof ExtendedCounterReport) {
             if (DEFAULT_NAME === $report->getName()) {
                 return $this->simple($report);
             }
@@ -22,11 +23,11 @@ class ExtendedCounterReportFormatter extends ReportFormatter
     }
 
     /**
-     * @param SimpleCounterReport $report
+     * @param ExtendedCounterReport $report
      * @param bool $eol
      * @return string
      */
-    protected function simple(SimpleCounterReport $report, bool $eol = true): string
+    protected function simple(ExtendedCounterReport $report, bool $eol = true): string
     {
         /** @var CounterValuesInterface $report */
         return
@@ -38,11 +39,11 @@ class ExtendedCounterReportFormatter extends ReportFormatter
     }
 
     /**
-     * @param SimpleCounterReport $report
+     * @param ExtendedCounterReport $report
      * @param bool $eol
      * @return string
      */
-    protected function full(SimpleCounterReport $report, bool $eol = true): string
+    protected function full(ExtendedCounterReport $report, bool $eol = true): string
     {
         return
             sprintf(
@@ -69,10 +70,10 @@ class ExtendedCounterReportFormatter extends ReportFormatter
     }
 
     /**
-     * @param SimpleCounterReport $report
+     * @param ExtendedCounterReport $report
      * @return string
      */
-    private function computeBumped(SimpleCounterReport $report): string
+    private function computeBumped(ExtendedCounterReport $report): string
     {
         return
             sprintf(

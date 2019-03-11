@@ -2,14 +2,13 @@
 
 namespace AlecRabbit\Tools\Reports;
 
-use AlecRabbit\Tools\AbstractCounter;
 use AlecRabbit\Tools\ExtendedCounter;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Core\Report;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
-use AlecRabbit\Tools\Traits\SimpleCounterFields;
 use AlecRabbit\Tools\Traits\ExtendedCounterFields;
+use AlecRabbit\Tools\Traits\SimpleCounterFields;
 
 class ExtendedCounterReport extends Report
 {
@@ -22,7 +21,7 @@ class ExtendedCounterReport extends Report
 
     /**
      * @param ReportableInterface $counter
-     * @return Contracts\ReportInterface
+     * @return ReportInterface
      * @throws \RuntimeException
      * @throws \Exception
      */
@@ -41,8 +40,9 @@ class ExtendedCounterReport extends Report
             $this->length = $counter->getLength();
             $this->diff = $counter->getDiff();
             $this->bumpedBack = $counter->getBumpedBack();
-            return $this;
+        } else {
+            $this->wrongReportable(ExtendedCounter::class, $counter);
         }
-        $this->wrongReportable(AbstractCounter::class, $counter);
+        return $this;
     }
 }

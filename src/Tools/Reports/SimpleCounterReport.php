@@ -25,7 +25,7 @@ class SimpleCounterReport extends Report
 
     /**
      * @param ReportableInterface $counter
-     * @return Contracts\ReportInterface
+     * @return ReportInterface
      * @throws \RuntimeException
      * @throws \Exception
      */
@@ -38,8 +38,9 @@ class SimpleCounterReport extends Report
             $this->started = $counter->isStarted();
             $this->initialValue = $counter->getInitialValue();
             $this->bumped = $counter->getBumped();
-            return $this;
+        } else {
+            $this->wrongReportable(SimpleCounter::class, $counter);
         }
-        $this->wrongReportable(AbstractCounter::class, $counter);
+        return $this;
     }
 }

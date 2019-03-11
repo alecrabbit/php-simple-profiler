@@ -50,20 +50,10 @@ class SimpleCounterReportFormatter extends ReportFormatter
                 self::VALUE . ': %s, ' .
                 self::STEP . ': %s, ' .
                 self::BUMPED . ': %s, ' .
-                self::PATH . ': %s, ' .
-                self::LENGTH . ': %s, ' .
-                self::MAX . ': %s, ' .
-                self::MIN . ': %s, ' .
-                self::DIFF . ': %s %s',
                 $report->getName(),
                 (string)$report->getValue(),
                 (string)$report->getStep(),
                 $this->computeBumped($report),
-                (string)$report->getPath(),
-                (string)$report->getLength(),
-                (string)$report->getMax(),
-                (string)$report->getMin(),
-                (string)$report->getDiff(),
                 $eol ? PHP_EOL : ''
             );
     }
@@ -76,9 +66,8 @@ class SimpleCounterReportFormatter extends ReportFormatter
     {
         return
             sprintf(
-                self::FORWARD . '%s ' . self::BACKWARD . '%s',
-                $report->getBumped(),
-                $report->getBumpedBack()
+                self::FORWARD . '%s ',
+                $report->getBumped()
             );
     }
 }
