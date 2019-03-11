@@ -75,6 +75,16 @@ class TimerTest extends TestCase
      * @test
      * @throws \Exception
      */
+    public function timerBoundsStart(): void
+    {
+        $timer = new Timer();
+        $timer->bounds(null, null);
+    }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
     public function timerAvgValue(): void
     {
         $timer = new Timer();
@@ -93,6 +103,38 @@ class TimerTest extends TestCase
         sleep(5);
         $timer->check();
         $this->assertEquals(5.0, $timer->getMaxValue());
+        usleep(100000);
+        $timer->check();
+        $this->assertEqualsWithDelta(0.1, $timer->getMinValue(), 0.001);
+    }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function timerAvgValueVariant(): void
+    {
+        $timer = new Timer(null, false);
+        $count = 5;
+        for ($i = 0; $i < $count; $i++) {
+            sleep(1);
+            $timer->check();
+        }
+        $this->assertEquals(1.0, $timer->getAverageValue());
+        $this->assertEquals(1.0, $timer->getMinValue());
+        $this->assertEquals(1.0, $timer->getMaxValue());
+        $this->assertEquals(1.0, $timer->getLastValue());
+        $this->assertEquals($count - 1, $timer->getCount());
+        $this->assertInstanceOf(\DateInterval::class, $timer->getElapsed());
+        sleep(5);
+        $timer->check();
+        $this->assertEquals(5.0, $timer->getMaxValue());
+        usleep(100000);
+        $timer->check();
+        $this->assertEqualsWithDelta(0.1, $timer->getMinValue(), 0.001);
+        $timer->stop();
+        $this->expectException(\RuntimeException::class);
+        $timer->check();
     }
 
     /**

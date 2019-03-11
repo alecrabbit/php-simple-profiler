@@ -13,6 +13,7 @@ class SimpleCounterTest extends TestCase
      * @dataProvider simpleCounterInstanceDataProvider
      * @param array $expected
      * @param array $params
+     * @throws \Exception
      */
     public function simpleCounterInstance(array $expected, array $params): void
     {
@@ -30,6 +31,67 @@ class SimpleCounterTest extends TestCase
     }
 
     /**
+     * @test
+     * @throws \Exception
+     */
+    public function simpleCounterSetStep(): void
+    {
+        $c = new SimpleCounter();
+        $c->setStep(2);
+        $c->bump(2);
+        $this->assertEquals(4, $c->getValue());
+        $this->expectException(\RuntimeException::class);
+        $c->setStep(2);
+    }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function simpleCounterSetInitialValue(): void
+    {
+        $c = new SimpleCounter();
+        $c->setInitialValue(2);
+        $c->bump(2);
+        $this->assertEquals(4, $c->getValue());
+        $this->expectException(\RuntimeException::class);
+        $c->setInitialValue(2);
+    }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function simpleCounterSetStep0(): void
+    {
+        $c = new SimpleCounter();
+        $this->expectException(\RuntimeException::class);
+        $c->setStep(0);
+    }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function simpleCounterBump0(): void
+    {
+        $c = new SimpleCounter();
+        $this->expectException(\RuntimeException::class);
+        $c->bump(0);
+    }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function simpleCounterBumpNegative(): void
+    {
+        $c = new SimpleCounter();
+        $this->expectException(\RuntimeException::class);
+        $c->bump(-1);
+    }
+
+    /**
      * @return array
      */
     public function simpleCounterInstanceDataProvider(): array
@@ -44,6 +106,13 @@ class SimpleCounterTest extends TestCase
             [[$name, 0, 1, 0], [$name]],
             [[$pop, 0, 1, 0], [$pop]],
             [[$pop, 10, 1, 10], [$pop, 1, 10]],
+        ];
+    }
+
+    public function simpleCounterForExceptions()
+    {
+        return [
+            [],
         ];
     }
 }
