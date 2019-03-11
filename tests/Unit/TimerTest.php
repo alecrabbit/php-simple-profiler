@@ -2,6 +2,7 @@
 
 namespace AlecRabbit\Tests\Tools;
 
+use AlecRabbit\Tools\Reports\TimerReport;
 use AlecRabbit\Tools\Timer;
 use PHPUnit\Framework\TestCase;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
@@ -18,8 +19,9 @@ class TimerTest extends TestCase
      */
     public function classCreation(): void
     {
-        $timer = new Timer();
+        $timer = new Timer(null, false);
         $this->assertInstanceOf(Timer::class, $timer);
+        $this->assertInstanceOf(TimerReport::class, $timer->report());
     }
 
     /**

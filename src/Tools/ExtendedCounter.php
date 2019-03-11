@@ -17,13 +17,6 @@ class ExtendedCounter extends SimpleCounter implements ExtendedCounterValuesInte
         $this->updateExtendedValues();
     }
 
-    /** {@inheritdoc} */
-    protected function buildReport(): void
-    {
-        // todo change to ExtendedCounterReport
-        $this->report = (new SimpleCounterReport())->buildOn($this);
-    }
-
     protected function updateExtendedValues(): void
     {
         $this->updateMaxAndMin();
@@ -80,17 +73,20 @@ class ExtendedCounter extends SimpleCounter implements ExtendedCounterValuesInte
             $this->value;
     }
 
-    /**
-     * @param int $initialValue
-     * @return AbstractCounter
-     */
-    public function setInitialValue(int $initialValue): AbstractCounter
+    /** {@inheritdoc} */
+    protected function buildReport(): void
     {
-        if (false === $this->isStarted()) {
-            $this->value = $this->initialValue = $this->length = $this->max = $this->min = $initialValue;
-        } else {
-            throw new \RuntimeException('You can\'t set counter initial value, it has been bumped already.');
-        }
-        return $this;
+        // todo change to ExtendedCounterReport
+        $this->report = (new SimpleCounterReport())->buildOn($this);
     }
+
+    /**
+     * {@inheritdoc}
+     * todo rename this method
+     */
+    protected function updateValues(int $initialValue): void
+    {
+        $this->value = $this->initialValue = $this->length = $this->max = $this->min = $initialValue;
+    }
+
 }
