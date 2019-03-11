@@ -40,7 +40,6 @@ class ExtendedCounterTest extends TestCase
         $this->assertEquals($initial + $step * 2, $c->getLength());
         $c->bumpBack(4);
         $this->assertEquals($initial- $step * 4, $c->getMin());
-
     }
 
     /**

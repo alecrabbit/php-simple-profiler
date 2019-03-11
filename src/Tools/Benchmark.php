@@ -301,5 +301,4 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
             ($this->onAdvance)();
         }
     }
-
 }

@@ -326,14 +326,16 @@ class BenchmarkTest extends TestCase
             ->addFunction('notCallable');
     }
 
-    /** @test */
+    /**
+     * @test
+     * @throws \Exception
+     */
     public function minIterations(): void
     {
         $this->expectException(\RuntimeException::class);
         $b = new Benchmark(10);
         $b->run();
     }
-
 
     /**
      * @throws \Exception

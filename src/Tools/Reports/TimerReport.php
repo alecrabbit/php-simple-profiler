@@ -52,7 +52,7 @@ class TimerReport extends Report implements TimerReportInterface
             $this->currentValue = $reportable->getLastValue();
             $this->elapsed = $reportable->getElapsed();
         } else {
-            $this->wrongReportable( AbstractTimer::class, $reportable);
+            $this->wrongReportable(AbstractTimer::class, $reportable);
         }
         return $this;
     }

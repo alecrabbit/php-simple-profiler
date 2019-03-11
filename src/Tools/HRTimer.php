@@ -69,5 +69,4 @@ class HRTimer extends AbstractTimer
             throw new \RuntimeException('Stop value is NOT ok. [' . typeOf($stop) . ']');
         }
     }
-
 }

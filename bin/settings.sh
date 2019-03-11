@@ -42,6 +42,7 @@ do
             ANALYZE=1
             ;;
         --coverage)
+            PHPUNIT=1
             COVERAGE=1
             ;;
         --propagate)
