@@ -3,7 +3,6 @@
 namespace AlecRabbit\Tools;
 
 use AlecRabbit\Tools\Contracts\CounterInterface;
-use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\SimpleCounterReport;
 use AlecRabbit\Tools\Reports\Traits\HasReport;
@@ -32,25 +31,25 @@ abstract class AbstractCounter implements CounterInterface, ReportableInterface
     }
 
     /**
-     * @throws \Exception
-     */
-    protected function buildReport(): void
-    {
-        $this->report = (new SimpleCounterReport())->buildOn($this);
-    }
-
-    /**
      * @param int $initialValue
      * @return AbstractCounter
      */
     public function setInitialValue(int $initialValue): AbstractCounter
     {
         if (false === $this->isStarted()) {
-            $this->value = $this->initialValue = $initialValue;
+            $this->updateValues($initialValue);
         } else {
             throw new \RuntimeException('You can\'t set counter initial value, it has been bumped already.');
         }
         return $this;
+    }
+
+    /**
+     * @param int $initialValue
+     */
+    protected function updateValues(int $initialValue): void
+    {
+        $this->value = $this->initialValue = $initialValue;
     }
 
     /**
@@ -79,6 +78,14 @@ abstract class AbstractCounter implements CounterInterface, ReportableInterface
             throw new \RuntimeException('Counter step should be non-zero integer.');
         }
         return $step;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function buildReport(): void
+    {
+        $this->report = (new SimpleCounterReport())->buildOn($this);
     }
 
     /**

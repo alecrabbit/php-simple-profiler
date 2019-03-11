@@ -13,6 +13,7 @@ class ExtendedCounterTest extends TestCase
      * @dataProvider simpleCounterInstanceDataProvider
      * @param array $expected
      * @param array $params
+     * @throws \Exception
      */
     public function simpleCounterInstance(array $expected, array $params): void
     {
@@ -37,6 +38,9 @@ class ExtendedCounterTest extends TestCase
         $this->assertEquals($initial + $step, $c->getMax());
         $this->assertEquals($step * 2, $c->getPath());
         $this->assertEquals($initial + $step * 2, $c->getLength());
+        $c->bumpBack(4);
+        $this->assertEquals($initial- $step * 4, $c->getMin());
+
     }
 
     /**
