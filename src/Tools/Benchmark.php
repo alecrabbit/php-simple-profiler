@@ -218,6 +218,18 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
             );
     }
 
+    /**
+     * @return Benchmark
+     */
+    public function noReturns(): Benchmark
+    {
+        $this->showReturns = false;
+        foreach ($this->functions as $function) {
+            $function->setShowReturns($this->showReturns);
+        }
+        return $this;
+    }
+
     protected function meetConditions(): void
     {
         if ($this->isNotLaunched()) {

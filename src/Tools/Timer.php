@@ -26,22 +26,18 @@ class Timer extends AbstractTimer
     }
 
     /**
-     * @param $start
+     * @param float $start
      */
-    protected function assertStart($start): void
+    protected function assertStart(float $start): void
     {
-        if (!\is_float($start)) {
-            throw new \RuntimeException('Start value is NOT ok. [' . typeOf($start) . ']');
-        }
+        // Intentionally left blank
     }
 
     /**
-     * @param $stop
+     * @param float $stop
      */
-    protected function assertStop($stop): void
+    protected function assertStop(float $stop): void
     {
-        if (!is_float($stop)) {
-            throw new \RuntimeException('Stop value is NOT ok. [' . typeOf($stop) . ']');
-        }
+        // Intentionally left blank
     }
 }

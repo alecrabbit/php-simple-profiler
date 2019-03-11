@@ -21,4 +21,9 @@ interface BenchmarkReportInterface
      * @return MemoryUsageReport
      */
     public function getMemoryUsageReport(): MemoryUsageReport;
+
+    /**
+     * @return string
+     */
+    public function __toString(): string;
 }

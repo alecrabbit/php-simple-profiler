@@ -39,7 +39,7 @@ class HRTimerTest extends TestCase
     {
         $this->assertEnvironment();
         $timer = new HRTimer();
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\TypeError::class);
         $timer->bounds(null, 1);
     }
 
@@ -51,7 +51,7 @@ class HRTimerTest extends TestCase
     {
         $this->assertEnvironment();
         $timer = new HRTimer();
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\TypeError::class);
         $timer->bounds(1, null);
     }
 

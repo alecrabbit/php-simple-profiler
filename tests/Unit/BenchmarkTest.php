@@ -209,6 +209,80 @@ class BenchmarkTest extends TestCase
      * @test
      * @throws \Exception
      */
+    public function fullBenchmarkProcessNoReturns(): void
+    {
+        // this test is heavily hardcoded
+
+        $iterations = 100;
+        $bench = new Benchmark($iterations);
+
+        $str_one = 'one';
+        $str_two = 'two';
+        $str_exception = 'Simulated Exception';
+
+        $bench
+            ->useName($str_one)
+            ->addFunction(function () {
+                usleep(100);
+                return 1;
+            });
+        $bench
+            ->useName($str_two)
+            ->addFunction(function () {
+                usleep(10);
+                return 2;
+            });
+        $bench
+            ->addFunction(
+                function () use ($str_exception) {
+                    throw new \RuntimeException($str_exception);
+                }
+            );
+        /** @var BenchmarkReport $report */
+        $report = $bench->run()->report()->noReturns();
+        $this->assertInstanceOf(BenchmarkReport::class, $report);
+        $this->assertEquals($iterations * 2, $report->getDoneIterationsCombined());
+        $this->assertEquals($iterations * 2, $report->getDoneIterations());
+        foreach ($report->getFunctions() as $name => $function) {
+            $this->assertInstanceOf(BenchmarkFunction::class, $function);
+            $this->assertIsString($name);
+            $exception = $function->getException();
+            $benchmarkRelative = $function->getBenchmarkRelative();
+            if ('⟨2⟩ λ' === $name) {
+                $this->assertNotNull($benchmarkRelative);
+                $this->assertNull($exception);
+                $this->assertEquals(1, $benchmarkRelative->getRank());
+            }
+            if ('⟨1⟩ λ' === $name) {
+                $this->assertNotNull($benchmarkRelative);
+                $this->assertNull($exception);
+                $this->assertEquals(2, $benchmarkRelative->getRank());
+            }
+            if ('⟨3⟩ λ' === $name) {
+                $this->assertNull($benchmarkRelative);
+                $this->assertNotNull($exception);
+                $this->assertEquals($str_exception, $exception->getMessage());
+            }
+        }
+        $str = (string)$report;
+        $this->assertIsString($str);
+        $this->assertContains($str_one, $str);
+        $this->assertContains($str_two, $str);
+        $this->assertContains($str_exception, $str);
+        $this->assertContains(\RuntimeException::class, $str);
+        $this->assertContains('λ', $str);
+        $this->assertNotContains('array', $str);
+        $this->assertNotContains('integer(1)', $str);
+        $this->assertNotContains('integer(2)', $str);
+        $this->assertContains('Done in', $bench->stat());
+        $this->assertContains('Memory', $bench->stat());
+        $this->assertContains('Real', $bench->stat());
+    }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
     public function addFunctionWithReset(): void
     {
         $str_one = 'one';

@@ -51,22 +51,18 @@ class HRTimer extends AbstractTimer
     }
 
     /**
-     * @param $start
+     * @param int $start
      */
-    protected function assertStart($start): void
+    protected function assertStart(int $start): void
     {
-        if (!\is_int($start)) {
-            throw new \RuntimeException('Start value is NOT ok. [' . typeOf($start) . ']');
-        }
+        // Intentionally left blank
     }
 
     /**
-     * @param $stop
+     * @param int $stop
      */
-    protected function assertStop($stop): void
+    protected function assertStop(int $stop): void
     {
-        if (!is_int($stop)) {
-            throw new \RuntimeException('Stop value is NOT ok. [' . typeOf($stop) . ']');
-        }
+        // Intentionally left blank
     }
 }
