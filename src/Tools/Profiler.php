@@ -5,6 +5,7 @@ namespace AlecRabbit\Tools;
 use AlecRabbit\Tools\Contracts\ProfilerInterface;
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
+use AlecRabbit\Tools\Reports\ProfilerReport;
 use AlecRabbit\Tools\Reports\Traits\HasReport;
 use AlecRabbit\Traits\DefaultableName;
 
@@ -26,12 +27,14 @@ class Profiler implements ProfilerInterface, ReportableInterface, Strings
     {
         $this->counter(); // Create default counter
         $this->timer(); // Create default timer
+        $this->report = (new ProfilerReport())->buildOn($this);
     }
 
     /**
      * @param null|string $name
      * @param string ...$suffixes
      * @return AbstractCounter
+     * @throws \Exception
      */
     public function counter(?string $name = null, string ...$suffixes): AbstractCounter
     {

@@ -25,6 +25,7 @@ abstract class AbstractTimer implements TimerInterface, ReportableInterface
         $this->checkEnvironment();
         $this->name = $this->defaultName($name);
         $this->creationTime = new \DateTimeImmutable();
+        $this->computeElapsed();
         $this->report = (new TimerReport())->buildOn($this);
         if ($start) {
             $this->start();

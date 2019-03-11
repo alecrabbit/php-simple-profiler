@@ -5,6 +5,7 @@ namespace AlecRabbit\Tools;
 use AlecRabbit\Tools\Contracts\CounterInterface;
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
+use AlecRabbit\Tools\Reports\SimpleCounterReport;
 use AlecRabbit\Tools\Reports\Traits\HasReport;
 use AlecRabbit\Tools\Traits\SimpleCounterFields;
 
@@ -20,12 +21,22 @@ abstract class AbstractCounter implements CounterInterface, ReportableInterface
      * @param null|string $name
      * @param null|int $step
      * @param int $initialValue
+     * @throws \Exception
      */
     public function __construct(?string $name = null, ?int $step = null, int $initialValue = 0)
     {
         $this->name = $this->defaultName($name);
         $this->setInitialValue($initialValue);
         $this->setStep($step);
+        $this->buildReport();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function buildReport(): void
+    {
+        $this->report = (new SimpleCounterReport())->buildOn($this);
     }
 
     /**
