@@ -18,7 +18,7 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
     protected static $exporter;
 
     /** @var bool */
-    protected $withResults = true;
+    protected $equalReturns = true;
 
     /**
      * @return Exporter
@@ -41,7 +41,7 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
     /** {@inheritdoc} */
     public function noReturnIf(bool $equalReturns = false): BenchmarkFunctionFormatter
     {
-        $this->withResults = !$equalReturns;
+        $this->equalReturns = !$equalReturns;
         return $this;
     }
 
@@ -65,7 +65,7 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
             $argumentsTypes = $this->extractArgumentsTypes($function->getArgs());
             $executionReturn = $function->getReturn();
 
-            if ($this->withResults && $function->isShowReturns()) {
+            if ($this->equalReturns || $function->isShowReturns()) {
                 return
                     sprintf(
                         '%s %s %s %s',
