@@ -25,6 +25,9 @@
     "symfony/phpunit-bridge": "^4.2",
     "symfony/var-dumper": "^4.2"
   },
+  "suggest":  {
+    "symfony/console": "To use progress bar and colored output"
+  },
   "autoload": {
     "psr-4": {
       "AlecRabbit\\": "src"
