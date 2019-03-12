@@ -10,7 +10,7 @@ interface BenchmarkReportInterface
     /**
      * @return BenchmarkReportInterface
      */
-    public function noReturns(): BenchmarkReportInterface;
+    public function showReturns(): BenchmarkReportInterface;
 
     /**
      * @return BenchmarkFunction[]

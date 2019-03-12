@@ -28,7 +28,7 @@ class Timer extends AbstractTimer
     /**
      * @param float $start
      */
-    protected function assertStart(float $start): void
+    protected function assertStart(/** @scrutinizer ignore-unused */ float $start): void
     {
         // Intentionally left blank
     }
@@ -36,7 +36,7 @@ class Timer extends AbstractTimer
     /**
      * @param float $stop
      */
-    protected function assertStop(float $stop): void
+    protected function assertStop(/** @scrutinizer ignore-unused */ float $stop): void
     {
         // Intentionally left blank
     }

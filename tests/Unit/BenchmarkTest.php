@@ -84,7 +84,7 @@ class BenchmarkTest extends TestCase
         $str = (string)$report;
         $this->assertIsString($str);
         $this->assertContains('Added First(1)', $str);
-//        dump($this);
+//        $this->assertNotContains(__CLASS__, $str);
     }
 
     /**
@@ -99,6 +99,8 @@ class BenchmarkTest extends TestCase
         $str_two = 'two';
 
         $comment = 'some_comment';
+        $str_exception = 'Simulated Exception';
+
 
         $bench
             ->useName($str_one)
@@ -125,8 +127,8 @@ class BenchmarkTest extends TestCase
             });
         $bench
             ->addFunction(
-                function () {
-                    throw new \Exception('Simulated Exception');
+                function () use ($str_exception) {
+                    throw new \Exception($str_exception);
                 }
             );
 
@@ -146,6 +148,7 @@ class BenchmarkTest extends TestCase
         $this->assertContains('Memory', $bench->stat());
         $this->assertContains('Real', $bench->stat());
 
+        $this->assertContains($str_exception, $str);
         $this->assertContains($str_one, $str);
         $this->assertContains($str_two, $str);
         $this->assertContains($comment, $str);
@@ -217,8 +220,8 @@ class BenchmarkTest extends TestCase
         $this->assertContains($str_exception, $str);
         $this->assertContains(\RuntimeException::class, $str);
         $this->assertContains('λ', $str);
-        $this->assertContains('integer(1)', $str);
-        $this->assertContains('integer(2)', $str);
+        $this->assertNotContains('integer(1)', $str);
+        $this->assertNotContains('integer(2)', $str);
         $this->assertContains('Done in', $bench->stat());
         $this->assertContains('Memory', $bench->stat());
         $this->assertContains('Real', $bench->stat());
@@ -259,7 +262,7 @@ class BenchmarkTest extends TestCase
             );
         /** @var BenchmarkReport $report */
         $report = $bench->run()->report();
-        $report->noReturns();
+        $report->showReturns();
         $this->assertInstanceOf(BenchmarkReport::class, $report);
         $this->assertEquals($iterations * 2, $report->getDoneIterationsCombined());
         $this->assertEquals($iterations * 2, $report->getDoneIterations());
@@ -291,9 +294,8 @@ class BenchmarkTest extends TestCase
         $this->assertContains($str_exception, $str);
         $this->assertContains(\RuntimeException::class, $str);
         $this->assertContains('λ', $str);
-        $this->assertNotContains('array', $str);
-        $this->assertNotContains('integer(1)', $str);
-        $this->assertNotContains('integer(2)', $str);
+        $this->assertContains('integer(1)', $str);
+        $this->assertContains('integer(2)', $str);
         $this->assertContains('Done in', $bench->stat());
         $this->assertContains('Memory', $bench->stat());
         $this->assertContains('Real', $bench->stat());

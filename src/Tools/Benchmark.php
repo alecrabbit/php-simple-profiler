@@ -43,7 +43,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
     /** @var \Closure */
     protected $generatorFunction;
     /** @var bool */
-    protected $showReturns = true;
+    protected $showReturns = false;
     /** @var bool */
     protected $launched = false;
     /** @var int */
@@ -58,11 +58,12 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
     {
         $this->iterations = $this->refineIterations($iterations);
 
-        $this->generatorFunction = function (int $iterations, int $i = 1): \Generator {
-            while ($i <= $iterations) {
-                yield $i++;
-            }
-        };
+        $this->generatorFunction =
+            function (int $iterations, int $i = 1): \Generator {
+                while ($i <= $iterations) {
+                    yield $i++;
+                }
+            };
 
         $this->timer = new Timer();
         $this->initialize();
@@ -221,9 +222,9 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, Strings
     /**
      * @return Benchmark
      */
-    public function noReturns(): Benchmark
+    public function showReturns(): Benchmark
     {
-        $this->showReturns = false;
+        $this->showReturns = true;
         foreach ($this->functions as $function) {
             $function->setShowReturns($this->showReturns);
         }
