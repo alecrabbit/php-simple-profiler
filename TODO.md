@@ -1,12 +1,12 @@
 - [ ] add more info to show by `stat()` method
 - [ ] add `BenchmarkReportTest:class`
 - [ ] improve `Benchmark::class` test 
-- [ ] consider implementing `HRTimer::class` (using PHP^7.3 function `hrtime()`)
+- [x] consider implementing `HRTimer::class` (using PHP^7.3 function `hrtime()`) (0.6.0)
 - [ ] consider adding `stopwatch()` function
-- [ ] custom formatters as parameters
-- [ ] separate `Counter` in two classes - `SimpleCounter` and `ExtendedCounter`
+- [x] custom formatters as parameters (0.6.0)
+- [x] separate `Counter` in two classes - `SimpleCounter` and `ExtendedCounter` (0.6.0)
 
-- [ ] Delete method `getReport()` (0.6.0)
+- [x] Delete method `getReport()` (0.6.0)
 
 - [x] Method `getReport()` deprecated  (0.5.1)
 
