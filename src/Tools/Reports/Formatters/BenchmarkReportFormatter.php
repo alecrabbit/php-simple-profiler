@@ -21,20 +21,28 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
     public function process(ReportInterface $report): string
     {
         if ($report instanceof BenchmarkReport) {
-            $this->report = $report;
-        } else {
-            $this->wrongReport(BenchmarkReport::class, $report);
+            return $this->buildIt($report);
         }
+        $this->wrongReport(BenchmarkReport::class, $report);
+        return '';
+    }
+
+    /**
+     * @param BenchmarkReport $report
+     * @return string
+     */
+    protected function buildIt(BenchmarkReport $report): string
+    {
         $str = 'Results:' . PHP_EOL;
-        $added = $this->added();
-        $benchmarked = $this->benchmarked();
+        $added = $this->added($report);
+        $benchmarked = $this->benchmarked($report);
         $benchmarkedAny = $this->benchmarkedMoreThanOne($added, $benchmarked);
         if ($benchmarkedAny) {
             $str .= self::BENCHMARK . PHP_EOL;
         }
-        $equalReturns = $this->checkReturns();
+        $equalReturns = $this->checkReturns($report);
         /** @var BenchmarkFunction $function */
-        foreach ($this->report->getFunctions() as $name => $function) {
+        foreach ($report->getFunctions() as $name => $function) {
             $str .=
                 Factory::getBenchmarkFunctionFormatter()
                     ->noReturnIf($equalReturns)
@@ -46,27 +54,29 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
                 $str,
                 $benchmarkedAny ? $this->allReturnsAreEqual($equalReturns) : '',
                 $this->countersStatistics($added, $benchmarked),
-                $this->report->getMemoryUsageReport(),
+                $report->getMemoryUsageReport(),
                 PHP_EOL
             );
     }
 
     /**
+     * @param BenchmarkReport $report
      * @return int
      */
-    private function added(): int
+    private function added(BenchmarkReport $report): int
     {
         return
-            $this->report->getAdded()->getValue();
+            $report->getAdded()->getValue();
     }
 
     /**
+     * @param BenchmarkReport $report
      * @return int
      */
-    private function benchmarked(): int
+    private function benchmarked(BenchmarkReport $report): int
     {
         return
-            $this->report->getBenchmarked()->getValue();
+            $report->getBenchmarked()->getValue();
     }
 
     /**
@@ -81,22 +91,24 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
     }
 
     /**
+     * @param BenchmarkReport $report
      * @return bool
      */
-    protected function checkReturns(): bool
+    protected function checkReturns(BenchmarkReport $report): bool
     {
         return
-            array_is_homogeneous($this->functionsReturns());
+            array_is_homogeneous($this->functionsReturns($report));
     }
 
     /**
+     * @param BenchmarkReport $report
      * @return array
      */
-    private function functionsReturns(): array
+    private function functionsReturns(BenchmarkReport $report): array
     {
         $returns = [];
         /** @var BenchmarkFunction $function */
-        foreach ($this->report->getFunctions() as $name => $function) {
+        foreach ($report->getFunctions() as $name => $function) {
             $returns[] = $this->lastReturn = $function->getReturn();
         }
         return $returns;
