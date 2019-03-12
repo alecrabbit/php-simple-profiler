@@ -65,11 +65,11 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
                 }
             };
 
-        $this->timer = new Timer();
+        $this->timer = new Timer(); // Timer to count benchmark process total time
         $this->initialize();
     }
 
-    private function refineIterations(?int $iterations): int
+    protected function refineIterations(?int $iterations): int
     {
         $iterations = $iterations ?? self::MIN_ITERATIONS;
         $this->assertIterations($iterations);
@@ -94,7 +94,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
      * Resets Benchmark object clear
      * @throws \Exception
      */
-    private function initialize(): void
+    protected function initialize(): void
     {
         unset($this->functions, $this->humanReadableName, $this->rewindable, $this->memoryUsageReport);
 
@@ -176,7 +176,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
      * @param string $name
      * @return string
      */
-    private function refineName($func, $name): string
+    protected function refineName($func, $name): string
     {
         if ($func instanceof \Closure) {
             $name = self::CLOSURE_NAME;
@@ -274,7 +274,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     /**
      * Benchmarking
      */
-    private function execute(): void
+    protected function execute(): void
     {
         /** @var  BenchmarkFunction $f */
         foreach ($this->functions as $f) {
@@ -291,7 +291,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     /**
      * @param BenchmarkFunction $f
      */
-    private function bench(BenchmarkFunction $f): void
+    protected function bench(BenchmarkFunction $f): void
     {
         $timer = $f->getTimer();
         $function = $f->getCallable();
@@ -307,7 +307,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
         }
     }
 
-    private function progress(): void
+    protected function progress(): void
     {
         $this->doneIterations++;
         if ($this->onAdvance && 0 === $this->doneIterations % $this->advanceStep) {
