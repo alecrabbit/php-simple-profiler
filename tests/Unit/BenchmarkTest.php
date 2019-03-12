@@ -72,6 +72,25 @@ class BenchmarkTest extends TestCase
      * @test
      * @throws \Exception
      */
+    public function reportWithCircularReferencesReturn(): void
+    {
+        $this->bench
+            ->withComment('Added First(1)')
+            ->addFunction(function () {
+                return $this;
+            }, 1, 2);
+        $report = $this->bench->report();
+        $this->assertInstanceOf(BenchmarkReport::class, $report);
+        $str = (string)$report;
+        $this->assertIsString($str);
+        $this->assertContains('Added First(1)', $str);
+//        dump($this);
+    }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
     public function addFunctionWithException(): void
     {
         $bench = new Benchmark(100);
@@ -239,7 +258,8 @@ class BenchmarkTest extends TestCase
                 }
             );
         /** @var BenchmarkReport $report */
-        $report = $bench->run()->report()->noReturns();
+        $report = $bench->run()->report();
+        $report->noReturns();
         $this->assertInstanceOf(BenchmarkReport::class, $report);
         $this->assertEquals($iterations * 2, $report->getDoneIterationsCombined());
         $this->assertEquals($iterations * 2, $report->getDoneIterations());

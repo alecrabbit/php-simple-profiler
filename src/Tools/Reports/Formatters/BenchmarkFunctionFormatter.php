@@ -10,6 +10,7 @@ use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkFunctionFormatterInterface;
 use function AlecRabbit\typeOf;
+use SebastianBergmann\Exporter\Exporter;
 
 class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface, Strings
 {
@@ -139,7 +140,10 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
     {
         $type = typeOf($executionReturn);
         try {
-            $str = var_export($executionReturn, true);
+            $exporter = new Exporter;
+//            $str = $exporter->shortenedExport($executionReturn);
+            $str = $exporter->export($executionReturn);
+//            $str = var_export($executionReturn, true);
         } catch (\Exception $e) {
             $str = '[' . typeOf($e) . '] ' . $e->getMessage();
         }

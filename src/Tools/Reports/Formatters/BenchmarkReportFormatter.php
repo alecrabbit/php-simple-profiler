@@ -4,7 +4,6 @@ namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
-use AlecRabbit\Tools\Reports\Contracts\BenchmarkReportInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Factory;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkReportFormatterInterface;
@@ -23,32 +22,33 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
     {
         if ($report instanceof BenchmarkReport) {
             $this->report = $report;
-            $str = 'Results:' . PHP_EOL;
-            $added = $this->added();
-            $benchmarked = $this->benchmarked();
-            $benchmarkedAny = $this->benchmarkedAny($added, $benchmarked);
-            if ($benchmarkedAny) {
-                $str .= self::BENCHMARK . PHP_EOL;
-            }
-            $equalReturns = $this->checkReturns();
-            /** @var BenchmarkFunction $function */
-            foreach ($this->report->getFunctions() as $name => $function) {
-                $str .=
-                    Factory::getBenchmarkFunctionFormatter()
-                        ->noReturnIf($equalReturns)
-                        ->process($function);
-            }
-            return
-                sprintf(
-                    '%s%s%s%s%s',
-                    $str,
-                    $benchmarkedAny ? $this->allReturnsAreEqual($equalReturns) : '',
-                    $this->countersStatistics($added, $benchmarked),
-                    $this->report->getMemoryUsageReport(),
-                    PHP_EOL
-                );
+        } else {
+            $this->wrongReport(BenchmarkReport::class, $report);
         }
-        return '';
+        $str = 'Results:' . PHP_EOL;
+        $added = $this->added();
+        $benchmarked = $this->benchmarked();
+        $benchmarkedAny = $this->benchmarkedAny($added, $benchmarked);
+        if ($benchmarkedAny) {
+            $str .= self::BENCHMARK . PHP_EOL;
+        }
+        $equalReturns = $this->checkReturns();
+        /** @var BenchmarkFunction $function */
+        foreach ($this->report->getFunctions() as $name => $function) {
+            $str .=
+                Factory::getBenchmarkFunctionFormatter()
+                    ->noReturnIf($equalReturns)
+                    ->process($function);
+        }
+        return
+            sprintf(
+                '%s%s%s%s%s',
+                $str,
+                $benchmarkedAny ? $this->allReturnsAreEqual($equalReturns) : '',
+                $this->countersStatistics($added, $benchmarked),
+                $this->report->getMemoryUsageReport(),
+                PHP_EOL
+            );
     }
 
     /**

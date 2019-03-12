@@ -15,9 +15,9 @@ class BenchmarkReportTest extends TestCase
      */
     public function wrongReportable(): void
     {
-        $r = new BenchmarkReport();
-        $c = new Profiler();
+        $report = new BenchmarkReport();
+        $profiler = new Profiler();
         $this->expectException(\RuntimeException::class);
-        $r->buildOn($c);
+        $report->buildOn($profiler);
     }
 }
