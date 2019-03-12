@@ -8,16 +8,17 @@ use AlecRabbit\Tools\Contracts\BenchmarkInterface;
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
-use AlecRabbit\Tools\Reports\Traits\HasReport;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
 use function AlecRabbit\typeOf;
 
 class Benchmark extends Reportable implements BenchmarkInterface, Strings
 {
-    use BenchmarkFields, HasReport;
+    use BenchmarkFields;
 
     public const MIN_ITERATIONS = 100;
     public const DEFAULT_STEPS = 100;
+
+    protected const CLOSURE_NAME = 'λ';
 
     /** @var int */
     protected $advanceSteps = self::DEFAULT_STEPS;
@@ -40,7 +41,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     /** @var int */
     protected $advanceStep = 0;
     /** @var \Closure */
-    protected $generatorFunction;
+    protected $iterationNumberGenerator;
     /** @var bool */
     protected $showReturns = false;
     /** @var bool */
@@ -57,7 +58,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     {
         $this->iterations = $this->refineIterations($iterations);
 
-        $this->generatorFunction =
+        $this->iterationNumberGenerator =
             function (int $iterations, int $i = 1): \Generator {
                 while ($i <= $iterations) {
                     yield $i++;
@@ -100,7 +101,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
         $this->humanReadableName = null;
         $this->rewindable =
             new Rewindable(
-                $this->generatorFunction,
+                $this->iterationNumberGenerator,
                 $this->iterations
             );
         $this->functions = [];
@@ -178,7 +179,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     private function refineName($func, $name): string
     {
         if ($func instanceof \Closure) {
-            $name = 'λ';
+            $name = self::CLOSURE_NAME;
         }
         return $name;
     }
