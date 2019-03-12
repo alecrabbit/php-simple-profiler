@@ -28,7 +28,7 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
         $str = 'Results:' . PHP_EOL;
         $added = $this->added();
         $benchmarked = $this->benchmarked();
-        $benchmarkedAny = $this->benchmarkedAny($added, $benchmarked);
+        $benchmarkedAny = $this->benchmarkedMoreThanOne($added, $benchmarked);
         if ($benchmarkedAny) {
             $str .= self::BENCHMARK . PHP_EOL;
         }
@@ -65,7 +65,6 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
      */
     private function benchmarked(): int
     {
-        // todo use dedicated counter 'BENCHMARKED'
         return
             $this->report->getBenchmarked()->getValue();
     }
@@ -75,9 +74,10 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
      * @param int $benchmarked
      * @return bool
      */
-    private function benchmarkedAny(int $added, int $benchmarked): bool
+    private function benchmarkedMoreThanOne(int $added, int $benchmarked): bool
     {
-        return $added !== $added - $benchmarked;
+//        return $added !== $i = $added - $benchmarked;
+        return ($added !== $i = $added - $benchmarked) && 1 < $i;
     }
 
     /**

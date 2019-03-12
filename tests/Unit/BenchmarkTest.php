@@ -74,17 +74,32 @@ class BenchmarkTest extends TestCase
      */
     public function reportWithCircularReferencesReturn(): void
     {
-        $this->bench
-            ->withComment('Added First(1)')
-            ->addFunction(function () {
-                return $this;
-            }, 1, 2);
-        $report = $this->bench->report();
+        $bench = new Benchmark(100);
+        $comment = 'Added First(1)';
+        $bench
+            ->withComment($comment)
+            ->addFunction(
+                function () {
+                    $array = [];
+//                    $array['self'] = &$array;
+                    return $array;
+                }
+            );
+        $bench
+            ->withComment($comment.'1')
+            ->addFunction(
+                function () {
+                    $array = [];
+//                    $array['self'] = &$array;
+                    return $array;
+                }
+            );
+        $report = $bench->report();
         $this->assertInstanceOf(BenchmarkReport::class, $report);
         $str = (string)$report;
         $this->assertIsString($str);
-        $this->assertContains('Added First(1)', $str);
-//        $this->assertNotContains(__CLASS__, $str);
+        $this->assertNotContains(__CLASS__, $str);
+        $this->assertContains($comment, $str);
     }
 
     /**

@@ -1,10 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 use AlecRabbit\Tools\Benchmark;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-const ITERATIONS = 5000;
+
+const ITERATIONS = 5000000;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -29,39 +30,31 @@ $progressFinish = function () use ($progressBar) {
 };
 
 $benchmark
-    ->withComment('floatval()')
-    ->addFunction('floatval', '3.5');
+    ->withComment('floatval(intval())')
+    ->addFunction(
+        function ($value) {
+            if (is_float($value) && floatval(intval($value)) === $value) {
+                return "$value.0";
+            }
+        },
+        1.0
+    );
 
 $benchmark
-    ->withComment('intval()')
-    ->addFunction('intval', '3');
+    ->withComment('(float)(int)')
+    ->addFunction(
+        function ($value) {
+            if (is_float($value) && (float)(int)$value === $value) {
+                return "$value.0";
+            }
+        },
+        1.0
+    );
 
 
-$benchmark
-    ->withComment('(float)')
-    ->addFunction(function () {
-        return (float)'3.5';
-    });
 
-$benchmark
-    ->withComment('float "+"')
-    ->addFunction(function () {
-        return +'3.5';
-    });
-
-$benchmark
-    ->withComment('(int)')
-    ->addFunction(function () {
-        return (int)'3';
-    });
-
-$benchmark
-    ->withComment('int "+"')
-    ->addFunction(function () {
-        return +'3';
-    });
 $benchmark->showProgressBy($progressStart, $progressAdvance, $progressFinish);
-$benchmark->run();
+$benchmark->run()->showReturns();
 $report = $benchmark->report();
 echo $report . PHP_EOL;
 echo $benchmark->stat() . PHP_EOL;
