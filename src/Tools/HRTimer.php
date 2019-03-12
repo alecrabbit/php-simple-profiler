@@ -53,7 +53,7 @@ class HRTimer extends AbstractTimer
     /**
      * @param int $start
      */
-    protected function assertStart(int $start): void
+    protected function assertStart(/** @scrutinizer ignore-unused */ int $start): void
     {
         // Intentionally left blank
     }
@@ -61,7 +61,7 @@ class HRTimer extends AbstractTimer
     /**
      * @param int $stop
      */
-    protected function assertStop(int $stop): void
+    protected function assertStop(/** @scrutinizer ignore-unused */ int $stop): void
     {
         // Intentionally left blank
     }
