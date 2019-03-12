@@ -2,8 +2,6 @@
 
 namespace AlecRabbit\Tools;
 
-use function AlecRabbit\typeOf;
-
 class Timer extends AbstractTimer
 {
     /**
