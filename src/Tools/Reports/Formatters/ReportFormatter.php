@@ -15,6 +15,7 @@ abstract class ReportFormatter implements FormatterInterface, Strings
     /**
      * @param string $expected
      * @param ReportInterface $report
+     * @throws \RuntimeException
      */
     protected function wrongReport(string $expected, ReportInterface $report): void
     {

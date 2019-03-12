@@ -9,16 +9,27 @@ use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkFunctionFormatterInterface;
-use function AlecRabbit\typeOf;
 use SebastianBergmann\Exporter\Exporter;
+use function AlecRabbit\typeOf;
 
 class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface, Strings
 {
-//    /** @var BenchmarkFunction */
-//    protected $function;
-//
+    /** @var Exporter */
+    protected static $exporter;
+
     /** @var bool */
     protected $withResults = true;
+
+    /**
+     * @return Exporter
+     */
+    protected static function getExporter(): Exporter
+    {
+        if (null === static::$exporter) {
+            static::$exporter = new Exporter();
+        }
+        return static::$exporter;
+    }
 
     /** {@inheritdoc} */
     public function resetEqualReturns(): BenchmarkFunctionFormatter
@@ -139,16 +150,9 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
     public static function returnToString($executionReturn): string
     {
         $type = typeOf($executionReturn);
-        try {
-            $exporter = new Exporter;
-//            $str = $exporter->shortenedExport($executionReturn);
-            $str = $exporter->export($executionReturn);
-//            $str = var_export($executionReturn, true);
-        } catch (\Exception $e) {
-            $str = '[' . typeOf($e) . '] ' . $e->getMessage();
-        }
+        $str = static::getExporter()->export($executionReturn);
         return
-            $type === 'array' ?
+            'array' === $type ?
                 $str :
                 sprintf(
                     '%s(%s)',

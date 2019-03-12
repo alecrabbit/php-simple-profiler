@@ -21,23 +21,23 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
     public function process(ReportInterface $report): string
     {
         if ($report instanceof BenchmarkReport) {
-            return $this->buildIt($report);
+            return $this->build($report);
         }
         $this->wrongReport(BenchmarkReport::class, $report);
-        return '';
+        return ''; // never executes
     }
 
     /**
      * @param BenchmarkReport $report
      * @return string
      */
-    protected function buildIt(BenchmarkReport $report): string
+    protected function build(BenchmarkReport $report): string
     {
         $str = 'Results:' . PHP_EOL;
         $added = $this->added($report);
         $benchmarked = $this->benchmarked($report);
-        $benchmarkedAny = $this->benchmarkedMoreThanOne($added, $benchmarked);
-        if ($benchmarkedAny) {
+        $benchmarkedMoreThanOne = $this->benchmarkedMoreThanOne($added, $benchmarked);
+        if ($benchmarkedMoreThanOne) {
             $str .= self::BENCHMARK . PHP_EOL;
         }
         $equalReturns = $this->checkReturns($report);
@@ -52,7 +52,7 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
             sprintf(
                 '%s%s%s%s%s',
                 $str,
-                $benchmarkedAny ? $this->allReturnsAreEqual($equalReturns) : '',
+                $benchmarkedMoreThanOne ? $this->allReturnsAreEqual($equalReturns) : '',
                 $this->countersStatistics($added, $benchmarked),
                 $report->getMemoryUsageReport(),
                 PHP_EOL
