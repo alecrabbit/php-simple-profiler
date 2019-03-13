@@ -65,6 +65,8 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
             $argumentsTypes = $this->extractArgumentsTypes($function->getArgs());
             $executionReturn = $function->getReturn();
 
+            // todo $this->equalReturns is incorrect!! it's actually !$this->equalReturns
+            // todo rename or refactor
             if ($this->equalReturns || $function->isShowReturns()) {
                 return
                     sprintf(
@@ -100,6 +102,7 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
      * @param BenchmarkFunction $function
      * @param array $argumentsTypes
      * @return string
+     * todo rename method
      */
     protected function preformatFunction(
         BenchmarkRelative $br,

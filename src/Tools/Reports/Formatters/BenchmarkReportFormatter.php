@@ -13,9 +13,14 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
 {
     /** @var BenchmarkReport */
     protected $report;
-
     /** @var mixed */
     protected $lastReturn;
+    /** @var int */
+    protected $added;
+    /** @var int */
+    protected $benchmarked;
+    /** @var bool */
+    protected $equalReturns;
 
     /** {@inheritdoc} */
     public function process(ReportInterface $report): string
@@ -33,27 +38,28 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
      */
     protected function build(BenchmarkReport $report): string
     {
+        $this->report = $report;
         $str = 'Results:' . PHP_EOL;
-        $added = $this->added($report);
-        $benchmarked = $this->benchmarked($report);
-        $benchmarkedMoreThanOne = $this->benchmarkedMoreThanOne($added, $benchmarked);
-        if ($benchmarkedMoreThanOne) {
+        $this->added = $this->added($report);
+        $this->benchmarked = $this->benchmarked($report);
+        $benchmarkedAny = $this->benchmarkedAny();
+        $this->equalReturns = $this->checkReturns($report);
+        if ($benchmarkedAny) {
             $str .= self::BENCHMARK . PHP_EOL;
         }
-        $equalReturns = $this->checkReturns($report);
         /** @var BenchmarkFunction $function */
         foreach ($report->getFunctions() as $name => $function) {
             $str .=
                 Factory::getBenchmarkFunctionFormatter()
-                    ->noReturnIf($equalReturns)
+                    ->noReturnIf($this->equalReturns)
                     ->process($function);
         }
         return
             sprintf(
                 '%s%s%s%s%s',
                 $str,
-                $benchmarkedMoreThanOne ? $this->allReturnsAreEqual($equalReturns) : '',
-                $this->countersStatistics($added, $benchmarked),
+                $this->strEqualReturns($report, $benchmarkedAny, $this->equalReturns),
+                $this->countersStatistics($this->added, $this->benchmarked),
                 $report->getMemoryUsageReport(),
                 PHP_EOL
             );
@@ -80,14 +86,11 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
     }
 
     /**
-     * @param int $added
-     * @param int $benchmarked
      * @return bool
      */
-    private function benchmarkedMoreThanOne(int $added, int $benchmarked): bool
+    private function benchmarkedAny(): bool
     {
-//        return $added !== $i = $added - $benchmarked;
-        return ($added !== $i = $added - $benchmarked) && 1 < $i;
+        return $this->added !== $this->added - $this->benchmarked;
     }
 
     /**
@@ -112,6 +115,17 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
             $returns[] = $this->lastReturn = $function->getReturn();
         }
         return $returns;
+    }
+
+    /**
+     * @param BenchmarkReport $report
+     * @param bool $benchmarkedAny
+     * @param bool $equalReturns
+     * @return string
+     */
+    protected function strEqualReturns(BenchmarkReport $report, bool $benchmarkedAny, bool $equalReturns): string
+    {
+        return $benchmarkedAny ? $this->allReturnsAreEqual($equalReturns) : '';
     }
 
     private function allReturnsAreEqual(bool $equalReturns): string
