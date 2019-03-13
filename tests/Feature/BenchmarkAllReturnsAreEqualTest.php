@@ -8,6 +8,7 @@
 namespace AlecRabbit\Tests\Tools;
 
 use AlecRabbit\Tools\Benchmark;
+use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
 use PHPUnit\Framework\TestCase;
 
@@ -16,17 +17,26 @@ use PHPUnit\Framework\TestCase;
  */
 class BenchmarkAllReturnsAreEqualTest extends TestCase
 {
-    protected const ALL_RETURNS_ARE_EQUAL = 'All returns are equal';
-    protected const RETURN_STR = 'integer(1)';
+    protected const SIMULATION = 'Simulation';
+    protected const NOTIFICATION = 'All returns are equal';
+    protected const INTEGER_1 = 'integer(1)';
+    protected const INTEGER_2 = 'integer(2)';
+    protected const INTEGER_3 = 'integer(3)';
 
     /** @var Benchmark */
     private $bench;
 
-    /**
-     * @test
-     * @throws \Exception
-     */
-    public function showsNotificationOnly(): void
+    /** @var BenchmarkReport */
+    private $report;
+
+    /** @test */
+    public function checkReportInstance(): void
+    {
+        $this->benchmarkedFourFunctionsWithEqualReturns();
+        $this->assertInstanceOf(BenchmarkReport::class, $this->report);
+    }
+
+    protected function benchmarkedFourFunctionsWithEqualReturns(): void
     {
         $this->bench
             ->addFunction(function ($a) {
@@ -48,59 +58,140 @@ class BenchmarkAllReturnsAreEqualTest extends TestCase
                 usleep(40);
                 return $a;
             }, 1);
-        $report = $this->bench->report();
-        $this->assertTrue($this->bench->isNotShowReturns());
-        $this->assertInstanceOf(BenchmarkReport::class, $report);
-        $str = (string)$report;
-//        echo PHP_EOL . $str . PHP_EOL;
-        $this->assertContains(self::ALL_RETURNS_ARE_EQUAL . '.', $str);
-        $this->assertNotContains(self::RETURN_STR, $str);
-        $this->assertEquals(0, $this->countReturns($str));
+        $this->report = $this->bench->report();
     }
 
-    /**
-     * @param string $str
-     * @return int
-     */
-    protected function countReturns(string $str): int
+    /** @test */
+    public function showsNotificationOnly(): void
     {
-        return substr_count($str, self::RETURN_STR);
+        $this->benchmarkedFourFunctionsWithEqualReturns();
+        $this->assertTrue($this->bench->isNotShowReturns());
+        $this->assertTrue($this->report->isNotShowReturns());
+        $str = (string)$this->report;
+        $this->assertContains(self::NOTIFICATION . '.', $str);
+        $this->assertNotContains(self::INTEGER_1, $str);
+        $this->assertEquals(0, substr_count($str, self::INTEGER_1));
     }
 
-//    /**
-//     * @test
-//     * @throws \Exception
-//     */
-//    public function showsNotificationAndReturnOnce(): void
-//    {
-//        $this->bench
-//            ->addFunction(function ($a) {
-//                usleep(10);
-//                return $a;
-//            }, 1);
-//        $this->bench
-//            ->addFunction(function ($a) {
-//                usleep(20);
-//                return $a;
-//            }, 1);
-//        $this->bench
-//            ->addFunction(function ($a) {
-//                usleep(30);
-//                return $a;
-//            }, 1);
-//        $this->bench
-//            ->addFunction(function ($a) {
-//                usleep(40);
-//                return $a;
-//            }, 1);
-//        $report = $this->bench->showReturns()->report();
-//        $this->assertInstanceOf(BenchmarkReport::class, $report);
-//        $str = (string)$report;
-//        echo PHP_EOL . $str . PHP_EOL;
-//        $this->assertContains(self::ALL_RETURNS_ARE_EQUAL . ':', $str);
-//        $this->assertContains(self::INTEGER_1, $str);
-//        $this->assertEquals(1, $this->countReturns($str));
-//    }
+    /** @test */
+    public function showsNotificationAndReturnOnce(): void
+    {
+        $this->benchmarkedFourFunctionsWithEqualReturns();
+        $this->report->showReturns();
+        $str = (string)$this->report;
+        $this->assertContains(self::NOTIFICATION . ':', $str);
+        $this->assertContains(self::INTEGER_1, $str);
+        $this->assertEquals(1, substr_count($str, self::INTEGER_1));
+    }
+
+    /** @test */
+    public function showsNoNotificationAndEachReturn(): void
+    {
+        $this->benchmarkedFourFunctionsWithDiffReturns();
+        $this->report->showReturns();
+        $str = (string)$this->report;
+        $this->assertNotContains(self::NOTIFICATION, $str);
+        $this->assertContains(self::INTEGER_1, $str);
+        $this->assertContains(self::INTEGER_2, $str);
+        $this->assertContains(self::INTEGER_3, $str);
+        $this->assertEquals(1, substr_count($str, self::INTEGER_1));
+        $this->assertEquals(2, substr_count($str, self::INTEGER_2));
+        $this->assertEquals(1, substr_count($str, self::INTEGER_3));
+    }
+
+    protected function benchmarkedFourFunctionsWithDiffReturns(): void
+    {
+        $this->bench
+            ->addFunction(function ($a) {
+                usleep(10);
+                return $a;
+            }, 2);
+        $this->bench
+            ->addFunction(function ($a) {
+                usleep(20);
+                return $a;
+            }, 1);
+        $this->bench
+            ->addFunction(function ($a) {
+                usleep(30);
+                return $a;
+            }, 2);
+        $this->bench
+            ->addFunction(function ($a) {
+                usleep(40);
+                return $a;
+            }, 3);
+        $this->report = $this->bench->report();
+    }
+
+    /** @test */
+    public function showsNoNotificationAndNoReturn(): void
+    {
+        $this->benchmarkedFourFunctionsWithDiffReturns();
+        $str = (string)$this->report;
+        $this->assertNotContains(self::NOTIFICATION, $str);
+        $this->assertNotContains(self::INTEGER_1, $str);
+        $this->assertNotContains(self::INTEGER_2, $str);
+        $this->assertNotContains(self::INTEGER_3, $str);
+        $this->assertEquals(0, substr_count($str, self::INTEGER_1));
+        $this->assertEquals(0, substr_count($str, self::INTEGER_2));
+        $this->assertEquals(0, substr_count($str, self::INTEGER_3));
+    }
+
+    /** @test */
+    public function showsNoNotificationAndNoReturnOneFunction(): void
+    {
+        $this->benchmarkedOneFunction();
+        $str = (string)$this->report;
+        $this->assertNotContains(self::NOTIFICATION, $str);
+        $this->assertNotContains(self::INTEGER_1, $str);
+        $this->assertNotContains(self::INTEGER_2, $str);
+        $this->assertNotContains(self::INTEGER_3, $str);
+        $this->assertEquals(0, substr_count($str, self::INTEGER_1));
+        $this->assertEquals(0, substr_count($str, self::INTEGER_2));
+        $this->assertEquals(0, substr_count($str, self::INTEGER_3));
+    }
+
+    /** @test */
+    public function showsNoNotificationAndNoReturnOneFunctionAddedTwo(): void
+    {
+        $this->benchmarkedOneFunctionAddedTwo();
+        $str = (string)$this->report;
+        $this->assertNotContains(self::NOTIFICATION, $str);
+        $this->assertNotContains(self::INTEGER_1, $str);
+        $this->assertNotContains(self::INTEGER_2, $str);
+        $this->assertNotContains(self::INTEGER_3, $str);
+        $this->assertContains(\RuntimeException::class, $str);
+        $this->assertContains(Strings::EXCEPTIONS, $str);
+        $this->assertContains(self::SIMULATION, $str);
+        $this->assertEquals(0, substr_count($str, self::INTEGER_1));
+        $this->assertEquals(0, substr_count($str, self::INTEGER_2));
+        $this->assertEquals(0, substr_count($str, self::INTEGER_3));
+    }
+
+    protected function benchmarkedOneFunction(): void
+    {
+        $this->bench
+            ->addFunction(function ($a) {
+                usleep(10);
+                return $a;
+            }, 1);
+        $this->report = $this->bench->report();
+    }
+
+    protected function benchmarkedOneFunctionAddedTwo(): void
+    {
+        $this->bench
+            ->addFunction(function ($a) {
+                usleep(10);
+                return $a;
+            }, 1);
+        $this->bench
+            ->addFunction(function () {
+                throw new \RuntimeException(self::SIMULATION);
+            }, 1);
+        $this->report = $this->bench->report();
+    }
 
     /**
      * @throws \Exception

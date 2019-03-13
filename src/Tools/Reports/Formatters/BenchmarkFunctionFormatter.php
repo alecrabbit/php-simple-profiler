@@ -18,7 +18,7 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
     protected static $exporter;
 
     /** @var bool */
-    protected $equalReturns = true;
+    protected $equalReturns = false;
 
     /**
      * @return Exporter
@@ -41,7 +41,7 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
     /** {@inheritdoc} */
     public function noReturnIf(bool $equalReturns = false): BenchmarkFunctionFormatter
     {
-        $this->equalReturns = !$equalReturns;
+        $this->equalReturns = $equalReturns;
         return $this;
     }
 
@@ -64,20 +64,17 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
         if ($br = $function->getBenchmarkRelative()) {
             $argumentsTypes = $this->extractArgumentsTypes($function->getArgs());
             $executionReturn = $function->getReturn();
-
-            // todo $this->equalReturns is incorrect!! it's actually !$this->equalReturns
-            // todo rename or refactor
-            if ($this->equalReturns || $function->isShowReturns()) {
-                return
-                    sprintf(
-                        '%s %s %s %s',
-                        $this->preformatFunction($br, $function, $argumentsTypes),
-                        PHP_EOL,
-                        static::returnToString($executionReturn),
-                        PHP_EOL
-                    );
+            if ($this->equalReturns || $function->isNotShowReturns()) {
+                return $this->preformatFunction($br, $function, $argumentsTypes);
             }
-            return $this->preformatFunction($br, $function, $argumentsTypes);
+            return
+                sprintf(
+                    '%s %s %s %s',
+                    $this->preformatFunction($br, $function, $argumentsTypes),
+                    PHP_EOL,
+                    static::returnToString($executionReturn),
+                    PHP_EOL
+                );
         }
         return '';
     }

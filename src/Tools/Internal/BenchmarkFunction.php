@@ -210,11 +210,20 @@ class BenchmarkFunction
     {
         $this->showReturns = $showReturns;
     }
+
     /**
      * @return bool
      */
     public function isShowReturns(): bool
     {
         return $this->showReturns;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNotShowReturns(): bool
+    {
+        return !$this->isShowReturns();
     }
 }

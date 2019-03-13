@@ -54,7 +54,7 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
         foreach ($report->getFunctions() as $name => $function) {
             $str .=
                 Factory::getBenchmarkFunctionFormatter()
-                    ->noReturnIf($this->equalReturns && $this->report->isNotShowReturns())
+                    ->noReturnIf($this->equalReturns || $this->report->isNotShowReturns())
                     ->process($function);
         }
         return
@@ -76,6 +76,7 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
             $this->added !== $this->added - $this->benchmarked;
         $this->benchmarkedMoreThanOne =
             $this->benchmarked > 1;
+//        dump('$this->benchmarkedMoreThanOne', $this->benchmarkedMoreThanOne);
         $this->equalReturns = array_is_homogeneous($this->reportFunctionsReturns());
     }
 
@@ -104,13 +105,15 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
     {
         $str = '';
         if ($this->equalReturns) {
-            return
+            $aRAE = $this->benchmarkedMoreThanOne ? 'All returns are equal' : '' ;
+            $dLM = $this->benchmarkedMoreThanOne ? '.' : '' ;
+            $str .=
                 sprintf(
                     '%s%s%s',
-                    'All returns are equal',
-                    $this->benchmarkedMoreThanOne ?
+                    $aRAE,
+                    $this->benchmarkedMoreThanOne && $this->report->isShowReturns() ?
                         ':' . PHP_EOL . BenchmarkFunctionFormatter::returnToString($this->lastReturn) :
-                        '.',
+                        $dLM,
                     PHP_EOL
                 );
         }

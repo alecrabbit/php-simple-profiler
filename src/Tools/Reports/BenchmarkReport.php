@@ -112,8 +112,9 @@ class BenchmarkReport extends Report implements BenchmarkReportInterface
     /** {@inheritdoc} */
     public function showReturns(): BenchmarkReportInterface
     {
+        $this->showReturns = true;
         foreach ($this->functions as $function) {
-            $function->setShowReturns(true);
+            $function->setShowReturns($this->showReturns);
         }
         return $this;
     }
