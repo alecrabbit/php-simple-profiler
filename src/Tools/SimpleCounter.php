@@ -2,8 +2,6 @@
 
 namespace AlecRabbit\Tools;
 
-use AlecRabbit\Tools\Reports\SimpleCounterReport;
-
 class SimpleCounter extends AbstractCounter
 {
 }

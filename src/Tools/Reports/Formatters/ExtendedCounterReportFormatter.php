@@ -19,7 +19,10 @@ class ExtendedCounterReportFormatter extends ReportFormatter
             }
             return $this->full($report);
         }
+        $this->wrongReportType(ExtendedCounterReport::class, $report);
+        // @codeCoverageIgnoreStart
         return '';
+        // @codeCoverageIgnoreEnd
     }
 
     /**
