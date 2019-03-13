@@ -14,7 +14,7 @@ use function AlecRabbit\typeOf;
 
 class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface, Strings
 {
-    /** @var Exporter */
+    /** @var null|Exporter */
     protected static $exporter;
 
     /** @var bool */
