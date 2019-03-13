@@ -1,12 +1,11 @@
-<?php
-/**
- * User: alec
- * Date: 14.10.18
- * Time: 2:18
- */
+<?php declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Contracts;
 
-interface TimerInterface extends StringConstants
+interface TimerInterface extends TimerValuesInterface
 {
+    /**
+     * @return mixed
+     */
+    public function current();
 }

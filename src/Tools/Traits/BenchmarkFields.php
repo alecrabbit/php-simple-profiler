@@ -1,23 +1,16 @@
-<?php
-/**
- * User: alec
- * Date: 01.12.18
- * Time: 20:33
- */
+<?php declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Traits;
 
 use AlecRabbit\Accessories\MemoryUsage\MemoryUsageReport;
-use AlecRabbit\Tools\Profiler;
+use AlecRabbit\Tools\Internal\BenchmarkFunction;
+use AlecRabbit\Tools\SimpleCounter;
 use AlecRabbit\Tools\Timer;
 
 trait BenchmarkFields
 {
-    /** @var array */
+    /** @var BenchmarkFunction[] */
     protected $functions = [];
-
-    /** @var Profiler */
-    protected $profiler;
 
     /** @var MemoryUsageReport */
     protected $memoryUsageReport;
@@ -29,23 +22,23 @@ trait BenchmarkFields
     protected $doneIterationsCombined = 0;
 
     /** @var Timer */
-    private $timer;
+    protected $timer;
 
+    /** @var SimpleCounter */
+    protected $added;
+
+    /** @var SimpleCounter */
+    protected $benchmarked;
+
+    /** @var bool */
+    protected $showReturns = false;
 
     /**
-     * @return array
+     * @return BenchmarkFunction[]
      */
     public function getFunctions(): array
     {
         return $this->functions;
-    }
-
-    /**
-     * @return Profiler
-     */
-    public function getProfiler(): Profiler
-    {
-        return $this->profiler;
     }
 
     /**
@@ -78,5 +71,37 @@ trait BenchmarkFields
     public function getMemoryUsageReport(): MemoryUsageReport
     {
         return $this->memoryUsageReport;
+    }
+
+    /**
+     * @return SimpleCounter
+     */
+    public function getAdded(): SimpleCounter
+    {
+        return $this->added;
+    }
+
+    /**
+     * @return SimpleCounter
+     */
+    public function getBenchmarked(): SimpleCounter
+    {
+        return $this->benchmarked;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowReturns(): bool
+    {
+        return $this->showReturns;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNotShowReturns(): bool
+    {
+        return !$this->isShowReturns();
     }
 }

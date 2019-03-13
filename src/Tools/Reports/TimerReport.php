@@ -1,41 +1,59 @@
-<?php
-/**
- * User: alec
- * Date: 29.11.18
- * Time: 21:02
- */
+<?php declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports;
 
-use AlecRabbit\Tools\Reports\Base\Report;
-use AlecRabbit\Tools\Timer;
+use AlecRabbit\Tools\AbstractTimer;
+use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
+use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
+use AlecRabbit\Tools\Reports\Contracts\TimerReportInterface;
+use AlecRabbit\Tools\Reports\Core\Report;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
 use AlecRabbit\Tools\Traits\TimerFields;
 
-class TimerReport extends Report
+class TimerReport extends Report implements TimerReportInterface
 {
     use TimerFields;
 
     /**
      * TimerReport constructor.
-     * @param Timer $timer
+     * @throws \Exception
      */
-    public function __construct(Timer $timer)
+    public function __construct()
     {
-        $this->name = $timer->getName();
-        $this->creation = $timer->getCreation();
-        $count = $timer->getCount();
-        $this->previous = $timer->getPrevious();
-        $this->elapsed = $timer->getElapsed();
-        $this->stopped = $timer->isStopped();
-        $this->currentValue = $timer->getLastValue();
-        $this->minValueIteration = $timer->getMinValueIteration();
-        $this->maxValueIteration = $timer->getMaxValueIteration();
-        $this->avgValue = $timer->getAverageValue();
-        $this->minValue = ($count === 1) ? $timer->getLastValue() : $timer->getMinValue();
-        $this->maxValue = $timer->getMaxValue();
-        $this->started = $timer->isStarted();
-        $this->stopped = $timer->isStopped();
-        $this->count = $count;
-        parent::__construct();
+        // This lines here keep vimeo/psalm quiet
+        $this->creationTime = new \DateTimeImmutable();
+        $this->elapsed = (new \DateTimeImmutable())->diff($this->creationTime);
+    }
+
+    protected static function getFormatter(): FormatterInterface
+    {
+        return Factory::getTimerReportFormatter();
+    }
+
+    /**
+     * @param ReportableInterface $reportable
+     * @return Contracts\ReportInterface
+     * @throws \RuntimeException
+     * @throws \Exception
+     */
+    public function buildOn(ReportableInterface $reportable): ReportInterface
+    {
+        if ($reportable instanceof AbstractTimer) {
+            $this->name = $reportable->getName();
+            $this->creationTime = $reportable->getCreation();
+            $this->count = $count = $reportable->getCount();
+            $this->minValue = ($count === 1) ? $reportable->getLastValue() : $reportable->getMinValue();
+            $this->maxValue = $reportable->getMaxValue();
+            $this->maxValueIteration = $reportable->getMaxValueIteration();
+            $this->minValueIteration = $reportable->getMinValueIteration();
+            $this->started = $reportable->isStarted();
+            $this->stopped = $reportable->isStopped();
+            $this->avgValue = $reportable->getAverageValue();
+            $this->currentValue = $reportable->getLastValue();
+            $this->elapsed = $reportable->getElapsed();
+        } else {
+            $this->wrongReportable(AbstractTimer::class, $reportable);
+        }
+        return $this;
     }
 }

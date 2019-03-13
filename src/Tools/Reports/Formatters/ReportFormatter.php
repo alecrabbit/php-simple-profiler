@@ -2,24 +2,25 @@
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
-use AlecRabbit\Tools\Contracts\StringConstants;
+use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\Formatter;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
+use function AlecRabbit\typeOf;
 
-abstract class ReportFormatter implements Formatter, StringConstants
+abstract class ReportFormatter implements FormatterInterface, Strings
 {
-    /** @var ReportInterface */
-    protected $report;
+    /** {@inheritdoc} */
+    abstract public function process(ReportInterface $report): string;
 
     /**
-     * Formatter constructor.
+     * @param string $expected
      * @param ReportInterface $report
+     * @throws \RuntimeException
      */
-    public function __construct(ReportInterface $report)
+    protected function wrongReportType(string $expected, ReportInterface $report): void
     {
-        $this->report = $report;
+        throw new \RuntimeException(
+            'Instance of [' . $expected . '] expected, [' . typeOf($report) . '] given.'
+        );
     }
-
-    /** {@inheritdoc} */
-    abstract public function process(): string;
 }

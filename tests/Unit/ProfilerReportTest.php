@@ -1,82 +1,50 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
+namespace AlecRabbit\Tests\Tools;
 
-namespace Tests\Unit;
-
-use AlecRabbit\Tools\Contracts\StringConstants;
+use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Profiler;
-use AlecRabbit\Tools\Reports\CounterReport;
+use AlecRabbit\Tools\Reports\BenchmarkReport;
 use AlecRabbit\Tools\Reports\ProfilerReport;
-use AlecRabbit\Tools\Reports\TimerReport;
+use AlecRabbit\Tools\Timer;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @group time-sensitive
- */
 class ProfilerReportTest extends TestCase
 {
-    protected const NAME = 'new';
-
-    /** @test */
-    public function profilerReport(): void
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function wrongReportable(): void
+    {
+        $report = new ProfilerReport();
+        $timer = new Timer();
+        $this->expectException(\RuntimeException::class);
+        $report->buildOn($timer);
+    }
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function getReport(): void
     {
         $profiler = new Profiler();
-        $profiler->counter(self::NAME)->bump();
-        $profiler->counter()->bump();
-        $profiler->timer(self::NAME)->check();
-        sleep(1);
-        $profiler->timer(self::NAME)->check();
-        $profiler->timer()->check();
-        sleep(1);
-        $profiler->timer()->check();
-        $this->assertEquals(1, $profiler->counter(self::NAME)->getValue());
-
-        $this->assertIsString($profiler->timer(self::NAME)->elapsed());
-        $this->assertEquals('2.0s', $profiler->timer()->elapsed());
-        $this->assertEquals('2.0s', $profiler->timer(self::NAME)->elapsed());
-        $profiler->timer(self::NAME, 'vol', 'buy', 'tor');
-        $report = $profiler->getReport();
+        $profiler->counter()->bump(2);
+//        usleep(10);
+//        $profiler->timer()->check();
+        /** @var ProfilerReport $report */
+        $report = $profiler->report();
         $this->assertInstanceOf(ProfilerReport::class, $report);
         $str = (string)$report;
-        $this->assertContains(self::NAME, $str);
-        $this->assertContains(StringConstants::COUNTER, $str);
-        $this->assertContains(StringConstants::TIMER, $str);
-        $this->assertContains(StringConstants::ELAPSED, $str);
-
-        /** @var ProfilerReport $report */
-        $reports = $report->getReports();
-        $this->assertIsArray($reports);
-        $counterReports = $report->getCountersReports();
-        $this->assertIsArray($counterReports);
-        foreach ($counterReports as $cr) {
-            $this->assertInstanceOf(CounterReport::class, $cr);
-        }
-        $timerReports = $report->getTimersReports();
-        $this->assertIsArray($timerReports);
-        foreach ($timerReports as $tr) {
-            $this->assertInstanceOf(TimerReport::class, $tr);
-        }
+        $this->assertIsString($str);
+//        dump($str);
+        $this->assertContains(Strings::ELAPSED, $str);
+        $this->assertContains(Strings::COUNTER, $str);
+        $this->assertNotContains(Strings::TIMER, $str);
+        $this->assertNotContains(Strings::AVERAGE, $str);
+        $this->assertNotContains(Strings::LAST, $str);
+        $this->assertNotContains(Strings::MIN, $str);
+        $this->assertNotContains(Strings::MAX, $str);
     }
 
-    /** @test */
-    public function profilerReportEmpty(): void
-    {
-        $profiler = new Profiler();
-        $report = $profiler->getReport();
-        /** @var ProfilerReport $report */
-        $reports = $report->getReports();
-        $this->assertIsArray($reports);
-        $this->assertCount(2, $reports);
-        $counterReports = $report->getCountersReports();
-        $this->assertIsArray($counterReports);
-        foreach ($counterReports as $cr) {
-            $this->assertInstanceOf(CounterReport::class, $cr);
-        }
-        $timerReports = $report->getTimersReports();
-        $this->assertIsArray($timerReports);
-        foreach ($timerReports as $tr) {
-            $this->assertInstanceOf(TimerReport::class, $tr);
-        }
-    }
 }

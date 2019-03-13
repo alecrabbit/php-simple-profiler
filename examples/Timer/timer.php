@@ -1,6 +1,6 @@
 <?php
 
-use AlecRabbit\Tools\Reports\Factory;
+use AlecRabbit\Tools\Reports\OldFactory;
 use AlecRabbit\Tools\Timer;
 
 require_once __DIR__ . '/../../vendor/autoload.php';

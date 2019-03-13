@@ -5,12 +5,11 @@
  * Time: 21:28
  */
 
-namespace Tests\Unit;
+namespace AlecRabbit\Tools\Traits;
 
-use AlecRabbit\Tools\Counter;
+use AlecRabbit\Tools\AbstractCounter;
+use AlecRabbit\Tools\AbstractTimer;
 use AlecRabbit\Tools\Profiler;
-use AlecRabbit\Tools\Reports\ProfilerReport;
-use AlecRabbit\Tools\Timer;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,22 +18,31 @@ use PHPUnit\Framework\TestCase;
 class ProfilerTest extends TestCase
 {
 
-    /** @test */
+    /**
+     * @test
+     * @throws \Exception
+     */
     public function classCreation(): void
     {
         $profiler = new Profiler();
+        $name = 'name';
+        $profiler->counter($name);
+        $profiler->timer($name);
         $this->assertInstanceOf(Profiler::class, $profiler);
         $counters = $profiler->getCounters();
         foreach ($counters as $counter) {
-            $this->assertInstanceOf(Counter::class, $counter);
+            $this->assertInstanceOf(AbstractCounter::class, $counter);
         }
         $timers = $profiler->getTimers();
         foreach ($timers as $timer) {
-            $this->assertInstanceOf(Timer::class, $timer);
+            $this->assertInstanceOf(AbstractTimer::class, $timer);
         }
     }
 
-    /** @test */
+    /**
+     * @test
+     * @throws \Exception
+     */
     public function counterCreation(): void
     {
         $profiler = new Profiler();
@@ -49,18 +57,22 @@ class ProfilerTest extends TestCase
         );
     }
 
-    /** @test */
+    /**
+     * @test
+     * @throws \Exception
+     */
     public function timerCreation(): void
     {
         $profiler = new Profiler();
-        $profiler->counter('new')->bump();
-        $profiler->timer('new')->start();
-        $profiler->timer('new')->check();
-        $this->assertEquals('0.0ns', $profiler->timer('new')->elapsed());
+        $new = 'new';
+        $profiler->counter($new)->bump();
+        $profiler->timer($new)->start();
+        $profiler->timer($new)->check();
+        $this->assertIsString($profiler->timer($new)->elapsed());
         $this->assertStringMatchesFormat(
             '%s [%s, %s, %s]',
             $profiler
-                ->timer('new', 'vol', 'buy', 'tor')
+                ->timer($new, 'vol', 'buy', 'tor')
                 ->getName()
         );
     }

@@ -3,57 +3,62 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
-use AlecRabbit\Tools\Reports\CounterReport;
+use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
+use AlecRabbit\Tools\Reports\SimpleCounterReport;
 use AlecRabbit\Tools\Reports\ProfilerReport;
 use AlecRabbit\Tools\Reports\TimerReport;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
 class ProfilerReportFormatter extends ReportFormatter
 {
-    /** @var ProfilerReport */
-    protected $report;
-
     /** @var string */
-    protected $elapsed = '';
+    private $elapsed = '';
 
-    public function process(): string
+    /** {@inheritdoc} */
+    public function process(ReportInterface $report): string
     {
-        return
-            sprintf(
-                '%s %s %s ',
-                $this->countersStrings(),
-                $this->timersStrings(),
-                $this->elapsed
-            );
+        if ($report instanceof ProfilerReport) {
+            return
+                sprintf(
+                    '%s %s %s',
+                    $this->countersStrings($report),
+                    $this->timersStrings($report),
+                    $this->elapsed
+                );
+        }
+        return '';
     }
 
     /**
+     * @param ProfilerReport $report
      * @return string
      */
-    protected function countersStrings(): string
+    protected function countersStrings(ProfilerReport $report): string
     {
         $r = '';
-        foreach ($this->report->getCountersReports() as $report) {
-            if ($report instanceof CounterReport && DEFAULT_NAME === $report->getName()) {
-                $r .= $report->isStarted() ? $report : '';
+        foreach ($report->getCountersReports() as $countersReport) {
+            if ($countersReport instanceof SimpleCounterReport && DEFAULT_NAME === $countersReport->getName()) {
+                $r .= $countersReport->isStarted() ? $countersReport : '';
             } else {
-                $r .= $report;
+                $r .= $countersReport;
             }
         }
         return $r;
     }
 
     /**
+     * @param ProfilerReport $report
      * @return string
      */
-    protected function timersStrings(): string
+    protected function timersStrings(ProfilerReport $report): string
     {
         $r = '';
-        foreach ($this->report->getTimersReports() as $report) {
-            if ($report instanceof TimerReport && DEFAULT_NAME === $report->getName()) {
-                $this->elapsed = (string)$report;
+        foreach ($report->getTimersReports() as $timerReport) {
+            if ($timerReport instanceof TimerReport && DEFAULT_NAME === $timerReport->getName()) {
+//                $this->elapsed = (string)$timerReport;
+                $r .= $timerReport;
             } else {
-                $r .= $report;
+                $r .= $timerReport;
             }
         }
         return $r;

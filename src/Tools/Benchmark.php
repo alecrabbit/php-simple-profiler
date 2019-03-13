@@ -5,161 +5,118 @@ namespace AlecRabbit\Tools;
 use AlecRabbit\Accessories\MemoryUsage;
 use AlecRabbit\Accessories\Rewindable;
 use AlecRabbit\Tools\Contracts\BenchmarkInterface;
-use AlecRabbit\Tools\Contracts\StringConstants;
+use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
-use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
-use AlecRabbit\Tools\Reports\Traits\Reportable;
+use AlecRabbit\Tools\Reports\BenchmarkReport;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
 use function AlecRabbit\typeOf;
 
-class Benchmark implements BenchmarkInterface, ReportableInterface, StringConstants
+class Benchmark extends Reportable implements BenchmarkInterface, Strings
 {
-    use BenchmarkFields, Reportable;
+    use BenchmarkFields;
 
     public const MIN_ITERATIONS = 100;
     public const DEFAULT_STEPS = 100;
+    public const CLOSURE_NAME = 'λ';
 
     /** @var int */
     protected $advanceSteps = self::DEFAULT_STEPS;
-    /** @var int */
-    private $functionIndex = 1;
     /** @var Rewindable */
-    private $rewindable;
+    protected $rewindable;
     /** @var int */
-    private $iterations;
+    protected $iterations;
     /** @var null|string */
-    private $comment;
+    protected $comment;
     /** @var string|null */
-    private $humanReadableName;
-    /** @var null|callable */
-    private $onStart;
+    protected $humanReadableName;
     /** @var int */
-    private $totalIterations = 0;
+    protected $totalIterations = 0;
     /** @var null|callable */
-    private $onAdvance;
+    protected $onStart;
     /** @var null|callable */
-    private $onFinish;
+    protected $onAdvance;
+    /** @var null|callable */
+    protected $onFinish;
     /** @var int */
-    private $advanceStep = 0;
+    protected $advanceStep = 0;
     /** @var \Closure */
-    private $generatorFunction;
+    protected $iterationNumberGenerator;
     /** @var bool */
-    private $showReturns = true;
+    protected $launched = false;
+    /** @var int */
+    protected $functionIndex = 1;
 
     /**
      * Benchmark constructor.
      * @param int $iterations
+     * @throws \Exception
      */
     public function __construct(?int $iterations = null)
     {
         $this->iterations = $this->refineIterations($iterations);
 
-        $this->generatorFunction = function (int $iterations, int $i = 1): \Generator {
-            while ($i <= $iterations) {
-                yield $i++;
-            }
-        };
+        $this->iterationNumberGenerator =
+            function (int $iterations, int $i = 1): \Generator {
+                while ($i <= $iterations) {
+                    yield $i++;
+                }
+            };
 
-        $this->timer = new Timer();
+        $this->timer = new Timer(); // Timer to count benchmark process total time
         $this->initialize();
     }
 
-    private function refineIterations(?int $iterations): int
+    protected function refineIterations(?int $iterations): int
     {
         $iterations = $iterations ?? self::MIN_ITERATIONS;
-        if ($iterations < self::MIN_ITERATIONS) {
-            throw new \RuntimeException(__CLASS__ . ': Iterations should greater then ' . self::MIN_ITERATIONS);
-        }
+        $this->assertIterations($iterations);
         return $iterations;
     }
 
     /**
-     * Resets Benchmark object clear
+     * @param int $iterations
      */
-    private function initialize(): void
+    protected function assertIterations(int $iterations): void
     {
-        unset($this->functions, $this->humanReadableName, $this->rewindable, $this->profiler, $this->memoryUsageReport);
+        if ($iterations < self::MIN_ITERATIONS) {
+            throw new \RuntimeException(
+                __CLASS__ .
+                ': Number of Iterations should be greater then ' .
+                self::MIN_ITERATIONS
+            );
+        }
+    }
+
+    /**
+     * Resets Benchmark object clear
+     * @throws \Exception
+     */
+    protected function initialize(): void
+    {
+        unset($this->functions, $this->humanReadableName, $this->rewindable, $this->memoryUsageReport);
 
         $this->humanReadableName = null;
         $this->rewindable =
             new Rewindable(
-                $this->generatorFunction,
+                $this->iterationNumberGenerator,
                 $this->iterations
             );
         $this->functions = [];
-        $this->profiler = new Profiler();
+        $this->added = new SimpleCounter('added');
+        $this->benchmarked = new SimpleCounter('benchmarked');
         $this->memoryUsageReport = MemoryUsage::report();
         $this->doneIterations = 0;
         $this->totalIterations = 0;
+        $this->report = (new BenchmarkReport())->buildOn($this);
     }
 
     /**
      * Resets Benchmark object clear
+     * @throws \Exception
      */
     public function reset(): void
     {
         $this->initialize();
-    }
-
-    /**
-     * Launch benchmarking
-     */
-    public function run(): Benchmark
-    {
-        $this->launched = true;
-        if ($this->onStart) {
-            ($this->onStart)();
-        }
-        $this->execute();
-        if ($this->onFinish) {
-            ($this->onFinish)();
-        }
-        $this->doneIterationsCombined += $this->doneIterations;
-        return $this;
-    }
-
-    /**
-     * Benchmarking
-     */
-    private function execute(): void
-    {
-        /** @var  BenchmarkFunction $f */
-        foreach ($this->functions as $f) {
-            if (!$f->execute()) {
-                $this->totalIterations -= $this->iterations;
-                continue;
-            }
-            $this->advanceStep = (int)($this->totalIterations / $this->advanceSteps);
-            $this->bench($f);
-            $this->profiler->counter(self::BENCHMARKED)->bump();
-        }
-    }
-
-    /**
-     * @param BenchmarkFunction $f
-     */
-    private function bench(BenchmarkFunction $f): void
-    {
-        $timer = $f->getTimer();
-        $function = $f->getCallable();
-        $args = $f->getArgs();
-        foreach ($this->rewindable as $iteration) {
-            $start = microtime(true);
-            /** @noinspection DisconnectedForeachInstructionInspection */
-            $function(...$args);
-            $stop = microtime(true);
-            $timer->bounds($start, $stop, $iteration);
-            /** @noinspection DisconnectedForeachInstructionInspection */
-            $this->progress();
-        }
-    }
-
-    private function progress(): void
-    {
-        $this->doneIterations++;
-        if ($this->onAdvance && 0 === $this->doneIterations % $this->advanceStep) {
-            ($this->onAdvance)();
-        }
     }
 
     /**
@@ -203,11 +160,11 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringConsta
                 $this->comment,
                 $this->humanReadableName
             );
-        $function->setShowReturns($this->showReturns);
+        $function->setShowReturns($this->isShowReturns());
         $this->functions[$function->enumeratedName()] = $function;
         $this->humanReadableName = null;
         $this->comment = null;
-        $this->profiler->counter(self::ADDED)->bump();
+        $this->added->bump();
         $this->totalIterations += $this->iterations;
     }
 
@@ -216,10 +173,10 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringConsta
      * @param string $name
      * @return string
      */
-    private function refineName($func, $name): string
+    protected function refineName($func, $name): string
     {
         if ($func instanceof \Closure) {
-            $name = 'λ';
+            $name = self::CLOSURE_NAME;
         }
         return $name;
     }
@@ -246,6 +203,7 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringConsta
 
     /**
      * @return string
+     * @throws \Exception
      */
     public function stat(): string
     {
@@ -258,23 +216,108 @@ class Benchmark implements BenchmarkInterface, ReportableInterface, StringConsta
             );
     }
 
-    public function noReturns()
+    /**
+     * @return Benchmark
+     */
+    public function showReturns(): Benchmark
     {
-        $this->showReturns = false;
-        /** @var $function BenchmarkFunction */
-        if (!empty($this->functions)) {
-            foreach ($this->functions as $function) {
-                $function->setShowReturns(false);
-            }
+        $this->setShowReturns(true);
+        foreach ($this->functions as $function) {
+            $function->setShowReturns($this->isShowReturns());
         }
         return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * @param bool $showReturns
      */
-    protected function prepareForReport(): void
+    public function setShowReturns(bool $showReturns): void
     {
-        $this->getProfiler()->report();
+        $this->showReturns = $showReturns;
+    }
+
+    /** {@inheritdoc} */
+    protected function meetConditions(): void
+    {
+        if ($this->isNotLaunched()) {
+            $this->run();
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNotLaunched(): bool
+    {
+        return !$this->isLaunched();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLaunched(): bool
+    {
+        return $this->launched;
+    }
+
+    /**
+     * Launch benchmarking
+     */
+    public function run(): self
+    {
+        $this->launched = true;
+        if ($this->onStart) {
+            ($this->onStart)();
+        }
+        $this->execute();
+        if ($this->onFinish) {
+            ($this->onFinish)();
+        }
+        $this->doneIterationsCombined += $this->doneIterations;
+        return $this;
+    }
+
+    /**
+     * Benchmarking
+     */
+    protected function execute(): void
+    {
+        /** @var  BenchmarkFunction $f */
+        foreach ($this->functions as $f) {
+            if (!$f->execute()) {
+                $this->totalIterations -= $this->iterations;
+                continue;
+            }
+            $this->advanceStep = (int)($this->totalIterations / $this->advanceSteps);
+            $this->bench($f);
+            $this->benchmarked->bump();
+        }
+    }
+
+    /**
+     * @param BenchmarkFunction $f
+     */
+    protected function bench(BenchmarkFunction $f): void
+    {
+        $timer = $f->getTimer();
+        $function = $f->getCallable();
+        $args = $f->getArgs();
+        foreach ($this->rewindable as $iteration) {
+            $start = microtime(true);
+            /** @noinspection DisconnectedForeachInstructionInspection */
+            $function(...$args);
+            $stop = microtime(true);
+            $timer->bounds($start, $stop, $iteration);
+            /** @noinspection DisconnectedForeachInstructionInspection */
+            $this->progress();
+        }
+    }
+
+    protected function progress(): void
+    {
+        $this->doneIterations++;
+        if ($this->onAdvance && 0 === $this->doneIterations % $this->advanceStep) {
+            ($this->onAdvance)();
+        }
     }
 }

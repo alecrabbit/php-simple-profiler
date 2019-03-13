@@ -1,13 +1,8 @@
-<?php
-/**
- * User: alec
- * Date: 15.10.18
- * Time: 3:54
- */
+<?php declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Contracts;
 
-interface StringConstants
+interface Strings
 {
     public const COUNTERS = 'counters';
     public const TIMERS = 'timers';

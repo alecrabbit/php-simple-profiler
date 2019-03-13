@@ -1,9 +1,4 @@
-<?php
-/**
- * User: alec
- * Date: 03.12.18
- * Time: 22:24
- */
+<?php declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Internal;
 
@@ -57,6 +52,7 @@ class BenchmarkFunction
      * @param array $args
      * @param null|string $comment
      * @param null|string $humanReadableName
+     * @throws \Exception
      */
     public function __construct(
         $func,
@@ -221,5 +217,13 @@ class BenchmarkFunction
     public function isShowReturns(): bool
     {
         return $this->showReturns;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNotShowReturns(): bool
+    {
+        return !$this->isShowReturns();
     }
 }

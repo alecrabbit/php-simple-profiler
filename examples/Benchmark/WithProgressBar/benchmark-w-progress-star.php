@@ -5,7 +5,7 @@
  * Time: 17:13
  */
 
-use AlecRabbit\Tools\Benchmark;
+use AlecRabbit\Tools\OldBenchmark;
 
 const ITERATIONS = 500000;
 
@@ -16,7 +16,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
  * Benchmark class is to help you choose which is faster :)
 */
 
-$benchmark = new Benchmark(ITERATIONS);
+$benchmark = new OldBenchmark(ITERATIONS);
 
 $progressAdvance = function () {
     echo '*';

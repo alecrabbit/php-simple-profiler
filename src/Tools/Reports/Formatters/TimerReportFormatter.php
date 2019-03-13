@@ -1,59 +1,75 @@
-<?php
-/**
- * User: alec
- * Date: 10.12.18
- * Time: 14:22
- */
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Accessories\Pretty;
+use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\TimerReport;
+use Carbon\CarbonInterval;
+use function AlecRabbit\typeOf;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
 class TimerReportFormatter extends ReportFormatter
 {
-    /** @var TimerReport */
-    protected $report;
+    protected const MILLISECONDS_THRESHOLD = 10000;
 
-    /**
-     * @return string
-     */
-    public function process(): string
+    /** {@inheritdoc} */
+    public function process(ReportInterface $report): string
     {
-        if (0 === $this->report->getCount() && DEFAULT_NAME === $this->report->getName()) {
-            return $this->simple();
+        if ($report instanceof TimerReport) {
+            if (0 === $report->getCount() && DEFAULT_NAME === $report->getName()) {
+                return $this->simple($report);
+            }
+            return $this->full($report);
         }
-        return $this->full();
+        $this->wrongReportType(TimerReport::class, $report);
+        // @codeCoverageIgnoreStart
+        return '';
+        // @codeCoverageIgnoreEnd
     }
 
     /**
+     * @param TimerReport $report
      * @param bool $eol
      * @return string
      */
-    public function simple(bool $eol = true): string
+    protected function simple(TimerReport $report, bool $eol = true): string
     {
         return
             sprintf(
                 self::ELAPSED . ': %s %s',
-                $this->ftime($this->report->getElapsed()),
+                $this->refineElapsed($report->getElapsed()),
                 $eol ? PHP_EOL : ''
             );
     }
 
-    protected function ftime(float $seconds): string
+    /**
+     * @param \DateInterval $elapsed
+     * @return string
+     */
+    protected function refineElapsed(\DateInterval $elapsed): string
     {
-        return Pretty::seconds($seconds);
+        return static::formatElapsed($elapsed);
+    }
+
+    public static function formatElapsed(\DateInterval $elapsed): string
+    {
+        $c = CarbonInterval::instance($elapsed);
+        if ($c->totalMilliseconds < self::MILLISECONDS_THRESHOLD) {
+            return
+                Pretty::milliseconds($c->totalMilliseconds);
+        }
+        return (string)$c;
     }
 
     /**
+     * @param TimerReport $report
      * @param bool $eol
      * @return string
      */
-    public function full(bool $eol = true): string
+    protected function full(TimerReport $report, bool $eol = true): string
     {
-        $r = $this->report;
+        $r = $report;
         return sprintf(
             self::TIMER . '%s: ' .
             self::AVERAGE . ': %s, ' .
@@ -62,24 +78,30 @@ class TimerReportFormatter extends ReportFormatter
             self::MAX . '(%s): %s, ' .
             self::COUNT . ': %s, ' .
             self::ELAPSED . ': %s%s',
-            $this->fname($r->getName()),
-            $this->ftime($r->getAverageValue()),
-            $this->ftime($r->getLastValue()),
+            $this->refineName($r->getName()),
+            $this->refineSeconds($r->getAverageValue()),
+            $this->refineSeconds($r->getLastValue()),
             $r->getMinValueIteration(),
-            $this->ftime($r->getMinValue()),
+            $this->refineSeconds($r->getMinValue()),
             $r->getMaxValueIteration(),
-            $this->ftime($r->getMaxValue()),
+            $this->refineSeconds($r->getMaxValue()),
             $r->getCount(),
-            $this->ftime($r->getElapsed()),
+            $this->refineElapsed($r->getElapsed()),
             $eol ? PHP_EOL : ''
         );
     }
 
-    protected function fname(string $name): string
+    protected function refineName(string $name): string
     {
         if (DEFAULT_NAME === $name) {
             return '';
         }
         return '[' . $name . ']';
+    }
+
+    protected function refineSeconds(?float $seconds): string
+    {
+        return
+            $seconds ? Pretty::seconds($seconds) : 'NULL';
     }
 }

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-use AlecRabbit\Tools\BenchmarkSymfonyPB as BenchmarkWithSymfonyProgressBar;
+use AlecRabbit\Tools\OldBenchmarkSymfonyPB as BenchmarkWithSymfonyProgressBar;
 use function AlecRabbit\tag;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';

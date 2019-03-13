@@ -29,16 +29,16 @@
     <listeners>
         <listener class="NunoMaduro\Collision\Adapters\Phpunit\Listener"/>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener">
-            <arguments>
-                <array>
-                    <element key="time-sensitive">
-                        <string>Tests\Unit</string>
-                    </element>
-                    <element key="time-sensitive">
-                        <string>AlecRabbit\Tools</string>
-                    </element>
-                </array>
-            </arguments>
+            <!--<arguments>-->
+                <!--<array>-->
+                    <!--&lt;!&ndash;<element key="time-sensitive">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<string>Tests\Unit</string>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</element>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<element key="time-sensitive">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<string>AlecRabbit\Tools</string>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</element>&ndash;&gt;-->
+                <!--</array>-->
+            <!--</arguments>-->
         </listener>
     </listeners>
     <logging>

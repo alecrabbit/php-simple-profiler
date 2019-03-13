@@ -1,18 +1,19 @@
-<?php
-/**
- * User: alec
- * Date: 14.10.18
- * Time: 2:26
- */
+<?php declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Contracts;
 
 interface ReportInterface
 {
-    public const REPORT_FORMAT = '"%s": %s';
-    public const REPORT_DIV = ' => ';
-    public const REPORT_EXTENDED_SUFFIX = '%s(%s) ';
+    /**
+     * @return string
+     */
+    public function __toString(): string;
 
-    /** @return string */
-    public function __toString();
+    /**
+     * @param ReportableInterface $reportable
+     * @return ReportInterface
+     * @throws \RuntimeException
+     * @throws \Exception
+     */
+    public function buildOn(ReportableInterface $reportable): ReportInterface;
 }

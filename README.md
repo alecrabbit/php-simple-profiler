@@ -14,7 +14,9 @@
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Percentage of issues still open")
 
-VERSION ^0.4 || ^0.5
+VERSION ^0.6 (for version 0.5.x use [this](https://github.com/alecrabbit/php-simple-profiler/tree/v.0.5.x))
+
+# WIP
 
 ### Installation
 For now this package is suggested to be used in dev process
@@ -42,8 +44,20 @@ $benchmark
     ->addFunction('hrtime', true); 
 $benchmark
     ->addFunction('microtime', true);
-echo $benchmark->run()->report() . PHP_EOL;
+echo $benchmark->run()->noReturns()->report() . PHP_EOL;
 echo $benchmark->stat() . PHP_EOL;
+```
+Output will be something like:
+```
+Results:
+Benchmark:
+1.  150.1ns (  0.00%) ⟨1⟩ hrtime(boolean) 
+2.  157.7ns (  5.07%) ⟨2⟩ microtime(boolean) 
+Benchmarked: 2 
+Memory: 0.88MB(0.92MB) Real: 2.00MB(2.00MB)
+
+Done in: 2.0s
+
 ```
 ###### For more details see [examples](https://github.com/alecrabbit/php-simple-profiler/tree/master/examples)
 > Note: Some examples could be not up to date... WIP

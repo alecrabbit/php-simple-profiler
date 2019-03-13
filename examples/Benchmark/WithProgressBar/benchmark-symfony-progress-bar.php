@@ -5,13 +5,13 @@
  * Time: 17:13
  */
 
-use AlecRabbit\Tools\BenchmarkSymfonyPB;
+use AlecRabbit\Tools\OldBenchmarkSymfonyPB;
 
 const ITERATIONS = 5000;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
-$benchmark = new BenchmarkSymfonyPB(ITERATIONS);
+$benchmark = new OldBenchmarkSymfonyPB(ITERATIONS);
 
 
 $benchmark

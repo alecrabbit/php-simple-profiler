@@ -1,20 +1,17 @@
-<?php
-/**
- * User: alec
- * Date: 14.10.18
- * Time: 2:18
- */
+<?php declare(strict_types=1);
 
 namespace AlecRabbit\Tools;
 
 use AlecRabbit\Tools\Contracts\CounterInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
-use AlecRabbit\Tools\Reports\Traits\Reportable;
-use AlecRabbit\Tools\Traits\CounterFields;
+use AlecRabbit\Tools\Reports\SimpleCounterReport;
+use AlecRabbit\Tools\Reports\Traits\HasReport;
+use AlecRabbit\Tools\Traits\SimpleCounterFields;
 
-class Counter implements CounterInterface, ReportableInterface
+abstract class AbstractCounter implements CounterInterface, ReportableInterface
 {
-    use CounterFields, Reportable;
+    use SimpleCounterFields, HasReport;
+
 
     protected const DEFAULT_STEP = 1;
 
@@ -23,23 +20,24 @@ class Counter implements CounterInterface, ReportableInterface
      * @param null|string $name
      * @param null|int $step
      * @param int $initialValue
+     * @throws \Exception
      */
     public function __construct(?string $name = null, ?int $step = null, int $initialValue = 0)
     {
         $this->name = $this->defaultName($name);
         $this->setInitialValue($initialValue);
         $this->setStep($step);
-        $this->updateMaxAndMin();
+        $this->buildReport();
     }
 
     /**
      * @param int $initialValue
-     * @return Counter
+     * @return AbstractCounter
      */
-    public function setInitialValue(int $initialValue): Counter
+    public function setInitialValue(int $initialValue): AbstractCounter
     {
         if (false === $this->isStarted()) {
-            $this->value = $this->initialValue = $this->length = $this->max = $this->min = $initialValue;
+            $this->updateValues($initialValue);
         } else {
             throw new \RuntimeException('You can\'t set counter initial value, it has been bumped already.');
         }
@@ -47,10 +45,18 @@ class Counter implements CounterInterface, ReportableInterface
     }
 
     /**
-     * @param null|int $step
-     * @return Counter
+     * @param int $initialValue
      */
-    public function setStep(?int $step = null): Counter
+    protected function updateValues(int $initialValue): void
+    {
+        $this->value = $this->initialValue = $initialValue;
+    }
+
+    /**
+     * @param null|int $step
+     * @return AbstractCounter
+     */
+    public function setStep(?int $step = null): AbstractCounter
     {
         $step = $this->assertStep($step);
         if (false === $this->isStarted()) {
@@ -74,45 +80,26 @@ class Counter implements CounterInterface, ReportableInterface
         return $step;
     }
 
-    private function updateMaxAndMin(): void
+    /**
+     * @throws \Exception
+     */
+    protected function buildReport(): void
     {
-        if ($this->value > $this->max) {
-            $this->max = $this->value;
-        }
-        if ($this->value < $this->min) {
-            $this->min = $this->value;
-        }
+        $this->report = (new SimpleCounterReport())->buildOn($this);
     }
 
     /**
      * @param int $times
      * @return int
      */
-    public function bumpBack(int $times = 1): int
-    {
-        return
-            $this->bump($times, false);
-    }
-
-    /**
-     * @param int $times
-     * @param bool $forward
-     * @return int
-     */
-    public function bump(int $times = 1, bool $forward = true): int
+    public function bump(int $times = 1): int
     {
         $times = $this->assertTimes($times);
-        $this->start();
-        $this->path += $times * $this->step;
-        $this->length += $times * $this->step;
-        if ($forward) {
-            $this->value += $times * $this->step;
-            $this->bumpedForward++;
-        } else {
-            $this->value -= $times * $this->step;
-            $this->bumpedBack++;
+        if ($this->isNotStarted()) {
+            $this->start();
         }
-        $this->updateMaxAndMin();
+        $this->value += $times * $this->step;
+        $this->bumped++;
         return
             $this->value;
     }
@@ -120,14 +107,10 @@ class Counter implements CounterInterface, ReportableInterface
     protected function assertTimes(int $times): int
     {
         if ($times < 1) {
-            throw new
-            \RuntimeException('Parameter 0 for bump() or bumpBack()  should be positive non-zero integer.');
+            throw new \RuntimeException(
+                'Parameter 0 for bump() or bumpBack() should be positive non-zero integer.'
+            );
         }
         return $times;
-    }
-
-    protected function start(): void
-    {
-        $this->started = true;
     }
 }

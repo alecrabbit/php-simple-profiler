@@ -15,7 +15,8 @@
     "php": "^7.2",
     "alecrabbit/php-accessories": "^0.5",
     "alecrabbit/php-helpers": "^0.5",
-    "alecrabbit/php-traits": "^0.2"
+    "alecrabbit/php-traits": "^0.2",
+    "sebastian/exporter": "^3.1"
   },
   "require-dev": {
     "krowinski/bcmath-extended": "^4.2",
@@ -25,14 +26,18 @@
     "symfony/phpunit-bridge": "^4.2",
     "symfony/var-dumper": "^4.2"
   },
+  "suggest":  {
+    "symfony/console": "To use symfony progress bar and colored output."
+  },
   "autoload": {
     "psr-4": {
       "AlecRabbit\\": "src"
-    }
+    },
+    "files": [ "src/Tools/bootstrap.php" ]
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\": "tests"
+      "AlecRabbit\\Tests\\Tools\\": "tests/"
     }
   },
   "minimum-stability": "beta"

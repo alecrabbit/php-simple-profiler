@@ -1,11 +1,11 @@
 <?php
 
-use AlecRabbit\Tools\Counter;
-use AlecRabbit\Tools\Reports\Factory;
+use AlecRabbit\Tools\ExtendedCounter;
+use AlecRabbit\Tools\Reports\OldFactory;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-$counter = new Counter('name', null, 2);
+$counter = new ExtendedCounter('name', null, 2);
 $counter->bump();
 $counter->bump();
 $counter->bumpBack();

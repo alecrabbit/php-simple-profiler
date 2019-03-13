@@ -1,45 +1,47 @@
-<?php
-/**
- * User: alec
- * Date: 14.10.18
- * Time: 2:13
- */
+<?php declare(strict_types=1);
 
 namespace AlecRabbit\Tools;
 
 use AlecRabbit\Tools\Contracts\ProfilerInterface;
+use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
-use AlecRabbit\Tools\Reports\Traits\Reportable;
+use AlecRabbit\Tools\Reports\ProfilerReport;
+use AlecRabbit\Tools\Reports\Traits\HasReport;
 use AlecRabbit\Traits\DefaultableName;
 
-class Profiler implements ProfilerInterface, ReportableInterface
+class Profiler implements ProfilerInterface, ReportableInterface, Strings
 {
-    use Reportable, DefaultableName;
+    use DefaultableName, HasReport;
 
     /** @var Timer[] */
     private $timers = [];
 
-    /** @var Counter[] */
+    /** @var ExtendedCounter[] */
     private $counters = [];
 
+    /**
+     * Profiler constructor.
+     * @throws \Exception
+     */
     public function __construct()
     {
-        // Create "default" counter
-        $this->counter();
-        // Create "default" timer
-        $this->timer();
+        $this->counter(); // Create default counter
+        $this->timer(); // Create default timer
+        $this->report = (new ProfilerReport())->buildOn($this);
+//        dump($this->timers);
     }
 
     /**
      * @param null|string $name
      * @param string ...$suffixes
-     * @return Counter
+     * @return AbstractCounter
+     * @throws \Exception
      */
-    public function counter(?string $name = null, string ...$suffixes): Counter
+    public function counter(?string $name = null, string ...$suffixes): AbstractCounter
     {
         $name = $this->prepareName($name, $suffixes);
         return
-            $this->counters[$name] ?? $this->counters[$name] = new Counter($name);
+            $this->counters[$name] ?? $this->counters[$name] = new ExtendedCounter($name);
     }
 
     /**
@@ -71,6 +73,7 @@ class Profiler implements ProfilerInterface, ReportableInterface
      * @param null|string $name
      * @param string ...$suffixes
      * @return Timer
+     * @throws \Exception
      */
     public function timer(?string $name = null, string ...$suffixes): Timer
     {
@@ -88,7 +91,7 @@ class Profiler implements ProfilerInterface, ReportableInterface
     }
 
     /**
-     * @return Counter[]
+     * @return ExtendedCounter[]
      */
     public function getCounters(): array
     {

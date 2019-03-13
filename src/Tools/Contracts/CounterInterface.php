@@ -1,12 +1,7 @@
-<?php
-/**
- * User: alec
- * Date: 14.10.18
- * Time: 2:18
- */
+<?php declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Contracts;
 
-interface CounterInterface extends StringConstants
+interface CounterInterface extends CounterValuesInterface
 {
 }

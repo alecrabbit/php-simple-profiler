@@ -1,9 +1,9 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
-namespace Tests\Unit;
+namespace AlecRabbit\Tests\Tools;
 
-use AlecRabbit\Tools\Contracts\StringConstants;
+use AlecRabbit\Tools\Contracts\Strings;
+use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Reports\TimerReport;
 use AlecRabbit\Tools\Timer;
 use PHPUnit\Framework\TestCase;
@@ -13,86 +13,23 @@ use PHPUnit\Framework\TestCase;
  */
 class TimerReportTest extends TestCase
 {
-    /** @test */
-    public function getReport(): void
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function wrongReportable(): void
     {
-        $t = new Timer();
-        /** @var TimerReport $report */
-        $report = $t->getReport();
-        $this->assertInstanceOf(TimerReport::class, $report);
-        $this->assertEquals('default_name', $report->getName());
-        $this->assertEquals(0.0, $report->getLastValue(), 'getLastValue');
-        $this->assertEquals(0.0, $report->getAverageValue(), 'getAvgValue');
-        $this->assertEquals(100000000.0, $report->getMinValue(), 'getMinValue');
-        $this->assertEquals(0.0, $report->getMaxValue(), 'getMaxValue');
-        $this->assertEquals(0, $report->getCount(), 'getCount');
-        $this->assertEquals(0, $report->getMinValueIteration(), 'getMinValueIteration');
-        $this->assertEquals(0, $report->getMaxValueIteration(), 'getMaxValueIteration');
-        $this->assertEquals(0.0, $report->getElapsed(), 'getElapsed');
-        $this->assertEquals($report->getCreation(), $report->getPrevious(), 'getCreation equals getPrevious');
-        $this->assertEquals(true, $report->isStarted());
-        $this->assertEquals(false, $report->isNotStarted());
-        $this->assertEquals(true, $report->isStopped());
-        $this->assertEquals(false, $report->isNotStopped());
-        $str = (string)$report;
-        $this->assertIsString($str);
-        $this->assertContains(StringConstants::ELAPSED, $str);
-        $this->assertNotContains(StringConstants::TIMER, $str);
-        $this->assertNotContains(StringConstants::AVERAGE, $str);
-        $this->assertNotContains(StringConstants::LAST, $str);
-        $this->assertNotContains(StringConstants::MIN, $str);
-        $this->assertNotContains(StringConstants::MAX, $str);
-        $this->assertNotContains(StringConstants::COUNT, $str);
+        $profiler = new Profiler();
+        $timerReport = new TimerReport();
+        $this->expectException(\RuntimeException::class);
+        $timerReport->buildOn($profiler);
     }
 
-
-    /** @test */
-    public function timerElapsed(): void
-    {
-        $t = new Timer('someName');
-        $t->start();
-        usleep(2000);
-        $report = $t->getReport();
-        $str = (string)$report;
-        $this->assertIsString($str);
-        $this->assertContains(StringConstants::ELAPSED, $str);
-        $this->assertContains(StringConstants::TIMER, $str);
-        $this->assertContains(StringConstants::AVERAGE, $str);
-        $this->assertContains(StringConstants::LAST, $str);
-        $this->assertContains(StringConstants::MIN, $str);
-        $this->assertContains(StringConstants::MAX, $str);
-        $this->assertContains(StringConstants::COUNT, $str);
-        $this->assertEquals('2.0ms', $t->elapsed());
-        $this->assertStringMatchesFormat(
-            '%fms',
-            $t->elapsed()
-        );
-    }
-
-    /** @test */
-    public function timerElapsedNotStarted(): void
-    {
-        $t = new Timer('someName', false);
-        usleep(2000);
-        $report = $t->getReport();
-        $str = (string)$report;
-        $this->assertIsString($str);
-        $this->assertContains(StringConstants::ELAPSED, $str);
-        $this->assertContains(StringConstants::TIMER, $str);
-        $this->assertContains(StringConstants::AVERAGE, $str);
-        $this->assertContains(StringConstants::LAST, $str);
-        $this->assertContains(StringConstants::MIN, $str);
-        $this->assertContains(StringConstants::MAX, $str);
-        $this->assertContains(StringConstants::COUNT, $str);
-        $this->assertEquals('2.0ms', $t->elapsed());
-        $this->assertStringMatchesFormat(
-            '%fms',
-            $t->elapsed()
-        );
-    }
-
-
-    /** @test */
+    /**
+     * @test
+     * @throws \Exception
+     */
     public function timerValuesStarted(): void
     {
         $t = new Timer();
@@ -104,7 +41,7 @@ class TimerReportTest extends TestCase
         usleep(1000);
         $t->check($i + 1);
         /** @var TimerReport $report */
-        $report = $t->getReport();
+        $report = $t->report();
         $this->assertEqualsWithDelta(0.001, $report->getLastValue(), 0.0001);
         $this->assertEqualsWithDelta(0.005, $report->getAverageValue(), 0.0005);
         $this->assertEqualsWithDelta(0.001, $report->getMinValue(), 0.0001);
@@ -112,29 +49,32 @@ class TimerReportTest extends TestCase
         $this->assertEquals(8, $report->getMinValueIteration());
         $this->assertEquals(6, $report->getMaxValueIteration());
         $this->assertEquals(7, $report->getCount());
-        $this->assertEqualsWithDelta(0.034, $report->getElapsed(), 0.0001);
+        $this->assertInstanceOf(\DateInterval::class, $report->getElapsed());
     }
 
-    /** @test */
+    /**
+     * @test
+     * @throws \Exception
+     */
     public function timerValuesNotStarted(): void
     {
         $t = new Timer(null, false);
         $count = 6;
         for ($i = 1; $i <= $count; $i++) {
-            usleep(2000 + $i * 1000);
+            sleep(2 + $i * 1);
             $t->check($i);
         }
-        usleep(1000);
+        sleep(1);
         $t->check($i + 1);
         /** @var TimerReport $report */
-        $report = $t->getReport();
-        $this->assertEqualsWithDelta(0.001, $report->getLastValue(), 0.0001);
-        $this->assertEqualsWithDelta(0.005, $report->getAverageValue(), 0.0005);
-        $this->assertEqualsWithDelta(0.001, $report->getMinValue(), 0.0001);
-        $this->assertEqualsWithDelta(0.008, $report->getMaxValue(), 0.0001);
+        $report = $t->report();
+        $this->assertEqualsWithDelta(1, $report->getLastValue(), 0.0001);
+        $this->assertEqualsWithDelta(5, $report->getAverageValue(), 0.167);
+        $this->assertEqualsWithDelta(1, $report->getMinValue(), 0.0001);
+        $this->assertEqualsWithDelta(8, $report->getMaxValue(), 0.0001);
         $this->assertEquals(8, $report->getMinValueIteration());
         $this->assertEquals(6, $report->getMaxValueIteration());
         $this->assertEquals(6, $report->getCount());
-        $this->assertEqualsWithDelta(0.034, $report->getElapsed(), 0.0001);
+        $this->assertInstanceOf(\DateInterval::class, $report->getElapsed());
     }
 }

@@ -7,28 +7,45 @@ namespace AlecRabbit\Tools\Reports;
 use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
-use AlecRabbit\Tools\Reports\Base\Report;
+use AlecRabbit\Tools\Reports\Contracts\BenchmarkReportInterface;
+use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
+use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
+use AlecRabbit\Tools\Reports\Core\Report;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
-class BenchmarkReport extends Report
+class BenchmarkReport extends Report implements BenchmarkReportInterface
 {
     use BenchmarkFields;
 
-    /**
-     * BenchmarkReport constructor.
-     * @param Benchmark $benchmark
-     */
-    public function __construct(Benchmark $benchmark)
+    protected static function getFormatter(): FormatterInterface
     {
-        $this->profiler = $benchmark->getProfiler();
-        $this->memoryUsageReport = $benchmark->getMemoryUsageReport();
-        $this->doneIterations = $benchmark->getDoneIterations();
-        $this->doneIterationsCombined = $benchmark->getDoneIterationsCombined();
-        $this->functions = $this->updateFunctions($benchmark->getFunctions());
-        $this->timer = $benchmark->getTimer();
+        return
+            Factory::getBenchmarkReportFormatter();
+    }
 
-        parent::__construct();
+    /**
+     * @param ReportableInterface $benchmark
+     * @return Contracts\ReportInterface
+     * @throws \RuntimeException
+     * @throws \Exception
+     */
+    public function buildOn(ReportableInterface $benchmark): ReportInterface
+    {
+        if ($benchmark instanceof Benchmark) {
+            $this->added = $benchmark->getAdded();
+            $this->benchmarked = $benchmark->getBenchmarked();
+            $this->memoryUsageReport = $benchmark->getMemoryUsageReport();
+            $this->doneIterations = $benchmark->getDoneIterations();
+            $this->doneIterationsCombined = $benchmark->getDoneIterationsCombined();
+            $this->functions = $this->updateFunctions($benchmark->getFunctions());
+            $this->timer = $benchmark->getTimer();
+            $this->showReturns = $benchmark->isShowReturns();
+        } else {
+            $this->wrongReportable(Benchmark::class, $benchmark);
+        }
+        return $this;
     }
 
     /**
@@ -92,11 +109,13 @@ class BenchmarkReport extends Report
         return $rel;
     }
 
-    /**
-     * @return BenchmarkFunction[]
-     */
-    public function getFunctions(): array
+    /** {@inheritdoc} */
+    public function showReturns(): BenchmarkReportInterface
     {
-        return $this->functions;
+        $this->showReturns = true;
+        foreach ($this->functions as $function) {
+            $function->setShowReturns($this->showReturns);
+        }
+        return $this;
     }
 }

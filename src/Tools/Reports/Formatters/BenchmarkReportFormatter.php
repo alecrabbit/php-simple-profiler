@@ -4,90 +4,94 @@ namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
+use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Factory;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkReportFormatterInterface;
 use function AlecRabbit\array_is_homogeneous;
 
-class BenchmarkReportFormatter extends ReportFormatter
+class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkReportFormatterInterface
 {
     /** @var BenchmarkReport */
     protected $report;
     /** @var mixed */
     protected $lastReturn;
+    /** @var int */
+    protected $added;
+    /** @var int */
+    protected $benchmarked;
+    /** @var bool */
+    protected $equalReturns;
+    /** @var bool */
+    protected $benchmarkedAny;
+    /** @var bool */
+    protected $benchmarkedMoreThanOne;
+
+    /** {@inheritdoc} */
+    public function process(ReportInterface $report): string
+    {
+        if ($report instanceof BenchmarkReport) {
+            return $this->build($report);
+        }
+        $this->wrongReportType(BenchmarkReport::class, $report);
+        // @codeCoverageIgnoreStart
+        return ''; // never executes
+        // @codeCoverageIgnoreEnd
+    }
 
     /**
-     * {@inheritdoc}
+     * @param BenchmarkReport $report
+     * @return string
      */
-    public function process(): string
+    protected function build(BenchmarkReport $report): string
     {
+        $this->report = $report;
         $str = 'Results:' . PHP_EOL;
-        $added = $this->added();
-        $benchmarked = $this->benchmarked();
-        $benchmarkedAny = $this->benchmarkedAny($added, $benchmarked);
-        if ($benchmarkedAny) {
+        $this->computeVariables();
+        if ($this->benchmarkedAny) {
             $str .= self::BENCHMARK . PHP_EOL;
         }
-        $equalReturns = $this->checkReturns();
         /** @var BenchmarkFunction $function */
-        foreach ($this->report->getFunctions() as $name => $function) {
+        foreach ($report->getFunctions() as $name => $function) {
             $str .=
-                Factory::getBenchmarkFunctionFormatter($function)
-                    ->noResultsIf($equalReturns)
-                    ->process();
+                Factory::getBenchmarkFunctionFormatter()
+                    ->noReturnIf($this->equalReturns || $this->report->isNotShowReturns())
+                    ->process($function);
         }
         return
             sprintf(
                 '%s%s%s%s%s',
                 $str,
-                $benchmarkedAny ? $this->allReturnsAreEqual($equalReturns) : '',
-                $this->countersStatistics($added, $benchmarked),
-                $this->report->getMemoryUsageReport(),
+                $this->strEqualReturns(),
+                $this->countersStatistics($this->added, $this->benchmarked),
+                $report->getMemoryUsageReport(),
                 PHP_EOL
             );
     }
 
-    /**
-     * @return int
-     */
-    private function added(): int
+    protected function computeVariables(): void
     {
-        return
-            $this->report->getProfiler()
-                ->counter(static::ADDED)->getValue();
-    }
-
-    /**
-     * @return int
-     */
-    private function benchmarked(): int
-    {
-        return
-            $this->report->getProfiler()
-                ->counter(static::BENCHMARKED)->getValue();
-    }
-
-    /**
-     * @param int $added
-     * @param int $benchmarked
-     * @return bool
-     */
-    private function benchmarkedAny(int $added, int $benchmarked): bool
-    {
-        return $added !== $added - $benchmarked;
+        $this->added = $this->report->getAdded()->getValue();
+        $this->benchmarked = $this->report->getBenchmarked()->getValue();
+        $this->benchmarkedAny =
+            $this->added !== $this->added - $this->benchmarked;
+        $this->benchmarkedMoreThanOne =
+            $this->benchmarked > 1;
+        $this->equalReturns = $this->equalReturns();
     }
 
     /**
      * @return bool
      */
-    protected function checkReturns(): bool
+    protected function equalReturns(): bool
     {
         return
-            array_is_homogeneous($this->functionsReturns());
+            array_is_homogeneous($this->reportFunctionsReturns());
     }
 
     /**
      * @return array
      */
-    private function functionsReturns(): array
+    protected function reportFunctionsReturns(): array
     {
         $returns = [];
         /** @var BenchmarkFunction $function */
@@ -97,19 +101,31 @@ class BenchmarkReportFormatter extends ReportFormatter
         return $returns;
     }
 
-    private function allReturnsAreEqual(bool $equalReturns): string
+    /**
+     * @return string
+     */
+    protected function strEqualReturns(): string
     {
-        if ($equalReturns) {
-            return
+        return $this->benchmarkedAny ? $this->allReturnsAreEqual() : '';
+    }
+
+    private function allReturnsAreEqual(): string
+    {
+        $str = '';
+        if ($this->equalReturns) {
+            $aRAE = $this->benchmarkedMoreThanOne ? 'All returns are equal' : '';
+            $dLM = $this->benchmarkedMoreThanOne ? '.' : '';
+            $str .=
                 sprintf(
-                    '%s %s%s %s',
-                    'All returns are equal:',
-                    PHP_EOL,
-                    BenchmarkFunctionFormatter::returnToString($this->lastReturn),
+                    '%s%s%s',
+                    $aRAE,
+                    $this->benchmarkedMoreThanOne && $this->report->isShowReturns() ?
+                        ':' . PHP_EOL . BenchmarkFunctionFormatter::returnToString($this->lastReturn) :
+                        $dLM,
                     PHP_EOL
                 );
         }
-        return '';
+        return $str;
     }
 
     /**
@@ -145,7 +161,7 @@ class BenchmarkReportFormatter extends ReportFormatter
      * @param int $benchmarked
      * @return string
      */
-    private function countedExceptions(int $added, int $benchmarked): string
+    protected function countedExceptions(int $added, int $benchmarked): string
     {
         if (0 !== $exceptions = $added - $benchmarked) {
             return

@@ -1,9 +1,4 @@
 <?php
-/**
- * User: alec
- * Date: 24.12.18
- * Time: 17:13
- */
 
 use AlecRabbit\Tools\Benchmark;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -67,6 +62,6 @@ $benchmark
     });
 $benchmark->showProgressBy($progressStart, $progressAdvance, $progressFinish);
 $benchmark->run();
-$report = $benchmark->getReport();
+$report = $benchmark->report();
 echo $report . PHP_EOL;
 echo $benchmark->stat() . PHP_EOL;

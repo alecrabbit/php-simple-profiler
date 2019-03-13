@@ -1,11 +1,11 @@
 <?php
 
-use AlecRabbit\Tools\Counter;
+use AlecRabbit\Tools\ExtendedCounter;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-$counter = new Counter();
-$counter2 = new Counter('Added', 1, 12);
+$counter = new ExtendedCounter();
+$counter2 = new ExtendedCounter('Added', 1, 12);
 $counter2->setStep(2);
 
 $counter->bump();

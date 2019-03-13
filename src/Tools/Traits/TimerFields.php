@@ -2,41 +2,37 @@
 
 namespace AlecRabbit\Tools\Traits;
 
+use AlecRabbit\Tools\HRTimer;
 use AlecRabbit\Traits\GettableName;
+use AlecRabbit\Traits\StartableAndStoppable;
 
 trait TimerFields
 {
-    use GettableName;
+    use GettableName, StartableAndStoppable;
 
-    /** @var float */
+    /** @var int|float */
     protected $previous = 0.0;
 
-    /** @var float */
-    protected $creation = 0.0;
+    /** @var \DateTimeImmutable */
+    protected $creationTime;
 
-    /** @var float */
-    protected $elapsed = 0.0;
+    /** @var \DateInterval */
+    protected $elapsed;
 
-    /** @var bool */
-    protected $stopped = false;
-
-    /** @var bool */
-    protected $started = false;
-
-    /** @var float */
+    /** @var int|float */
     protected $currentValue = 0.0;
 
     /** @var float */
     protected $avgValue = 0.0;
 
-    /** @var float */
-    protected $minValue = 100000000.0;
+    /** @var float|int|null */
+    protected $minValue;
+
+    /** @var float|int|null */
+    protected $maxValue;
 
     /** @var int */
     protected $minValueIteration = 0;
-
-    /** @var float */
-    protected $maxValue = 0.0;
 
     /** @var int */
     protected $maxValueIteration = 0;
@@ -45,35 +41,25 @@ trait TimerFields
     protected $count = 0;
 
     /**
-     * @return bool
-     */
-    public function isStopped(): bool
-    {
-        return $this->stopped;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isStarted(): bool
-    {
-        return $this->started;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isNotStarted(): bool
-    {
-        return !$this->started;
-    }
-
-    /**
      * @return float
      */
     public function getLastValue(): float
     {
-        return $this->currentValue;
+        return
+            $this->normalize($this->currentValue);
+    }
+
+    /**
+     * @param int|float $value
+     * @return float
+     */
+    protected function normalize($value): float
+    {
+        if ($this instanceof HRTimer) {
+            return
+                $value / HRTimer::VALUE_COEFFICIENT;
+        }
+        return $value;
     }
 
     /**
@@ -81,23 +67,27 @@ trait TimerFields
      */
     public function getAverageValue(): float
     {
-        return $this->avgValue;
+        return
+            $this->normalize($this->avgValue);
     }
 
     /**
-     * @return float
+     * @return null|float
      */
-    public function getMinValue(): float
+    public function getMinValue(): ?float
     {
-        return $this->minValue;
+
+        return
+            $this->minValue ? $this->normalize($this->minValue) : null;
     }
 
     /**
-     * @return float
+     * @return null|float
      */
-    public function getMaxValue(): float
+    public function getMaxValue(): ?float
     {
-        return $this->maxValue;
+        return
+            $this->maxValue ? $this->normalize($this->maxValue) : null;
     }
 
     /**
@@ -125,34 +115,18 @@ trait TimerFields
     }
 
     /**
-     * @return float
+     * @return \DateInterval
      */
-    public function getElapsed(): float
+    public function getElapsed(): \DateInterval
     {
         return $this->elapsed;
     }
 
     /**
-     * @return bool
+     * @return \DateTimeImmutable
      */
-    public function isNotStopped(): bool
+    public function getCreation(): \DateTimeImmutable
     {
-        return !$this->stopped;
-    }
-
-    /**
-     * @return float
-     */
-    public function getCreation(): float
-    {
-        return $this->creation;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPrevious(): float
-    {
-        return $this->previous;
+        return $this->creationTime;
     }
 }

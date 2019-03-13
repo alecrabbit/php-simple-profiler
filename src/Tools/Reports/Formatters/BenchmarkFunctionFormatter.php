@@ -5,80 +5,75 @@ declare(strict_types=1);
 namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Accessories\Pretty;
-use AlecRabbit\Tools\Contracts\StringConstants;
+use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
+use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkFunctionFormatterInterface;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\Formatter;
+use SebastianBergmann\Exporter\Exporter;
 use function AlecRabbit\typeOf;
 
-class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface, Formatter, StringConstants
+class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface, Strings
 {
-    /** @var BenchmarkFunction */
-    protected $function;
+    /** @var null|Exporter */
+    protected static $exporter;
 
     /** @var bool */
-    protected $withResults = true;
-
-    public function __construct(BenchmarkFunction $function)
-    {
-        $this->function = $function;
-    }
+    protected $equalReturns = false;
 
     /**
-     * {@inheritdoc}
+     * @return Exporter
      */
-    public function noResultsIf(bool $equalReturns = false): BenchmarkFunctionFormatter
+    protected static function getExporter(): Exporter
     {
-        $this->withResults = !$equalReturns;
+        if (null === static::$exporter) {
+            static::$exporter = new Exporter();
+        }
+        return static::$exporter;
+    }
+
+    /** {@inheritdoc} */
+    public function resetEqualReturns(): BenchmarkFunctionFormatter
+    {
+        return
+            $this->noReturnIf();
+    }
+
+    /** {@inheritdoc} */
+    public function noReturnIf(bool $equalReturns = false): BenchmarkFunctionFormatter
+    {
+        $this->equalReturns = $equalReturns;
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(): string
+    /** {@inheritdoc} */
+    public function process(BenchmarkFunction $function): string
     {
         return
-            $this->formatBenchmarkRelative() .
-            (empty($exception = $this->formatException()) ?
+            $this->formatBenchmarkRelative($function) .
+            (empty($exception = $this->formatException($function)) ?
                 PHP_EOL :
                 static::EXCEPTIONS . PHP_EOL . $exception);
     }
 
     /**
+     * @param BenchmarkFunction $function
      * @return string
      */
-    protected function formatBenchmarkRelative(): string
+    protected function formatBenchmarkRelative(BenchmarkFunction $function): string
     {
-        $function = $this->function;
         if ($br = $function->getBenchmarkRelative()) {
             $argumentsTypes = $this->extractArgumentsTypes($function->getArgs());
             $executionReturn = $function->getReturn();
-
-            if ($this->withResults && $this->function->isShowReturns()) {
-                return
-                    sprintf(
-                        '%s. %s (%s) %s(%s) %s %s %s %s',
-                        (string)$br->getRank(),
-                        $this->average($br->getAverage()),
-                        $this->relativePercent($br->getRelative()),
-                        $function->humanReadableName(),
-                        implode(', ', $argumentsTypes),
-                        $function->comment(),
-                        PHP_EOL,
-                        static::returnToString($executionReturn),
-                        PHP_EOL
-                    );
+            if ($this->equalReturns || $function->isNotShowReturns()) {
+                return $this->preformatFunction($br, $function, $argumentsTypes);
             }
             return
                 sprintf(
-                    '%s. %s (%s) %s(%s) %s',
-                    (string)$br->getRank(),
-                    $this->average($br->getAverage()),
-                    $this->relativePercent($br->getRelative()),
-                    $function->humanReadableName(),
-                    implode(', ', $argumentsTypes),
-                    $function->comment()
+                    '%s %s %s %s',
+                    $this->preformatFunction($br, $function, $argumentsTypes),
+                    PHP_EOL,
+                    static::returnToString($executionReturn),
+                    PHP_EOL
                 );
         }
         return '';
@@ -97,6 +92,30 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
             }
         }
         return $types;
+    }
+
+    /**
+     * @param BenchmarkRelative $br
+     * @param BenchmarkFunction $function
+     * @param array $argumentsTypes
+     * @return string
+     * todo rename method
+     */
+    protected function preformatFunction(
+        BenchmarkRelative $br,
+        BenchmarkFunction $function,
+        array $argumentsTypes
+    ): string {
+        return
+            sprintf(
+                '%s. %s (%s) %s(%s) %s',
+                (string)$br->getRank(),
+                $this->average($br->getAverage()),
+                $this->relativePercent($br->getRelative()),
+                $function->humanReadableName(),
+                implode(', ', $argumentsTypes),
+                $function->comment()
+            );
     }
 
     /**
@@ -127,19 +146,13 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    /** {@inheritdoc} */
     public static function returnToString($executionReturn): string
     {
         $type = typeOf($executionReturn);
-        try {
-            $str = var_export($executionReturn, true);
-        } catch (\Exception $e) {
-            $str = '[' . typeOf($e) . '] ' . $e->getMessage();
-        }
+        $str = static::getExporter()->export($executionReturn);
         return
-            $type === 'array' ?
+            'array' === $type ?
                 $str :
                 sprintf(
                     '%s(%s)',
@@ -149,20 +162,21 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
     }
 
     /**
+     * @param BenchmarkFunction $function
      * @return string
      */
-    protected function formatException(): string
+    protected function formatException(BenchmarkFunction $function): string
     {
 
-        if ($e = $this->function->getException()) {
-            $argumentsTypes = $this->extractArgumentsTypes($this->function->getArgs());
+        if ($e = $function->getException()) {
+            $argumentsTypes = $this->extractArgumentsTypes($function->getArgs());
 
             return
                 sprintf(
                     '%s(%s) %s [%s: %s] %s',
-                    $this->function->humanReadableName(),
+                    $function->humanReadableName(),
                     implode(', ', $argumentsTypes),
-                    $this->function->comment(),
+                    $function->comment(),
                     typeOf($e),
                     $e->getMessage(),
                     PHP_EOL
