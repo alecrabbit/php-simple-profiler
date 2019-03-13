@@ -46,5 +46,4 @@ class ProfilerReportTest extends TestCase
         $this->assertNotContains(Strings::MIN, $str);
         $this->assertNotContains(Strings::MAX, $str);
     }
-
 }

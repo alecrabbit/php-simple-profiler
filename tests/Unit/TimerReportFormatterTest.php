@@ -118,6 +118,4 @@ class TimerReportFormatterTest extends TestCase
 //            $t->elapsed()
 //        );
     }
-
-
 }
