@@ -23,6 +23,9 @@ class TimerReportFormatter extends ReportFormatter
             return $this->full($report);
         }
         $this->wrongReportType(TimerReport::class, $report);
+        // @codeCoverageIgnoreStart
+        return '';
+        // @codeCoverageIgnoreEnd
     }
 
     /**
