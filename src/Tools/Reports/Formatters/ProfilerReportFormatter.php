@@ -55,7 +55,8 @@ class ProfilerReportFormatter extends ReportFormatter
         $r = '';
         foreach ($report->getTimersReports() as $timerReport) {
             if ($timerReport instanceof TimerReport && DEFAULT_NAME === $timerReport->getName()) {
-                $this->elapsed = (string)$timerReport;
+//                $this->elapsed = (string)$timerReport;
+                $r .= $timerReport;
             } else {
                 $r .= $timerReport;
             }

@@ -224,10 +224,10 @@ abstract class AbstractTimer implements TimerInterface, ReportableInterface
      */
     protected function beforeReport(): void
     {
-        if ($this->isNotStarted()) {
-            $this->start();
-            $this->mark();
-        }
-        $this->stop();
+//        if ($this->isNotStarted()) {
+//            $this->start();
+//            $this->mark();
+//        }
+//        $this->stop();
     }
 }

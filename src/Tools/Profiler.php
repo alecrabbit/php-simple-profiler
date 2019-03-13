@@ -28,6 +28,7 @@ class Profiler implements ProfilerInterface, ReportableInterface, Strings
         $this->counter(); // Create default counter
         $this->timer(); // Create default timer
         $this->report = (new ProfilerReport())->buildOn($this);
+//        dump($this->timers);
     }
 
     /**

@@ -22,7 +22,7 @@ class TimerReportFormatter extends ReportFormatter
             }
             return $this->full($report);
         }
-        throw new \RuntimeException(TimerReport::class . ' expected ' . typeOf($report) . ' given');
+        $this->wrongReportType(TimerReport::class, $report);
     }
 
     /**

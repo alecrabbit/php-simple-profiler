@@ -76,7 +76,16 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
             $this->added !== $this->added - $this->benchmarked;
         $this->benchmarkedMoreThanOne =
             $this->benchmarked > 1;
-        $this->equalReturns = array_is_homogeneous($this->reportFunctionsReturns());
+        $this->equalReturns = $this->equalReturns();
+    }
+
+    /**
+     * @return bool
+     */
+    protected function equalReturns(): bool
+    {
+        return
+            array_is_homogeneous($this->reportFunctionsReturns());
     }
 
     /**
@@ -104,8 +113,8 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
     {
         $str = '';
         if ($this->equalReturns) {
-            $aRAE = $this->benchmarkedMoreThanOne ? 'All returns are equal' : '' ;
-            $dLM = $this->benchmarkedMoreThanOne ? '.' : '' ;
+            $aRAE = $this->benchmarkedMoreThanOne ? 'All returns are equal' : '';
+            $dLM = $this->benchmarkedMoreThanOne ? '.' : '';
             $str .=
                 sprintf(
                     '%s%s%s',
