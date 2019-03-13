@@ -76,7 +76,6 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
             $this->added !== $this->added - $this->benchmarked;
         $this->benchmarkedMoreThanOne =
             $this->benchmarked > 1;
-//        dump('$this->benchmarkedMoreThanOne', $this->benchmarkedMoreThanOne);
         $this->equalReturns = array_is_homogeneous($this->reportFunctionsReturns());
     }
 
@@ -153,7 +152,7 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
      * @param int $benchmarked
      * @return string
      */
-    private function countedExceptions(int $added, int $benchmarked): string
+    protected function countedExceptions(int $added, int $benchmarked): string
     {
         if (0 !== $exceptions = $added - $benchmarked) {
             return
