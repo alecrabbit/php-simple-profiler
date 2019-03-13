@@ -17,8 +17,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
 
     public const MIN_ITERATIONS = 100;
     public const DEFAULT_STEPS = 100;
-
-    protected const CLOSURE_NAME = 'λ';
+    public const CLOSURE_NAME = 'λ';
 
     /** @var int */
     protected $advanceSteps = self::DEFAULT_STEPS;
@@ -43,11 +42,9 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     /** @var \Closure */
     protected $iterationNumberGenerator;
     /** @var bool */
-    protected $showReturns = false;
-    /** @var bool */
     protected $launched = false;
     /** @var int */
-    private $functionIndex = 1;
+    protected $functionIndex = 1;
 
     /**
      * Benchmark constructor.
@@ -163,7 +160,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
                 $this->comment,
                 $this->humanReadableName
             );
-        $function->setShowReturns($this->showReturns);
+        $function->setShowReturns($this->isShowReturns());
         $this->functions[$function->enumeratedName()] = $function;
         $this->humanReadableName = null;
         $this->comment = null;
@@ -224,13 +221,22 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
      */
     public function showReturns(): Benchmark
     {
-        $this->showReturns = true;
+        $this->setShowReturns(true);
         foreach ($this->functions as $function) {
-            $function->setShowReturns($this->showReturns);
+            $function->setShowReturns($this->isShowReturns());
         }
         return $this;
     }
 
+    /**
+     * @param bool $showReturns
+     */
+    public function setShowReturns(bool $showReturns): void
+    {
+        $this->showReturns = $showReturns;
+    }
+
+    /** {@inheritdoc} */
     protected function meetConditions(): void
     {
         if ($this->isNotLaunched()) {

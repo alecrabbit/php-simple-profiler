@@ -21,6 +21,10 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
     protected $benchmarked;
     /** @var bool */
     protected $equalReturns;
+    /** @var bool */
+    protected $benchmarkedAny;
+    /** @var bool */
+    protected $benchmarkedMoreThanOne;
 
     /** {@inheritdoc} */
     public function process(ReportInterface $report): string
@@ -40,107 +44,77 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
     {
         $this->report = $report;
         $str = 'Results:' . PHP_EOL;
-        $this->added = $this->added($report);
-        $this->benchmarked = $this->benchmarked($report);
-        $benchmarkedAny = $this->benchmarkedAny();
-        $this->equalReturns = $this->checkReturns($report);
-        if ($benchmarkedAny) {
+        $this->computeVariables();
+        if ($this->benchmarkedAny) {
             $str .= self::BENCHMARK . PHP_EOL;
         }
+//        dump($this->equalReturns && $this->report->isNotShowReturns());
+//        dump($this->equalReturns || $this->report->isNotShowReturns());
         /** @var BenchmarkFunction $function */
         foreach ($report->getFunctions() as $name => $function) {
             $str .=
                 Factory::getBenchmarkFunctionFormatter()
-                    ->noReturnIf($this->equalReturns)
+                    ->noReturnIf($this->equalReturns && $this->report->isNotShowReturns())
                     ->process($function);
         }
         return
             sprintf(
                 '%s%s%s%s%s',
                 $str,
-                $this->strEqualReturns($report, $benchmarkedAny, $this->equalReturns),
+                $this->strEqualReturns(),
                 $this->countersStatistics($this->added, $this->benchmarked),
                 $report->getMemoryUsageReport(),
                 PHP_EOL
             );
     }
 
-    /**
-     * @param BenchmarkReport $report
-     * @return int
-     */
-    private function added(BenchmarkReport $report): int
+    protected function computeVariables(): void
     {
-        return
-            $report->getAdded()->getValue();
+        $this->added = $this->report->getAdded()->getValue();
+        $this->benchmarked = $this->report->getBenchmarked()->getValue();
+        $this->benchmarkedAny =
+            $this->added !== $this->added - $this->benchmarked;
+        $this->benchmarkedMoreThanOne =
+            $this->benchmarked > 1;
+        $this->equalReturns = array_is_homogeneous($this->reportFunctionsReturns());
     }
 
     /**
-     * @param BenchmarkReport $report
-     * @return int
-     */
-    private function benchmarked(BenchmarkReport $report): int
-    {
-        return
-            $report->getBenchmarked()->getValue();
-    }
-
-    /**
-     * @return bool
-     */
-    private function benchmarkedAny(): bool
-    {
-        return $this->added !== $this->added - $this->benchmarked;
-    }
-
-    /**
-     * @param BenchmarkReport $report
-     * @return bool
-     */
-    protected function checkReturns(BenchmarkReport $report): bool
-    {
-        return
-            array_is_homogeneous($this->functionsReturns($report));
-    }
-
-    /**
-     * @param BenchmarkReport $report
      * @return array
      */
-    private function functionsReturns(BenchmarkReport $report): array
+    protected function reportFunctionsReturns(): array
     {
         $returns = [];
         /** @var BenchmarkFunction $function */
-        foreach ($report->getFunctions() as $name => $function) {
+        foreach ($this->report->getFunctions() as $name => $function) {
             $returns[] = $this->lastReturn = $function->getReturn();
         }
         return $returns;
     }
 
     /**
-     * @param BenchmarkReport $report
-     * @param bool $benchmarkedAny
-     * @param bool $equalReturns
      * @return string
      */
-    protected function strEqualReturns(BenchmarkReport $report, bool $benchmarkedAny, bool $equalReturns): string
+    protected function strEqualReturns(): string
     {
-        return $benchmarkedAny ? $this->allReturnsAreEqual($equalReturns) : '';
+        return $this->benchmarkedAny ? $this->allReturnsAreEqual() : '';
     }
 
-    private function allReturnsAreEqual(bool $equalReturns): string
+    private function allReturnsAreEqual(): string
     {
-        if ($equalReturns) {
+        $str = '';
+        if ($this->equalReturns) {
             return
                 sprintf(
-                    '%s %s%s %s',
-                    'All returns are equal:',
-                    PHP_EOL,
-                    BenchmarkFunctionFormatter::returnToString($this->lastReturn),
+                    '%s%s%s',
+                    'All returns are equal',
+                    $this->benchmarkedMoreThanOne ?
+                        ':' . PHP_EOL . BenchmarkFunctionFormatter::returnToString($this->lastReturn) :
+                        '.',
                     PHP_EOL
                 );
         }
-        return '';
+        return $str;
     }
 
     /**

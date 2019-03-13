@@ -4,7 +4,6 @@ namespace AlecRabbit\Tools\Traits;
 
 use AlecRabbit\Accessories\MemoryUsage\MemoryUsageReport;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
-use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\SimpleCounter;
 use AlecRabbit\Tools\Timer;
 
@@ -13,9 +12,6 @@ trait BenchmarkFields
     /** @var BenchmarkFunction[] */
     protected $functions = [];
 
-//    /** @var Profiler */
-//    protected $profiler;
-//
     /** @var MemoryUsageReport */
     protected $memoryUsageReport;
 
@@ -34,6 +30,8 @@ trait BenchmarkFields
     /** @var SimpleCounter */
     protected $benchmarked;
 
+    /** @var bool */
+    protected $showReturns = false;
 
     /**
      * @return BenchmarkFunction[]
@@ -89,5 +87,21 @@ trait BenchmarkFields
     public function getBenchmarked(): SimpleCounter
     {
         return $this->benchmarked;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowReturns(): bool
+    {
+        return $this->showReturns;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNotShowReturns(): bool
+    {
+        return !$this->isShowReturns();
     }
 }

@@ -5,7 +5,7 @@
  * Time: 15:46
  */
 
-namespace Tests\Unit;
+namespace AlecRabbit\Tests\Tools;
 
 use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;

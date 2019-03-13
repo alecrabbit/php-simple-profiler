@@ -52,6 +52,7 @@ class BenchmarkFunction
      * @param array $args
      * @param null|string $comment
      * @param null|string $humanReadableName
+     * @throws \Exception
      */
     public function __construct(
         $func,
@@ -209,7 +210,6 @@ class BenchmarkFunction
     {
         $this->showReturns = $showReturns;
     }
-
     /**
      * @return bool
      */
