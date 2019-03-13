@@ -121,7 +121,6 @@ class TimerTest extends TestCase
         usleep(100000);
         $timer->check();
         $this->assertEqualsWithDelta(0.1, $timer->getMinValue(), 0.001);
-//        dump($dateInterval);
     }
 
     /**

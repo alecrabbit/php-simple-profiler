@@ -50,8 +50,6 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
         if ($this->benchmarkedAny) {
             $str .= self::BENCHMARK . PHP_EOL;
         }
-//        dump($this->equalReturns && $this->report->isNotShowReturns());
-//        dump($this->equalReturns || $this->report->isNotShowReturns());
         /** @var BenchmarkFunction $function */
         foreach ($report->getFunctions() as $name => $function) {
             $str .=
