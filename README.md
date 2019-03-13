@@ -14,7 +14,9 @@
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Percentage of issues still open")
 
-VERSION ^0.4 || ^0.5
+VERSION ^0.6 (for version 0.5.x use [this](https://github.com/alecrabbit/php-simple-profiler/tree/v.0.5.x))
+
+# WIP
 
 ### Installation
 For now this package is suggested to be used in dev process
