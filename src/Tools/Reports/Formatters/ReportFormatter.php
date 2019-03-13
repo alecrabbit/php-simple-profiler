@@ -17,10 +17,10 @@ abstract class ReportFormatter implements FormatterInterface, Strings
      * @param ReportInterface $report
      * @throws \RuntimeException
      */
-    protected function wrongReport(string $expected, ReportInterface $report): void
+    protected function wrongReportType(string $expected, ReportInterface $report): void
     {
         throw new \RuntimeException(
-            'Instance of [' . $expected . '] expected, [' . typeOf($report) . '] given'
+            'Instance of [' . $expected . '] expected, [' . typeOf($report) . '] given.'
         );
     }
 }

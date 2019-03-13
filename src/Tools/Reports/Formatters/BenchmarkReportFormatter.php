@@ -32,8 +32,10 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
         if ($report instanceof BenchmarkReport) {
             return $this->build($report);
         }
-        $this->wrongReport(BenchmarkReport::class, $report);
+        $this->wrongReportType(BenchmarkReport::class, $report);
+        // @codeCoverageIgnoreStart
         return ''; // never executes
+        // @codeCoverageIgnoreEnd
     }
 
     /**
