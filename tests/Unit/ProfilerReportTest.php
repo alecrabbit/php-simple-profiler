@@ -30,12 +30,14 @@ class ProfilerReportTest extends TestCase
     {
         $profiler = new Profiler();
         $profiler->counter()->bump(2);
-//        usleep(10);
-//        $profiler->timer()->check();
         /** @var ProfilerReport $report */
         $report = $profiler->report();
         $this->assertInstanceOf(ProfilerReport::class, $report);
+        $reports = $report->getReports();
+        $this->assertArrayHasKey(Strings::COUNTERS, $reports);
+        $this->assertArrayHasKey(Strings::TIMERS, $reports);
         $str = (string)$report;
+        // todo strings check move to formatter tests
         $this->assertIsString($str);
 //        dump($str);
         $this->assertContains(Strings::ELAPSED, $str);

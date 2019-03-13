@@ -61,6 +61,9 @@ class BenchmarkTest extends TestCase
         $report = $this->bench->report();
         $this->assertInstanceOf(BenchmarkReport::class, $report);
         $str = (string)$report;
+        // todo improve test
+        // todo move strings check to formatter test
+        // todo check rank here etc.
         $this->assertIsString($str);
         $this->assertContains('Added First(1)', $str);
         $this->assertContains('Added Second(3)', $str);

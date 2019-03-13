@@ -26,7 +26,10 @@ class ProfilerReportFormatter extends ReportFormatter
                     $this->elapsed
                 );
         }
+        $this->wrongReportType(ProfilerReport::class, $report);
+        // @codeCoverageIgnoreStart
         return '';
+        // @codeCoverageIgnoreEnd
     }
 
     /**

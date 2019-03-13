@@ -72,4 +72,37 @@ class ExtendedCounterReportFormatterTest extends TestCase
         $this->assertEquals(0, $report->getInitialValue());
         $this->assertEquals(0, $report->getBumped());
     }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function counterReportWithName(): void
+    {
+        $name = 'name';
+        $c = new ExtendedCounter($name);
+        /** @var ExtendedCounterReport $report */
+        $report = $c->report();
+        $this->assertInstanceOf(ExtendedCounterReport::class, $report);
+        $str = (string)$report;
+        $this->assertContains($name, $str);
+        $this->assertContains(Strings::COUNTER, $str);
+        $this->assertContains(Strings::VALUE, $str);
+        $this->assertContains(Strings::STEP, $str);
+        $this->assertContains(Strings::DIFF, $str);
+        $this->assertContains(Strings::PATH, $str);
+        $this->assertContains(Strings::LENGTH, $str);
+        $this->assertContains(Strings::MIN, $str);
+        $this->assertContains(Strings::MAX, $str);
+        $this->assertContains(Strings::BUMPED, $str);
+        $this->assertContains(Strings::FORWARD, $str);
+        $this->assertContains(Strings::BACKWARD, $str);
+
+
+        $this->assertEquals($name, $report->getName());
+        $this->assertEquals(0, $report->getValue());
+        $this->assertEquals(1, $report->getStep());
+        $this->assertEquals(0, $report->getInitialValue());
+        $this->assertEquals(0, $report->getBumped());
+    }
 }
