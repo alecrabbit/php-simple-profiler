@@ -24,7 +24,7 @@ try {
     usleep(100);
     $profiler->timer(NAME)->check();
     $report = $profiler->report();
-    dump($report); // symfony/var-dumper function dump()
+//    dump($report); // symfony/var-dumper function dump()
     echo PHP_EOL;
 
     echo $report . PHP_EOL;

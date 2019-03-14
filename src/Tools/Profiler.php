@@ -8,6 +8,7 @@ use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\ProfilerReport;
 use AlecRabbit\Tools\Reports\Traits\HasReport;
 use AlecRabbit\Traits\DefaultableName;
+use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
 class Profiler implements ProfilerInterface, ReportableInterface, Strings
 {
@@ -16,7 +17,7 @@ class Profiler implements ProfilerInterface, ReportableInterface, Strings
     /** @var Timer[] */
     private $timers = [];
 
-    /** @var ExtendedCounter[] */
+    /** @var AbstractCounter[] */
     private $counters = [];
 
     /**
@@ -41,7 +42,7 @@ class Profiler implements ProfilerInterface, ReportableInterface, Strings
     {
         $name = $this->prepareName($name, $suffixes);
         return
-            $this->counters[$name] ?? $this->counters[$name] = new ExtendedCounter($name);
+            $this->counters[$name] ?? $this->counters[$name] = $this->makeCounter($name);
     }
 
     /**
@@ -49,7 +50,7 @@ class Profiler implements ProfilerInterface, ReportableInterface, Strings
      * @param array $suffixes
      * @return string
      */
-    private function prepareName(?string $name, array $suffixes): string
+    protected function prepareName(?string $name, array $suffixes): string
     {
         $name = $this->defaultName($name);
         if (!empty($suffixes)) {
@@ -70,6 +71,19 @@ class Profiler implements ProfilerInterface, ReportableInterface, Strings
     }
 
     /**
+     * @param string $name
+     * @return AbstractCounter
+     * @throws \Exception
+     */
+    protected function makeCounter(string $name): AbstractCounter
+    {
+        if (DEFAULT_NAME === $name) {
+            return new SimpleCounter($name);
+        }
+        return new ExtendedCounter($name);
+    }
+
+    /**
      * @param null|string $name
      * @param string ...$suffixes
      * @return Timer
@@ -83,7 +97,7 @@ class Profiler implements ProfilerInterface, ReportableInterface, Strings
     }
 
     /**
-     * @return Timer[]
+     * @return AbstractTimer[]
      */
     public function getTimers(): array
     {
@@ -91,7 +105,7 @@ class Profiler implements ProfilerInterface, ReportableInterface, Strings
     }
 
     /**
-     * @return ExtendedCounter[]
+     * @return AbstractCounter[]
      */
     public function getCounters(): array
     {

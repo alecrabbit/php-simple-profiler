@@ -3,11 +3,14 @@ declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
+use AlecRabbit\Tools\AbstractCounter;
+use AlecRabbit\Tools\Reports\AbstractCounterReport;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\SimpleCounterReport;
 use AlecRabbit\Tools\Reports\ProfilerReport;
 use AlecRabbit\Tools\Reports\TimerReport;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
+use function AlecRabbit\typeOf;
 
 class ProfilerReportFormatter extends ReportFormatter
 {
@@ -20,7 +23,7 @@ class ProfilerReportFormatter extends ReportFormatter
         if ($report instanceof ProfilerReport) {
             return
                 sprintf(
-                    '%s %s %s',
+                    '%s%s%s',
                     $this->countersStrings($report),
                     $this->timersStrings($report),
                     $this->elapsed
@@ -39,11 +42,11 @@ class ProfilerReportFormatter extends ReportFormatter
     protected function countersStrings(ProfilerReport $report): string
     {
         $r = '';
-        foreach ($report->getCountersReports() as $countersReport) {
-            if ($countersReport instanceof SimpleCounterReport && DEFAULT_NAME === $countersReport->getName()) {
-                $r .= $countersReport->isStarted() ? $countersReport : '';
+        foreach ($report->getCountersReports() as $counterReport) {
+            if ($counterReport instanceof AbstractCounterReport && DEFAULT_NAME === $counterReport->getName()) {
+                $r .= $counterReport->isStarted() ? $counterReport : '';
             } else {
-                $r .= $countersReport;
+                $r .= $counterReport;
             }
         }
         return $r;
@@ -58,8 +61,8 @@ class ProfilerReportFormatter extends ReportFormatter
         $r = '';
         foreach ($report->getTimersReports() as $timerReport) {
             if ($timerReport instanceof TimerReport && DEFAULT_NAME === $timerReport->getName()) {
-//                $this->elapsed = (string)$timerReport;
-                $r .= $timerReport;
+                $this->elapsed = (string)$timerReport;
+//                $r .= $timerReport;
             } else {
                 $r .= $timerReport;
             }

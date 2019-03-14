@@ -18,7 +18,8 @@ class SimpleCounterReportFormatter extends ReportFormatter
             }
             return $this->full($report);
         }
-        $this->wrongReportType(SimpleCounterReport::class, $report);
+        $this->wrongReportType(SimpleCounterReport
+        ::class, $report);
         // @codeCoverageIgnoreStart
         return '';
         // @codeCoverageIgnoreEnd
