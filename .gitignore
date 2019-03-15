@@ -4,5 +4,7 @@
 /.eval/
 /tests/tmp
 
+.phpunit.result.cache
+
 /tests/report.html
 .env
