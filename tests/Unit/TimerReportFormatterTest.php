@@ -70,7 +70,11 @@ class TimerReportFormatterTest extends TestCase
         $this->assertStringNotContainsString(Strings::LAST, $str);
         $this->assertStringNotContainsString(Strings::MIN, $str);
         $this->assertStringNotContainsString(Strings::MAX, $str);
-        $this->assertStringNotContainsString(Strings::COUNT, $str);
+        $this->assertStringNotContainsString(Strings::MARKS, $str);
+        $this->assertStringMatchesFormat(
+            '%f%ss',
+            $t->elapsed()
+        );
     }
 
     /**
@@ -79,19 +83,19 @@ class TimerReportFormatterTest extends TestCase
      */
     public function timerElapsed(): void
     {
-        $t = new Timer('someName');
+        $t = new Timer('someName', false);
         $t->start();
         usleep(2000);
+        $this->assertStringMatchesFormat(
+            '%f%ss',
+            $t->elapsed()
+        );
         $report = $t->report();
         $str = (string)$report;
         $this->assertIsString($str);
         $this->assertStringContainsString(Strings::ELAPSED, $str);
-        dump($str);
-//        $this->assertEquals('2.0ms', $t->elapsed());
-//        $this->assertStringMatchesFormat(
-//            '%fms',
-//            $t->elapsed()
-//        );
+        $this->assertStringContainsString(Strings::TIMER, $str);
+        $this->assertStringContainsString($t->getName(), $str);
     }
 
     /**
@@ -107,15 +111,50 @@ class TimerReportFormatterTest extends TestCase
         $this->assertIsString($str);
         $this->assertStringContainsString(Strings::ELAPSED, $str);
         $this->assertStringContainsString(Strings::TIMER, $str);
+        $this->assertStringNotContainsString(Strings::AVERAGE, $str);
+        $this->assertStringNotContainsString(Strings::LAST, $str);
+        $this->assertStringNotContainsString(Strings::MIN, $str);
+        $this->assertStringNotContainsString(Strings::MAX, $str);
+        $this->assertStringNotContainsString(Strings::MARKS, $str);
+        $this->assertStringMatchesFormat(
+            '%f%ss',
+            $t->elapsed()
+        );
+    }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function timerElapsedStartedManuallyAndChecked(): void
+    {
+        $t = new Timer('someName', false);
+        $t->start();
+        usleep(2000);
+        $report = $t->report();
+        $str = (string)$report;
+        $this->assertIsString($str);
+        $this->assertStringContainsString(Strings::ELAPSED, $str);
+        $this->assertStringContainsString(Strings::TIMER, $str);
+        $this->assertStringNotContainsString(Strings::AVERAGE, $str);
+        $this->assertStringNotContainsString(Strings::LAST, $str);
+        $this->assertStringNotContainsString(Strings::MIN, $str);
+        $this->assertStringNotContainsString(Strings::MAX, $str);
+        $this->assertStringNotContainsString(Strings::MARKS, $str);
+        usleep(20);
+        $t->check(1);
+        $report = $t->report();
+        $str = (string)$report;
+        $this->assertStringContainsString(Strings::ELAPSED, $str);
+        $this->assertStringContainsString(Strings::TIMER, $str);
         $this->assertStringContainsString(Strings::AVERAGE, $str);
         $this->assertStringContainsString(Strings::LAST, $str);
         $this->assertStringContainsString(Strings::MIN, $str);
         $this->assertStringContainsString(Strings::MAX, $str);
-        $this->assertStringContainsString(Strings::COUNT, $str);
-//        $this->assertEquals('2.0ms', $t->elapsed());
-//        $this->assertStringMatchesFormat(
-//            '%fms',
-//            $t->elapsed()
-//        );
+        $this->assertStringContainsString(Strings::MARKS, $str);
+        $this->assertStringMatchesFormat(
+            '%f%ss',
+            $t->elapsed()
+        );
     }
 }

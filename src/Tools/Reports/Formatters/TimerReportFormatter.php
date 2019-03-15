@@ -6,7 +6,6 @@ use AlecRabbit\Accessories\Pretty;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\TimerReport;
 use Carbon\CarbonInterval;
-use function AlecRabbit\typeOf;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
 class TimerReportFormatter extends ReportFormatter
@@ -70,25 +69,40 @@ class TimerReportFormatter extends ReportFormatter
     protected function full(TimerReport $report, bool $eol = true): string
     {
         $r = $report;
-        return sprintf(
-            self::TIMER . '%s: ' .
-            self::AVERAGE . ': %s, ' .
-            self::LAST . ': %s, ' .
-            self::MIN . '(%s): %s, ' .
-            self::MAX . '(%s): %s, ' .
-            self::COUNT . ': %s, ' .
-            self::ELAPSED . ': %s%s',
-            $this->refineName($r->getName()),
-            $this->refineSeconds($r->getAverageValue()),
-            $this->refineSeconds($r->getLastValue()),
-            $r->getMinValueIteration(),
-            $this->refineSeconds($r->getMinValue()),
-            $r->getMaxValueIteration(),
-            $this->refineSeconds($r->getMaxValue()),
-            $r->getCount(),
-            $this->refineElapsed($r->getElapsed()),
-            $eol ? PHP_EOL : ''
-        );
+        $count = $r->getCount();
+        $values =
+            0 < $count ?
+                sprintf(
+                    self::AVERAGE . ': %s, ' .
+                    self::LAST . ': %s, ' .
+                    self::MIN . '(%s): %s, ' .
+                    self::MAX . '(%s): %s, ' .
+                    self::MARKS . ': %s, ',
+                    $this->refineSeconds($r->getAverageValue()),
+                    $this->refineSeconds($r->getLastValue()),
+                    $r->getMinValueIteration(),
+                    $this->refineSeconds($r->getMinValue()),
+                    $r->getMaxValueIteration(),
+                    $this->refineSeconds($r->getMaxValue()),
+                    $count
+                ) :
+                '';
+
+        return
+            sprintf(
+                self::TIMER . '%s: %s' .
+                self::ELAPSED . ': %s%s',
+                $this->refineName($r->getName()),
+                $values,
+                $this->refineElapsed($r->getElapsed()),
+                $eol ? PHP_EOL : ''
+            );
+    }
+
+    protected function refineSeconds(?float $seconds): string
+    {
+        return
+            $seconds ? Pretty::seconds($seconds) : 'NULL';
     }
 
     protected function refineName(string $name): string
@@ -97,11 +111,5 @@ class TimerReportFormatter extends ReportFormatter
             return '';
         }
         return '[' . $name . ']';
-    }
-
-    protected function refineSeconds(?float $seconds): string
-    {
-        return
-            $seconds ? Pretty::seconds($seconds) : 'NULL';
     }
 }

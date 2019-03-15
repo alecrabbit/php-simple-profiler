@@ -45,10 +45,10 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
     protected function build(BenchmarkReport $report): string
     {
         $this->report = $report;
-        $str = 'Results:' . PHP_EOL;
+        $str = static::RESULTS . PHP_EOL;
         $this->computeVariables();
         if ($this->benchmarkedAny) {
-            $str .= self::BENCHMARK . PHP_EOL;
+            $str .= static::BENCHMARK . PHP_EOL;
         }
         /** @var BenchmarkFunction $function */
         foreach ($report->getFunctions() as $name => $function) {

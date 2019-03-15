@@ -9,13 +9,14 @@ interface Strings
 
     public const ADDED = 'Added';
     public const BENCHMARKED = 'Benchmarked';
+    public const RESULTS = 'Results:';
     public const BENCHMARK = 'Benchmark:';
     public const EXCEPTIONS = 'Exceptions:';
 
     public const NAME_FORMAT = '%s [%s]';
 
     public const ELAPSED = 'Elapsed';
-    public const COUNT = 'Count';
+    public const MARKS = 'Marks';
     public const MAX = 'Max';
     public const MIN = 'Min';
     public const LAST = 'Last';

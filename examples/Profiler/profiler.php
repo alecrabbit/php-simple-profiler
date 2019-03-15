@@ -1,7 +1,6 @@
 <?php
 
 use AlecRabbit\Tools\Profiler;
-use AlecRabbit\Tools\Reports\OldFactory;
 
 const NAME = 'new';
 require_once __DIR__ . '/../../vendor/autoload.php';
