@@ -28,6 +28,7 @@ try {
     echo PHP_EOL;
 
     echo $report . PHP_EOL;
+    dump($profiler);
 } catch (Exception $e) {
     echo $e->getMessage(). PHP_EOL;
 }
