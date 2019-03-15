@@ -24,11 +24,12 @@ try {
     usleep(100);
     $profiler->timer(NAME)->check();
     $report = $profiler->report();
-//    dump($report); // symfony/var-dumper function dump()
+    // symfony/var-dumper function dump()
+    // dump($profiler);
+    // dump($report);
     echo PHP_EOL;
 
     echo $report . PHP_EOL;
-    dump($profiler);
 } catch (Exception $e) {
-    echo $e->getMessage(). PHP_EOL;
+    echo $e->getMessage() . PHP_EOL;
 }
