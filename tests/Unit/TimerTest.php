@@ -217,16 +217,4 @@ class TimerTest extends TestCase
         $this->assertEquals(1.0, $timer->getLastValue(), 'getCurrentValue');
         $this->assertEquals($count, $timer->getCount());
     }
-
-    /**
-     * @test
-     * @throws \Exception
-     */
-    public function timerElapsedNotStarted(): void
-    {
-        $timer = new Timer(null, false);
-        $this->assertStringContainsString('.', $timer->elapsed());
-        $this->assertStringContainsString('s', $timer->elapsed());
-        $this->assertStringNotContainsString('seconds', $timer->elapsed());
-    }
 }

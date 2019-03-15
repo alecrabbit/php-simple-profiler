@@ -13,9 +13,10 @@ then
     exit 1
 fi
 
-# reassign variables
+# reassign variables for help message
 OPTION_ANALYZE=1
 OPTION_METRICS=1
+OPTION_MULTI_TEST=1
 OPTION_COVERAGE=1
 OPTION_PHPUNIT=1
 OPTION_ALL=1
@@ -44,6 +45,10 @@ fi
 if [[ ${METRICS} == 1 ]]
 then
   ./phpmetrics "$@"
+fi
+if [[ ${MULTI_TEST} == 1 ]]
+then
+  ./multi "$@"
 fi
 if [[ ${ANALYZE} == 1 ]]
 then

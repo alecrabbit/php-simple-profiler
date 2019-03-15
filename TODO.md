@@ -1,8 +1,11 @@
 - [ ] add more info to show by `stat()` method
-- [ ] add `BenchmarkReportTest:class`
 - [ ] improve `Benchmark::class` test 
-- [x] consider implementing `HRTimer::class` (using PHP^7.3 function `hrtime()`) (0.6.0)
+- [ ] `Benchmark::class` uses `HRTimer` in php 7.3 and above 
 - [ ] consider adding `stopwatch()` function
+
+- [x] add `BenchmarkReportTest:class` (0.6.0)
+- [x] improve `Timer::class` test (0.6.0)
+- [x] consider implementing `HRTimer::class` (using PHP^7.3 function `hrtime()`) (0.6.0)
 - [x] custom formatters as parameters (0.6.0)
 - [x] separate `Counter` in two classes - `SimpleCounter` and `ExtendedCounter` (0.6.0)
 

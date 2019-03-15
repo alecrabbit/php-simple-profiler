@@ -3,6 +3,8 @@
 
 namespace AlecRabbit\Tests\Tools;
 
+use AlecRabbit\Tools\Benchmark;
+use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkReportFormatter;
@@ -21,5 +23,18 @@ class BenchmarkReportFormatterTest extends TestCase
         $profilerReport = new ProfilerReport();
         $this->expectException(\RuntimeException::class);
         $formatter->process($profilerReport);
+    }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function correctReport(): void
+    {
+        $formatter = new BenchmarkReportFormatter();
+        $benchmark = new Benchmark();
+        $benchmarkReport = new BenchmarkReport();
+        $benchmarkReport->buildOn($benchmark);
+        $this->assertIsString($formatter->process($benchmarkReport));
     }
 }

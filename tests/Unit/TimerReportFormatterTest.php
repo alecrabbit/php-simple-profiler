@@ -2,6 +2,7 @@
 
 namespace AlecRabbit\Tests\Tools;
 
+use AlecRabbit\Accessories\Pretty;
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\HRTimer;
 use AlecRabbit\Tools\Reports\Formatters\TimerReportFormatter;
@@ -10,6 +11,9 @@ use AlecRabbit\Tools\Reports\TimerReport;
 use AlecRabbit\Tools\Timer;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @group time-sensitive
+ */
 class TimerReportFormatterTest extends TestCase
 {
     /**
@@ -86,16 +90,16 @@ class TimerReportFormatterTest extends TestCase
         $t = new Timer('someName', false);
         $t->start();
         usleep(2000);
-        $this->assertStringMatchesFormat(
-            '%f%ss',
-            $t->elapsed()
-        );
         $report = $t->report();
         $str = (string)$report;
         $this->assertIsString($str);
         $this->assertStringContainsString(Strings::ELAPSED, $str);
         $this->assertStringContainsString(Strings::TIMER, $str);
         $this->assertStringContainsString($t->getName(), $str);
+        $this->assertStringMatchesFormat(
+            '%f%ss',
+            $t->elapsed()
+        );
     }
 
     /**
@@ -156,5 +160,62 @@ class TimerReportFormatterTest extends TestCase
             '%f%ss',
             $t->elapsed()
         );
+    }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function timerElapsedNotStartedTwo(): void
+    {
+        $timer = new Timer(null, false);
+        $elapsed = $timer->elapsed();
+        $this->assertStringContainsString('.', $elapsed);
+        $this->assertStringContainsString('s', $elapsed);
+        $this->assertStringNotContainsString('seconds', $elapsed);
+        $this->assertStringNotContainsString(Strings::TIMER, $elapsed);
+        $this->assertStringNotContainsString($timer->getName(), $elapsed);
+        $this->assertStringNotContainsString(Strings::AVERAGE, $elapsed);
+        $this->assertStringNotContainsString(Strings::LAST, $elapsed);
+        $this->assertStringNotContainsString(Strings::MIN, $elapsed);
+        $this->assertStringNotContainsString(Strings::MAX, $elapsed);
+        $this->assertStringNotContainsString(Strings::MARKS, $elapsed);
+    }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function timerValues(): void
+    {
+        $timer = new Timer();
+        $timer->start();
+        $count = 5;
+        for ($i = 1; $i < $count; $i++) {
+            sleep($i);
+            $timer->check();
+        }
+        $this->assertEquals(2.5, $timer->getAverageValue());
+        $this->assertEquals(1.0, $timer->getMinValue());
+        $this->assertEquals(4.0, $timer->getMaxValue());
+        $this->assertEquals(4.0, $timer->getLastValue());
+        $this->assertEquals($count - 1, $timer->getCount());
+        sleep(5);
+        $timer->check();
+        $this->assertEquals(5.0, $timer->getMaxValue());
+        usleep(100000);
+        $timer->check();
+        $this->assertEqualsWithDelta(0.1, $timer->getMinValue(), 0.001);
+        $report = $timer->report();
+        $str = (string)$report;
+        $avgStrValue = Pretty::time($timer->getAverageValue());
+        $lastStrValue = Pretty::time($timer->getLastValue());
+        $this->assertStringContainsString(Strings::ELAPSED, $str);
+        $this->assertStringContainsString(Strings::TIMER, $str);
+        $this->assertStringContainsString(Strings::AVERAGE . ': ' . $avgStrValue, $str);
+        $this->assertStringContainsString(Strings::LAST . ': ' . $lastStrValue, $str);
+        $this->assertStringContainsString(Strings::MIN, $str);
+        $this->assertStringContainsString(Strings::MAX, $str);
+        $this->assertStringContainsString(Strings::MARKS . ': ' . $timer->getCount(), $str);
     }
 }
