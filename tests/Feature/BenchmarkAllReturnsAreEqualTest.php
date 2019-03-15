@@ -68,8 +68,8 @@ class BenchmarkAllReturnsAreEqualTest extends TestCase
         $this->assertTrue($this->bench->isNotShowReturns());
         $this->assertTrue($this->report->isNotShowReturns());
         $str = (string)$this->report;
-        $this->assertContains(self::NOTIFICATION . '.', $str);
-        $this->assertNotContains(self::INTEGER_1, $str);
+        $this->assertStringContainsString(self::NOTIFICATION . '.', $str);
+        $this->assertStringNotContainsString(self::INTEGER_1, $str);
         $this->assertEquals(0, substr_count($str, self::INTEGER_1));
     }
 
@@ -79,8 +79,8 @@ class BenchmarkAllReturnsAreEqualTest extends TestCase
         $this->benchmarkedFourFunctionsWithEqualReturns();
         $this->report->showReturns();
         $str = (string)$this->report;
-        $this->assertContains(self::NOTIFICATION . ':', $str);
-        $this->assertContains(self::INTEGER_1, $str);
+        $this->assertStringContainsString(self::NOTIFICATION . ':', $str);
+        $this->assertStringContainsString(self::INTEGER_1, $str);
         $this->assertEquals(1, substr_count($str, self::INTEGER_1));
     }
 
@@ -90,10 +90,10 @@ class BenchmarkAllReturnsAreEqualTest extends TestCase
         $this->benchmarkedFourFunctionsWithDiffReturns();
         $this->report->showReturns();
         $str = (string)$this->report;
-        $this->assertNotContains(self::NOTIFICATION, $str);
-        $this->assertContains(self::INTEGER_1, $str);
-        $this->assertContains(self::INTEGER_2, $str);
-        $this->assertContains(self::INTEGER_3, $str);
+        $this->assertStringNotContainsString(self::NOTIFICATION, $str);
+        $this->assertStringContainsString(self::INTEGER_1, $str);
+        $this->assertStringContainsString(self::INTEGER_2, $str);
+        $this->assertStringContainsString(self::INTEGER_3, $str);
         $this->assertEquals(1, substr_count($str, self::INTEGER_1));
         $this->assertEquals(2, substr_count($str, self::INTEGER_2));
         $this->assertEquals(1, substr_count($str, self::INTEGER_3));
@@ -129,10 +129,10 @@ class BenchmarkAllReturnsAreEqualTest extends TestCase
     {
         $this->benchmarkedFourFunctionsWithDiffReturns();
         $str = (string)$this->report;
-        $this->assertNotContains(self::NOTIFICATION, $str);
-        $this->assertNotContains(self::INTEGER_1, $str);
-        $this->assertNotContains(self::INTEGER_2, $str);
-        $this->assertNotContains(self::INTEGER_3, $str);
+        $this->assertStringNotContainsString(self::NOTIFICATION, $str);
+        $this->assertStringNotContainsString(self::INTEGER_1, $str);
+        $this->assertStringNotContainsString(self::INTEGER_2, $str);
+        $this->assertStringNotContainsString(self::INTEGER_3, $str);
         $this->assertEquals(0, substr_count($str, self::INTEGER_1));
         $this->assertEquals(0, substr_count($str, self::INTEGER_2));
         $this->assertEquals(0, substr_count($str, self::INTEGER_3));
@@ -143,10 +143,10 @@ class BenchmarkAllReturnsAreEqualTest extends TestCase
     {
         $this->benchmarkedOneFunction();
         $str = (string)$this->report;
-        $this->assertNotContains(self::NOTIFICATION, $str);
-        $this->assertNotContains(self::INTEGER_1, $str);
-        $this->assertNotContains(self::INTEGER_2, $str);
-        $this->assertNotContains(self::INTEGER_3, $str);
+        $this->assertStringNotContainsString(self::NOTIFICATION, $str);
+        $this->assertStringNotContainsString(self::INTEGER_1, $str);
+        $this->assertStringNotContainsString(self::INTEGER_2, $str);
+        $this->assertStringNotContainsString(self::INTEGER_3, $str);
         $this->assertEquals(0, substr_count($str, self::INTEGER_1));
         $this->assertEquals(0, substr_count($str, self::INTEGER_2));
         $this->assertEquals(0, substr_count($str, self::INTEGER_3));
@@ -157,13 +157,13 @@ class BenchmarkAllReturnsAreEqualTest extends TestCase
     {
         $this->benchmarkedOneFunctionAddedTwo();
         $str = (string)$this->report;
-        $this->assertNotContains(self::NOTIFICATION, $str);
-        $this->assertNotContains(self::INTEGER_1, $str);
-        $this->assertNotContains(self::INTEGER_2, $str);
-        $this->assertNotContains(self::INTEGER_3, $str);
-        $this->assertContains(\RuntimeException::class, $str);
-        $this->assertContains(Strings::EXCEPTIONS, $str);
-        $this->assertContains(self::SIMULATION, $str);
+        $this->assertStringNotContainsString(self::NOTIFICATION, $str);
+        $this->assertStringNotContainsString(self::INTEGER_1, $str);
+        $this->assertStringNotContainsString(self::INTEGER_2, $str);
+        $this->assertStringNotContainsString(self::INTEGER_3, $str);
+        $this->assertStringContainsString(\RuntimeException::class, $str);
+        $this->assertStringContainsString(Strings::EXCEPTIONS, $str);
+        $this->assertStringContainsString(self::SIMULATION, $str);
         $this->assertEquals(0, substr_count($str, self::INTEGER_1));
         $this->assertEquals(0, substr_count($str, self::INTEGER_2));
         $this->assertEquals(0, substr_count($str, self::INTEGER_3));
@@ -196,7 +196,7 @@ class BenchmarkAllReturnsAreEqualTest extends TestCase
     /**
      * @throws \Exception
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->bench = new Benchmark(100);

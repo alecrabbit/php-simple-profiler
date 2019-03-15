@@ -40,12 +40,12 @@ class ProfilerReportTest extends TestCase
         // todo strings check move to formatter tests
         $this->assertIsString($str);
 //        dump($str);
-        $this->assertContains(Strings::ELAPSED, $str);
-        $this->assertContains(Strings::COUNTER, $str);
-        $this->assertNotContains(Strings::TIMER, $str);
-        $this->assertNotContains(Strings::AVERAGE, $str);
-        $this->assertNotContains(Strings::LAST, $str);
-        $this->assertNotContains(Strings::MIN, $str);
-        $this->assertNotContains(Strings::MAX, $str);
+        $this->assertStringContainsString(Strings::ELAPSED, $str);
+        $this->assertStringContainsString(Strings::COUNTER, $str);
+        $this->assertStringNotContainsString(Strings::TIMER, $str);
+        $this->assertStringNotContainsString(Strings::AVERAGE, $str);
+        $this->assertStringNotContainsString(Strings::LAST, $str);
+        $this->assertStringNotContainsString(Strings::MIN, $str);
+        $this->assertStringNotContainsString(Strings::MAX, $str);
     }
 }

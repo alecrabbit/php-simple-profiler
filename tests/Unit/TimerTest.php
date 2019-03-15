@@ -225,8 +225,8 @@ class TimerTest extends TestCase
     public function timerElapsedNotStarted(): void
     {
         $timer = new Timer(null, false);
-        $this->assertContains('.', $timer->elapsed());
-        $this->assertContains('s', $timer->elapsed());
-        $this->assertNotContains('seconds', $timer->elapsed());
+        $this->assertStringContainsString('.', $timer->elapsed());
+        $this->assertStringContainsString('s', $timer->elapsed());
+        $this->assertStringNotContainsString('seconds', $timer->elapsed());
     }
 }

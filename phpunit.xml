@@ -27,7 +27,7 @@
         </whitelist>
     </filter>
     <listeners>
-        <listener class="NunoMaduro\Collision\Adapters\Phpunit\Listener"/>
+        <!--<listener class="NunoMaduro\Collision\Adapters\Phpunit\Listener"/>-->
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener">
             <!--<arguments>-->
                 <!--<array>-->
