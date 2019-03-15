@@ -38,7 +38,7 @@ class ProfilerReportFormatterTest extends TestCase
         $profilerReport = new ProfilerReport();
         $profilerReport->buildOn($profiler);
         $str = $formatter->process($profilerReport);
-        $this->assertNotContains(Strings::COUNTER, $str);
-        $this->assertContains(Strings::ELAPSED, $str);
+        $this->assertStringNotContainsString(Strings::COUNTER, $str);
+        $this->assertStringContainsString(Strings::ELAPSED, $str);
     }
 }

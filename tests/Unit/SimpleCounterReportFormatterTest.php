@@ -35,7 +35,7 @@ class SimpleCounterReportFormatterTest extends TestCase
         $timerReport = new SimpleCounterReport();
         $timerReport->buildOn($timer);
         $str = $formatter->process($timerReport);
-        $this->assertContains(Strings::COUNTER, $str);
+        $this->assertStringContainsString(Strings::COUNTER, $str);
     }
 
     /**
@@ -49,18 +49,18 @@ class SimpleCounterReportFormatterTest extends TestCase
         $report = $c->report();
         $this->assertInstanceOf(SimpleCounterReport::class, $report);
         $str = (string)$report;
-        $this->assertNotContains(DEFAULT_NAME, $str);
-        $this->assertContains(Strings::COUNTER, $str);
-        $this->assertNotContains(Strings::VALUE, $str);
-        $this->assertNotContains(Strings::STEP, $str);
-        $this->assertNotContains(Strings::DIFF, $str);
-        $this->assertNotContains(Strings::PATH, $str);
-        $this->assertNotContains(Strings::LENGTH, $str);
-        $this->assertNotContains(Strings::MIN, $str);
-        $this->assertNotContains(Strings::MAX, $str);
-        $this->assertNotContains(Strings::BUMPED, $str);
-        $this->assertNotContains(Strings::FORWARD, $str);
-        $this->assertNotContains(Strings::BACKWARD, $str);
+        $this->assertStringNotContainsString(DEFAULT_NAME, $str);
+        $this->assertStringContainsString(Strings::COUNTER, $str);
+        $this->assertStringNotContainsString(Strings::VALUE, $str);
+        $this->assertStringNotContainsString(Strings::STEP, $str);
+        $this->assertStringNotContainsString(Strings::DIFF, $str);
+        $this->assertStringNotContainsString(Strings::PATH, $str);
+        $this->assertStringNotContainsString(Strings::LENGTH, $str);
+        $this->assertStringNotContainsString(Strings::MIN, $str);
+        $this->assertStringNotContainsString(Strings::MAX, $str);
+        $this->assertStringNotContainsString(Strings::BUMPED, $str);
+        $this->assertStringNotContainsString(Strings::FORWARD, $str);
+        $this->assertStringNotContainsString(Strings::BACKWARD, $str);
 
 
         $this->assertEquals(DEFAULT_NAME, $report->getName());

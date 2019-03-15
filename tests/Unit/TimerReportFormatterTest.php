@@ -35,7 +35,7 @@ class TimerReportFormatterTest extends TestCase
         $timerReport = new TimerReport();
         $timerReport->buildOn($timer);
         $str = $formatter->process($timerReport);
-        $this->assertContains(Strings::ELAPSED, $str);
+        $this->assertStringContainsString(Strings::ELAPSED, $str);
     }
 
     /**
@@ -49,7 +49,7 @@ class TimerReportFormatterTest extends TestCase
         $timerReport = new TimerReport();
         $timerReport->buildOn($timer);
         $str = $formatter->process($timerReport);
-        $this->assertContains(Strings::ELAPSED, $str);
+        $this->assertStringContainsString(Strings::ELAPSED, $str);
     }
 
     /**
@@ -64,13 +64,13 @@ class TimerReportFormatterTest extends TestCase
         $this->assertInstanceOf(TimerReport::class, $report);
         $str = (string)$report;
         $this->assertIsString($str);
-        $this->assertContains(Strings::ELAPSED, $str);
-        $this->assertNotContains(Strings::TIMER, $str);
-        $this->assertNotContains(Strings::AVERAGE, $str);
-        $this->assertNotContains(Strings::LAST, $str);
-        $this->assertNotContains(Strings::MIN, $str);
-        $this->assertNotContains(Strings::MAX, $str);
-        $this->assertNotContains(Strings::COUNT, $str);
+        $this->assertStringContainsString(Strings::ELAPSED, $str);
+        $this->assertStringNotContainsString(Strings::TIMER, $str);
+        $this->assertStringNotContainsString(Strings::AVERAGE, $str);
+        $this->assertStringNotContainsString(Strings::LAST, $str);
+        $this->assertStringNotContainsString(Strings::MIN, $str);
+        $this->assertStringNotContainsString(Strings::MAX, $str);
+        $this->assertStringNotContainsString(Strings::COUNT, $str);
     }
 
     /**
@@ -85,7 +85,7 @@ class TimerReportFormatterTest extends TestCase
         $report = $t->report();
         $str = (string)$report;
         $this->assertIsString($str);
-        $this->assertContains(Strings::ELAPSED, $str);
+        $this->assertStringContainsString(Strings::ELAPSED, $str);
         dump($str);
 //        $this->assertEquals('2.0ms', $t->elapsed());
 //        $this->assertStringMatchesFormat(
@@ -105,13 +105,13 @@ class TimerReportFormatterTest extends TestCase
         $report = $t->report();
         $str = (string)$report;
         $this->assertIsString($str);
-        $this->assertContains(Strings::ELAPSED, $str);
-        $this->assertContains(Strings::TIMER, $str);
-        $this->assertContains(Strings::AVERAGE, $str);
-        $this->assertContains(Strings::LAST, $str);
-        $this->assertContains(Strings::MIN, $str);
-        $this->assertContains(Strings::MAX, $str);
-        $this->assertContains(Strings::COUNT, $str);
+        $this->assertStringContainsString(Strings::ELAPSED, $str);
+        $this->assertStringContainsString(Strings::TIMER, $str);
+        $this->assertStringContainsString(Strings::AVERAGE, $str);
+        $this->assertStringContainsString(Strings::LAST, $str);
+        $this->assertStringContainsString(Strings::MIN, $str);
+        $this->assertStringContainsString(Strings::MAX, $str);
+        $this->assertStringContainsString(Strings::COUNT, $str);
 //        $this->assertEquals('2.0ms', $t->elapsed());
 //        $this->assertStringMatchesFormat(
 //            '%fms',
