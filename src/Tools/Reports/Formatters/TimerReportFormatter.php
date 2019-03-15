@@ -58,7 +58,9 @@ class TimerReportFormatter extends ReportFormatter
             return
                 Pretty::milliseconds($c->totalMilliseconds);
         }
+        // @codeCoverageIgnoreStart
         return (string)$c;
+        // @codeCoverageIgnoreEnd
     }
 
     /**

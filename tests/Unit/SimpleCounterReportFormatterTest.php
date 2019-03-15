@@ -69,4 +69,36 @@ class SimpleCounterReportFormatterTest extends TestCase
         $this->assertEquals(0, $report->getInitialValue());
         $this->assertEquals(0, $report->getBumped());
     }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function counterReportDefaultWithName(): void
+    {
+        $name = 'name';
+        $c = new SimpleCounter($name);
+        /** @var SimpleCounterReport $report */
+        $report = $c->report();
+        $this->assertInstanceOf(SimpleCounterReport::class, $report);
+        $str = (string)$report;
+        $this->assertStringContainsString($name, $str);
+        $this->assertStringContainsString(Strings::COUNTER, $str);
+        $this->assertStringContainsString(Strings::VALUE, $str);
+        $this->assertStringContainsString(Strings::STEP, $str);
+        $this->assertStringNotContainsString(Strings::DIFF, $str);
+        $this->assertStringNotContainsString(Strings::PATH, $str);
+        $this->assertStringNotContainsString(Strings::LENGTH, $str);
+        $this->assertStringNotContainsString(Strings::MIN, $str);
+        $this->assertStringNotContainsString(Strings::MAX, $str);
+        $this->assertStringContainsString(Strings::BUMPED, $str);
+        $this->assertStringContainsString(Strings::FORWARD, $str);
+        $this->assertStringNotContainsString(Strings::BACKWARD, $str);
+
+        $this->assertEquals($name, $report->getName());
+        $this->assertEquals(0, $report->getValue());
+        $this->assertEquals(1, $report->getStep());
+        $this->assertEquals(0, $report->getInitialValue());
+        $this->assertEquals(0, $report->getBumped());
+    }
 }

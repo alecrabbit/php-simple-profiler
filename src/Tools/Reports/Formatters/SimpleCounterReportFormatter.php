@@ -53,7 +53,7 @@ class SimpleCounterReportFormatter extends ReportFormatter
                 self::COUNTER . '[%s]: ' .
                 self::VALUE . ': %s, ' .
                 self::STEP . ': %s, ' .
-                self::BUMPED . ': %s, ' .
+                self::BUMPED . ': %s%s',
                 $report->getName(),
                 (string)$report->getValue(),
                 (string)$report->getStep(),
