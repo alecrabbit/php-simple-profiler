@@ -6,7 +6,6 @@ namespace AlecRabbit\Tests\Tools;
 use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
-use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkReportFormatter;
 use AlecRabbit\Tools\Reports\ProfilerReport;
@@ -14,6 +13,8 @@ use PHPUnit\Framework\TestCase;
 
 class BenchmarkReportFormatterTest extends TestCase
 {
+    public const ITERATIONS = 100;
+
     /**
      * @test
      * @throws \Exception
@@ -36,7 +37,11 @@ class BenchmarkReportFormatterTest extends TestCase
         $benchmark = new Benchmark();
         $benchmarkReport = new BenchmarkReport();
         $benchmarkReport->buildOn($benchmark);
-        $this->assertIsString($formatter->process($benchmarkReport));
+        $str = $formatter->process($benchmarkReport);
+        $this->assertIsString($str);
+        $this->assertStringContainsString(Strings::RESULTS, $str);
+        $this->assertStringContainsString(Strings::BENCHMARKED, $str);
+        $this->assertStringContainsString('0', $str);
     }
 
     /**
@@ -45,15 +50,16 @@ class BenchmarkReportFormatterTest extends TestCase
      */
     public function fullBenchmarkProcess(): void
     {
-        // this test is heavily hardcoded
-        $iterations = 100;
-        $bench = new Benchmark($iterations);
+        $bench = new Benchmark(self::ITERATIONS);
 
         $str_one = 'one';
         $str_two = 'two';
+
         $comment_one = 'Comment one';
         $comment_two = 'Comment two';
+
         $str_exception = 'Simulated Exception';
+        $with_exception = 'with_exception';
 
         $bench
             ->useName($str_one)
@@ -67,39 +73,49 @@ class BenchmarkReportFormatterTest extends TestCase
             ->withComment($comment_two)
             ->addFunction(function () {
                 usleep(10);
-                return 1;
+                return 2;
             });
         $bench
+            ->useName($with_exception)
             ->addFunction(
                 function () use ($str_exception) {
                     throw new \RuntimeException($str_exception);
                 }
             );
         /** @var BenchmarkReport $report */
-        $report = $bench->showReturns()->report();
+        $report = $bench->run()->report();
         $this->assertInstanceOf(BenchmarkReport::class, $report);
-        $this->assertEquals($iterations * 2, $report->getDoneIterationsCombined());
-        $this->assertEquals($iterations * 2, $report->getDoneIterations());
+        $this->assertEquals(self::ITERATIONS * 2, $report->getDoneIterationsCombined());
+        $this->assertEquals(self::ITERATIONS * 2, $report->getDoneIterations());
         foreach ($report->getFunctions() as $name => $function) {
             $this->assertInstanceOf(BenchmarkFunction::class, $function);
             $this->assertIsString($name);
             $exception = $function->getException();
             $benchmarkRelative = $function->getBenchmarkRelative();
-            if ('⟨2⟩ λ' === $name) {
-                $this->assertNotNull($benchmarkRelative);
-                $this->assertNull($exception);
-                $this->assertEquals(1, $benchmarkRelative->getRank());
-            }
+            $humanReadableName = $function->humanReadableName();
             if ('⟨1⟩ λ' === $name) {
                 $this->assertNotNull($benchmarkRelative);
                 $this->assertNull($exception);
+                $this->assertEquals($str_one, $humanReadableName);
                 $this->assertEquals(2, $benchmarkRelative->getRank());
+            }
+            if ('⟨2⟩ λ' === $name) {
+                $this->assertNotNull($benchmarkRelative);
+                $this->assertNull($exception);
+                $this->assertEquals($str_two, $humanReadableName);
+                $this->assertEquals(1, $benchmarkRelative->getRank());
             }
             if ('⟨3⟩ λ' === $name) {
                 $this->assertNull($benchmarkRelative);
                 $this->assertNotNull($exception);
+                $this->assertEquals($with_exception, $humanReadableName);
                 $this->assertInstanceOf(\RuntimeException::class, $exception);
                 $this->assertEquals($str_exception, $exception->getMessage());
+            }
+            if ($with_exception === $humanReadableName) {
+                $this->assertInstanceOf(\RuntimeException::class, $exception);
+                $this->assertEquals($str_exception, $exception->getMessage());
+                $this->assertNull($benchmarkRelative);
             }
         }
         $str = (string)$report;
@@ -110,7 +126,7 @@ class BenchmarkReportFormatterTest extends TestCase
         $this->assertStringContainsString($comment_two, $str);
         $this->assertStringContainsString($str_exception, $str);
         $this->assertStringContainsString(\RuntimeException::class, $str);
-        $this->assertStringContainsString('λ', $str);
+        $this->assertStringNotContainsString('λ', $str);
         $this->assertStringContainsString('Done in', $bench->stat());
         $this->assertStringContainsString('Memory', $bench->stat());
         $this->assertStringContainsString('Real', $bench->stat());

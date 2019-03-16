@@ -93,7 +93,6 @@ class BenchmarkFunction
     public function comment(): string
     {
         return $this->comment ?? '';
-//        return $this->comment ? str_decorate($this->comment, '"') : '';
     }
 
     /**
@@ -115,8 +114,6 @@ class BenchmarkFunction
     public function enumeratedName(): string
     {
         return $this->getIndexedName();
-//        return
-//            brackets((string)$this->index, BRACKETS_ANGLE) . ' ' . $this->name;
     }
 
     /**

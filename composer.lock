@@ -57,16 +57,16 @@
         },
         {
             "name": "alecrabbit/php-helpers",
-            "version": "0.5.0",
+            "version": "0.5.1-RC0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-helpers.git",
-                "reference": "4c5280ac5c56edcd500eed8bec7e160bb326a793"
+                "reference": "b3e34be2d144caf41ceb74cdb68ee28ce3a024b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/4c5280ac5c56edcd500eed8bec7e160bb326a793",
-                "reference": "4c5280ac5c56edcd500eed8bec7e160bb326a793",
+                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/b3e34be2d144caf41ceb74cdb68ee28ce3a024b5",
+                "reference": "b3e34be2d144caf41ceb74cdb68ee28ce3a024b5",
                 "shasum": ""
             },
             "require": {
@@ -78,13 +78,17 @@
             "require-dev": {
                 "ext-curl": "*",
                 "kylekatarnls/multi-tester": "^1.1",
-                "nunomaduro/collision": "^2.1",
-                "phpunit/phpunit": "^7.5",
+                "nunomaduro/collision": "^3.0",
+                "phpunit/phpunit": "^8.0",
                 "symfony/var-dumper": "^4.2"
             },
             "type": "library",
             "autoload": {
+                "psr-4": {
+                    "AlecRabbit\\": "src/"
+                },
                 "files": [
+                    "src/bootstrap.php",
                     "src/Helpers/Constants.php",
                     "src/Helpers/Strings/Constants.php",
                     "src/Helpers/functions.php",
@@ -103,13 +107,15 @@
                 "array",
                 "first",
                 "format",
+                "private",
+                "protected",
                 "string",
                 "trim",
                 "unset",
                 "wrap",
                 "zeros"
             ],
-            "time": "2019-03-03T18:38:18+00:00"
+            "time": "2019-03-15T14:56:31+00:00"
         },
         {
             "name": "alecrabbit/php-traits",
