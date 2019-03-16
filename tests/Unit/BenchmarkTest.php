@@ -483,11 +483,19 @@ class BenchmarkTest extends TestCase
     }
 
     /**
+     * {@inheritdoc}
      * @throws \Exception
      */
     protected function setUp(): void
     {
         parent::setUp();
         $this->bench = new Benchmark(self::ITERATIONS);
+    }
+
+    /** {@inheritdoc} */
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+        BenchmarkFunction::forceNormalTimer(true);
     }
 }

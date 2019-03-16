@@ -18,7 +18,7 @@ class HRTimer extends AbstractTimer
     public function current(): int
     {
         return
-            (int)hrtime(true);
+            (int)($this->timeFunction)(true);
     }
 
     protected function checkEnvironment(): void
@@ -48,6 +48,11 @@ class HRTimer extends AbstractTimer
     {
         $this->assertStart($start);
         $this->assertStop($stop);
+    }
+
+    protected function setTimeFunction(): void
+    {
+        $this->timeFunction = 'hrtime';
     }
 
     /**

@@ -139,6 +139,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     /**
      * @param mixed $func
      * @param mixed ...$args
+     * @throws \Exception
      */
     public function addFunction($func, ...$args): void
     {
@@ -303,10 +304,10 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
         $function = $f->getCallable();
         $args = $f->getArgs();
         foreach ($this->rewindable as $iteration) {
-            $start = microtime(true);
+            $start = $timer->current();
             /** @noinspection DisconnectedForeachInstructionInspection */
             $function(...$args);
-            $stop = microtime(true);
+            $stop = $timer->current();
             $timer->bounds($start, $stop, $iteration);
             /** @noinspection DisconnectedForeachInstructionInspection */
             $this->progress();

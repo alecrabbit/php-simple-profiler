@@ -2,6 +2,8 @@
 
 namespace AlecRabbit\Tools\Internal;
 
+use AlecRabbit\Tools\AbstractTimer;
+use AlecRabbit\Tools\HRTimer;
 use AlecRabbit\Tools\Timer;
 use AlecRabbit\Traits\GettableName;
 
@@ -14,38 +16,32 @@ class BenchmarkFunction
 {
     use GettableName;
 
-    /** @var callable */
-    private $callable;
-
-    /** @var int */
-    private $index;
-
-    /** @var array */
-    private $args;
-
-    /** @var mixed */
-    private $result;
-
-    /** @var null|string */
-    private $comment;
-
-    /** @var null|string */
-    private $humanReadableName;
-
-    /** @var \Throwable|null */
-    private $exception;
-
-    /** @var Timer */
-    private $timer;
-
-    /** @var null|BenchmarkRelative */
-    private $benchmarkRelative;
-
     /** @var bool */
     protected $showReturns = true;
+    /** @var callable */
+    protected $callable;
+    /** @var int */
+    protected $index;
+    /** @var array */
+    protected $args;
+    /** @var mixed */
+    protected $result;
+    /** @var null|string */
+    protected $comment;
+    /** @var null|string */
+    protected $humanReadableName;
+    /** @var \Throwable|null */
+    protected $exception;
+    /** @var AbstractTimer */
+    protected $timer;
+    /** @var null|BenchmarkRelative */
+    protected $benchmarkRelative;
+    /** @var bool */
+    protected static $forceNormalTimer = false;
 
     /**
      * BenchmarkFunction constructor.
+     *
      * @param callable $func
      * @param string $name
      * @param int $index
@@ -68,7 +64,19 @@ class BenchmarkFunction
         $this->args = $args;
         $this->comment = $comment;
         $this->humanReadableName = $humanReadableName;
-        $this->timer = new Timer($this->getIndexedName());
+        $this->makeTimer();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function makeTimer(): void
+    {
+        if (PHP_VERSION_ID >= 70300 && false === static::$forceNormalTimer) {
+            $this->timer = new HRTimer($this->getIndexedName());
+        } else {
+            $this->timer = new Timer($this->getIndexedName());
+        }
     }
 
     /**
@@ -85,6 +93,14 @@ class BenchmarkFunction
     public function getIndex(): int
     {
         return $this->index;
+    }
+
+    /**
+     * @param bool $force
+     */
+    public static function forceNormalTimer(bool $force): void
+    {
+        self::$forceNormalTimer = $force;
     }
 
     /**
@@ -125,17 +141,9 @@ class BenchmarkFunction
     }
 
     /**
-     * @param mixed $result
+     * @return AbstractTimer
      */
-    public function setResult($result): void
-    {
-        $this->result = $result;
-    }
-
-    /**
-     * @return Timer
-     */
-    public function getTimer(): Timer
+    public function getTimer(): AbstractTimer
     {
         return $this->timer;
     }
@@ -201,11 +209,19 @@ class BenchmarkFunction
     }
 
     /**
-     * @param bool $showReturns
+     * @param mixed $result
      */
-    public function setShowReturns(bool $showReturns): void
+    public function setResult($result): void
     {
-        $this->showReturns = $showReturns;
+        $this->result = $result;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNotShowReturns(): bool
+    {
+        return !$this->isShowReturns();
     }
 
     /**
@@ -217,10 +233,10 @@ class BenchmarkFunction
     }
 
     /**
-     * @return bool
+     * @param bool $showReturns
      */
-    public function isNotShowReturns(): bool
+    public function setShowReturns(bool $showReturns): void
     {
-        return !$this->isShowReturns();
+        $this->showReturns = $showReturns;
     }
 }
