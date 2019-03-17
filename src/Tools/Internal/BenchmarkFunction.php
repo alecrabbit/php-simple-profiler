@@ -25,7 +25,7 @@ class BenchmarkFunction
     /** @var array */
     protected $args;
     /** @var mixed */
-    protected $result;
+    protected $return;
     /** @var null|string */
     protected $comment;
     /** @var null|string */
@@ -137,7 +137,7 @@ class BenchmarkFunction
      */
     public function getReturn()
     {
-        return $this->result;
+        return $this->return;
     }
 
     /**
@@ -198,7 +198,7 @@ class BenchmarkFunction
     public function execute(): bool
     {
         try {
-            $this->setResult(
+            $this->setReturn(
                 ($this->callable)(...$this->args)
             );
             return true;
@@ -209,11 +209,11 @@ class BenchmarkFunction
     }
 
     /**
-     * @param mixed $result
+     * @param mixed $return
      */
-    public function setResult($result): void
+    public function setReturn($return): void
     {
-        $this->result = $result;
+        $this->return = $return;
     }
 
     /**
