@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 
 use AlecRabbit\Tools\Benchmark;
-use AlecRabbit\Tools\OldBenchmarkSymfonyPB as BenchmarkWithSymfonyProgressBar;
 use function AlecRabbit\tag;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;

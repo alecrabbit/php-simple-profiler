@@ -9,6 +9,8 @@ class HRTimer extends AbstractTimer
 {
     public const VALUE_COEFFICIENT = HRTIMER_VALUE_COEFFICIENT;
 
+    protected const TIME_FUNCTION = 'hrtime';
+
     /** @var bool */
     public static $ignoreVersionRestrictions = false;
 
@@ -48,11 +50,6 @@ class HRTimer extends AbstractTimer
     {
         $this->assertStart($start);
         $this->assertStop($stop);
-    }
-
-    protected function setTimeFunction(): void
-    {
-        $this->timeFunction = 'hrtime';
     }
 
     /**

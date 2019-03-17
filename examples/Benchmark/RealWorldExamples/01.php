@@ -1,28 +1,34 @@
 <?php declare(strict_types=1);
 
-use AlecRabbit\Tools\OldBenchmarkSymfonyPB as BenchmarkWithSymfonyProgressBar;
+use AlecRabbit\Tools\BenchmarkSymfonyProgressBar;
 use function AlecRabbit\tag;
+use AlecRabbit\Tools\Internal\BenchmarkFunction;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 const EMPTY_ELEMENTS = ['', null, false];
 
 $args = [
-    [1, 2, 3, 4, 5, 6, 7, [8], 9, null, 0],
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, null, 0],
     3,
     function (&$item, $key) {
         $item = '[' . $key . '] ' . $item;
     },
 ];
-$iterations = 1000000;
+$iterations = 100000;
 
-$b = new BenchmarkWithSymfonyProgressBar($iterations);
-$o = $b->getOutput();
-$o->writeln(tag('Comparing 3 slightly different implementations of function `formatted_array()`.', 'comment'));
-$b->withComment('Using closure')->addFunction('formatted_array_2', ...$args);
-$b->withComment('Basic implementation')->addFunction('formatted_array_1', ...$args);
-$b->withComment('Using internal functions')->addFunction('formatted_array_3', ...$args);
-echo $b->run()->report();
+try {
+    $b = new BenchmarkSymfonyProgressBar($iterations);
+    $o = $b->getOutput();
+    $o->writeln(tag('Comparing 3 slightly different implementations of function `formatted_array()`.', 'comment'));
+    $b->withComment('Using closure')->addFunction('formatted_array_2', ...$args);
+    $b->withComment('Basic implementation')->addFunction('formatted_array_1', ...$args);
+    $b->withComment('Using internal functions')->addFunction('formatted_array_3', ...$args);
+    echo $b->report();
+} catch (Exception $e) {
+    echo 'Error occurred: ';
+    echo $e->getMessage(). PHP_EOL;
+}
 
 /*
  * Functions
@@ -35,9 +41,6 @@ function formatted_array_1(
     int $pad = STR_PAD_RIGHT
 ): array {
     $result = [];
-//    if ($callback) {
-//        \array_walk($data, $callback);
-//    }
     $maxLength = arr_el_max_length($data, $callback);
     $tmp = [];
     $rowEmpty = true;
@@ -94,9 +97,6 @@ function formatted_array_3(
     int $pad = STR_PAD_RIGHT
 ): array {
     $result = $tmp = [];
-//    if ($callback) {
-//        \array_walk($data, $callback);
-//    }
     $maxLength = arr_el_max_length($data, $callback);
     $rowEmpty = true;
     foreach ($data as $element) {

@@ -9,7 +9,10 @@ use AlecRabbit\Tools\Traits\TimerFields;
 
 abstract class AbstractTimer extends Reportable implements TimerInterface
 {
+    protected const TIME_FUNCTION = 'microtime';
+
     use TimerFields;
+
     /** @var callable */
     protected $timeFunction;
 
@@ -230,6 +233,6 @@ abstract class AbstractTimer extends Reportable implements TimerInterface
 
     protected function setTimeFunction(): void
     {
-        $this->timeFunction = 'microtime';
+        $this->timeFunction = static::TIME_FUNCTION;
     }
 }
