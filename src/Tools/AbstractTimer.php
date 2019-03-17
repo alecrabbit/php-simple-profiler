@@ -9,9 +9,9 @@ use AlecRabbit\Tools\Traits\TimerFields;
 
 abstract class AbstractTimer extends Reportable implements TimerInterface
 {
-    protected const TIME_FUNCTION = 'microtime';
-
     use TimerFields;
+
+    protected const TIME_FUNCTION = 'microtime';
 
     /** @var callable */
     protected $timeFunction;
