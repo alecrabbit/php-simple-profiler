@@ -3,23 +3,23 @@
 namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Tools\Contracts\CounterValuesInterface;
-use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
+use AlecRabbit\Tools\Formattable;
 use AlecRabbit\Tools\Reports\SimpleCounterReport;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
 class SimpleCounterReportFormatter extends ReportFormatter
 {
     /** {@inheritdoc} */
-    public function process(ReportInterface $report): string
+    public function process(Formattable $formattable): string
     {
-        if ($report instanceof SimpleCounterReport) {
-            if (DEFAULT_NAME === $report->getName()) {
-                return $this->simple($report);
+        if ($formattable instanceof SimpleCounterReport) {
+            if (DEFAULT_NAME === $formattable->getName()) {
+                return $this->simple($formattable);
             }
-            return $this->full($report);
+            return $this->full($formattable);
         }
-        $this->wrongReportType(SimpleCounterReport
-        ::class, $report);
+        $this->wrongFormattableType(SimpleCounterReport
+        ::class, $formattable);
         // @codeCoverageIgnoreStart
         return '';
         // @codeCoverageIgnoreEnd

@@ -2,6 +2,9 @@
 
 namespace AlecRabbit\Tools\Internal;
 
+use AlecRabbit\Tools\AbstractTimer;
+use AlecRabbit\Tools\Formattable;
+use AlecRabbit\Tools\HRTimer;
 use AlecRabbit\Tools\Timer;
 use AlecRabbit\Traits\GettableName;
 
@@ -10,42 +13,36 @@ use AlecRabbit\Traits\GettableName;
  * @package AlecRabbit
  * @internal
  */
-class BenchmarkFunction
+class BenchmarkFunction extends Formattable
 {
     use GettableName;
 
-    /** @var callable */
-    private $callable;
-
-    /** @var int */
-    private $index;
-
-    /** @var array */
-    private $args;
-
-    /** @var mixed */
-    private $result;
-
-    /** @var null|string */
-    private $comment;
-
-    /** @var null|string */
-    private $humanReadableName;
-
-    /** @var \Throwable|null */
-    private $exception;
-
-    /** @var Timer */
-    private $timer;
-
-    /** @var null|BenchmarkRelative */
-    private $benchmarkRelative;
-
     /** @var bool */
     protected $showReturns = true;
+    /** @var callable */
+    protected $callable;
+    /** @var int */
+    protected $index;
+    /** @var array */
+    protected $args;
+    /** @var mixed */
+    protected $return;
+    /** @var null|string */
+    protected $comment;
+    /** @var null|string */
+    protected $humanReadableName;
+    /** @var \Throwable|null */
+    protected $exception;
+    /** @var AbstractTimer */
+    protected $timer;
+    /** @var null|BenchmarkRelative */
+    protected $benchmarkRelative;
+    /** @var bool */
+    protected static $forceRegularTimer = false;
 
     /**
      * BenchmarkFunction constructor.
+     *
      * @param callable $func
      * @param string $name
      * @param int $index
@@ -68,7 +65,19 @@ class BenchmarkFunction
         $this->args = $args;
         $this->comment = $comment;
         $this->humanReadableName = $humanReadableName;
-        $this->timer = new Timer($this->getIndexedName());
+        $this->makeTimer();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function makeTimer(): void
+    {
+        if (PHP_VERSION_ID >= 70300 && false === static::$forceRegularTimer) {
+            $this->timer = new HRTimer($this->getIndexedName());
+        } else {
+            $this->timer = new Timer($this->getIndexedName());
+        }
     }
 
     /**
@@ -88,12 +97,27 @@ class BenchmarkFunction
     }
 
     /**
+     * @param bool $force
+     */
+    public static function setForceRegularTimer(bool $force): void
+    {
+        static::$forceRegularTimer = $force;
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isForceRegularTimer(): bool
+    {
+        return self::$forceRegularTimer;
+    }
+
+    /**
      * @return string
      */
     public function comment(): string
     {
         return $this->comment ?? '';
-//        return $this->comment ? str_decorate($this->comment, '"') : '';
     }
 
     /**
@@ -115,8 +139,6 @@ class BenchmarkFunction
     public function enumeratedName(): string
     {
         return $this->getIndexedName();
-//        return
-//            brackets((string)$this->index, BRACKETS_ANGLE) . ' ' . $this->name;
     }
 
     /**
@@ -124,21 +146,13 @@ class BenchmarkFunction
      */
     public function getReturn()
     {
-        return $this->result;
+        return $this->return;
     }
 
     /**
-     * @param mixed $result
+     * @return AbstractTimer
      */
-    public function setResult($result): void
-    {
-        $this->result = $result;
-    }
-
-    /**
-     * @return Timer
-     */
-    public function getTimer(): Timer
+    public function getTimer(): AbstractTimer
     {
         return $this->timer;
     }
@@ -193,7 +207,7 @@ class BenchmarkFunction
     public function execute(): bool
     {
         try {
-            $this->setResult(
+            $this->setReturn(
                 ($this->callable)(...$this->args)
             );
             return true;
@@ -204,11 +218,19 @@ class BenchmarkFunction
     }
 
     /**
-     * @param bool $showReturns
+     * @param mixed $return
      */
-    public function setShowReturns(bool $showReturns): void
+    public function setReturn($return): void
     {
-        $this->showReturns = $showReturns;
+        $this->return = $return;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNotShowReturns(): bool
+    {
+        return !$this->isShowReturns();
     }
 
     /**
@@ -220,10 +242,10 @@ class BenchmarkFunction
     }
 
     /**
-     * @return bool
+     * @param bool $showReturns
      */
-    public function isNotShowReturns(): bool
+    public function setShowReturns(bool $showReturns): void
     {
-        return !$this->isShowReturns();
+        $this->showReturns = $showReturns;
     }
 }

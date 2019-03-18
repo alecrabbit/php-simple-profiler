@@ -1,16 +1,12 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
-use AlecRabbit\Tools\AbstractCounter;
+use AlecRabbit\Tools\Formattable;
 use AlecRabbit\Tools\Reports\AbstractCounterReport;
-use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
-use AlecRabbit\Tools\Reports\SimpleCounterReport;
 use AlecRabbit\Tools\Reports\ProfilerReport;
 use AlecRabbit\Tools\Reports\TimerReport;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
-use function AlecRabbit\typeOf;
 
 class ProfilerReportFormatter extends ReportFormatter
 {
@@ -18,18 +14,18 @@ class ProfilerReportFormatter extends ReportFormatter
     private $elapsed = '';
 
     /** {@inheritdoc} */
-    public function process(ReportInterface $report): string
+    public function process(Formattable $formattable): string
     {
-        if ($report instanceof ProfilerReport) {
+        if ($formattable instanceof ProfilerReport) {
             return
                 sprintf(
                     '%s%s%s',
-                    $this->countersStrings($report),
-                    $this->timersStrings($report),
+                    $this->countersStrings($formattable),
+                    $this->timersStrings($formattable),
                     $this->elapsed
                 );
         }
-        $this->wrongReportType(ProfilerReport::class, $report);
+        $this->wrongFormattableType(ProfilerReport::class, $formattable);
         // @codeCoverageIgnoreStart
         return '';
         // @codeCoverageIgnoreEnd

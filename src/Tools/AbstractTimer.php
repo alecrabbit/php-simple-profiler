@@ -3,15 +3,18 @@
 namespace AlecRabbit\Tools;
 
 use AlecRabbit\Tools\Contracts\TimerInterface;
-use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Factory;
 use AlecRabbit\Tools\Reports\TimerReport;
-use AlecRabbit\Tools\Reports\Traits\HasReport;
 use AlecRabbit\Tools\Traits\TimerFields;
 
-abstract class AbstractTimer implements TimerInterface, ReportableInterface
+abstract class AbstractTimer extends Reportable implements TimerInterface
 {
-    use TimerFields, HasReport;
+    use TimerFields;
+
+    protected const TIME_FUNCTION = 'microtime';
+
+    /** @var callable */
+    protected $timeFunction;
 
     /**
      * Timer constructor.
@@ -26,6 +29,7 @@ abstract class AbstractTimer implements TimerInterface, ReportableInterface
         $this->creationTime = new \DateTimeImmutable();
         $this->computeElapsed();
         $this->report = (new TimerReport())->buildOn($this);
+        $this->setTimeFunction();
         if ($start) {
             $this->start();
         }
@@ -206,7 +210,10 @@ abstract class AbstractTimer implements TimerInterface, ReportableInterface
         return $this;
     }
 
-    abstract protected function assertStartAndStop($start, $stop): void;
+    /**
+     * @psalm-suppress MissingParamType
+     */
+    abstract protected function assertStartAndStop(/** @noinspection PhpDocSignatureInspection */ $start, $stop): void;
 
     /**
      * @param float $start
@@ -218,16 +225,14 @@ abstract class AbstractTimer implements TimerInterface, ReportableInterface
         $this->previous = $stop;
     }
 
-    /**
-     * {@inheritdoc}
-     * @throws \Exception
-     */
-    protected function beforeReport(): void
+//    /** {@inheritdoc} */
+//    public function getTimeFunction(): callable
+//    {
+//        return $this->timeFunction;
+//    }
+//
+    protected function setTimeFunction(): void
     {
-//        if ($this->isNotStarted()) {
-//            $this->start();
-//            $this->mark();
-//        }
-//        $this->stop();
+        $this->timeFunction = static::TIME_FUNCTION;
     }
 }

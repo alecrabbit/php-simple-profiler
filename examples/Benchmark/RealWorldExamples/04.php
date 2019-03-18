@@ -1,10 +1,13 @@
 <?php declare(strict_types=1);
 
-use AlecRabbit\Tools\BenchmarkSymfonyProgressBar;
+use AlecRabbit\Tools\Benchmark;
 use function AlecRabbit\tag;
-use AlecRabbit\Tools\Internal\BenchmarkFunction;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
+
+const ITERATIONS = 500000;
 
 const EMPTY_ELEMENTS = ['', null, false];
 
@@ -15,20 +18,34 @@ $args = [
         $item = '[' . $key . '] ' . $item;
     },
 ];
-$iterations = 100000;
+$iterations = 1000000;
+$output = new ConsoleOutput();
 
-try {
-    $b = new BenchmarkSymfonyProgressBar($iterations);
-    $o = $b->getOutput();
-    $o->writeln(tag('Comparing 3 slightly different implementations of function `formatted_array()`.', 'comment'));
-    $b->withComment('Using closure')->addFunction('formatted_array_2', ...$args);
-    $b->withComment('Basic implementation')->addFunction('formatted_array_1', ...$args);
-    $b->withComment('Using internal functions')->addFunction('formatted_array_3', ...$args);
-    echo $b->report();
-} catch (Exception $e) {
-    echo 'Error occurred: ';
-    echo $e->getMessage(). PHP_EOL;
-}
+$progressBar = new ProgressBar($output, 100);
+$progressBar->setBarWidth(80);
+
+$b = new Benchmark(ITERATIONS);
+
+$progressStart = function () use ($progressBar) {
+    $progressBar->start();
+};
+
+$progressAdvance = function () use ($progressBar) {
+    $progressBar->advance();
+};
+
+$progressFinish = function () use ($progressBar) {
+    $progressBar->finish();
+    $progressBar->clear();
+};
+$b->showProgressBy($progressStart, $progressAdvance, $progressFinish);
+
+$o = $output;
+$o->writeln(tag('Comparing 3 slightly different implementations of function `formatted_array()`.', 'comment'));
+$b->withComment('Using closure')->addFunction('formatted_array_2', ...$args);
+$b->withComment('Basic implementation')->addFunction('formatted_array_1', ...$args);
+$b->withComment('Using internal functions')->addFunction('formatted_array_3', ...$args);
+echo $b->run()->report();
 
 /*
  * Functions
@@ -41,6 +58,9 @@ function formatted_array_1(
     int $pad = STR_PAD_RIGHT
 ): array {
     $result = [];
+//    if ($callback) {
+//        \array_walk($data, $callback);
+//    }
     $maxLength = arr_el_max_length($data, $callback);
     $tmp = [];
     $rowEmpty = true;
@@ -97,6 +117,9 @@ function formatted_array_3(
     int $pad = STR_PAD_RIGHT
 ): array {
     $result = $tmp = [];
+//    if ($callback) {
+//        \array_walk($data, $callback);
+//    }
     $maxLength = arr_el_max_length($data, $callback);
     $rowEmpty = true;
     foreach ($data as $element) {

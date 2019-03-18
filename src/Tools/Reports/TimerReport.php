@@ -20,7 +20,8 @@ class TimerReport extends Report implements TimerReportInterface
      */
     public function __construct()
     {
-        // This lines here keep vimeo/psalm quiet
+        // todo fix this?
+        // This lines here are to keep vimeo/psalm quiet
         $this->creationTime = new \DateTimeImmutable();
         $this->elapsed = (new \DateTimeImmutable())->diff($this->creationTime);
     }

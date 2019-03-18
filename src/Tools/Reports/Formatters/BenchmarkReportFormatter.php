@@ -2,9 +2,9 @@
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
+use AlecRabbit\Tools\Formattable;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
-use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Factory;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkReportFormatterInterface;
 use function AlecRabbit\array_is_homogeneous;
@@ -27,12 +27,12 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
     protected $benchmarkedMoreThanOne;
 
     /** {@inheritdoc} */
-    public function process(ReportInterface $report): string
+    public function process(Formattable $formattable): string
     {
-        if ($report instanceof BenchmarkReport) {
-            return $this->build($report);
+        if ($formattable instanceof BenchmarkReport) {
+            return $this->build($formattable);
         }
-        $this->wrongReportType(BenchmarkReport::class, $report);
+        $this->wrongFormattableType(BenchmarkReport::class, $formattable);
         // @codeCoverageIgnoreStart
         return ''; // never executes
         // @codeCoverageIgnoreEnd

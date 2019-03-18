@@ -4,15 +4,13 @@ namespace AlecRabbit\Tools;
 
 use AlecRabbit\Tools\Contracts\ProfilerInterface;
 use AlecRabbit\Tools\Contracts\Strings;
-use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\ProfilerReport;
-use AlecRabbit\Tools\Reports\Traits\HasReport;
 use AlecRabbit\Traits\DefaultableName;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
-class Profiler implements ProfilerInterface, ReportableInterface, Strings
+class Profiler extends Reportable implements ProfilerInterface, Strings
 {
-    use DefaultableName, HasReport;
+    use DefaultableName;
 
     /** @var Timer[] */
     private $timers = [];
@@ -29,7 +27,6 @@ class Profiler implements ProfilerInterface, ReportableInterface, Strings
         $this->counter(); // Create default counter
         $this->timer(); // Create default timer
         $this->report = (new ProfilerReport())->buildOn($this);
-//        dump($this->timers);
     }
 
     /**

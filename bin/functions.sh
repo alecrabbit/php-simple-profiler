@@ -64,6 +64,13 @@ options_enabled () {
     else
         disabled
     fi
+    printf "Multi-tester"
+    if [[ ${MULTI_TEST} == 1 ]]
+    then
+        enabled
+    else
+        disabled
+    fi
     printf "PHPUnit"
     if [[ ${PHPUNIT} == 1 ]]
     then

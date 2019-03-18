@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 // snippet
 if (!defined('APP_DEBUG')) {
     define('APP_DEBUG', true);

@@ -2,12 +2,13 @@
 
 namespace AlecRabbit\Tools;
 
-use function AlecRabbit\typeOf;
 use const AlecRabbit\Helpers\Constants\INT_SIZE_64BIT;
 
 class HRTimer extends AbstractTimer
 {
     public const VALUE_COEFFICIENT = HRTIMER_VALUE_COEFFICIENT;
+
+    protected const TIME_FUNCTION = 'hrtime';
 
     /** @var bool */
     public static $ignoreVersionRestrictions = false;
@@ -18,7 +19,7 @@ class HRTimer extends AbstractTimer
     public function current(): int
     {
         return
-            (int)hrtime(true);
+            (int)($this->timeFunction)(true);
     }
 
     protected function checkEnvironment(): void
