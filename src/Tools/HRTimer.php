@@ -4,6 +4,12 @@ namespace AlecRabbit\Tools;
 
 use const AlecRabbit\Helpers\Constants\INT_SIZE_64BIT;
 
+/**
+ * HRTimer class.
+ *
+ * Designed to for php version 7.3 and above.
+ *
+ */
 class HRTimer extends AbstractTimer
 {
     public const VALUE_COEFFICIENT = HRTIMER_VALUE_COEFFICIENT;
