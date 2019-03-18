@@ -23,7 +23,7 @@ class TimerReportFormatter extends ReportFormatter
         }
         $this->wrongFormattableType(TimerReport::class, $formattable);
         // @codeCoverageIgnoreStart
-        return '';
+        return ''; // never executes
         // @codeCoverageIgnoreEnd
     }
 

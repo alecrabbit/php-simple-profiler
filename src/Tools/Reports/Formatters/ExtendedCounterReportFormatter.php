@@ -20,7 +20,7 @@ class ExtendedCounterReportFormatter extends ReportFormatter
         }
         $this->wrongFormattableType(ExtendedCounterReport::class, $formattable);
         // @codeCoverageIgnoreStart
-        return '';
+        return ''; // never executes
         // @codeCoverageIgnoreEnd
     }
 

@@ -27,7 +27,7 @@ class ProfilerReportFormatter extends ReportFormatter
         }
         $this->wrongFormattableType(ProfilerReport::class, $formattable);
         // @codeCoverageIgnoreStart
-        return '';
+        return ''; // never executes
         // @codeCoverageIgnoreEnd
     }
 
