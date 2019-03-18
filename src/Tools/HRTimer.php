@@ -33,7 +33,7 @@ class HRTimer extends AbstractTimer
         // @codeCoverageIgnoreStart
         if (PHP_VERSION_ID < 70300 && false === static::$ignoreVersionRestrictions) {
             // `HRTimer::class` uses `hrtime()` function of PHP ^7.3.
-            // There is almost no sense in using polyfill function.
+            // There is almost no sense to use polyfill function.
             // If you're REALLY need to use HRTimer set `$ignoreVersionRestrictions` to true.
             // Otherwise use `Timer::class` instance instead.
             throw new \RuntimeException('[' . static::class . '] Your php version is below 7.3.0.');

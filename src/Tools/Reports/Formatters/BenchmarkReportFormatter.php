@@ -9,6 +9,12 @@ use AlecRabbit\Tools\Reports\Factory;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkReportFormatterInterface;
 use function AlecRabbit\array_is_homogeneous;
 
+/**
+ * Class BenchmarkReportFormatter
+ * @package AlecRabbit\Tools\Reports\Formatters
+ *
+ * @psalm-suppress MissingConstructor
+ */
 class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkReportFormatterInterface
 {
     /** @var BenchmarkReport */

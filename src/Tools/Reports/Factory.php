@@ -41,27 +41,27 @@ class Factory
     {
         if ($formatter instanceof SimpleCounterReportFormatter) {
             static::setSimpleCounterReportFormatter($formatter);
-            return self::getSimpleCounterReportFormatter();
+            return static::getSimpleCounterReportFormatter();
         }
         if ($formatter instanceof ExtendedCounterReportFormatter) {
             static::setExtendedCounterReportFormatter($formatter);
-            return self::getExtendedCounterReportFormatter();
+            return static::getExtendedCounterReportFormatter();
         }
         if ($formatter instanceof TimerReportFormatter) {
             static::setTimerReportFormatter($formatter);
-            return self::getTimerReportFormatter();
+            return static::getTimerReportFormatter();
         }
         if ($formatter instanceof ProfilerReportFormatter) {
             static::setProfilerReportFormatter($formatter);
-            return self::getProfilerReportFormatter();
+            return static::getProfilerReportFormatter();
         }
         if ($formatter instanceof BenchmarkReportFormatter) {
             static::setBenchmarkReportFormatter($formatter);
-            return self::getBenchmarkReportFormatter();
+            return static::getBenchmarkReportFormatter();
         }
         if ($formatter instanceof BenchmarkFunctionFormatter) {
             static::setBenchmarkFunctionFormatter($formatter);
-            return self::getBenchmarkFunctionFormatter();
+            return static::getBenchmarkFunctionFormatter();
         }
         throw new \RuntimeException('Formatter [' . typeOf($formatter) . '] is not accepted.');
     }
