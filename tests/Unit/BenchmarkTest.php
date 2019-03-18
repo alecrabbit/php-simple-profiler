@@ -1,9 +1,4 @@
-<?php
-/**
- * User: alec
- * Date: 29.11.18
- * Time: 15:46
- */
+<?php declare(strict_types=1);
 
 namespace AlecRabbit\Tests\Tools;
 

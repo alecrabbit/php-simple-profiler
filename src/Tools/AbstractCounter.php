@@ -3,9 +3,7 @@
 namespace AlecRabbit\Tools;
 
 use AlecRabbit\Tools\Contracts\CounterInterface;
-use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\SimpleCounterReport;
-use AlecRabbit\Tools\Reports\Traits\HasReport;
 use AlecRabbit\Tools\Traits\SimpleCounterFields;
 
 abstract class AbstractCounter extends Reportable implements CounterInterface

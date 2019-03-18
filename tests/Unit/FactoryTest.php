@@ -1,11 +1,6 @@
-<?php
-/**
- * User: alec
- * Date: 04.12.18
- * Time: 14:44
- */
+<?php declare(strict_types=1);
 
-namespace Tests\Unit;
+namespace AlecRabbit\Tests\Tools;
 
 use AlecRabbit\Tools\Reports\Factory;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionFormatter;

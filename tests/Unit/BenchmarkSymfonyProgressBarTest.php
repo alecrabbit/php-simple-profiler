@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Tests\Unit;
+namespace AlecRabbit\Tests\Tools;
 
 use AlecRabbit\Tools\BenchmarkSymfonyProgressBar;
 use PHPUnit\Framework\TestCase;

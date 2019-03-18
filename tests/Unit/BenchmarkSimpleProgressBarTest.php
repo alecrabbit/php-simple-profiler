@@ -1,8 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
-
-namespace Tests\Unit;
+namespace AlecRabbit\Tests\Tools;
 
 use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\BenchmarkSimpleProgressBar;

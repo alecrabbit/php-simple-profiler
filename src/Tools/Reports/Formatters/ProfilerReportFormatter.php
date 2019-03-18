@@ -1,17 +1,12 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
-use AlecRabbit\Tools\AbstractCounter;
 use AlecRabbit\Tools\Formattable;
 use AlecRabbit\Tools\Reports\AbstractCounterReport;
-use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
-use AlecRabbit\Tools\Reports\SimpleCounterReport;
 use AlecRabbit\Tools\Reports\ProfilerReport;
 use AlecRabbit\Tools\Reports\TimerReport;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
-use function AlecRabbit\typeOf;
 
 class ProfilerReportFormatter extends ReportFormatter
 {

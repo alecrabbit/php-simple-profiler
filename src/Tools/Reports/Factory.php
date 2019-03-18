@@ -4,7 +4,6 @@ namespace AlecRabbit\Tools\Reports;
 
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionFormatter;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkReportFormatter;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
 use AlecRabbit\Tools\Reports\Formatters\ExtendedCounterReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\Formatter;
 use AlecRabbit\Tools\Reports\Formatters\ProfilerReportFormatter;
@@ -36,6 +35,35 @@ class Factory
     private function __construct()
     {
         // Static class
+    }
+
+    public static function setFormatter(Formatter $formatter): Formatter
+    {
+        if ($formatter instanceof SimpleCounterReportFormatter) {
+            static::setSimpleCounterReportFormatter($formatter);
+            return self::getSimpleCounterReportFormatter();
+        }
+        if ($formatter instanceof ExtendedCounterReportFormatter) {
+            static::setExtendedCounterReportFormatter($formatter);
+            return self::getExtendedCounterReportFormatter();
+        }
+        if ($formatter instanceof TimerReportFormatter) {
+            static::setTimerReportFormatter($formatter);
+            return self::getTimerReportFormatter();
+        }
+        if ($formatter instanceof ProfilerReportFormatter) {
+            static::setProfilerReportFormatter($formatter);
+            return self::getProfilerReportFormatter();
+        }
+        if ($formatter instanceof BenchmarkReportFormatter) {
+            static::setBenchmarkReportFormatter($formatter);
+            return self::getBenchmarkReportFormatter();
+        }
+        if ($formatter instanceof BenchmarkFunctionFormatter) {
+            static::setBenchmarkFunctionFormatter($formatter);
+            return self::getBenchmarkFunctionFormatter();
+        }
+        throw new \RuntimeException('Formatter [' . typeOf($formatter) . '] is not accepted.');
     }
 
     /**
@@ -78,35 +106,6 @@ class Factory
         ?ExtendedCounterReportFormatter $extendedCounterReportFormatter
     ): void {
         static::$extendedCounterReportFormatter = $extendedCounterReportFormatter;
-    }
-
-    public static function setFormatter(Formatter $formatter): Formatter
-    {
-        if ($formatter instanceof SimpleCounterReportFormatter) {
-            static::setSimpleCounterReportFormatter($formatter);
-            return self::getSimpleCounterReportFormatter();
-        }
-        if ($formatter instanceof ExtendedCounterReportFormatter) {
-            static::setExtendedCounterReportFormatter($formatter);
-            return self::getExtendedCounterReportFormatter();
-        }
-        if ($formatter instanceof TimerReportFormatter) {
-            static::setTimerReportFormatter($formatter);
-            return self::getTimerReportFormatter();
-        }
-        if ($formatter instanceof ProfilerReportFormatter) {
-            static::setProfilerReportFormatter($formatter);
-            return self::getProfilerReportFormatter();
-        }
-        if ($formatter instanceof BenchmarkReportFormatter) {
-            static::setBenchmarkReportFormatter($formatter);
-            return self::getBenchmarkReportFormatter();
-        }
-        if ($formatter instanceof BenchmarkFunctionFormatter) {
-            static::setBenchmarkFunctionFormatter($formatter);
-            return self::getBenchmarkFunctionFormatter();
-        }
-        throw new \RuntimeException('Formatter [' . typeOf($formatter) . '] is not accepted.');
     }
 
     /**
