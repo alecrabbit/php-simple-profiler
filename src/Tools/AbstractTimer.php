@@ -225,12 +225,12 @@ abstract class AbstractTimer extends Reportable implements TimerInterface
         $this->previous = $stop;
     }
 
-    /** {@inheritdoc} */
-    public function getTimeFunction(): callable
-    {
-        return $this->timeFunction;
-    }
-
+//    /** {@inheritdoc} */
+//    public function getTimeFunction(): callable
+//    {
+//        return $this->timeFunction;
+//    }
+//
     protected function setTimeFunction(): void
     {
         $this->timeFunction = static::TIME_FUNCTION;

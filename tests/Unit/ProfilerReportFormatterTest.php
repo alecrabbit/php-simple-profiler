@@ -5,16 +5,14 @@ namespace AlecRabbit\Tests\Tools;
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Reports\Formatters\ProfilerReportFormatter;
-use AlecRabbit\Tools\Reports\Formatters\SimpleCounterReportFormatter;
 use AlecRabbit\Tools\Reports\ProfilerReport;
-use AlecRabbit\Tools\Reports\SimpleCounterReport;
 use AlecRabbit\Tools\Reports\TimerReport;
-use AlecRabbit\Tools\SimpleCounter;
-use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 use PHPUnit\Framework\TestCase;
 
 class ProfilerReportFormatterTest extends TestCase
 {
+    public const NAME = 'name';
+
     /**
      * @test
      * @throws \Exception
@@ -39,6 +37,35 @@ class ProfilerReportFormatterTest extends TestCase
         $profilerReport->buildOn($profiler);
         $str = $formatter->process($profilerReport);
         $this->assertStringNotContainsString(Strings::COUNTER, $str);
+        $this->assertStringContainsString(Strings::ELAPSED, $str);
+    }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function profilerReport(): void
+    {
+        $profiler = new Profiler();
+        $profiler->counter(self::NAME)->bump();
+        $profiler->counter()->bump();
+
+        $profiler->timer(self::NAME)->check();
+        $profiler->timer(self::NAME)->check();
+        $profiler->timer()->check();
+        $profiler->timer()->check();
+
+        $report = $profiler->report();
+        $this->assertInstanceOf(ProfilerReport::class, $report);
+
+        $this->assertEquals(1, $profiler->counter(self::NAME)->getValue());
+        $this->assertEquals(1, $profiler->counter()->getValue());
+
+        $this->assertIsString($profiler->timer(self::NAME)->elapsed());
+        $str = (string)$report;
+        $this->assertStringContainsString(self::NAME, $str);
+        $this->assertStringContainsString(Strings::COUNTER, $str);
+        $this->assertStringContainsString(Strings::TIMER, $str);
         $this->assertStringContainsString(Strings::ELAPSED, $str);
     }
 }

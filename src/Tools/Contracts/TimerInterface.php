@@ -19,8 +19,8 @@ interface TimerInterface extends TimerValuesInterface
      */
     public function bounds($start, $stop, ?int $iterationNumber = null): AbstractTimer;
 
-    /**
-     * @return callable
-     */
-    public function getTimeFunction(): callable;
+//    /**
+//     * @return callable
+//     */
+//    public function getTimeFunction(): callable;
 }

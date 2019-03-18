@@ -38,7 +38,7 @@ class BenchmarkFunction extends Formattable
     /** @var null|BenchmarkRelative */
     protected $benchmarkRelative;
     /** @var bool */
-    protected static $forceNormalTimer = false;
+    protected static $forceRegularTimer = false;
 
     /**
      * BenchmarkFunction constructor.
@@ -73,7 +73,7 @@ class BenchmarkFunction extends Formattable
      */
     protected function makeTimer(): void
     {
-        if (PHP_VERSION_ID >= 70300 && false === static::$forceNormalTimer) {
+        if (PHP_VERSION_ID >= 70300 && false === static::$forceRegularTimer) {
             $this->timer = new HRTimer($this->getIndexedName());
         } else {
             $this->timer = new Timer($this->getIndexedName());
@@ -99,9 +99,17 @@ class BenchmarkFunction extends Formattable
     /**
      * @param bool $force
      */
-    public static function forceNormalTimer(bool $force): void
+    public static function setForceRegularTimer(bool $force): void
     {
-        self::$forceNormalTimer = $force;
+        static::$forceRegularTimer = $force;
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isForceRegularTimer(): bool
+    {
+        return self::$forceRegularTimer;
     }
 
     /**

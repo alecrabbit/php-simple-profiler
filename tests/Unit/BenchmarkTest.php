@@ -306,8 +306,7 @@ class BenchmarkTest extends TestCase
                 }
             );
         /** @var BenchmarkReport $report */
-        $report = $bench->run()->report();
-        $report->showReturns();
+        $report = $bench->run()->showReturns()->report();
         $this->assertInstanceOf(BenchmarkReport::class, $report);
         $this->assertEquals($iterations * 2, $report->getDoneIterationsCombined());
         $this->assertEquals($iterations * 2, $report->getDoneIterations());
@@ -491,6 +490,6 @@ class BenchmarkTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-        BenchmarkFunction::forceNormalTimer(true);
+        BenchmarkFunction::setForceRegularTimer(true);
     }
 }

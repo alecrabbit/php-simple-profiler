@@ -53,8 +53,10 @@ class BenchmarkFunctionFormatter extends Formatter implements BenchmarkFunctionF
                     PHP_EOL :
                     static::EXCEPTIONS . PHP_EOL . $exception);
         }
-        // todo cleanup
-        throw new \RuntimeException(typeOf($function));
+        $this->wrongFormattableType(BenchmarkFunction::class, $function);
+        // @codeCoverageIgnoreStart
+        return ''; // never executes
+        // @codeCoverageIgnoreEnd
     }
 
     /**

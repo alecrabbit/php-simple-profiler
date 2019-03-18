@@ -2,6 +2,7 @@
 
 namespace AlecRabbit\Tests\Tools;
 
+use AlecRabbit\Tools\Formattable;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionFormatter;
@@ -9,6 +10,22 @@ use PHPUnit\Framework\TestCase;
 
 class BenchmarkFunctionFormatterTest extends TestCase
 {
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function wrongFunction(): void
+    {
+        $formatter = new BenchmarkFunctionFormatter();
+        $unknownFunction =
+            new class extends Formattable
+            {
+            };
+        $this->expectException(\RuntimeException::class);
+        $formatter->process($unknownFunction);
+    }
+
+
     /** @test */
     public function init(): void
     {
