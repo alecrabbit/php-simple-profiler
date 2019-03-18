@@ -70,7 +70,11 @@ class BenchmarkFunctionTest extends TestCase
 
         BenchmarkFunction::setForceRegularTimer(false);
         $timer = $this->newBenchmarkFunction()->getTimer();
-        $this->assertInstanceOf(HRTimer::class, $timer);
+        if (PHP_VERSION_ID < 70300) {
+            $this->assertInstanceOf(Timer::class, $timer);
+        } else {
+            $this->assertInstanceOf(HRTimer::class, $timer);
+        }
 
         BenchmarkFunction::setForceRegularTimer(true);
         $timer = $this->newBenchmarkFunction()->getTimer();
