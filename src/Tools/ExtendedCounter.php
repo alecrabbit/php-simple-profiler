@@ -4,7 +4,6 @@ namespace AlecRabbit\Tools;
 
 use AlecRabbit\Tools\Contracts\ExtendedCounterValuesInterface;
 use AlecRabbit\Tools\Reports\ExtendedCounterReport;
-use AlecRabbit\Tools\Reports\SimpleCounterReport;
 use AlecRabbit\Tools\Traits\ExtendedCounterFields;
 
 class ExtendedCounter extends SimpleCounter implements ExtendedCounterValuesInterface

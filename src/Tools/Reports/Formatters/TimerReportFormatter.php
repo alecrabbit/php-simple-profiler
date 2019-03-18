@@ -4,7 +4,6 @@ namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Accessories\Pretty;
 use AlecRabbit\Tools\Formattable;
-use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\TimerReport;
 use Carbon\CarbonInterval;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;

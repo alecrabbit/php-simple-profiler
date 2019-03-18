@@ -2,7 +2,6 @@
 
 namespace AlecRabbit\Tools;
 
-use function AlecRabbit\typeOf;
 use const AlecRabbit\Helpers\Constants\INT_SIZE_64BIT;
 
 class HRTimer extends AbstractTimer

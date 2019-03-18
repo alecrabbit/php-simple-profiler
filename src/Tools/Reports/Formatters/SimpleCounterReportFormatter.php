@@ -4,7 +4,6 @@ namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Tools\Contracts\CounterValuesInterface;
 use AlecRabbit\Tools\Formattable;
-use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\SimpleCounterReport;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
