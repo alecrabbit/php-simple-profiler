@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Accessories\Pretty;
-use AlecRabbit\Tools\Contracts\Strings;
+use AlecRabbit\Tools\Formattable;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkFunctionFormatterInterface;
 use SebastianBergmann\Exporter\Exporter;
 use function AlecRabbit\typeOf;
 
-class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface, Strings
+class BenchmarkFunctionFormatter extends Formatter implements BenchmarkFunctionFormatterInterface
 {
     /** @var null|Exporter */
     protected static $exporter;
@@ -46,13 +46,17 @@ class BenchmarkFunctionFormatter implements BenchmarkFunctionFormatterInterface,
     }
 
     /** {@inheritdoc} */
-    public function process(BenchmarkFunction $function): string
+    public function process(Formattable $function): string
     {
-        return
-            $this->formatBenchmarkRelative($function) .
-            (empty($exception = $this->formatException($function)) ?
-                PHP_EOL :
-                static::EXCEPTIONS . PHP_EOL . $exception);
+        if ($function instanceof BenchmarkFunction) {
+            return
+                $this->formatBenchmarkRelative($function) .
+                (empty($exception = $this->formatException($function)) ?
+                    PHP_EOL :
+                    static::EXCEPTIONS . PHP_EOL . $exception);
+        }
+        // todo cleanup
+        throw new \RuntimeException(typeOf($function));
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace AlecRabbit\Tools\Internal;
 
 use AlecRabbit\Tools\AbstractTimer;
+use AlecRabbit\Tools\Formattable;
 use AlecRabbit\Tools\HRTimer;
 use AlecRabbit\Tools\Timer;
 use AlecRabbit\Traits\GettableName;
@@ -12,7 +13,7 @@ use AlecRabbit\Traits\GettableName;
  * @package AlecRabbit
  * @internal
  */
-class BenchmarkFunction
+class BenchmarkFunction extends Formattable
 {
     use GettableName;
 

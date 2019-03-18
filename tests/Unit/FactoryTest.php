@@ -10,8 +10,8 @@ namespace Tests\Unit;
 use AlecRabbit\Tools\Reports\Factory;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionFormatter;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkReportFormatter;
+use AlecRabbit\Tools\Reports\Formatters\Formatter;
 use AlecRabbit\Tools\Reports\Formatters\ProfilerReportFormatter;
-use AlecRabbit\Tools\Reports\Formatters\ReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\TimerReportFormatter;
 use PHPUnit\Framework\TestCase;
 
@@ -20,10 +20,10 @@ class FactoryTest extends TestCase
     /**
      * @test
      * @dataProvider formatterProvider
-     * @param ReportFormatter $fromFactory
-     * @param ReportFormatter $new
+     * @param Formatter $fromFactory
+     * @param Formatter $new
      */
-    public function setFormatter(ReportFormatter $fromFactory, ReportFormatter $new): void
+    public function setFormatter(Formatter $fromFactory, Formatter $new): void
     {
         $this->assertSame($fromFactory, $new);
     }
@@ -55,14 +55,14 @@ class FactoryTest extends TestCase
                 ),
                 Factory::getProfilerReportFormatter(),
             ],
-//            [
-//                Factory::setFormatter(
-//                    new class extends BenchmarkFunctionFormatter
-//                    {
-//                    }
-//                ),
-//                Factory::getBenchmarkReportFormatter(),
-//            ],
+            [
+                Factory::setFormatter(
+                    new class extends BenchmarkFunctionFormatter
+                    {
+                    }
+                ),
+                Factory::getBenchmarkFunctionFormatter(),
+            ],
         ];
     }
 

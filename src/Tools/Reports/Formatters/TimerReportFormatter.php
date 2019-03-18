@@ -3,6 +3,7 @@
 namespace AlecRabbit\Tools\Reports\Formatters;
 
 use AlecRabbit\Accessories\Pretty;
+use AlecRabbit\Tools\Formattable;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\TimerReport;
 use Carbon\CarbonInterval;
@@ -13,15 +14,15 @@ class TimerReportFormatter extends ReportFormatter
     protected const MILLISECONDS_THRESHOLD = 10000;
 
     /** {@inheritdoc} */
-    public function process(ReportInterface $report): string
+    public function process(Formattable $formattable): string
     {
-        if ($report instanceof TimerReport) {
-            if (0 === $report->getCount() && DEFAULT_NAME === $report->getName()) {
-                return $this->simple($report);
+        if ($formattable instanceof TimerReport) {
+            if (0 === $formattable->getCount() && DEFAULT_NAME === $formattable->getName()) {
+                return $this->simple($formattable);
             }
-            return $this->full($report);
+            return $this->full($formattable);
         }
-        $this->wrongReportType(TimerReport::class, $report);
+        $this->wrongFormattableType(TimerReport::class, $formattable);
         // @codeCoverageIgnoreStart
         return '';
         // @codeCoverageIgnoreEnd

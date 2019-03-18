@@ -2,13 +2,13 @@
 
 namespace AlecRabbit\Tools\Reports\Formatters\Contracts;
 
-use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
+use AlecRabbit\Tools\Formattable;
 
 interface FormatterInterface
 {
     /**
-     * @param ReportInterface $report
+     * @param Formattable $formattable
      * @return string
      */
-    public function process(ReportInterface $report): string;
+    public function process(Formattable $formattable): string;
 }

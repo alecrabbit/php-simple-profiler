@@ -4,7 +4,7 @@ namespace AlecRabbit\Tools\Reports\Formatters\Contracts;
 
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionFormatter;
 
-interface BenchmarkFunctionFormatterInterface
+interface BenchmarkFunctionFormatterInterface extends FormatterInterface
 {
     /**
      * @param bool $equalReturns

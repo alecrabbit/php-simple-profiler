@@ -6,8 +6,8 @@ use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionFormatter;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
 use AlecRabbit\Tools\Reports\Formatters\ExtendedCounterReportFormatter;
+use AlecRabbit\Tools\Reports\Formatters\Formatter;
 use AlecRabbit\Tools\Reports\Formatters\ProfilerReportFormatter;
-use AlecRabbit\Tools\Reports\Formatters\ReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\SimpleCounterReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\TimerReportFormatter;
 use function AlecRabbit\typeOf;
@@ -39,28 +39,6 @@ class Factory
     }
 
     /**
-     * @return TimerReportFormatter
-     */
-    public static function getTimerReportFormatter(): TimerReportFormatter
-    {
-        if (null === static::$timerReportFormatter) {
-            static::$timerReportFormatter = new TimerReportFormatter();
-        }
-        return
-            static::$timerReportFormatter;
-    }
-
-    /**
-     * @param null|TimerReportFormatter $timerReportFormatter
-     * @return TimerReportFormatter
-     */
-    public static function setTimerReportFormatter(?TimerReportFormatter $timerReportFormatter): TimerReportFormatter
-    {
-        return
-            static::$timerReportFormatter = $timerReportFormatter;
-    }
-
-    /**
      * @return SimpleCounterReportFormatter
      */
     public static function getSimpleCounterReportFormatter(): SimpleCounterReportFormatter
@@ -74,13 +52,11 @@ class Factory
 
     /**
      * @param null|SimpleCounterReportFormatter $simpleCounterReportFormatter
-     * @return SimpleCounterReportFormatter
      */
     public static function setSimpleCounterReportFormatter(
         ?SimpleCounterReportFormatter $simpleCounterReportFormatter
-    ): SimpleCounterReportFormatter {
-        return
-            static::$simpleCounterReportFormatter = $simpleCounterReportFormatter;
+    ): void {
+        static::$simpleCounterReportFormatter = $simpleCounterReportFormatter;
     }
 
     /**
@@ -97,56 +73,52 @@ class Factory
 
     /**
      * @param null|ExtendedCounterReportFormatter $extendedCounterReportFormatter
-     * @return ExtendedCounterReportFormatter
      */
     public static function setExtendedCounterReportFormatter(
         ?ExtendedCounterReportFormatter $extendedCounterReportFormatter
-    ): ExtendedCounterReportFormatter {
-        return static::$extendedCounterReportFormatter = $extendedCounterReportFormatter;
+    ): void {
+        static::$extendedCounterReportFormatter = $extendedCounterReportFormatter;
+    }
+
+    public static function setFormatter(FormatterInterface $formatter): Formatter
+    {
+        if ($formatter instanceof TimerReportFormatter) {
+            static::setTimerReportFormatter($formatter);
+            return self::getTimerReportFormatter();
+        }
+        if ($formatter instanceof ProfilerReportFormatter) {
+            static::setProfilerReportFormatter($formatter);
+            return self::getProfilerReportFormatter();
+        }
+        if ($formatter instanceof BenchmarkReportFormatter) {
+            static::setBenchmarkReportFormatter($formatter);
+            return self::getBenchmarkReportFormatter();
+        }
+        if ($formatter instanceof BenchmarkFunctionFormatter) {
+            static::setBenchmarkFunctionFormatter($formatter);
+            return self::getBenchmarkFunctionFormatter();
+        }
+        throw new \RuntimeException('Formatter [' . typeOf($formatter) . '] is not accepted.');
     }
 
     /**
-     * @return BenchmarkFunctionFormatter
+     * @return TimerReportFormatter
      */
-    public static function getBenchmarkFunctionFormatter(): BenchmarkFunctionFormatter
+    public static function getTimerReportFormatter(): TimerReportFormatter
     {
-        if (null === static::$benchmarkFunctionFormatter) {
-            static::$benchmarkFunctionFormatter = new BenchmarkFunctionFormatter();
+        if (null === static::$timerReportFormatter) {
+            static::$timerReportFormatter = new TimerReportFormatter();
         }
         return
-            static::$benchmarkFunctionFormatter->resetEqualReturns();
+            static::$timerReportFormatter;
     }
 
     /**
-     * @param BenchmarkFunctionFormatter $benchmarkFunctionFormatter
-     * @return BenchmarkFunctionFormatter
+     * @param null|TimerReportFormatter $timerReportFormatter
      */
-    public static function setBenchmarkFunctionFormatter(
-        BenchmarkFunctionFormatter $benchmarkFunctionFormatter
-    ): BenchmarkFunctionFormatter {
-        return static::$benchmarkFunctionFormatter = $benchmarkFunctionFormatter;
-    }
-
-    /**
-     * @return BenchmarkReportFormatter
-     */
-    public static function getBenchmarkReportFormatter(): BenchmarkReportFormatter
+    public static function setTimerReportFormatter(?TimerReportFormatter $timerReportFormatter): void
     {
-        if (null === static::$benchmarkReportFormatter) {
-            static::$benchmarkReportFormatter = new BenchmarkReportFormatter();
-        }
-        return
-            static::$benchmarkReportFormatter;
-    }
-
-    /**
-     * @param null|BenchmarkReportFormatter $benchmarkReportFormatter
-     * @return BenchmarkReportFormatter
-     */
-    public static function setBenchmarkReportFormatter(
-        ?BenchmarkReportFormatter $benchmarkReportFormatter
-    ): BenchmarkReportFormatter {
-        return static::$benchmarkReportFormatter = $benchmarkReportFormatter;
+        static::$timerReportFormatter = $timerReportFormatter;
     }
 
     /**
@@ -163,26 +135,52 @@ class Factory
 
     /**
      * @param null|ProfilerReportFormatter $profilerReportFormatter
-     * @return ProfilerReportFormatter
      */
     public static function setProfilerReportFormatter(
         ?ProfilerReportFormatter $profilerReportFormatter
-    ): ProfilerReportFormatter {
-        return
-            static::$profilerReportFormatter = $profilerReportFormatter;
+    ): void {
+        static::$profilerReportFormatter = $profilerReportFormatter;
     }
 
-    public static function setFormatter(FormatterInterface $formatter): ReportFormatter
+    /**
+     * @return BenchmarkReportFormatter
+     */
+    public static function getBenchmarkReportFormatter(): BenchmarkReportFormatter
     {
-        if ($formatter instanceof TimerReportFormatter) {
-            return static::setTimerReportFormatter($formatter);
+        if (null === static::$benchmarkReportFormatter) {
+            static::$benchmarkReportFormatter = new BenchmarkReportFormatter();
         }
-        if ($formatter instanceof ProfilerReportFormatter) {
-            return static::setProfilerReportFormatter($formatter);
+        return
+            static::$benchmarkReportFormatter;
+    }
+
+    /**
+     * @param null|BenchmarkReportFormatter $benchmarkReportFormatter
+     */
+    public static function setBenchmarkReportFormatter(
+        ?BenchmarkReportFormatter $benchmarkReportFormatter
+    ): void {
+        static::$benchmarkReportFormatter = $benchmarkReportFormatter;
+    }
+
+    /**
+     * @return BenchmarkFunctionFormatter
+     */
+    public static function getBenchmarkFunctionFormatter(): BenchmarkFunctionFormatter
+    {
+        if (null === static::$benchmarkFunctionFormatter) {
+            static::$benchmarkFunctionFormatter = new BenchmarkFunctionFormatter();
         }
-        if ($formatter instanceof BenchmarkReportFormatter) {
-            return static::setBenchmarkReportFormatter($formatter);
-        }
-        throw new \RuntimeException('Formatter [' . typeOf($formatter) . '] is not accepted.');
+        return
+            static::$benchmarkFunctionFormatter->resetEqualReturns();
+    }
+
+    /**
+     * @param BenchmarkFunctionFormatter $benchmarkFunctionFormatter
+     */
+    public static function setBenchmarkFunctionFormatter(
+        BenchmarkFunctionFormatter $benchmarkFunctionFormatter
+    ): void {
+        static::$benchmarkFunctionFormatter = $benchmarkFunctionFormatter;
     }
 }
