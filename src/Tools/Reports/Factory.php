@@ -80,8 +80,16 @@ class Factory
         static::$extendedCounterReportFormatter = $extendedCounterReportFormatter;
     }
 
-    public static function setFormatter(FormatterInterface $formatter): Formatter
+    public static function setFormatter(Formatter $formatter): Formatter
     {
+        if ($formatter instanceof SimpleCounterReportFormatter) {
+            static::setSimpleCounterReportFormatter($formatter);
+            return self::getSimpleCounterReportFormatter();
+        }
+        if ($formatter instanceof ExtendedCounterReportFormatter) {
+            static::setExtendedCounterReportFormatter($formatter);
+            return self::getExtendedCounterReportFormatter();
+        }
         if ($formatter instanceof TimerReportFormatter) {
             static::setTimerReportFormatter($formatter);
             return self::getTimerReportFormatter();
@@ -176,10 +184,10 @@ class Factory
     }
 
     /**
-     * @param BenchmarkFunctionFormatter $benchmarkFunctionFormatter
+     * @param null|BenchmarkFunctionFormatter $benchmarkFunctionFormatter
      */
     public static function setBenchmarkFunctionFormatter(
-        BenchmarkFunctionFormatter $benchmarkFunctionFormatter
+        ?BenchmarkFunctionFormatter $benchmarkFunctionFormatter
     ): void {
         static::$benchmarkFunctionFormatter = $benchmarkFunctionFormatter;
     }
