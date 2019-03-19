@@ -14,7 +14,7 @@
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Percentage of issues still open")
 
-> readme for version [0.5.x](https://github.com/alecrabbit/php-simple-profiler/tree/v.0.5.x)
+> readme for version [0.5.x](https://github.com/alecrabbit/php-simple-profiler/tree/v.0.5.x) (not supported)
 
 ### Quickstart
 ##### Benchmark

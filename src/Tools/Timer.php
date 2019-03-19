@@ -2,6 +2,10 @@
 
 namespace AlecRabbit\Tools;
 
+/**
+ * Class Timer
+ * @package AlecRabbit\Tools
+ */
 class Timer extends AbstractTimer
 {
     /**
