@@ -14,32 +14,16 @@
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Percentage of issues still open")
 
-VERSION ^0.6 (for version 0.5.x use [this](https://github.com/alecrabbit/php-simple-profiler/tree/v.0.5.x))
+> readme for version [0.5.x](https://github.com/alecrabbit/php-simple-profiler/tree/v.0.5.x) (not supported)
 
-# WIP
-
-### Installation
-For now this package is suggested to be used in dev process
-
-```bash
-composer require --dev alecrabbit/php-simple-profiler
- ```
- 
- or if you wish
- 
-```bash
-composer require alecrabbit/php-simple-profiler
- ```
- 
- 
-#### Quickstart
+### Quickstart
 ##### Benchmark
 ```php
-use AlecRabbit\Tools\BenchmarkSymfonyPB;
+use AlecRabbit\Tools\BenchmarkSymfonyProgressBar;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$benchmark = new BenchmarkSymfonyPB(900000);
+$benchmark = new BenchmarkSymfonyProgressBar(900000);
 $benchmark
     ->addFunction('hrtime', true); 
 $benchmark
@@ -62,6 +46,22 @@ Done in: 2.0s
 ###### For more details see [examples](https://github.com/alecrabbit/php-simple-profiler/tree/master/examples)
 > Note: Some examples could be not up to date... WIP
 
+
+# WIP
+
+### Installation
+For now this package is suggested to be used in dev process
+
+```bash
+composer require --dev alecrabbit/php-simple-profiler
+ ```
+ 
+ or if you wish
+ 
+```bash
+composer require alecrabbit/php-simple-profiler
+ ```
+ 
 ### Benchmark classes
  
 There are moments when you have to choose between two or more different approaches. Benchmark classes is to help you choose which is faster :)
