@@ -2,8 +2,8 @@
 
 namespace AlecRabbit\Tests\Tools;
 
+use AlecRabbit\Tools\Factory;
 use AlecRabbit\Tools\Formattable;
-use AlecRabbit\Tools\Reports\Factory;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionFormatter;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\ExtendedCounterReportFormatter;

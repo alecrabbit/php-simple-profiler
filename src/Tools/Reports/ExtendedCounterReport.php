@@ -3,6 +3,7 @@
 namespace AlecRabbit\Tools\Reports;
 
 use AlecRabbit\Tools\ExtendedCounter;
+use AlecRabbit\Tools\Factory;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Core\Report;

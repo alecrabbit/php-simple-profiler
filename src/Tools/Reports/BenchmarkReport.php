@@ -3,6 +3,7 @@
 namespace AlecRabbit\Tools\Reports;
 
 use AlecRabbit\Tools\Benchmark;
+use AlecRabbit\Tools\Factory;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\Contracts\BenchmarkReportInterface;

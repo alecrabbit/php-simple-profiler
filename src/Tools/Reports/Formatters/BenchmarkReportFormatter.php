@@ -2,10 +2,10 @@
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
+use AlecRabbit\Tools\Factory;
 use AlecRabbit\Tools\Formattable;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
-use AlecRabbit\Tools\Reports\Factory;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkReportFormatterInterface;
 use function AlecRabbit\array_is_homogeneous;
 

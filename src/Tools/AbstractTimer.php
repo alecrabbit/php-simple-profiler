@@ -3,7 +3,6 @@
 namespace AlecRabbit\Tools;
 
 use AlecRabbit\Tools\Contracts\TimerInterface;
-use AlecRabbit\Tools\Reports\Factory;
 use AlecRabbit\Tools\Reports\TimerReport;
 use AlecRabbit\Tools\Traits\TimerFields;
 

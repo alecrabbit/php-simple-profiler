@@ -3,6 +3,7 @@
 namespace AlecRabbit\Tools\Reports;
 
 use AlecRabbit\Tools\Contracts\Strings;
+use AlecRabbit\Tools\Factory;
 use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
