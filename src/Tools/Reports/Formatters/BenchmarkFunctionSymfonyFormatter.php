@@ -22,5 +22,4 @@ class BenchmarkFunctionSymfonyFormatter extends BenchmarkFunctionFormatter
         return ''; // never executes
         // @codeCoverageIgnoreEnd
     }
-
 }

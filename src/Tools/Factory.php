@@ -218,14 +218,13 @@ class Factory
      */
     public static function createBenchmark(?int $iterations = null, bool $withProgressBar = true): Benchmark
     {
-        // TODO where to set colored formatters?
-
         $iterations = $iterations ?? static::$defaultIterations;
         if (!$withProgressBar) {
             return
                 new Benchmark($iterations);
         }
         if (\class_exists(ProgressBar::class)) {
+            // TODO where to set colored formatters?
             static::setFormatter(new BenchmarkFunctionSymfonyFormatter());
             return
                 new BenchmarkSymfonyProgressBar($iterations);
