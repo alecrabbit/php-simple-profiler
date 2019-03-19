@@ -4,11 +4,11 @@ namespace AlecRabbit\Tools;
 
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Terminal;
 
 class BenchmarkSymfonyProgressBar extends Benchmark
 {
     public const DEFAULT_PROGRESSBAR_FORMAT = '[%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%';
-    public const PROGRESS_BAR_WIDTH = 80;
 
     /** @var ConsoleOutput */
     protected $output;
@@ -28,7 +28,8 @@ class BenchmarkSymfonyProgressBar extends Benchmark
         parent::__construct($iterations);
         $this->output = $output ?? new ConsoleOutput();
         $this->advanceSteps = $progressBarMax ?? $this->advanceSteps;
-        $this->progressBarWidth = $progressBarWidth ?? self::PROGRESS_BAR_WIDTH;
+
+        $this->progressBarWidth = $this->refineProgressBarWidth($progressBarWidth);
 
         $this->progressBar = new ProgressBar($this->output, $this->advanceSteps);
         $this->progressBar->setBarWidth($this->progressBarWidth);
@@ -53,6 +54,16 @@ class BenchmarkSymfonyProgressBar extends Benchmark
     }
 
     /**
+     * @param null|int $progressBarWidth
+     * @return int
+     */
+    protected function refineProgressBarWidth(?int $progressBarWidth): int
+    {
+        return
+            $progressBarWidth ?? (int)((new Terminal())->getWidth() * 0.8);
+    }
+
+    /**
      * @return ConsoleOutput
      */
     public function getOutput(): ConsoleOutput
@@ -74,5 +85,13 @@ class BenchmarkSymfonyProgressBar extends Benchmark
     public function getProgressBarWidth(): int
     {
         return $this->progressBarWidth;
+    }
+
+    protected function showComment(string $comment = ''): void
+    {
+//        $outputStyle = new OutputFormatterStyle('red', 'yellow', ['bold', 'blink']);
+//        $this->output->getFormatter()->setStyle('fire', $outputStyle);
+//
+        $this->output->writeln('<comment>' . $comment . '</>');
     }
 }

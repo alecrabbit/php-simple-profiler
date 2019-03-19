@@ -3,6 +3,7 @@
 namespace AlecRabbit\Tools;
 
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionFormatter;
+use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionSymfonyFormatter;
 use AlecRabbit\Tools\Reports\Formatters\BenchmarkReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\ExtendedCounterReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\Formatter;
@@ -225,6 +226,7 @@ class Factory
                 new Benchmark($iterations);
         }
         if (\class_exists(ProgressBar::class)) {
+            static::setFormatter(new BenchmarkFunctionSymfonyFormatter());
             return
                 new BenchmarkSymfonyProgressBar($iterations);
         }

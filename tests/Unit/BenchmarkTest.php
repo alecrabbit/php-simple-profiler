@@ -7,6 +7,7 @@ use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
 use PHPUnit\Framework\TestCase;
+use function AlecRabbit\Helpers\getValue;
 
 /**
  * @group time-sensitive
@@ -17,6 +18,13 @@ class BenchmarkTest extends TestCase
 
     /** @var Benchmark */
     private $bench;
+
+    /** {@inheritdoc} */
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+        BenchmarkFunction::setForceRegularTimer(true);
+    }
 
     /**
      * @test
@@ -29,6 +37,40 @@ class BenchmarkTest extends TestCase
         $b = new Benchmark();
         $this->assertInstanceOf(BenchmarkReport::class, $b->report());
     }
+
+//    /**
+//     * @test
+//     * @throws \Exception
+//     */
+//    public function reportWithCircularReferencesReturn(): void
+//    {
+//        $this->bench = new Benchmark(100);
+//        $var = 2;
+//
+//        $comment = 'Added First(1)';
+//        $this->bench
+//            ->withComment($comment)
+//            ->addFunction(
+//                function () use ($var) {
+//                    usleep(10);
+//                    return $var;
+//                }
+//            );
+//        $this->bench
+//            ->withComment($comment)
+//            ->addFunction(
+//                function () use ($var) {
+//                    usleep(10);
+//                    return $var;
+//                }
+//            );
+//        $report = $this->bench->report();
+//        $this->assertInstanceOf(BenchmarkReport::class, $report);
+//        $str = (string)$report;
+//        $this->assertIsString($str);
+//        $this->assertStringNotContainsString(__CLASS__, $str);
+//        $this->assertStringContainsString($comment, $str);
+//    }
 
     /**
      * @test
@@ -101,40 +143,6 @@ class BenchmarkTest extends TestCase
             $this->assertSame($function->humanReadableName(), $$var);
         }
     }
-
-//    /**
-//     * @test
-//     * @throws \Exception
-//     */
-//    public function reportWithCircularReferencesReturn(): void
-//    {
-//        $this->bench = new Benchmark(100);
-//        $var = 2;
-//
-//        $comment = 'Added First(1)';
-//        $this->bench
-//            ->withComment($comment)
-//            ->addFunction(
-//                function () use ($var) {
-//                    usleep(10);
-//                    return $var;
-//                }
-//            );
-//        $this->bench
-//            ->withComment($comment)
-//            ->addFunction(
-//                function () use ($var) {
-//                    usleep(10);
-//                    return $var;
-//                }
-//            );
-//        $report = $this->bench->report();
-//        $this->assertInstanceOf(BenchmarkReport::class, $report);
-//        $str = (string)$report;
-//        $this->assertIsString($str);
-//        $this->assertStringNotContainsString(__CLASS__, $str);
-//        $this->assertStringContainsString($comment, $str);
-//    }
 
     /**
      * @test
@@ -411,6 +419,14 @@ class BenchmarkTest extends TestCase
         $this->assertEquals(400, $report->getDoneIterations());
 
         $this->bench->reset();
+        $this->assertTrue($this->bench->isNotLaunched());
+        $this->assertNull(getValue($this->bench, 'humanReadableName'));
+        $this->assertNull(getValue($this->bench, 'comment'));
+        $this->assertSame([], getValue($this->bench, 'functions'));
+        $this->assertSame(1, getValue($this->bench, 'functionIndex'));
+        $this->assertSame(0, getValue($this->bench, 'doneIterations'));
+        $this->assertSame(0, getValue($this->bench, 'totalIterations'));
+
         $this->bench
             ->useName($str_one)
             ->addFunction(function () {
@@ -472,6 +488,7 @@ class BenchmarkTest extends TestCase
     public function minIterations(): void
     {
         $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('[' . Benchmark::class . '] Number of Iterations should be greater than 100.');
         $b = new Benchmark(10);
         $b->run();
     }
@@ -484,12 +501,5 @@ class BenchmarkTest extends TestCase
     {
         parent::setUp();
         $this->bench = new Benchmark(self::ITERATIONS);
-    }
-
-    /** {@inheritdoc} */
-    public static function setUpBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-        BenchmarkFunction::setForceRegularTimer(true);
     }
 }

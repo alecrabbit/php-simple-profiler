@@ -84,9 +84,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     {
         if ($iterations < self::MIN_ITERATIONS) {
             throw new \RuntimeException(
-                __CLASS__ .
-                ': Number of Iterations should be greater then ' .
-                self::MIN_ITERATIONS
+                '[' . __CLASS__ . '] Number of Iterations should be greater than ' . self::MIN_ITERATIONS . '.'
             );
         }
     }
@@ -99,19 +97,27 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     {
         unset($this->functions, $this->humanReadableName, $this->rewindable, $this->memoryUsageReport);
 
-        $this->humanReadableName = null;
         $this->rewindable =
             new Rewindable(
                 $this->iterationNumberGenerator,
                 $this->iterations
             );
+        $this->humanReadableName = null;
         $this->functions = [];
+        $this->functionIndex = 1;
+        $this->launched = false;
+        $this->resetComment();
         $this->added = new SimpleCounter('added');
         $this->benchmarked = new SimpleCounter('benchmarked');
         $this->memoryUsageReport = MemoryUsage::report();
         $this->doneIterations = 0;
         $this->totalIterations = 0;
         $this->report = (new BenchmarkReport())->buildOn($this);
+    }
+
+    protected function resetComment(): void
+    {
+        $this->comment = null;
     }
 
     /**
@@ -168,7 +174,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
         $function->setShowReturns($this->isShowReturns());
         $this->functions[$function->enumeratedName()] = $function;
         $this->humanReadableName = null;
-        $this->comment = null;
+        $this->resetComment();
         $this->added->bump();
         $this->totalIterations += $this->iterations;
     }
@@ -287,6 +293,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     {
         if (!$this->silent && null !== $this->comment) {
             $this->showComment($this->comment);
+            $this->resetComment();
         }
     }
 
