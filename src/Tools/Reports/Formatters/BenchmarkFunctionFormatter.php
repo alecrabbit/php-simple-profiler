@@ -18,17 +18,6 @@ class BenchmarkFunctionFormatter extends Formatter implements BenchmarkFunctionF
     /** @var bool */
     protected $equalReturns = false;
 
-    /**
-     * @return Exporter
-     */
-    protected static function getExporter(): Exporter
-    {
-        if (null === static::$exporter) {
-            static::$exporter = new Exporter();
-        }
-        return static::$exporter;
-    }
-
     /** {@inheritdoc} */
     public function resetEqualReturns(): BenchmarkFunctionFormatter
     {
@@ -98,7 +87,6 @@ class BenchmarkFunctionFormatter extends Formatter implements BenchmarkFunctionF
         return $types;
     }
 
-    // TODO rename this method
     /**
      * @param BenchmarkRelative $br
      * @param BenchmarkFunction $function
@@ -123,18 +111,21 @@ class BenchmarkFunctionFormatter extends Formatter implements BenchmarkFunctionF
             );
     }
 
+    // TODO rename this method
+
     /**
      * @param float $average
      * @return string
      */
     protected function average(float $average): string
     {
-        return str_pad(
-            Pretty::time($average),
-            8,
-            ' ',
-            STR_PAD_LEFT
-        );
+        return
+            str_pad(
+                Pretty::time($average),
+                8,
+                ' ',
+                STR_PAD_LEFT
+            );
     }
 
     /**
@@ -143,12 +134,13 @@ class BenchmarkFunctionFormatter extends Formatter implements BenchmarkFunctionF
      */
     protected function relativePercent(float $relative): string
     {
-        return str_pad(
-            Pretty::percent($relative),
-            7,
-            ' ',
-            STR_PAD_LEFT
-        );
+        return
+            str_pad(
+                Pretty::percent($relative),
+                7,
+                ' ',
+                STR_PAD_LEFT
+            );
     }
 
     /** {@inheritdoc} */
@@ -164,6 +156,17 @@ class BenchmarkFunctionFormatter extends Formatter implements BenchmarkFunctionF
                     $type,
                     $str
                 );
+    }
+
+    /**
+     * @return Exporter
+     */
+    protected static function getExporter(): Exporter
+    {
+        if (null === static::$exporter) {
+            static::$exporter = new Exporter();
+        }
+        return static::$exporter;
     }
 
     /**

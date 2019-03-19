@@ -7,6 +7,15 @@ use AlecRabbit\Exception\ColorException;
 use AlecRabbit\Exception\InvalidStyleException;
 use AlecRabbit\Tools\Reports\Formatters\Contracts\Themes;
 
+/**
+ * @method dark(string $text)
+ * @method comment(string $text)
+ * @method yellow(string $text)
+ * @method error(string $text)
+ * @method red(string $text)
+ * @method green(string $text)
+ * @method info(string $text)
+ */
 class Theme implements Themes
 {
     /** @var bool */
@@ -20,7 +29,7 @@ class Theme implements Themes
      * @param bool $colorize
      * @throws InvalidStyleException
      */
-    public function __construct(bool $colorize = false)
+    public function __construct(bool $colorize = true)
     {
         $this->doColorize = $colorize;
         $this->color = new ConsoleColour();

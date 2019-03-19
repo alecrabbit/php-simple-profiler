@@ -2,24 +2,66 @@
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
-use AlecRabbit\Tools\Formattable;
+use AlecRabbit\Exception\InvalidStyleException;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
+use AlecRabbit\Tools\Internal\BenchmarkRelative;
+use AlecRabbit\Tools\Reports\Formatters\Colour\Theme;
 
 class BenchmarkFunctionSymfonyFormatter extends BenchmarkFunctionFormatter
 {
-    /** {@inheritdoc} */
-    public function process(Formattable $function): string
+    /** @var Theme */
+    protected $theme;
+
+    /**
+     * BenchmarkFunctionSymfonyFormatter constructor.
+     * @throws InvalidStyleException
+     */
+    public function __construct()
     {
-        if ($function instanceof BenchmarkFunction) {
-            return
-                $this->formatBenchmarkRelative($function) .
-                (empty($exception = $this->formatException($function)) ?
-                    PHP_EOL :
-                    static::EXCEPTIONS . PHP_EOL . $exception);
-        }
-        $this->wrongFormattableType(BenchmarkFunction::class, $function);
-        // @codeCoverageIgnoreStart
-        return ''; // never executes
-        // @codeCoverageIgnoreEnd
+        $this->theme = new Theme(true);
     }
+
+    /**
+     * @param BenchmarkRelative $br
+     * @param BenchmarkFunction $function
+     * @param array $argumentsTypes
+     *
+     * @return string
+     */
+    protected function preformatFunction(
+        BenchmarkRelative $br,
+        BenchmarkFunction $function,
+        array $argumentsTypes
+    ): string {
+        return
+            sprintf(
+                '%s. %s (%s) %s(%s) %s',
+                (string)$br->getRank(),
+                $this->average($br->getAverage()),
+                $this->relativePercent($br->getRelative()),
+                $function->humanReadableName(),
+                $this->theme->dark(implode(', ', $argumentsTypes)),
+                $this->theme->yellow($function->comment())
+            );
+    }
+
+    /**
+     * @param float $relative
+     * @return string
+     */
+    protected function relativePercent(float $relative): string
+    {
+        $color = 'green';
+        if ($relative > 1) {
+            $color = 'red';
+        }
+        if ($relative >= 0.03) {
+            $color = 'yellow';
+        }
+        return
+            $this->theme->$color(
+                parent::relativePercent($relative)
+            );
+    }
+
 }

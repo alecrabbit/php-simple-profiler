@@ -7,6 +7,7 @@ interface Themes
     public const DARK = 'dark';
     public const COMMENT = 'comment';
     public const YELLOW = 'yellow';
+    public const GREEN = 'green';
     public const ERROR = 'error';
     public const RED = 'red';
     public const INFO = 'info';
@@ -16,6 +17,7 @@ interface Themes
         self::COMMENT => 'yellow',
         self::YELLOW => 'yellow',
         self::INFO => 'green',
+        self::GREEN => 'green',
         self::RED => 'red',
         self::ERROR => 'red',
     ];
