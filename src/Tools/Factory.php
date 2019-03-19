@@ -9,6 +9,7 @@ use AlecRabbit\Tools\Reports\Formatters\Formatter;
 use AlecRabbit\Tools\Reports\Formatters\ProfilerReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\SimpleCounterReportFormatter;
 use AlecRabbit\Tools\Reports\Formatters\TimerReportFormatter;
+use Symfony\Component\Console\Helper\ProgressBar;
 use function AlecRabbit\typeOf;
 
 class Factory
@@ -31,37 +32,54 @@ class Factory
     /** @var null|BenchmarkFunctionFormatter */
     protected static $benchmarkFunctionFormatter;
 
+    /** @var int */
+    protected static $defaultIterations = 1000000;
+
     /** @codeCoverageIgnore */
     private function __construct()
     {
         // Static class
     }
 
+    /**
+     * @param int $defaultIterations
+     */
+    public static function setDefaultIterations(int $defaultIterations): void
+    {
+        self::$defaultIterations = $defaultIterations;
+    }
+
     public static function setFormatter(Formatter $formatter): Formatter
     {
         if ($formatter instanceof SimpleCounterReportFormatter) {
             static::setSimpleCounterReportFormatter($formatter);
-            return static::getSimpleCounterReportFormatter();
+            return
+                static::getSimpleCounterReportFormatter();
         }
         if ($formatter instanceof ExtendedCounterReportFormatter) {
             static::setExtendedCounterReportFormatter($formatter);
-            return static::getExtendedCounterReportFormatter();
+            return
+                static::getExtendedCounterReportFormatter();
         }
         if ($formatter instanceof TimerReportFormatter) {
             static::setTimerReportFormatter($formatter);
-            return static::getTimerReportFormatter();
+            return
+                static::getTimerReportFormatter();
         }
         if ($formatter instanceof ProfilerReportFormatter) {
             static::setProfilerReportFormatter($formatter);
-            return static::getProfilerReportFormatter();
+            return
+                static::getProfilerReportFormatter();
         }
         if ($formatter instanceof BenchmarkReportFormatter) {
             static::setBenchmarkReportFormatter($formatter);
-            return static::getBenchmarkReportFormatter();
+            return
+                static::getBenchmarkReportFormatter();
         }
         if ($formatter instanceof BenchmarkFunctionFormatter) {
             static::setBenchmarkFunctionFormatter($formatter);
-            return static::getBenchmarkFunctionFormatter();
+            return
+                static::getBenchmarkFunctionFormatter();
         }
         throw new \RuntimeException('Formatter [' . typeOf($formatter) . '] is not accepted.');
     }
@@ -189,5 +207,28 @@ class Factory
         ?BenchmarkFunctionFormatter $benchmarkFunctionFormatter
     ): void {
         static::$benchmarkFunctionFormatter = $benchmarkFunctionFormatter;
+    }
+
+    /**
+     * @param null|int $iterations
+     * @param bool $withProgressBar
+     * @return Benchmark
+     * @throws \Exception
+     */
+    public static function createBenchmark(?int $iterations = null, bool $withProgressBar = true): Benchmark
+    {
+        // TODO where to set colored formatters?
+
+        $iterations = $iterations ?? static::$defaultIterations;
+        if (!$withProgressBar) {
+            return
+                new Benchmark($iterations);
+        }
+        if (\class_exists(ProgressBar::class)) {
+            return
+                new BenchmarkSymfonyProgressBar($iterations);
+        }
+        return
+            new BenchmarkSimpleProgressBar($iterations);
     }
 }

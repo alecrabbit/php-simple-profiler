@@ -1,163 +1,73 @@
 <?php declare(strict_types=1);
 
-use AlecRabbit\Tools\Benchmark;
-use function AlecRabbit\tag;
-use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Output\ConsoleOutput;
+use AlecRabbit\Tools\Factory;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
-const ITERATIONS = 500000;
-
-const EMPTY_ELEMENTS = ['', null, false];
-
-$args = [
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, null, 0],
-    3,
-    function (&$item, $key) {
-        $item = '[' . $key . '] ' . $item;
-    },
-];
-$iterations = 1000000;
-$output = new ConsoleOutput();
-
-$progressBar = new ProgressBar($output, 100);
-$progressBar->setBarWidth(80);
-
-$b = new Benchmark(ITERATIONS);
-
-$progressStart = function () use ($progressBar) {
-    $progressBar->start();
-};
-
-$progressAdvance = function () use ($progressBar) {
-    $progressBar->advance();
-};
-
-$progressFinish = function () use ($progressBar) {
-    $progressBar->finish();
-    $progressBar->clear();
-};
-$b->showProgressBy($progressStart, $progressAdvance, $progressFinish);
-
-$o = $output;
-$o->writeln(tag('Comparing 3 slightly different implementations of function `formatted_array()`.', 'comment'));
-$b->withComment('Using closure')->addFunction('formatted_array_2', ...$args);
-$b->withComment('Basic implementation')->addFunction('formatted_array_1', ...$args);
-$b->withComment('Using internal functions')->addFunction('formatted_array_3', ...$args);
-echo $b->run()->report();
-
-/*
- * Functions
- */
-
-function formatted_array_1(
-    array $data,
-    int $columns = 10,
-    ?callable $callback = null,
-    int $pad = STR_PAD_RIGHT
-): array {
-    $result = [];
-//    if ($callback) {
-//        \array_walk($data, $callback);
-//    }
-    $maxLength = arr_el_max_length($data, $callback);
-    $tmp = [];
-    $rowEmpty = true;
-    foreach ($data as $element) {
-        $tmp[] = \str_pad((string)$element, $maxLength, ' ', $pad);
-        $rowEmpty = $rowEmpty && \in_array($element, EMPTY_ELEMENTS, true);
-        if (\count($tmp) >= $columns) {
-            $result[] = \implode($rowEmpty ? '' : ' ', $tmp);
-            $rowEmpty = true;
-            $tmp = [];
+try {
+    $benchmark = Factory::createBenchmark();
+    $benchmark
+        ->withComment('Direct call')
+        ->addFunction(
+            function () {
+                return hrtime(true);
+            }
+        );
+    $benchmark
+        ->withComment('Direct call(with typecasting)')
+        ->addFunction(
+            function () {
+                return (int)hrtime(true);
+            }
+        );
+    $t = new class
+    {
+        public function current()
+        {
+            return hrtime(true);
         }
-    }
-    if (!empty($tmp)) {
-        $result[] = \implode($rowEmpty ? '' : ' ', $tmp);
-    }
-    return $result;
-}
-
-function formatted_array_2(
-    array $data,
-    int $columns = 10,
-    ?callable $callback = null,
-    int $pad = STR_PAD_RIGHT
-): array {
-    $result = [];
-    $func = function (&$rowEmpty, &$tmp, &$result) {
-        $result[] = \implode($rowEmpty ? '' : ' ', $tmp);
-        $rowEmpty = true;
-        $tmp = [];
     };
-//    if ($callback) {
-//        \array_walk($data, $callback);
-//    }
-    $maxLength = arr_el_max_length($data, $callback);
-    $tmp = [];
-    $rowEmpty = true;
-    foreach ($data as $element) {
-        $tmp[] = \str_pad((string)$element, $maxLength, ' ', $pad);
-        $rowEmpty &= \in_array($element, EMPTY_ELEMENTS, true);
-        if (\count($tmp) >= $columns) {
-            $func($rowEmpty, $tmp, $result);
+    $benchmark
+        ->withComment('Method call')
+        ->addFunction(
+            function () use ($t) {
+                return $t->current();
+            }
+        );
+    $t2 = new class
+    {
+        public function current(): int
+        {
+            return (int)hrtime(true);
         }
-    }
-    if (!empty($tmp)) {
-        $func($rowEmpty, $tmp, $result);
-    }
-    return $result;
-}
+    };
+    $benchmark
+        ->withComment('Method call(with typecasting)')
+        ->addFunction(
+            function () use ($t2) {
+                return $t2->current();
+            }
+        );
+    $t3 = new class
+    {
+        protected $func = 'hrtime';
 
-function formatted_array_3(
-    array $data,
-    int $columns = 10,
-    ?callable $callback = null,
-    int $pad = STR_PAD_RIGHT
-): array {
-    $result = $tmp = [];
-//    if ($callback) {
-//        \array_walk($data, $callback);
-//    }
-    $maxLength = arr_el_max_length($data, $callback);
-    $rowEmpty = true;
-    foreach ($data as $element) {
-        $tmp[] = \str_pad((string)$element, $maxLength, ' ', $pad);
-        $rowEmpty = $rowEmpty && \in_array($element, EMPTY_ELEMENTS, true);
-        if (\count($tmp) >= $columns) {
-            update_result($result, $rowEmpty, $tmp);
+        public function current(): int
+        {
+            return (int)($this->func)(true);
         }
-    }
-    if (!empty($tmp)) {
-        update_result($result, $rowEmpty, $tmp);
-    }
-    return $result;
-}
-
-// internal functions
-function arr_el_max_length(array &$data, ?callable $callback = null): int
-{
-    $maxLength = 0;
-    foreach ($data as $key => &$element) {
-        if (\is_array($element)) {
-            throw new \RuntimeException('Multidimensional arrays is not supported.');
-        }
-        if ($callback) {
-            $callback($element, $key);
-        }
-
-        $len = \strlen($element = (string)$element);
-        if ($maxLength < $len) {
-            $maxLength = $len;
-        }
-    }
-    return $maxLength;
-}
-
-function update_result(array &$result, bool &$rowEmpty, array &$tmp)
-{
-    $result[] = \implode($rowEmpty ? '' : ' ', $tmp);
-    $rowEmpty = true;
-    $tmp = [];
+    };
+    $benchmark
+        ->withComment('Method call use callable (with typecasting)')
+        ->addFunction(
+            function () use ($t3) {
+                return $t3->current();
+            }
+        );
+    echo $benchmark
+        ->withComment('Comparing...')
+        ->report();
+} catch (Exception $e) {
+    echo 'Error occurred: ';
+    echo $e->getMessage() . PHP_EOL;
 }

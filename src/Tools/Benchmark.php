@@ -45,15 +45,19 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     protected $launched = false;
     /** @var int */
     protected $functionIndex = 1;
+    /** @var bool */
+    protected $silent = false;
 
     /**
      * Benchmark constructor.
-     * @param int $iterations
+     * @param null|int $iterations
+     * @param null|bool $silent
      * @throws \Exception
      */
-    public function __construct(?int $iterations = null)
+    public function __construct(?int $iterations = null, ?bool $silent = null)
     {
         $this->iterations = $this->refineIterations($iterations);
+        $this->silent = $silent ?? $this->silent;
 
         $this->iterationNumberGenerator =
             function (int $iterations, int $i = 1): \Generator {
@@ -266,6 +270,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
      */
     public function run(): self
     {
+        $this->displayComment();
         $this->launched = true;
         if ($this->onStart) {
             ($this->onStart)();
@@ -276,6 +281,18 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
         }
         $this->doneIterationsCombined += $this->doneIterations;
         return $this;
+    }
+
+    protected function displayComment(): void
+    {
+        if (!$this->silent && null !== $this->comment) {
+            $this->showComment($this->comment);
+        }
+    }
+
+    protected function showComment(string $comment = ''): void
+    {
+        echo $comment . PHP_EOL;
     }
 
     /**

@@ -79,9 +79,10 @@ class ExtendedCounter extends SimpleCounter implements ExtendedCounterValuesInte
         $this->report = (new ExtendedCounterReport())->buildOn($this);
     }
 
+    // TODO rename this method
     /**
      * {@inheritdoc}
-     * todo rename this method
+     *
      */
     protected function updateValues(int $initialValue): void
     {

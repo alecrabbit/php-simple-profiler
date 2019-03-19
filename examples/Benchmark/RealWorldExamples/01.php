@@ -1,8 +1,6 @@
 <?php declare(strict_types=1);
 
-use AlecRabbit\Tools\BenchmarkSymfonyProgressBar;
-use function AlecRabbit\tag;
-use AlecRabbit\Tools\Internal\BenchmarkFunction;
+use AlecRabbit\Tools\Factory;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -15,19 +13,25 @@ $args = [
         $item = '[' . $key . '] ' . $item;
     },
 ];
-$iterations = 100000;
 
 try {
-    $b = new BenchmarkSymfonyProgressBar($iterations);
-    $o = $b->getOutput();
-    $o->writeln(tag('Comparing 3 slightly different implementations of function `formatted_array()`.', 'comment'));
-    $b->withComment('Using closure')->addFunction('formatted_array_2', ...$args);
-    $b->withComment('Basic implementation')->addFunction('formatted_array_1', ...$args);
-    $b->withComment('Using internal functions')->addFunction('formatted_array_3', ...$args);
-    echo $b->report();
+    Factory::setDefaultIterations(10000); // optional
+    $benchmark = Factory::createBenchmark();
+    $benchmark
+        ->withComment('Using closure')
+        ->addFunction('formatted_array_2', ...$args);
+    $benchmark
+        ->withComment('Basic implementation(some code duplication)')
+        ->addFunction('formatted_array_1', ...$args);
+    $benchmark
+        ->withComment('Using internal functions')
+        ->addFunction('formatted_array_3', ...$args);
+    echo $benchmark
+        ->withComment('Comparing three slightly different implementations of function `formatted_array()`.')
+        ->report();
 } catch (Exception $e) {
     echo 'Error occurred: ';
-    echo $e->getMessage(). PHP_EOL;
+    echo $e->getMessage() . PHP_EOL;
 }
 
 /*

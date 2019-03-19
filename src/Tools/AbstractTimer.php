@@ -149,9 +149,6 @@ abstract class AbstractTimer extends Reportable implements TimerInterface
      */
     public function elapsed(): string
     {
-//        if ($this->isNotStarted()) { // todo investigate if it's needed here
-//            $this->start();
-//        }
         if ($this->isNotStopped()) {
             $this->stop();
         }

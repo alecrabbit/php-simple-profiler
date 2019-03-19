@@ -1,47 +1,45 @@
 <?php declare(strict_types=1);
 
+use AlecRabbit\Tools\Factory;
 use const AlecRabbit\Helpers\Strings\Constants\BYTES_UNITS;
-use AlecRabbit\Tools\OldBenchmarkSymfonyPB as BenchmarkWithSymfonyProgressBar;
-use function AlecRabbit\tag;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
-$iterations = 1000000;
+try {
+    $b = Factory::createBenchmark(1000, false);
+    $unit = 'mb';
+    $units = \array_keys(BYTES_UNITS);
+    $b
+        ->withComment('Using in_array()')
+        ->addFunction(
+            function ($unit) use ($units) {
+                return
+                    \in_array(\strtoupper($unit), $units, true);
+            },
+            $unit
+        );
+    $b
+        ->withComment('Using array_search() [bad example]')
+        ->addFunction(
+            function ($unit) use ($units) {
+                return
+                    false !== \array_search(\strtoupper($unit), $units, true);
+            },
+            $unit
+        );
+    $b
+        ->withComment('Using array_key_exists()')
+        ->addFunction(
+            function ($unit) {
+                return
+                    \array_key_exists(\strtoupper($unit), BYTES_UNITS);
+            },
+            $unit
+        );
+    echo $b->withComment('Comparing...')->showReturns()->report();
+    echo $b->stat();
+} catch (Exception $e) {
+    echo 'Error occurred: ';
+    echo $e->getMessage() . PHP_EOL;
+}
 
-$benchmark = new BenchmarkWithSymfonyProgressBar($iterations);
-
-$o = $benchmark->getOutput();
-
-$o->writeln(tag('Comparing `array_key_exists`, `in_array` and `array_search`.', 'comment'));
-
-$unit = 'mb';
-$units = \array_keys(BYTES_UNITS);
-$benchmark
-    ->withComment('Using in_array()')
-    ->addFunction(
-        function ($unit) use ($units) {
-            return
-                \in_array(\strtoupper($unit), $units, true);
-        },
-        $unit
-    );
-$benchmark
-    ->withComment('Using array_search() [bad example]')
-    ->addFunction(
-        function ($unit) use ($units) {
-            return
-                false !== \array_search(\strtoupper($unit), $units, true);
-        },
-        $unit
-    );
-$benchmark
-    ->withComment('Using array_key_exists()')
-    ->addFunction(
-        function ($unit) {
-            return
-                \array_key_exists(\strtoupper($unit), BYTES_UNITS);
-        },
-        $unit
-    );
-
-echo $benchmark->run()->report();

@@ -7,5 +7,5 @@ use AlecRabbit\Tools\Reports\Traits\HasReport;
 
 abstract class Reportable implements ReportableInterface
 {
-    use  HasReport;
+    use HasReport;
 }

@@ -98,12 +98,13 @@ class BenchmarkFunctionFormatter extends Formatter implements BenchmarkFunctionF
         return $types;
     }
 
+    // TODO rename this method
     /**
      * @param BenchmarkRelative $br
      * @param BenchmarkFunction $function
      * @param array $argumentsTypes
+     *
      * @return string
-     * todo rename method
      */
     protected function preformatFunction(
         BenchmarkRelative $br,
