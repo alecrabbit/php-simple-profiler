@@ -48,6 +48,7 @@ class BenchmarkFunctionFormatterTest extends TestCase
                 $humanReadableName
             );
         $b = new BenchmarkFunctionFormatter();
+        $this->assertEquals('Array &0 ()', $b->returnToString([]));
         $this->assertInstanceOf(BenchmarkFunctionFormatter::class, $b);
         $this->assertEquals(PHP_EOL, $b->process($f));
         $f->setBenchmarkRelative(new BenchmarkRelative(1, 0, 0.00001));
@@ -55,15 +56,6 @@ class BenchmarkFunctionFormatterTest extends TestCase
         $this->assertEquals(
             "1.  10.0μs (  0.00%) hrTestCase(integer, integer) Comment \n integer(3) \n\n",
             $b->process($f)
-        );
-    }
-
-    /** @test */
-    public function returnToString(): void
-    {
-        $this->assertEquals(
-            'Array &0 ()',
-            BenchmarkFunctionFormatter::returnToString([])
         );
     }
 }

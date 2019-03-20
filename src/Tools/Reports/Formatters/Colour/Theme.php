@@ -5,18 +5,24 @@ namespace AlecRabbit\Tools\Reports\Formatters\Colour;
 use AlecRabbit\ConsoleColour;
 use AlecRabbit\Exception\ColorException;
 use AlecRabbit\Exception\InvalidStyleException;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\Themes;
+use AlecRabbit\Tools\Reports\Formatters\Contracts\DefaultThemes;
 
 /**
+ * @method italic(string $text)
  * @method dark(string $text)
+ * @method darkItalic(string $text)
+ * @method white(string $text)
+ * @method whiteBold(string $text)
  * @method comment(string $text)
  * @method yellow(string $text)
  * @method error(string $text)
  * @method red(string $text)
  * @method green(string $text)
  * @method info(string $text)
+ * @method underline(string $text)
+ * @method underlineItalic(string $text)
  */
-class Theme implements Themes
+class Theme implements DefaultThemes
 {
     /** @var bool */
     protected $doColorize;

@@ -10,13 +10,15 @@ use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkReportFormatterInterf
 use function AlecRabbit\array_is_homogeneous;
 
 /**
+ * @psalm-suppress MissingConstructor
+ *
  * Class BenchmarkReportFormatter
  * @package AlecRabbit\Tools\Reports\Formatters
- *
- * @psalm-suppress MissingConstructor
  */
 class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkReportFormatterInterface
 {
+    protected const ALL_RETURNS_ARE_EQUAL = 'All returns are equal';
+
     /** @var BenchmarkReport */
     protected $report;
     /** @var mixed */
@@ -29,6 +31,8 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
     protected $equalReturns;
     /** @var bool */
     protected $benchmarkedAny;
+    /** @var bool */
+    protected $anyExceptions;
     /** @var bool */
     protected $benchmarkedMoreThanOne;
 
@@ -56,22 +60,42 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
         if ($this->benchmarkedAny) {
             $str .= static::BENCHMARK . PHP_EOL;
         }
+        if ($this->anyExceptions) {
+            $exceptions = static::EXCEPTIONS . PHP_EOL;
+        } else {
+            $exceptions = '';
+        }
+
         /** @var BenchmarkFunction $function */
         foreach ($report->getFunctions() as $name => $function) {
-            $str .=
+            $tmp =
                 Factory::getBenchmarkFunctionFormatter()
                     ->noReturnIf($this->equalReturns || $this->report->isNotShowReturns())
                     ->process($function);
+            if (null === $function->getException()) {
+                $str .= $tmp;
+            } else {
+                $exceptions .= $tmp;
+            }
         }
         return
             sprintf(
                 '%s%s%s%s%s',
                 $str,
                 $this->strEqualReturns(),
-                $this->countersStatistics($this->added, $this->benchmarked),
-                $report->getMemoryUsageReport(),
+                $exceptions,
+                $this->countersStatistics(),
                 PHP_EOL
             );
+//        return
+//            sprintf(
+//                '%s%s%s%s%s',
+//                $str,
+//                $this->strEqualReturns(),
+//                $this->countersStatistics(),
+//                $report->getMemoryUsageReport(),
+//                PHP_EOL
+//            );
     }
 
     protected function computeVariables(): void
@@ -80,6 +104,8 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
         $this->benchmarked = $this->report->getBenchmarked()->getValue();
         $this->benchmarkedAny =
             $this->added !== $this->added - $this->benchmarked;
+        $this->anyExceptions =
+            $this->added !== $this->benchmarked;
         $this->benchmarkedMoreThanOne =
             $this->benchmarked > 1;
         $this->equalReturns = $this->equalReturns();
@@ -119,14 +145,14 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
     {
         $str = '';
         if ($this->equalReturns) {
-            $aRAE = $this->benchmarkedMoreThanOne ? 'All returns are equal' : '';
+            $aRAE = $this->benchmarkedMoreThanOne ? static::ALL_RETURNS_ARE_EQUAL : '';
             $dLM = $this->benchmarkedMoreThanOne ? '.' : '';
             $str .=
                 sprintf(
                     '%s%s%s',
                     $aRAE,
                     $this->benchmarkedMoreThanOne && $this->report->isShowReturns() ?
-                        ':' . PHP_EOL . BenchmarkFunctionFormatter::returnToString($this->lastReturn) :
+                        ':' . PHP_EOL . Factory::getBenchmarkFunctionFormatter()->returnToString($this->lastReturn) :
                         $dLM,
                     PHP_EOL
                 );
@@ -135,17 +161,15 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
     }
 
     /**
-     * @param int $added
-     * @param int $benchmarked
      * @return string
      */
-    private function countersStatistics(int $added, int $benchmarked): string
+    private function countersStatistics(): string
     {
-        if ($added === $benchmarked) {
+        if ($this->added === $this->benchmarked) {
             return sprintf(
                 '%s: %s %s',
                 static::BENCHMARKED,
-                $benchmarked,
+                $this->benchmarked,
                 PHP_EOL
             );
         }
@@ -154,22 +178,20 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
             sprintf(
                 '%s: %s %s: %s %s %s',
                 static::ADDED,
-                $added,
+                $this->added,
                 static::BENCHMARKED,
-                $benchmarked,
-                $this->countedExceptions($added, $benchmarked),
+                $this->benchmarked,
+                $this->countedExceptions(),
                 PHP_EOL
             );
     }
 
     /**
-     * @param int $added
-     * @param int $benchmarked
      * @return string
      */
-    protected function countedExceptions(int $added, int $benchmarked): string
+    protected function countedExceptions(): string
     {
-        if (0 !== $exceptions = $added - $benchmarked) {
+        if (0 !== $exceptions = $this->added - $this->benchmarked) {
             return
                 sprintf(
                     '%s %s',

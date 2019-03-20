@@ -158,9 +158,9 @@ class BenchmarkFunction extends Formattable
     }
 
     /**
-     * @return null|string
+     * @return string
      */
-    public function humanReadableName(): ?string
+    public function humanReadableName(): string
     {
         return $this->humanReadableName ?? $this->getIndexedName();
     }

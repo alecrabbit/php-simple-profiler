@@ -55,12 +55,12 @@ then
   ./phpstan "$@"
 
   ./psalm "$@"
-
-  ./php-cs "$@"
 fi
 generate_report_file
 if [[ ${BEAUTY} == 1 ]]
 then
+  ./php-cs "$@"
+
   ./php-cbf "$@"
 fi
 

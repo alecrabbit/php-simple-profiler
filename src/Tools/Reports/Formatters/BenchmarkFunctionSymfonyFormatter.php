@@ -6,6 +6,8 @@ use AlecRabbit\Exception\InvalidStyleException;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\Formatters\Colour\Theme;
+use function AlecRabbit\str_wrap;
+use function AlecRabbit\typeOf;
 
 class BenchmarkFunctionSymfonyFormatter extends BenchmarkFunctionFormatter
 {
@@ -19,6 +21,23 @@ class BenchmarkFunctionSymfonyFormatter extends BenchmarkFunctionFormatter
     public function __construct()
     {
         $this->theme = new Theme(true);
+    }
+
+    /** {@inheritdoc} */
+    public function returnToString($executionReturn): string
+    {
+        $type = typeOf($executionReturn);
+        $str = static::getExporter()->export($executionReturn);
+        return
+            $this->theme->dark(
+                'array' === $type ?
+                    $str :
+                    sprintf(
+                        '%s(%s)',
+                        $type,
+                        $str
+                    )
+            );
     }
 
     /**
@@ -35,12 +54,11 @@ class BenchmarkFunctionSymfonyFormatter extends BenchmarkFunctionFormatter
     ): string {
         return
             sprintf(
-                '%s. %s (%s) %s(%s) %s',
+                '%s. %s (%s) %s %s',
                 (string)$br->getRank(),
                 $this->average($br->getAverage()),
                 $this->relativePercent($br->getRelative()),
-                $function->humanReadableName(),
-                $this->theme->dark(implode(', ', $argumentsTypes)),
+                $this->prepName($function, $argumentsTypes),
                 $this->theme->yellow($function->comment())
             );
     }
@@ -64,4 +82,44 @@ class BenchmarkFunctionSymfonyFormatter extends BenchmarkFunctionFormatter
             );
     }
 
+    /**
+     * @param BenchmarkFunction $function
+     * @param array $argumentsTypes
+     * @return mixed
+     */
+    protected function prepName(BenchmarkFunction $function, array $argumentsTypes)
+    {
+        return
+            sprintf(
+                '%s%s%s%s',
+                $this->theme->italic($function->humanReadableName()),
+                $this->theme->italic('('),
+                $this->theme->darkItalic(implode(', ', $argumentsTypes)),
+                $this->theme->italic(')')
+            );
+    }
+
+    /**
+     * @param BenchmarkFunction $function
+     * @return string
+     */
+    protected function formatException(BenchmarkFunction $function): string
+    {
+
+        if ($e = $function->getException()) {
+            $argumentsTypes = $this->extractArgumentsTypes($function->getArgs());
+
+            return
+                sprintf(
+                    '%s %s [%s: %s] %s',
+                    $this->prepName($function, $argumentsTypes),
+                    $this->theme->yellow($function->comment()),
+                    $this->theme->error(str_wrap(typeOf($e), ' ')),
+                    $this->theme->dark($e->getMessage()),
+                    PHP_EOL
+                );
+        }
+
+        return '';
+    }
 }

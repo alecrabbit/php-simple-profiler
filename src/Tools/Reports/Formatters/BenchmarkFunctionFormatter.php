@@ -40,7 +40,7 @@ class BenchmarkFunctionFormatter extends Formatter implements BenchmarkFunctionF
                 $this->formatBenchmarkRelative($function) .
                 (empty($exception = $this->formatException($function)) ?
                     PHP_EOL :
-                    static::EXCEPTIONS . PHP_EOL . $exception);
+                    /*static::EXCEPTIONS .*/ $exception . PHP_EOL);
         }
         $this->wrongFormattableType(BenchmarkFunction::class, $function);
         // @codeCoverageIgnoreStart
@@ -65,7 +65,7 @@ class BenchmarkFunctionFormatter extends Formatter implements BenchmarkFunctionF
                     '%s %s %s %s',
                     $this->preformatFunction($br, $function, $argumentsTypes),
                     PHP_EOL,
-                    static::returnToString($executionReturn),
+                    $this->returnToString($executionReturn),
                     PHP_EOL
                 );
         }
@@ -144,7 +144,7 @@ class BenchmarkFunctionFormatter extends Formatter implements BenchmarkFunctionF
     }
 
     /** {@inheritdoc} */
-    public static function returnToString($executionReturn): string
+    public function returnToString($executionReturn): string
     {
         $type = typeOf($executionReturn);
         $str = static::getExporter()->export($executionReturn);

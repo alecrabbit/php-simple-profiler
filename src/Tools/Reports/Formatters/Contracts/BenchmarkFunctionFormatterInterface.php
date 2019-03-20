@@ -16,5 +16,5 @@ interface BenchmarkFunctionFormatterInterface extends FormatterInterface
      * @param mixed $executionReturn
      * @return string
      */
-    public static function returnToString($executionReturn): string;
+    public function returnToString($executionReturn): string;
 }
