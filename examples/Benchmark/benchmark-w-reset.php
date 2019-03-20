@@ -10,7 +10,7 @@ use AlecRabbit\Tools\Factory;
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    Factory::setDefaultIterations(500000); // optional
+    Factory::setDefaultIterations(5000); // optional
     $benchmark = Factory::createBenchmark();
     $benchmark
         ->withComment('floatval()')
@@ -61,7 +61,36 @@ try {
 
     $benchmark->reset();
 
+    $benchmark
+        ->withComment('intval()')
+        ->addFunction('intval', '3');
+
+    $benchmark
+        ->withComment('(int)')
+        ->addFunction(
+            function () {
+                return (int)'3';
+            }
+        );
+
+    $benchmark
+        ->withComment('int "+"')
+        ->addFunction(
+            function () {
+                return +'3';
+            }
+        );
+
+    $report = $benchmark
+        ->withComment('Third section... (Constants)')
+        ->showReturns()
+        ->report();
+    echo $report;
+
+    $benchmark->reset();
+
     $arg = '3';
+
     $benchmark
         ->withComment('intval()')
         ->addFunction('intval', $arg);
@@ -82,34 +111,6 @@ try {
                 return +$a;
             },
             $arg
-        );
-
-    $report = $benchmark
-        ->withComment('Third section... (Constants)')
-        ->showReturns()
-        ->report();
-    echo $report;
-
-    $benchmark->reset();
-
-    $benchmark
-        ->withComment('intval()')
-        ->addFunction('intval', '3');
-
-    $benchmark
-        ->withComment('(int)')
-        ->addFunction(
-            function () {
-                return (int)'3';
-            }
-        );
-
-    $benchmark
-        ->withComment('int "+"')
-        ->addFunction(
-            function () {
-                return +'3';
-            }
         );
 
     $report = $benchmark
@@ -140,7 +141,8 @@ try {
         ->addFunction(
             function () {
                 throw new \RuntimeException('Simulated exception');
-            }
+            },
+            'argument'
         );
 
     $benchmark

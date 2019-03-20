@@ -128,7 +128,9 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
         $returns = [];
         /** @var BenchmarkFunction $function */
         foreach ($this->report->getFunctions() as $name => $function) {
-            $returns[] = $this->lastReturn = $function->getReturn();
+            if (null !== $function->getBenchmarkRelative()) {
+                $returns[] = $this->lastReturn = $function->getReturn();
+            }
         }
         return $returns;
     }
