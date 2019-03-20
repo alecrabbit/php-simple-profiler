@@ -111,8 +111,6 @@ class BenchmarkFunctionFormatter extends Formatter implements BenchmarkFunctionF
             );
     }
 
-    // TODO rename this method
-
     /**
      * @param float $average
      * @return string

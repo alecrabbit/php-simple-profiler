@@ -10,7 +10,7 @@ use AlecRabbit\Tools\Factory;
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    Factory::setDefaultIterations(10000); // optional
+    Factory::setDefaultIterations(500000); // optional
     $benchmark = Factory::createBenchmark();
     $benchmark
         ->withComment('floatval()')
@@ -45,13 +45,13 @@ try {
         ->withComment('(float)')
         ->addFunction(function ($a) {
             return (float)$a;
-        });
+        }, $arg);
 
     $benchmark
         ->withComment('float "+"')
         ->addFunction(function ($a) {
             return +$a;
-        });
+        }, $arg);
 
     $report = $benchmark
         ->withComment('Second section... (Arguments)')
@@ -85,7 +85,7 @@ try {
         );
 
     $report = $benchmark
-        ->withComment('Third section... (Arguments)')
+        ->withComment('Third section... (Constants)')
         ->showReturns()
         ->report();
     echo $report;
@@ -113,7 +113,46 @@ try {
         );
 
     $report = $benchmark
-        ->withComment('Fourth section... (Constants)')
+        ->withComment('Fourth section... (Arguments)')
+        ->showReturns()
+        ->report();
+    echo $report;
+
+    $benchmark->reset();
+
+    $benchmark
+        ->useName('one')
+        ->addFunction(
+            function () {
+                return 1;
+            }
+        );
+
+    $benchmark
+        ->useName('two')
+        ->addFunction(
+            function () {
+                return 1;
+            }
+        );
+    $benchmark
+        ->useName('three')
+        ->addFunction(
+            function () {
+                throw new \RuntimeException('Simulated exception');
+            }
+        );
+
+    $benchmark
+        ->withComment('Default name for closure')
+        ->addFunction(
+            function () {
+                throw new \BadFunctionCallException('Simulated exception');
+            }
+        );
+
+    $report = $benchmark
+        ->withComment('Fifth section... (Exceptions)')
         ->showReturns()
         ->report();
     echo $report;

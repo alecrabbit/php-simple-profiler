@@ -52,11 +52,13 @@ class BenchmarkFunctionSymfonyFormatter extends BenchmarkFunctionFormatter
         BenchmarkFunction $function,
         array $argumentsTypes
     ): string {
+        $rank = $br->getRank();
+        $average = $this->average($br->getAverage());
         return
             sprintf(
                 '%s. %s (%s) %s %s',
-                (string)$br->getRank(),
-                $this->average($br->getAverage()),
+                (string)$rank,
+                $rank !== 1 ? $average : $this->theme->underline($average),
                 $this->relativePercent($br->getRelative()),
                 $this->prepName($function, $argumentsTypes),
                 $this->theme->yellow($function->comment())
@@ -111,10 +113,12 @@ class BenchmarkFunctionSymfonyFormatter extends BenchmarkFunctionFormatter
 
             return
                 sprintf(
-                    '%s %s [%s: %s] %s',
+                    '%s %s%s[%s%s%s]%s',
                     $this->prepName($function, $argumentsTypes),
                     $this->theme->yellow($function->comment()),
+                    ' ',
                     $this->theme->error(str_wrap(typeOf($e), ' ')),
+                    ' : ',
                     $this->theme->dark($e->getMessage()),
                     PHP_EOL
                 );
