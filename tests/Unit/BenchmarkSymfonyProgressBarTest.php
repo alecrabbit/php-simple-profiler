@@ -13,11 +13,10 @@ class BenchmarkSymfonyProgressBarTest extends TestCase
     /** @test */
     public function init(): void
     {
-        $width = 100;
         $b = new BenchmarkSymfonyProgressBar(
             100,
             null,
-            $width,
+            null,
             new ConsoleOutput(OutputInterface::VERBOSITY_QUIET)
         );
         $this->assertInstanceOf(BenchmarkSymfonyProgressBar::class, $b);
@@ -28,6 +27,18 @@ class BenchmarkSymfonyProgressBarTest extends TestCase
         $b->addFunction(function () {
         });
         $b->run();
-        $this->assertEquals($width, $b->getProgressBarWidth());
+        $this->assertTrue(
+            $this->valueInRange(
+                $b->getProgressBarWidth(),
+                BenchmarkSymfonyProgressBar::PROGRESS_BAR_MIN_WIDTH,
+                BenchmarkSymfonyProgressBar::PROGRESS_BAR_MAX_WIDTH
+            )
+        );
+    }
+
+    protected function valueInRange(int $value, int $min, int $max): bool
+    {
+        return
+            ($value >= $min && $value <= $max);
     }
 }

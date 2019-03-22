@@ -55,8 +55,8 @@ class ExtendedCounterReportFormatter extends ReportFormatter
                 self::BUMPED . ': %s, ' .
                 self::PATH . ': %s, ' .
                 self::LENGTH . ': %s, ' .
-                self::MAX . ': %s, ' .
-                self::MIN . ': %s, ' .
+                self::PROGRESS_BAR_MAX_WIDTH . ': %s, ' .
+                self::PROGRESS_BAR_MIN_WIDTH . ': %s, ' .
                 self::DIFF . ': %s %s',
                 $report->getName(),
                 (string)$report->getValue(),

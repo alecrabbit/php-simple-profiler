@@ -17,8 +17,8 @@ interface Strings
 
     public const ELAPSED = 'Elapsed';
     public const MARKS = 'Marks';
-    public const MAX = 'Max';
-    public const MIN = 'Min';
+    public const PROGRESS_BAR_MAX_WIDTH = 'Max';
+    public const PROGRESS_BAR_MIN_WIDTH = 'Min';
     public const LAST = 'Last';
     public const AVERAGE = 'Average';
     public const TIMER = 'Timer';

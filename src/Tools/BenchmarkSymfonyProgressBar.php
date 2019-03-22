@@ -2,14 +2,16 @@
 
 namespace AlecRabbit\Tools;
 
-use function AlecRabbit\Helpers\bounds;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Terminal;
+use function AlecRabbit\Helpers\bounds;
 
 class BenchmarkSymfonyProgressBar extends Benchmark
 {
     public const DEFAULT_PROGRESSBAR_FORMAT = ' %percent:3s%% [%bar%] %elapsed:6s%/%estimated:-6s%';
+    public const PROGRESS_BAR_MIN_WIDTH = 60;
+    public const PROGRESS_BAR_MAX_WIDTH = 80;
 
     /** @var ConsoleOutput */
     protected $output;
@@ -30,10 +32,12 @@ class BenchmarkSymfonyProgressBar extends Benchmark
         $this->output = $output ?? new ConsoleOutput();
         $this->advanceSteps = $progressBarMax ?? $this->advanceSteps;
 
-        $this->progressBarWidth = $this->refineProgressBarWidth($progressBarWidth);
 
         $this->progressBar = new ProgressBar($this->output, $this->advanceSteps);
+        $this->progressBarWidth = $this->refineProgressBarWidth($progressBarWidth);
         $this->progressBar->setBarWidth($this->progressBarWidth);
+        $this->progressBar->setFormat(static::DEFAULT_PROGRESSBAR_FORMAT);
+
         $progressStart =
             function (): void {
                 $this->progressBar->start();
@@ -50,7 +54,6 @@ class BenchmarkSymfonyProgressBar extends Benchmark
                 $this->progressBar->clear();
             };
 
-        $this->progressBar->setFormat(static::DEFAULT_PROGRESSBAR_FORMAT);
         $this->showProgressBy($progressStart, $progressAdvance, $progressFinish);
     }
 
@@ -61,7 +64,11 @@ class BenchmarkSymfonyProgressBar extends Benchmark
     protected function refineProgressBarWidth(?int $progressBarWidth): int
     {
         return
-            (int)bounds($progressBarWidth ?? (int)((new Terminal())->getWidth() * 0.8), 60, 80);
+            (int)bounds(
+                $progressBarWidth ?? (int)((new Terminal())->getWidth() * 0.8),
+                static::PROGRESS_BAR_MIN_WIDTH,
+                static::PROGRESS_BAR_MAX_WIDTH
+            );
     }
 
     /**
