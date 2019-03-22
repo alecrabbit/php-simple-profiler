@@ -77,8 +77,8 @@ class TimerReportFormatter extends ReportFormatter
                 sprintf(
                     self::AVERAGE . ': %s, ' .
                     self::LAST . ': %s, ' .
-                    self::PROGRESS_BAR_MIN_WIDTH . '(%s): %s, ' .
-                    self::PROGRESS_BAR_MAX_WIDTH . '(%s): %s, ' .
+                    self::MIN . '(%s): %s, ' .
+                    self::MAX . '(%s): %s, ' .
                     self::MARKS . ': %s, ',
                     $this->refineSeconds($r->getAverageValue()),
                     $this->refineSeconds($r->getLastValue()),

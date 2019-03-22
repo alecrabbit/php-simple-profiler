@@ -59,8 +59,8 @@ class ExtendedCounterReportFormatterTest extends TestCase
         $this->assertStringNotContainsString(Strings::DIFF, $str);
         $this->assertStringNotContainsString(Strings::PATH, $str);
         $this->assertStringNotContainsString(Strings::LENGTH, $str);
-        $this->assertStringNotContainsString(Strings::PROGRESS_BAR_MIN_WIDTH, $str);
-        $this->assertStringNotContainsString(Strings::PROGRESS_BAR_MAX_WIDTH, $str);
+        $this->assertStringNotContainsString(Strings::MIN, $str);
+        $this->assertStringNotContainsString(Strings::MAX, $str);
         $this->assertStringNotContainsString(Strings::BUMPED, $str);
         $this->assertStringNotContainsString(Strings::FORWARD, $str);
         $this->assertStringNotContainsString(Strings::BACKWARD, $str);
@@ -92,8 +92,8 @@ class ExtendedCounterReportFormatterTest extends TestCase
         $this->assertStringContainsString(Strings::DIFF, $str);
         $this->assertStringContainsString(Strings::PATH, $str);
         $this->assertStringContainsString(Strings::LENGTH, $str);
-        $this->assertStringContainsString(Strings::PROGRESS_BAR_MIN_WIDTH, $str);
-        $this->assertStringContainsString(Strings::PROGRESS_BAR_MAX_WIDTH, $str);
+        $this->assertStringContainsString(Strings::MIN, $str);
+        $this->assertStringContainsString(Strings::MAX, $str);
         $this->assertStringContainsString(Strings::BUMPED, $str);
         $this->assertStringContainsString(Strings::FORWARD, $str);
         $this->assertStringContainsString(Strings::BACKWARD, $str);

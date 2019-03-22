@@ -30,8 +30,8 @@ class BenchmarkSymfonyProgressBarTest extends TestCase
         $this->assertTrue(
             $this->valueInRange(
                 $b->getProgressBarWidth(),
-                BenchmarkSymfonyProgressBar::PROGRESS_BAR_MIN_WIDTH,
-                BenchmarkSymfonyProgressBar::PROGRESS_BAR_MAX_WIDTH
+                BenchmarkSymfonyProgressBar::MIN,
+                BenchmarkSymfonyProgressBar::MAX
             )
         );
     }

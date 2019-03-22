@@ -45,7 +45,7 @@ class ProfilerReportTest extends TestCase
         $this->assertStringNotContainsString(Strings::TIMER, $str);
         $this->assertStringNotContainsString(Strings::AVERAGE, $str);
         $this->assertStringNotContainsString(Strings::LAST, $str);
-        $this->assertStringNotContainsString(Strings::PROGRESS_BAR_MIN_WIDTH, $str);
-        $this->assertStringNotContainsString(Strings::PROGRESS_BAR_MAX_WIDTH, $str);
+        $this->assertStringNotContainsString(Strings::MIN, $str);
+        $this->assertStringNotContainsString(Strings::MAX, $str);
     }
 }

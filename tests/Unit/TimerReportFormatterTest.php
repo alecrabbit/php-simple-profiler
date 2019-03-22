@@ -75,8 +75,8 @@ class TimerReportFormatterTest extends TestCase
         $this->assertStringNotContainsString(Strings::TIMER, $str);
         $this->assertStringNotContainsString(Strings::AVERAGE, $str);
         $this->assertStringNotContainsString(Strings::LAST, $str);
-        $this->assertStringNotContainsString(Strings::PROGRESS_BAR_MIN_WIDTH, $str);
-        $this->assertStringNotContainsString(Strings::PROGRESS_BAR_MAX_WIDTH, $str);
+        $this->assertStringNotContainsString(Strings::MIN, $str);
+        $this->assertStringNotContainsString(Strings::MAX, $str);
         $this->assertStringNotContainsString(Strings::MARKS, $str);
         $this->assertStringMatchesFormat(
             '%f%ss',
@@ -120,8 +120,8 @@ class TimerReportFormatterTest extends TestCase
         $this->assertStringContainsString(Strings::TIMER, $str);
         $this->assertStringNotContainsString(Strings::AVERAGE, $str);
         $this->assertStringNotContainsString(Strings::LAST, $str);
-        $this->assertStringNotContainsString(Strings::PROGRESS_BAR_MIN_WIDTH, $str);
-        $this->assertStringNotContainsString(Strings::PROGRESS_BAR_MAX_WIDTH, $str);
+        $this->assertStringNotContainsString(Strings::MIN, $str);
+        $this->assertStringNotContainsString(Strings::MAX, $str);
         $this->assertStringNotContainsString(Strings::MARKS, $str);
         $this->assertStringMatchesFormat(
             '%f%ss',
@@ -145,8 +145,8 @@ class TimerReportFormatterTest extends TestCase
         $this->assertStringContainsString(Strings::TIMER, $str);
         $this->assertStringNotContainsString(Strings::AVERAGE, $str);
         $this->assertStringNotContainsString(Strings::LAST, $str);
-        $this->assertStringNotContainsString(Strings::PROGRESS_BAR_MIN_WIDTH, $str);
-        $this->assertStringNotContainsString(Strings::PROGRESS_BAR_MAX_WIDTH, $str);
+        $this->assertStringNotContainsString(Strings::MIN, $str);
+        $this->assertStringNotContainsString(Strings::MAX, $str);
         $this->assertStringNotContainsString(Strings::MARKS, $str);
         usleep(20);
         $t->check(1);
@@ -156,8 +156,8 @@ class TimerReportFormatterTest extends TestCase
         $this->assertStringContainsString(Strings::TIMER, $str);
         $this->assertStringContainsString(Strings::AVERAGE, $str);
         $this->assertStringContainsString(Strings::LAST, $str);
-        $this->assertStringContainsString(Strings::PROGRESS_BAR_MIN_WIDTH, $str);
-        $this->assertStringContainsString(Strings::PROGRESS_BAR_MAX_WIDTH, $str);
+        $this->assertStringContainsString(Strings::MIN, $str);
+        $this->assertStringContainsString(Strings::MAX, $str);
         $this->assertStringContainsString(Strings::MARKS, $str);
         $this->assertStringMatchesFormat(
             '%f%ss',
@@ -180,8 +180,8 @@ class TimerReportFormatterTest extends TestCase
         $this->assertStringNotContainsString($timer->getName(), $elapsed);
         $this->assertStringNotContainsString(Strings::AVERAGE, $elapsed);
         $this->assertStringNotContainsString(Strings::LAST, $elapsed);
-        $this->assertStringNotContainsString(Strings::PROGRESS_BAR_MIN_WIDTH, $elapsed);
-        $this->assertStringNotContainsString(Strings::PROGRESS_BAR_MAX_WIDTH, $elapsed);
+        $this->assertStringNotContainsString(Strings::MIN, $elapsed);
+        $this->assertStringNotContainsString(Strings::MAX, $elapsed);
         $this->assertStringNotContainsString(Strings::MARKS, $elapsed);
     }
 
@@ -217,8 +217,8 @@ class TimerReportFormatterTest extends TestCase
         $this->assertStringContainsString(Strings::TIMER, $str);
         $this->assertStringContainsString(Strings::AVERAGE . ': ' . $avgStrValue, $str);
         $this->assertStringContainsString(Strings::LAST . ': ' . $lastStrValue, $str);
-        $this->assertStringContainsString(Strings::PROGRESS_BAR_MIN_WIDTH, $str);
-        $this->assertStringContainsString(Strings::PROGRESS_BAR_MAX_WIDTH, $str);
+        $this->assertStringContainsString(Strings::MIN, $str);
+        $this->assertStringContainsString(Strings::MAX, $str);
         $this->assertStringContainsString(Strings::MARKS . ': ' . $timer->getCount(), $str);
     }
 }
