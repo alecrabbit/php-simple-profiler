@@ -10,8 +10,8 @@ use function AlecRabbit\Helpers\bounds;
 class BenchmarkSymfonyProgressBar extends Benchmark
 {
     public const DEFAULT_PROGRESSBAR_FORMAT = ' %percent:3s%% [%bar%] %elapsed:6s%/%estimated:-6s%';
-    public const MIN = 60;
-    public const MAX = 80;
+    public const PROGRESS_BAR_MIN_WIDTH = 60;
+    public const PROGRESS_BAR_MAX_WIDTH = 80;
 
     /** @var ConsoleOutput */
     protected $output;
@@ -66,8 +66,8 @@ class BenchmarkSymfonyProgressBar extends Benchmark
         return
             (int)bounds(
                 $progressBarWidth ?? (int)((new Terminal())->getWidth() * 0.8),
-                static::MIN,
-                static::MAX
+                static::PROGRESS_BAR_MIN_WIDTH,
+                static::PROGRESS_BAR_MAX_WIDTH
             );
     }
 
