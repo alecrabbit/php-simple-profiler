@@ -2,13 +2,14 @@
 
 namespace AlecRabbit\Tools;
 
+use function AlecRabbit\Helpers\bounds;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Terminal;
 
 class BenchmarkSymfonyProgressBar extends Benchmark
 {
-    public const DEFAULT_PROGRESSBAR_FORMAT = '[%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%';
+    public const DEFAULT_PROGRESSBAR_FORMAT = ' %percent:3s%% [%bar%] %elapsed:6s%/%estimated:-6s%';
 
     /** @var ConsoleOutput */
     protected $output;
@@ -60,7 +61,7 @@ class BenchmarkSymfonyProgressBar extends Benchmark
     protected function refineProgressBarWidth(?int $progressBarWidth): int
     {
         return
-            $progressBarWidth ?? (int)((new Terminal())->getWidth() * 0.8);
+            (int)bounds($progressBarWidth ?? (int)((new Terminal())->getWidth() * 0.8), 60, 80);
     }
 
     /**
