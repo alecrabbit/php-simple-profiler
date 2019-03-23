@@ -1,8 +1,9 @@
+- [ ] reorganize project structure
 - [ ] add more info to show by `stat()` method
 - [ ] improve `Benchmark::class` test 
-- [ ] `Benchmark::class` uses `HRTimer` in php 7.3 and above 
 - [ ] consider adding `stopwatch()` function
 
+- [x] `Benchmark::class` uses `HRTimer` in php 7.3 and above (0.6.0)
 - [x] add `BenchmarkReportTest:class` (0.6.0)
 - [x] improve `Timer::class` test (0.6.0)
 - [x] consider implementing `HRTimer::class` (using PHP^7.3 function `hrtime()`) (0.6.0)
