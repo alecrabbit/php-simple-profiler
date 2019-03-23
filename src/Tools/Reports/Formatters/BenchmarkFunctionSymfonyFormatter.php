@@ -2,6 +2,7 @@
 
 namespace AlecRabbit\Tools\Reports\Formatters;
 
+use AlecRabbit\Accessories\Pretty;
 use AlecRabbit\Exception\InvalidStyleException;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
@@ -13,6 +14,10 @@ class BenchmarkFunctionSymfonyFormatter extends BenchmarkFunctionFormatter
 {
     /** @var Theme */
     protected $theme;
+    /** @var float */
+    protected $yellowThreshold;
+    /** @var float */
+    protected $redThreshold;
 
     /**
      * BenchmarkFunctionSymfonyFormatter constructor.
@@ -21,6 +26,8 @@ class BenchmarkFunctionSymfonyFormatter extends BenchmarkFunctionFormatter
     public function __construct()
     {
         $this->theme = new Theme(true);
+        $this->yellowThreshold = 0.05;
+        $this->redThreshold = 0.9;
     }
 
     /** {@inheritdoc} */
@@ -53,12 +60,11 @@ class BenchmarkFunctionSymfonyFormatter extends BenchmarkFunctionFormatter
         array $argumentsTypes
     ): string {
         $rank = $br->getRank();
-        $average = $this->average($br->getAverage());
         return
             sprintf(
-                '%s. %s (%s) %s %s',
+                '%s. %s(%s) %s %s',
                 (string)$rank,
-                $rank !== 1 ? $average : $this->theme->underline($average),
+                $this->prepAverage($rank, $br->getAverage()),
                 $this->relativePercent($br->getRelative()),
                 $this->prepName($function, $argumentsTypes),
                 $this->theme->yellow($function->comment())
@@ -66,21 +72,52 @@ class BenchmarkFunctionSymfonyFormatter extends BenchmarkFunctionFormatter
     }
 
     /**
-     * @param float $relative
+     * @param int $rank
+     * @param float $average
      * @return string
      */
-    protected function relativePercent(float $relative): string
+    protected function prepAverage(int $rank, float $average): string
+    {
+        return
+            $rank === 1 ?
+                $this->averageFirst($average) :
+                $this->average($average);
+    }
+
+    protected function averageFirst(float $average): string
+    {
+//        $this->theme->underline($avg);
+        $str = Pretty::time($average);
+        $len = strlen($str);
+        $proto = str_repeat('X', $len);
+        $res = str_pad(
+            $proto,
+            8,
+            ' ',
+            STR_PAD_LEFT
+        );
+        return
+            str_replace($proto, $this->theme->underlineBold($str), $res);
+    }
+
+    /**
+     * @param float $relative
+     * @param string $prefix
+     * @return string
+     */
+    protected function relativePercent(float $relative, string $prefix = '+'): string
     {
         $color = 'green';
-        if ($relative > 1) {
-            $color = 'red';
-        }
-        if ($relative >= 0.03) {
+
+        if ($relative >= $this->yellowThreshold) {
             $color = 'yellow';
+        }
+        if ($relative > $this->redThreshold) {
+            $color = 'red';
         }
         return
             $this->theme->$color(
-                parent::relativePercent($relative)
+                parent::relativePercent($relative, $prefix)
             );
     }
 

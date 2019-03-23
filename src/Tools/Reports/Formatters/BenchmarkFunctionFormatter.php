@@ -128,14 +128,15 @@ class BenchmarkFunctionFormatter extends Formatter implements BenchmarkFunctionF
 
     /**
      * @param float $relative
+     * @param string $prefix
      * @return string
      */
-    protected function relativePercent(float $relative): string
+    protected function relativePercent(float $relative, string $prefix = ' '): string
     {
         return
             str_pad(
-                Pretty::percent($relative),
-                7,
+                $prefix . Pretty::percent($relative),
+                9,
                 ' ',
                 STR_PAD_LEFT
             );
