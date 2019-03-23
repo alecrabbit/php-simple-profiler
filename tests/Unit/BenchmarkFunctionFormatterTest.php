@@ -54,7 +54,7 @@ class BenchmarkFunctionFormatterTest extends TestCase
         $f->setBenchmarkRelative(new BenchmarkRelative(1, 0, 0.00001));
         $f->execute();
         $this->assertEquals(
-            "1.  10.0μs (  0.00%) hrTestCase(integer, integer) Comment \n integer(3) \n\n",
+            "1.  10.0μs (    0.00%) hrTestCase(integer, integer) Comment \n integer(3) \n\n",
             $b->process($f)
         );
     }
