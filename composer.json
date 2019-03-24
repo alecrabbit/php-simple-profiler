@@ -1,7 +1,7 @@
 {
   "name": "alecrabbit/php-simple-profiler",
   "type": "library",
-  "description": "PHP simple profiler",
+  "description": "For functions benchmarking, contain counters and timers classes.",
   "keywords": [
     "counter",
     "timer",
