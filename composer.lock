@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a8b31a4f2b9258981601de6814b1b3a6",
+    "content-hash": "edd3992a27bbb531425e6671478aeb6e",
     "packages": [
         {
             "name": "alecrabbit/php-accessories",
@@ -57,22 +57,22 @@
         },
         {
             "name": "alecrabbit/php-console-colour",
-            "version": "0.0.4-RC2",
+            "version": "0.1.0-ALPHA3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-console-colour.git",
-                "reference": "d99933cbeb2558d45ae1c9ee57d294de2d9f7835"
+                "reference": "3f2ab6b2a580bace6b74b36ea7e3a663665f277d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-console-colour/zipball/d99933cbeb2558d45ae1c9ee57d294de2d9f7835",
-                "reference": "d99933cbeb2558d45ae1c9ee57d294de2d9f7835",
+                "url": "https://api.github.com/repos/alecrabbit/php-console-colour/zipball/3f2ab6b2a580bace6b74b36ea7e3a663665f277d",
+                "reference": "3f2ab6b2a580bace6b74b36ea7e3a663665f277d",
                 "shasum": ""
             },
             "require": {
                 "alecrabbit/php-traits": "^0.2",
-                "jakub-onderka/php-console-color": "^0.2.0",
-                "php": ">=7.2"
+                "jakub-onderka/php-console-color": "^0.2",
+                "php": "^7.2"
             },
             "require-dev": {
                 "nunomaduro/collision": "^3.0",
@@ -90,7 +90,7 @@
                 "MIT"
             ],
             "description": "PHP package alecrabbit/php-console-colour",
-            "time": "2019-03-19T13:39:18+00:00"
+            "time": "2019-03-25T00:54:06+00:00"
         },
         {
             "name": "alecrabbit/php-helpers",
@@ -2617,7 +2617,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "beta",
+    "minimum-stability": "alpha",
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,

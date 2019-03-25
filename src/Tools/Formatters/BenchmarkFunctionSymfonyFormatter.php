@@ -3,10 +3,10 @@
 namespace AlecRabbit\Tools\Formatters;
 
 use AlecRabbit\Accessories\Pretty;
-use AlecRabbit\Exception\InvalidStyleException;
+use AlecRabbit\ConsoleColour\Exception\InvalidStyleException;
+use AlecRabbit\ConsoleColour\Theme;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
-use AlecRabbit\Tools\Reports\Formatters\Colour\Theme;
 use function AlecRabbit\str_wrap;
 use function AlecRabbit\typeOf;
 
