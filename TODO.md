@@ -3,6 +3,9 @@
 - [ ] improve `Benchmark::class` test 
 - [ ] consider adding `stopwatch()` function
 
+-----
+
+- [x] add checks if `symfony/console` is installed for `BenchmarkSymfonyProgressBar::class` (0.6.0)
 - [x] `Benchmark::class` uses `HRTimer` in php 7.3 and above (0.6.0)
 - [x] add `BenchmarkReportTest:class` (0.6.0)
 - [x] improve `Timer::class` test (0.6.0)
