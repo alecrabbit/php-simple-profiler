@@ -4,10 +4,10 @@ namespace AlecRabbit\Tools\Reports;
 
 use AlecRabbit\Tools\ExtendedCounter;
 use AlecRabbit\Tools\Factory;
+use AlecRabbit\Tools\Formatters\Contracts\FormatterInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Core\Report;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
 use AlecRabbit\Tools\Traits\ExtendedCounterFields;
 use AlecRabbit\Tools\Traits\SimpleCounterFields;
 

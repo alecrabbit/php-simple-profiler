@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AlecRabbit\Tools\Reports\Formatters;
+namespace AlecRabbit\Tools\Formatters;
 
 use AlecRabbit\Accessories\Pretty;
 use AlecRabbit\Exception\InvalidStyleException;

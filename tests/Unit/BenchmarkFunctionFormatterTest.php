@@ -3,9 +3,9 @@
 namespace AlecRabbit\Tests\Tools;
 
 use AlecRabbit\Tools\Formattable;
+use AlecRabbit\Tools\Formatters\BenchmarkFunctionFormatter;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
-use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionFormatter;
 use PHPUnit\Framework\TestCase;
 
 class BenchmarkFunctionFormatterTest extends TestCase

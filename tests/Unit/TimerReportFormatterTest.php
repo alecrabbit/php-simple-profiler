@@ -4,15 +4,12 @@ namespace AlecRabbit\Tests\Tools;
 
 use AlecRabbit\Accessories\Pretty;
 use AlecRabbit\Tools\Contracts\Strings;
+use AlecRabbit\Tools\Formatters\TimerReportFormatter;
 use AlecRabbit\Tools\HRTimer;
-use AlecRabbit\Tools\Reports\Formatters\TimerReportFormatter;
 use AlecRabbit\Tools\Reports\ProfilerReport;
 use AlecRabbit\Tools\Reports\TimerReport;
 use AlecRabbit\Tools\Timer;
-use Carbon\Carbon;
-use Carbon\CarbonInterval;
 use PHPUnit\Framework\TestCase;
-use Symfony\Bridge\PhpUnit\ClockMock;
 
 /**
  * @group time-sensitive

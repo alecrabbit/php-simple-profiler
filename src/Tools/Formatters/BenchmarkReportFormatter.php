@@ -1,12 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace AlecRabbit\Tools\Reports\Formatters;
+namespace AlecRabbit\Tools\Formatters;
 
 use AlecRabbit\Tools\Factory;
 use AlecRabbit\Tools\Formattable;
+use AlecRabbit\Tools\Formatters\Contracts\BenchmarkReportFormatterInterface;
+use AlecRabbit\Tools\Formatters\Core\ReportFormatter;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkReportFormatterInterface;
 use function AlecRabbit\array_is_homogeneous;
 
 /**

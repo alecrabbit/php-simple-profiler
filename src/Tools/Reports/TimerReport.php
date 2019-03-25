@@ -4,11 +4,11 @@ namespace AlecRabbit\Tools\Reports;
 
 use AlecRabbit\Tools\AbstractTimer;
 use AlecRabbit\Tools\Factory;
+use AlecRabbit\Tools\Formatters\Contracts\FormatterInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Contracts\TimerReportInterface;
 use AlecRabbit\Tools\Reports\Core\Report;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
 use AlecRabbit\Tools\Traits\TimerFields;
 
 class TimerReport extends Report implements TimerReportInterface

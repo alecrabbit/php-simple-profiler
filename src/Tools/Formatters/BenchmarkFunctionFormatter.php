@@ -1,12 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace AlecRabbit\Tools\Reports\Formatters;
+namespace AlecRabbit\Tools\Formatters;
 
 use AlecRabbit\Accessories\Pretty;
 use AlecRabbit\Tools\Formattable;
+use AlecRabbit\Tools\Formatters\Contracts\BenchmarkFunctionFormatterInterface;
+use AlecRabbit\Tools\Formatters\Core\Formatter;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\BenchmarkFunctionFormatterInterface;
 use SebastianBergmann\Exporter\Exporter;
 use function AlecRabbit\typeOf;
 

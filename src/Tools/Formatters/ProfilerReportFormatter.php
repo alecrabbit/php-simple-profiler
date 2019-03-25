@@ -1,8 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace AlecRabbit\Tools\Reports\Formatters;
+namespace AlecRabbit\Tools\Formatters;
 
 use AlecRabbit\Tools\Formattable;
+use AlecRabbit\Tools\Formatters\Core\ReportFormatter;
 use AlecRabbit\Tools\Reports\AbstractCounterReport;
 use AlecRabbit\Tools\Reports\ProfilerReport;
 use AlecRabbit\Tools\Reports\TimerReport;

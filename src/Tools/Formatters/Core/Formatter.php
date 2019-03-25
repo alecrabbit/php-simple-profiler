@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace AlecRabbit\Tools\Reports\Formatters;
+namespace AlecRabbit\Tools\Formatters\Core;
 
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Formattable;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
+use AlecRabbit\Tools\Formatters\Contracts\FormatterInterface;
 use function AlecRabbit\typeOf;
 
 abstract class Formatter implements FormatterInterface, Strings

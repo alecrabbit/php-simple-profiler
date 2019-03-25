@@ -4,13 +4,13 @@ namespace AlecRabbit\Tests\Tools;
 
 use AlecRabbit\Tools\Factory;
 use AlecRabbit\Tools\Formattable;
-use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionFormatter;
-use AlecRabbit\Tools\Reports\Formatters\BenchmarkReportFormatter;
-use AlecRabbit\Tools\Reports\Formatters\ExtendedCounterReportFormatter;
-use AlecRabbit\Tools\Reports\Formatters\Formatter;
-use AlecRabbit\Tools\Reports\Formatters\ProfilerReportFormatter;
-use AlecRabbit\Tools\Reports\Formatters\SimpleCounterReportFormatter;
-use AlecRabbit\Tools\Reports\Formatters\TimerReportFormatter;
+use AlecRabbit\Tools\Formatters\BenchmarkFunctionFormatter;
+use AlecRabbit\Tools\Formatters\BenchmarkReportFormatter;
+use AlecRabbit\Tools\Formatters\Core\Formatter;
+use AlecRabbit\Tools\Formatters\ExtendedCounterReportFormatter;
+use AlecRabbit\Tools\Formatters\ProfilerReportFormatter;
+use AlecRabbit\Tools\Formatters\SimpleCounterReportFormatter;
+use AlecRabbit\Tools\Formatters\TimerReportFormatter;
 use PHPUnit\Framework\TestCase;
 
 class FactoryTest extends TestCase
@@ -34,7 +34,7 @@ class FactoryTest extends TestCase
      * @test
      * @dataProvider formatterInstanceProvider
      * @param Formatter $fromFactory
-     * @param Formatter $new
+     * @param \AlecRabbit\Tools\Formatters\Core\Formatter $new
      */
     public function formatterInstance(Formatter $new, Formatter $fromFactory): void
     {
@@ -109,7 +109,7 @@ class FactoryTest extends TestCase
     /**
      * @test
      * @dataProvider throughInstanceProvider
-     * @param Formatter $new
+     * @param \AlecRabbit\Tools\Formatters\Core\Formatter $new
      */
     public function throughInstance(Formatter $new): void
     {

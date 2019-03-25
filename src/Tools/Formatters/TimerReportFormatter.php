@@ -1,9 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace AlecRabbit\Tools\Reports\Formatters;
+namespace AlecRabbit\Tools\Formatters;
 
 use AlecRabbit\Accessories\Pretty;
 use AlecRabbit\Tools\Formattable;
+use AlecRabbit\Tools\Formatters\Core\ReportFormatter;
 use AlecRabbit\Tools\Reports\TimerReport;
 use Carbon\CarbonInterval;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;

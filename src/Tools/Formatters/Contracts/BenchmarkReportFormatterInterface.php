@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace AlecRabbit\Tools\Reports\Formatters\Contracts;
+namespace AlecRabbit\Tools\Formatters\Contracts;
 
 interface BenchmarkReportFormatterInterface extends FormatterInterface
 {

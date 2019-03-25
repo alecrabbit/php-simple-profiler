@@ -4,13 +4,13 @@ namespace AlecRabbit\Tools\Reports;
 
 use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Factory;
+use AlecRabbit\Tools\Formatters\Contracts\FormatterInterface;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\Contracts\BenchmarkReportInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
 use AlecRabbit\Tools\Reports\Core\Report;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 

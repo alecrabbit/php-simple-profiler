@@ -3,8 +3,8 @@
 namespace AlecRabbit\Tests\Tools;
 
 use AlecRabbit\Tools\Contracts\Strings;
+use AlecRabbit\Tools\Formatters\ProfilerReportFormatter;
 use AlecRabbit\Tools\Profiler;
-use AlecRabbit\Tools\Reports\Formatters\ProfilerReportFormatter;
 use AlecRabbit\Tools\Reports\ProfilerReport;
 use AlecRabbit\Tools\Reports\TimerReport;
 use PHPUnit\Framework\TestCase;

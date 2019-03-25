@@ -4,14 +4,11 @@ namespace AlecRabbit\Tests\Tools;
 
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\ExtendedCounter;
+use AlecRabbit\Tools\Formatters\ExtendedCounterReportFormatter;
 use AlecRabbit\Tools\Reports\ExtendedCounterReport;
-use AlecRabbit\Tools\Reports\Formatters\ExtendedCounterReportFormatter;
-use AlecRabbit\Tools\Reports\Formatters\SimpleCounterReportFormatter;
 use AlecRabbit\Tools\Reports\ProfilerReport;
-use AlecRabbit\Tools\Reports\SimpleCounterReport;
-use AlecRabbit\Tools\SimpleCounter;
-use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 use PHPUnit\Framework\TestCase;
+use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
 class ExtendedCounterReportFormatterTest extends TestCase
 {

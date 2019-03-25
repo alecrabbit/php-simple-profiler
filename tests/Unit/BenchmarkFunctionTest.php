@@ -2,10 +2,10 @@
 
 namespace AlecRabbit\Tests\Tools;
 
+use AlecRabbit\Tools\Formatters\BenchmarkFunctionFormatter;
 use AlecRabbit\Tools\HRTimer;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
-use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionFormatter;
 use AlecRabbit\Tools\Timer;
 use PHPUnit\Framework\TestCase;
 

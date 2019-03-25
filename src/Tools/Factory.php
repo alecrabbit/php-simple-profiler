@@ -2,32 +2,32 @@
 
 namespace AlecRabbit\Tools;
 
-use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionFormatter;
-use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionSymfonyFormatter;
-use AlecRabbit\Tools\Reports\Formatters\BenchmarkReportFormatter;
-use AlecRabbit\Tools\Reports\Formatters\ExtendedCounterReportFormatter;
-use AlecRabbit\Tools\Reports\Formatters\Formatter;
-use AlecRabbit\Tools\Reports\Formatters\ProfilerReportFormatter;
-use AlecRabbit\Tools\Reports\Formatters\SimpleCounterReportFormatter;
-use AlecRabbit\Tools\Reports\Formatters\TimerReportFormatter;
+use AlecRabbit\Tools\Formatters\BenchmarkFunctionFormatter;
+use AlecRabbit\Tools\Formatters\BenchmarkFunctionSymfonyFormatter;
+use AlecRabbit\Tools\Formatters\BenchmarkReportFormatter;
+use AlecRabbit\Tools\Formatters\Core\Formatter;
+use AlecRabbit\Tools\Formatters\ExtendedCounterReportFormatter;
+use AlecRabbit\Tools\Formatters\ProfilerReportFormatter;
+use AlecRabbit\Tools\Formatters\SimpleCounterReportFormatter;
+use AlecRabbit\Tools\Formatters\TimerReportFormatter;
 use Symfony\Component\Console\Helper\ProgressBar;
 use function AlecRabbit\typeOf;
 
 class Factory
 {
-    /** @var null|TimerReportFormatter */
+    /** @var null|\AlecRabbit\Tools\Formatters\TimerReportFormatter */
     protected static $timerReportFormatter;
 
     /** @var null|SimpleCounterReportFormatter */
     protected static $simpleCounterReportFormatter;
 
-    /** @var null|ExtendedCounterReportFormatter */
+    /** @var null|\AlecRabbit\Tools\Formatters\ExtendedCounterReportFormatter */
     protected static $extendedCounterReportFormatter;
 
-    /** @var null|ProfilerReportFormatter */
+    /** @var null|\AlecRabbit\Tools\Formatters\ProfilerReportFormatter */
     protected static $profilerReportFormatter;
 
-    /** @var null|BenchmarkReportFormatter */
+    /** @var null|\AlecRabbit\Tools\Formatters\BenchmarkReportFormatter */
     protected static $benchmarkReportFormatter;
 
     /** @var null|BenchmarkFunctionFormatter */
@@ -86,7 +86,7 @@ class Factory
     }
 
     /**
-     * @return SimpleCounterReportFormatter
+     * @return \AlecRabbit\Tools\Formatters\SimpleCounterReportFormatter
      */
     public static function getSimpleCounterReportFormatter(): SimpleCounterReportFormatter
     {
@@ -148,7 +148,7 @@ class Factory
     }
 
     /**
-     * @return ProfilerReportFormatter
+     * @return \AlecRabbit\Tools\Formatters\ProfilerReportFormatter
      */
     public static function getProfilerReportFormatter(): ProfilerReportFormatter
     {
@@ -160,7 +160,7 @@ class Factory
     }
 
     /**
-     * @param null|ProfilerReportFormatter $profilerReportFormatter
+     * @param null|\AlecRabbit\Tools\Formatters\ProfilerReportFormatter $profilerReportFormatter
      */
     public static function setProfilerReportFormatter(
         ?ProfilerReportFormatter $profilerReportFormatter
@@ -181,7 +181,7 @@ class Factory
     }
 
     /**
-     * @param null|BenchmarkReportFormatter $benchmarkReportFormatter
+     * @param null|\AlecRabbit\Tools\Formatters\BenchmarkReportFormatter $benchmarkReportFormatter
      */
     public static function setBenchmarkReportFormatter(
         ?BenchmarkReportFormatter $benchmarkReportFormatter

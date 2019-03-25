@@ -5,9 +5,9 @@ namespace AlecRabbit\Tests\Tools;
 
 use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Contracts\Strings;
+use AlecRabbit\Tools\Formatters\BenchmarkReportFormatter;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
-use AlecRabbit\Tools\Reports\Formatters\BenchmarkReportFormatter;
 use AlecRabbit\Tools\Reports\ProfilerReport;
 use PHPUnit\Framework\TestCase;
 use function AlecRabbit\Helpers\getValue;

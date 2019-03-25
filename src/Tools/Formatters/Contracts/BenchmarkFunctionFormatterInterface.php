@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace AlecRabbit\Tools\Reports\Formatters\Contracts;
+namespace AlecRabbit\Tools\Formatters\Contracts;
 
-use AlecRabbit\Tools\Reports\Formatters\BenchmarkFunctionFormatter;
+use AlecRabbit\Tools\Formatters\BenchmarkFunctionFormatter;
 
 interface BenchmarkFunctionFormatterInterface extends FormatterInterface
 {

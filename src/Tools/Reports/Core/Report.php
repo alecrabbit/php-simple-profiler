@@ -3,9 +3,9 @@
 namespace AlecRabbit\Tools\Reports\Core;
 
 use AlecRabbit\Tools\Formattable;
+use AlecRabbit\Tools\Formatters\Contracts\FormatterInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
 use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
-use AlecRabbit\Tools\Reports\Formatters\Contracts\FormatterInterface;
 use function AlecRabbit\typeOf;
 
 abstract class Report extends Formattable implements ReportInterface
