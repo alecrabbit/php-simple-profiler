@@ -223,7 +223,7 @@ class Factory
             return
                 new Benchmark($iterations);
         }
-        if (\class_exists(ProgressBar::class)) {
+        if (static::symfonyConsoleInstalled()) {
             // TODO where to set colored formatters?
             static::setFormatter(new BenchmarkFunctionSymfonyFormatter());
             return
@@ -231,5 +231,13 @@ class Factory
         }
         return
             new BenchmarkSimpleProgressBar($iterations);
+    }
+
+    /**
+     * @return bool
+     */
+    protected static function symfonyConsoleInstalled(): bool
+    {
+        return \class_exists(ProgressBar::class);
     }
 }

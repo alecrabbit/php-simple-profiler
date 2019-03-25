@@ -122,11 +122,20 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
 
     /**
      * Resets Benchmark object clear
+     * @param null|string $char
+     * @return string
      * @throws \Exception
      */
-    public function reset(): void
+    public function reset(?string $char = null): string
     {
         $this->initialize();
+        return
+            $this->sectionSeparator($char);
+    }
+
+    protected function sectionSeparator(?string $char): string
+    {
+        return (string)$char;
     }
 
     /**
@@ -153,6 +162,9 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
      */
     public function addFunction($func, ...$args): void
     {
+        if ($this->isLaunched()) {
+            throw new \RuntimeException('You should reset benchmark object before adding a new function.');
+        }
         if (!\is_callable($func, false, $name)) {
             throw new \InvalidArgumentException(
                 sprintf(
@@ -177,6 +189,14 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
         $this->resetComment();
         $this->added->bump();
         $this->totalIterations += $this->iterations;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLaunched(): bool
+    {
+        return $this->launched;
     }
 
     /**
@@ -261,14 +281,6 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     public function isNotLaunched(): bool
     {
         return !$this->isLaunched();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isLaunched(): bool
-    {
-        return $this->launched;
     }
 
     /**

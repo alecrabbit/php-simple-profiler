@@ -68,7 +68,7 @@ There are moments when you have to choose between two or more different approach
  * `Benchmark::class` (no default progress bar, silent measurements)
  * `BenchmarkSymfonyPB::class` (with Symfony progress bar)
  ```
-[=====>------------------------------------------------------]   9% 1 secs/12 sec
+   9% [=====>------------------------------------------------------]  1 secs/12 sec
 ```
  * `BenchmarkSimplePB::class` (with star progress bar)
   ```

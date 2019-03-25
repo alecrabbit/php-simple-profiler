@@ -17,6 +17,7 @@ interface DefaultThemes
     public const RED = 'red';
     public const INFO = 'info';
     public const UNDERLINE = 'underline';
+    public const UNDERLINE_BOLD = 'underlineBold';
     public const UNDERLINE_ITALIC = 'underlineItalic';
 
     public const THEMES = [
@@ -33,6 +34,7 @@ interface DefaultThemes
         self::RED => 'red',
         self::INFO => 'green',
         self::UNDERLINE => ['underline'],
+        self::UNDERLINE_BOLD => ['underline', 'bold'],
         self::UNDERLINE_ITALIC => ['underline', 'italic'],
     ];
 }

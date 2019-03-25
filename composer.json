@@ -1,7 +1,7 @@
 {
   "name": "alecrabbit/php-simple-profiler",
   "type": "library",
-  "description": "PHP simple profiler",
+  "description": "For functions benchmarking, contain counters and timers classes.",
   "keywords": [
     "counter",
     "timer",
@@ -25,7 +25,8 @@
     "phpunit/phpunit": "^8.0",
     "symfony/console": "^4.2",
     "symfony/phpunit-bridge": "^4.2",
-    "symfony/var-dumper": "^4.2"
+    "symfony/var-dumper": "^4.2",
+    "roave/no-leaks": "^1.1"
   },
   "suggest": {
     "symfony/console": "To use symfony progress bar and colored output."

@@ -12,6 +12,7 @@ class BenchmarkSymfonyProgressBar extends Benchmark
     public const DEFAULT_PROGRESSBAR_FORMAT = ' %percent:3s%% [%bar%] %elapsed:6s%/%estimated:-6s%';
     public const PROGRESS_BAR_MIN_WIDTH = 60;
     public const PROGRESS_BAR_MAX_WIDTH = 80;
+    protected const DEFAULT_SEPARATOR_CHAR = '-';
 
     /** @var ConsoleOutput */
     protected $output;
@@ -20,7 +21,9 @@ class BenchmarkSymfonyProgressBar extends Benchmark
     protected $progressBar;
 
     /** @var int */
-    private $progressBarWidth;
+    protected $progressBarWidth;
+    /** @var int */
+    protected $terminalWidth = 80;
 
     public function __construct(
         int $iterations = 1000,
@@ -31,7 +34,7 @@ class BenchmarkSymfonyProgressBar extends Benchmark
         parent::__construct($iterations);
         $this->output = $output ?? new ConsoleOutput();
         $this->advanceSteps = $progressBarMax ?? $this->advanceSteps;
-
+        $this->terminalWidth = $this->terminalWidth();
 
         $this->progressBar = new ProgressBar($this->output, $this->advanceSteps);
         $this->progressBarWidth = $this->refineProgressBarWidth($progressBarWidth);
@@ -58,6 +61,14 @@ class BenchmarkSymfonyProgressBar extends Benchmark
     }
 
     /**
+     * @return int
+     */
+    protected function terminalWidth(): int
+    {
+        return (int)((new Terminal())->getWidth() * 0.8);
+    }
+
+    /**
      * @param null|int $progressBarWidth
      * @return int
      */
@@ -65,7 +76,7 @@ class BenchmarkSymfonyProgressBar extends Benchmark
     {
         return
             (int)bounds(
-                $progressBarWidth ?? (int)((new Terminal())->getWidth() * 0.8),
+                $progressBarWidth ?? $this->terminalWidth,
                 static::PROGRESS_BAR_MIN_WIDTH,
                 static::PROGRESS_BAR_MAX_WIDTH
             );
@@ -97,9 +108,11 @@ class BenchmarkSymfonyProgressBar extends Benchmark
 
     protected function showComment(string $comment = ''): void
     {
-//        $outputStyle = new OutputFormatterStyle('red', 'yellow', ['bold', 'blink']);
-//        $this->output->getFormatter()->setStyle('fire', $outputStyle);
-//
         $this->output->writeln('<comment>' . $comment . '</>');
+    }
+
+    protected function sectionSeparator(?string $char): string
+    {
+        return str_repeat($char ?? static::DEFAULT_SEPARATOR_CHAR, $this->terminalWidth) . PHP_EOL. PHP_EOL;
     }
 }

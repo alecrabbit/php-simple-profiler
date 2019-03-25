@@ -20,6 +20,7 @@ use AlecRabbit\Tools\Reports\Formatters\Contracts\DefaultThemes;
  * @method green(string $text)
  * @method info(string $text)
  * @method underline(string $text)
+ * @method underlineBold(string $text)
  * @method underlineItalic(string $text)
  */
 class Theme implements DefaultThemes
