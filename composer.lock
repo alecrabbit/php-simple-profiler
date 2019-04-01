@@ -57,16 +57,16 @@
         },
         {
             "name": "alecrabbit/php-console-colour",
-            "version": "0.1.6-ALPHA",
+            "version": "0.1.7-ALPHA",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-console-colour.git",
-                "reference": "dd9f63816b7b464380518b9bc781939a6a79dfa5"
+                "reference": "71e77aa2ea1b6f3f9815efb98ac37107e95a224a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-console-colour/zipball/dd9f63816b7b464380518b9bc781939a6a79dfa5",
-                "reference": "dd9f63816b7b464380518b9bc781939a6a79dfa5",
+                "url": "https://api.github.com/repos/alecrabbit/php-console-colour/zipball/71e77aa2ea1b6f3f9815efb98ac37107e95a224a",
+                "reference": "71e77aa2ea1b6f3f9815efb98ac37107e95a224a",
                 "shasum": ""
             },
             "require": {
@@ -82,7 +82,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "AlecRabbit\\ConsoleColour\\": "src\\ConsoleColour"
+                    "AlecRabbit\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -91,6 +91,7 @@
             ],
             "description": "Helps to do colored console output.",
             "keywords": [
+                "ansi",
                 "color",
                 "colour",
                 "console",
@@ -99,7 +100,7 @@
                 "terminal",
                 "width"
             ],
-            "time": "2019-04-01T13:23:48+00:00"
+            "time": "2019-04-01T20:54:05+00:00"
         },
         {
             "name": "alecrabbit/php-helpers",
