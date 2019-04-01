@@ -4,15 +4,14 @@ namespace AlecRabbit\Tools\Formatters;
 
 use AlecRabbit\Accessories\Pretty;
 use AlecRabbit\ConsoleColour\Exception\InvalidStyleException;
-use AlecRabbit\ConsoleColour\Theme;
+use AlecRabbit\ConsoleColour\Themes;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
-use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use function AlecRabbit\str_wrap;
 use function AlecRabbit\typeOf;
 
 class BenchmarkFunctionSymfonyFormatter extends BenchmarkFunctionFormatter
 {
-    /** @var Theme */
+    /** @var Themes */
     protected $theme;
     /** @var float */
     protected $yellowThreshold;
@@ -25,7 +24,7 @@ class BenchmarkFunctionSymfonyFormatter extends BenchmarkFunctionFormatter
      */
     public function __construct()
     {
-        $this->theme = new Theme(true);
+        $this->theme = new Themes(true);
         $this->yellowThreshold = 0.05;
         $this->redThreshold = 0.9;
     }
@@ -48,27 +47,27 @@ class BenchmarkFunctionSymfonyFormatter extends BenchmarkFunctionFormatter
     }
 
     /**
-     * @param BenchmarkRelative $br
      * @param BenchmarkFunction $function
-     * @param array $argumentsTypes
      *
      * @return string
      */
     protected function preformatFunction(
-        BenchmarkRelative $br,
-        BenchmarkFunction $function,
-        array $argumentsTypes
+        BenchmarkFunction $function
     ): string {
-        $rank = $br->getRank();
-        return
-            sprintf(
-                '%s. %s(%s) %s %s',
-                (string)$rank,
-                $this->prepAverage($rank, $br->getAverage()),
-                $this->relativePercent($br->getRelative()),
-                $this->prepName($function, $argumentsTypes),
-                $this->theme->yellow($function->comment())
-            );
+        $argumentsTypes = $this->extractArgumentsTypes($function->getArgs());
+        if ($br = $function->getBenchmarkRelative()) {
+            $rank = $br->getRank();
+            return
+                sprintf(
+                    '%s. %s(%s) %s %s',
+                    (string)$rank,
+                    $this->prepAverage($rank, $br->getAverage()),
+                    $this->relativePercent($br->getRelative()),
+                    $this->prepName($function, $argumentsTypes),
+                    $this->theme->yellow($function->comment())
+                );
+        }
+        return '';
     }
 
     /**
@@ -97,7 +96,7 @@ class BenchmarkFunctionSymfonyFormatter extends BenchmarkFunctionFormatter
             STR_PAD_LEFT
         );
         return
-            str_replace($proto, $this->theme->underlineBold($str), $res);
+            str_replace($proto, $this->theme->underlinedBold($str), $res);
     }
 
     /**

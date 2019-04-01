@@ -7,7 +7,6 @@ use AlecRabbit\Tools\Formattable;
 use AlecRabbit\Tools\Formatters\Contracts\BenchmarkFunctionFormatterInterface;
 use AlecRabbit\Tools\Formatters\Core\Formatter;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
-use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use SebastianBergmann\Exporter\Exporter;
 use function AlecRabbit\typeOf;
 
@@ -55,16 +54,15 @@ class BenchmarkFunctionFormatter extends Formatter implements BenchmarkFunctionF
      */
     protected function formatBenchmarkRelative(BenchmarkFunction $function): string
     {
-        if ($br = $function->getBenchmarkRelative()) {
-            $argumentsTypes = $this->extractArgumentsTypes($function->getArgs());
+        if ($function->getBenchmarkRelative()) {
             $executionReturn = $function->getReturn();
             if ($this->equalReturns || $function->isNotShowReturns()) {
-                return $this->preformatFunction($br, $function, $argumentsTypes);
+                return $this->preformatFunction($function);
             }
             return
                 sprintf(
                     '%s %s %s %s',
-                    $this->preformatFunction($br, $function, $argumentsTypes),
+                    $this->preformatFunction($function),
                     PHP_EOL,
                     $this->returnToString($executionReturn),
                     PHP_EOL
@@ -89,27 +87,27 @@ class BenchmarkFunctionFormatter extends Formatter implements BenchmarkFunctionF
     }
 
     /**
-     * @param BenchmarkRelative $br
      * @param BenchmarkFunction $function
-     * @param array $argumentsTypes
      *
      * @return string
      */
     protected function preformatFunction(
-        BenchmarkRelative $br,
-        BenchmarkFunction $function,
-        array $argumentsTypes
+        BenchmarkFunction $function
     ): string {
-        return
-            sprintf(
-                '%s. %s (%s) %s(%s) %s',
-                (string)$br->getRank(),
-                $this->average($br->getAverage()),
-                $this->relativePercent($br->getRelative()),
-                $function->humanReadableName(),
-                implode(', ', $argumentsTypes),
-                $function->comment()
-            );
+        $argumentsTypes = $this->extractArgumentsTypes($function->getArgs());
+        if ($br = $function->getBenchmarkRelative()) {
+            return
+                sprintf(
+                    '%s. %s (%s) %s(%s) %s',
+                    (string)$br->getRank(),
+                    $this->average($br->getAverage()),
+                    $this->relativePercent($br->getRelative()),
+                    $function->humanReadableName(),
+                    implode(', ', $argumentsTypes),
+                    $function->comment()
+                );
+        }
+        return '';
     }
 
     /**
