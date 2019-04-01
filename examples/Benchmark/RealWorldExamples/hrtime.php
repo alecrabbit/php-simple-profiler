@@ -6,7 +6,15 @@ use AlecRabbit\Tools\Factory;
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 if (PHP_VERSION_ID < 70300) {
-    echo (new Themes())->comment('This example uses polyfill functions on php versions below 7.3') . PHP_EOL;
+    $themes = new Themes();
+    echo
+        $themes->warning(
+            '[WARNING]: This example uses polyfill functions(~4 times slower) on php versions below 7.3'
+        ) . PHP_EOL;
+    echo
+        $themes->dark(
+            'Your version: ' . PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '.' . PHP_RELEASE_VERSION
+        ) . PHP_EOL;
 }
 try {
     $benchmark = Factory::createBenchmark();
