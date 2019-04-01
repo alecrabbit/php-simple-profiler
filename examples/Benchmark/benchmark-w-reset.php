@@ -10,7 +10,7 @@ use AlecRabbit\Tools\Factory;
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    Factory::setDefaultIterations(5000); // optional
+    Factory::setDefaultIterations(500000); // optional
     $benchmark = Factory::createBenchmark();
     $benchmark
         ->withComment('floatval()')

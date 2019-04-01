@@ -1,9 +1,13 @@
 <?php declare(strict_types=1);
 
+use AlecRabbit\ConsoleColour\Themes;
 use AlecRabbit\Tools\Factory;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
+if (PHP_VERSION_ID < 70300) {
+    echo (new Themes())->comment('This example uses polyfill functions on php versions below 7.3') . PHP_EOL;
+}
 try {
     $benchmark = Factory::createBenchmark();
     $benchmark

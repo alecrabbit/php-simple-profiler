@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 try {
     $benchmark = Factory::createBenchmark();
-    $a = [1, 1, null, 4, 4, 5];
+    $a = [1, 1, null, 4, 4, 6, 34, 12, 4, 6, 7, 8, 3, '6', 7689, 56, 23, 3, '7', 89, null, 64, 65, 45, null, 5];
     $c = new class
     {
         public function process(array $a): array

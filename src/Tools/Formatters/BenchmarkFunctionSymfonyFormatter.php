@@ -64,7 +64,7 @@ class BenchmarkFunctionSymfonyFormatter extends BenchmarkFunctionFormatter
                     $this->prepAverage($rank, $br->getAverage()),
                     $this->relativePercent($br->getRelative()),
                     $this->prepName($function, $argumentsTypes),
-                    $this->theme->yellow($function->comment())
+                    $this->theme->comment($function->comment())
                 );
         }
         return '';
