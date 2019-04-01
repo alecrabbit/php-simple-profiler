@@ -54,7 +54,7 @@ class BenchmarkFunctionFormatter extends Formatter implements BenchmarkFunctionF
      */
     protected function formatBenchmarkRelative(BenchmarkFunction $function): string
     {
-        if ($br = $function->getBenchmarkRelative()) {
+        if ($function->getBenchmarkRelative()) {
             $executionReturn = $function->getReturn();
             if ($this->equalReturns || $function->isNotShowReturns()) {
                 return $this->preformatFunction($function);

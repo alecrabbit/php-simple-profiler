@@ -67,6 +67,7 @@ class BenchmarkFunctionSymfonyFormatter extends BenchmarkFunctionFormatter
                     $this->theme->yellow($function->comment())
                 );
         }
+        return '';
     }
 
     /**
