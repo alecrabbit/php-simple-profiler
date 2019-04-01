@@ -57,24 +57,24 @@
         },
         {
             "name": "alecrabbit/php-console-colour",
-            "version": "0.1.0-ALPHA3",
+            "version": "0.1.6-ALPHA",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-console-colour.git",
-                "reference": "3f2ab6b2a580bace6b74b36ea7e3a663665f277d"
+                "reference": "dd9f63816b7b464380518b9bc781939a6a79dfa5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-console-colour/zipball/3f2ab6b2a580bace6b74b36ea7e3a663665f277d",
-                "reference": "3f2ab6b2a580bace6b74b36ea7e3a663665f277d",
+                "url": "https://api.github.com/repos/alecrabbit/php-console-colour/zipball/dd9f63816b7b464380518b9bc781939a6a79dfa5",
+                "reference": "dd9f63816b7b464380518b9bc781939a6a79dfa5",
                 "shasum": ""
             },
             "require": {
                 "alecrabbit/php-traits": "^0.2",
-                "jakub-onderka/php-console-color": "^0.2",
                 "php": "^7.2"
             },
             "require-dev": {
+                "alecrabbit/php-helpers": "^0.5.1",
                 "nunomaduro/collision": "^3.0",
                 "phpunit/phpunit": "^8.0",
                 "symfony/var-dumper": "^4.2"
@@ -82,15 +82,24 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "AlecRabbit\\": "src"
+                    "AlecRabbit\\ConsoleColour\\": "src\\ConsoleColour"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "description": "PHP package alecrabbit/php-console-colour",
-            "time": "2019-03-25T00:54:06+00:00"
+            "description": "Helps to do colored console output.",
+            "keywords": [
+                "color",
+                "colour",
+                "console",
+                "height",
+                "output",
+                "terminal",
+                "width"
+            ],
+            "time": "2019-04-01T13:23:48+00:00"
         },
         {
             "name": "alecrabbit/php-helpers",
@@ -156,16 +165,16 @@
         },
         {
             "name": "alecrabbit/php-traits",
-            "version": "0.2.3",
+            "version": "0.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-traits.git",
-                "reference": "c7a78093258ea0e7ec1887cfbde855f0e849c138"
+                "reference": "a209692b6522baa069bd6571f78e9d68d89f5507"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-traits/zipball/c7a78093258ea0e7ec1887cfbde855f0e849c138",
-                "reference": "c7a78093258ea0e7ec1887cfbde855f0e849c138",
+                "url": "https://api.github.com/repos/alecrabbit/php-traits/zipball/a209692b6522baa069bd6571f78e9d68d89f5507",
+                "reference": "a209692b6522baa069bd6571f78e9d68d89f5507",
                 "shasum": ""
             },
             "require": {
@@ -191,49 +200,7 @@
                 "MIT"
             ],
             "description": "PHP traits to use in every project :)",
-            "time": "2019-03-09T11:15:59+00:00"
-        },
-        {
-            "name": "jakub-onderka/php-console-color",
-            "version": "v0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/JakubOnderka/PHP-Console-Color.git",
-                "reference": "d5deaecff52a0d61ccb613bb3804088da0307191"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/JakubOnderka/PHP-Console-Color/zipball/d5deaecff52a0d61ccb613bb3804088da0307191",
-                "reference": "d5deaecff52a0d61ccb613bb3804088da0307191",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "jakub-onderka/php-code-style": "1.0",
-                "jakub-onderka/php-parallel-lint": "1.0",
-                "jakub-onderka/php-var-dump-check": "0.*",
-                "phpunit/phpunit": "~4.3",
-                "squizlabs/php_codesniffer": "1.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "JakubOnderka\\PhpConsoleColor\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-2-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Jakub Onderka",
-                    "email": "jakub.onderka@gmail.com"
-                }
-            ],
-            "time": "2018-09-29T17:23:10+00:00"
+            "time": "2019-03-24T22:59:59+00:00"
         },
         {
             "name": "krowinski/bcmath-extended",
@@ -294,16 +261,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.16.1",
+            "version": "2.16.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "b509524136d579f6b15ad9af4e5bd4533d1ab6c2"
+                "reference": "720a9c36927396efeeb48a972e9d129d44b6dc28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/b509524136d579f6b15ad9af4e5bd4533d1ab6c2",
-                "reference": "b509524136d579f6b15ad9af4e5bd4533d1ab6c2",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/720a9c36927396efeeb48a972e9d129d44b6dc28",
+                "reference": "720a9c36927396efeeb48a972e9d129d44b6dc28",
                 "shasum": ""
             },
             "require": {
@@ -350,7 +317,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2019-03-20T12:20:01+00:00"
+            "time": "2019-03-29T12:23:12+00:00"
         },
         {
             "name": "sebastian/exporter",
@@ -848,6 +815,48 @@
                 "whoops"
             ],
             "time": "2018-10-23T09:00:00+00:00"
+        },
+        {
+            "name": "jakub-onderka/php-console-color",
+            "version": "v0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JakubOnderka/PHP-Console-Color.git",
+                "reference": "d5deaecff52a0d61ccb613bb3804088da0307191"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JakubOnderka/PHP-Console-Color/zipball/d5deaecff52a0d61ccb613bb3804088da0307191",
+                "reference": "d5deaecff52a0d61ccb613bb3804088da0307191",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "jakub-onderka/php-code-style": "1.0",
+                "jakub-onderka/php-parallel-lint": "1.0",
+                "jakub-onderka/php-var-dump-check": "0.*",
+                "phpunit/phpunit": "~4.3",
+                "squizlabs/php_codesniffer": "1.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "JakubOnderka\\PhpConsoleColor\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Jakub Onderka",
+                    "email": "jakub.onderka@gmail.com"
+                }
+            ],
+            "time": "2018-09-29T17:23:10+00:00"
         },
         {
             "name": "jakub-onderka/php-console-highlighter",
@@ -1578,16 +1587,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "8.0.5",
+            "version": "8.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "19cbed2120839772c4a00e8b28456b0c77d1a7b4"
+                "reference": "925109f8bbe6dae28fbc7bb07446a53abd3b1c25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/19cbed2120839772c4a00e8b28456b0c77d1a7b4",
-                "reference": "19cbed2120839772c4a00e8b28456b0c77d1a7b4",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/925109f8bbe6dae28fbc7bb07446a53abd3b1c25",
+                "reference": "925109f8bbe6dae28fbc7bb07446a53abd3b1c25",
                 "shasum": ""
             },
             "require": {
@@ -1656,7 +1665,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-03-16T07:33:46+00:00"
+            "time": "2019-03-26T14:00:24+00:00"
         },
         {
             "name": "psr/log",
