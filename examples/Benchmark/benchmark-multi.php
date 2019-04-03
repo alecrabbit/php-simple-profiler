@@ -1,9 +1,4 @@
 <?php
-/**
- * User: alec
- * Date: 24.12.18
- * Time: 17:13
- */
 
 use AlecRabbit\Tools\Factory;
 use function AlecRabbit\brackets;
@@ -12,7 +7,7 @@ use function AlecRabbit\typeOf;
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    Factory::setDefaultIterations(50000); // optional
+    Factory::setDefaultIterations(5000000); // optional
     $benchmark1 = Factory::createBenchmark();
 
     $benchmark1
@@ -41,7 +36,7 @@ try {
     echo $benchmark1->stat() . PHP_EOL;
     echo PHP_EOL;
 
-    echo 'Throws an exception here:'. PHP_EOL;
+    echo 'Throws an exception here:' . PHP_EOL;
     try {
         $benchmark1
             ->withComment('floatval()')
@@ -49,11 +44,10 @@ try {
     } catch (\RuntimeException $e) {
         echo brackets(typeOf($e)) . ' ' . $e->getMessage() . PHP_EOL;
     }
-
-    echo PHP_EOL . PHP_EOL;
+    echo PHP_EOL;
+    echo $benchmark1->reset('═');
 
     $benchmark2 = Factory::createBenchmark();
-    echo $benchmark2->reset();
 
     $benchmark2
         ->withComment('floatval()')

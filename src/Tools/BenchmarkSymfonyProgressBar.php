@@ -4,7 +4,6 @@ namespace AlecRabbit\Tools;
 
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\Console\Terminal;
 use function AlecRabbit\Helpers\bounds;
 
 class BenchmarkSymfonyProgressBar extends Benchmark
@@ -12,7 +11,6 @@ class BenchmarkSymfonyProgressBar extends Benchmark
     public const DEFAULT_PROGRESSBAR_FORMAT = ' %percent:3s%% [%bar%] %elapsed:6s%/%estimated:-6s%';
     public const PROGRESS_BAR_MIN_WIDTH = 60;
     public const PROGRESS_BAR_MAX_WIDTH = 80;
-    protected const DEFAULT_SEPARATOR_CHAR = '-';
 
     /** @var ConsoleOutput */
     protected $output;
@@ -22,24 +20,19 @@ class BenchmarkSymfonyProgressBar extends Benchmark
 
     /** @var int */
     protected $progressBarWidth;
-    /** @var int */
-    protected $terminalWidth = 80;
 
     public function __construct(
         int $iterations = 1000,
         ?int $progressBarMax = null,
         ?int $progressBarWidth = null,
-        ?ConsoleOutput $output = null
+        ?ConsoleOutput $output = null,
+        ?ProgressBar $progressBar = null
     ) {
         parent::__construct($iterations);
         $this->output = $output ?? new ConsoleOutput();
         $this->advanceSteps = $progressBarMax ?? $this->advanceSteps;
-        $this->terminalWidth = $this->terminalWidth();
 
-        $this->progressBar = new ProgressBar($this->output, $this->advanceSteps);
-        $this->progressBarWidth = $this->refineProgressBarWidth($progressBarWidth);
-        $this->progressBar->setBarWidth($this->progressBarWidth);
-        $this->progressBar->setFormat(static::DEFAULT_PROGRESSBAR_FORMAT);
+        $this->progressBar = $progressBar ?? $this->createProgressBar($progressBarWidth);
 
         $progressStart =
             function (): void {
@@ -61,11 +54,26 @@ class BenchmarkSymfonyProgressBar extends Benchmark
     }
 
     /**
-     * @return int
+     * @param null|int $progressBarWidth
+     * @return ProgressBar
      */
-    protected function terminalWidth(): int
+    protected function createProgressBar(?int $progressBarWidth): ProgressBar
     {
-        return (int)((new Terminal())->getWidth() * 0.8);
+        $progressBar = new ProgressBar($this->output, $this->advanceSteps);
+        $this->progressBarWidth = $this->refineProgressBarWidth($progressBarWidth);
+        $progressBar->setBarWidth($this->progressBarWidth);
+        $progressBar->setFormat(static::DEFAULT_PROGRESSBAR_FORMAT);
+
+        // the finished part of the bar
+        $progressBar->setBarCharacter('█');
+
+        // the unfinished part of the bar
+        $progressBar->setEmptyBarCharacter('░'); // ░ ▒ ▓
+
+        // the progress character
+        $progressBar->setProgressCharacter('');
+
+        return $progressBar;
     }
 
     /**
@@ -113,6 +121,10 @@ class BenchmarkSymfonyProgressBar extends Benchmark
 
     protected function sectionSeparator(?string $char): string
     {
-        return str_repeat($char ?? static::DEFAULT_SEPARATOR_CHAR, $this->terminalWidth) . PHP_EOL. PHP_EOL;
+        return
+            ' ' . str_repeat(
+                $char ?? static::DEFAULT_SEPARATOR_CHAR,
+                $this->terminalWidth - 2
+            ) . ' ' . PHP_EOL . PHP_EOL;
     }
 }

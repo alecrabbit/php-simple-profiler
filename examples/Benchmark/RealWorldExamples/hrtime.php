@@ -13,7 +13,7 @@ if (PHP_VERSION_ID < 70300) {
         ) . PHP_EOL;
     echo
         $themes->dark(
-            'Your version: ' . PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '.' . PHP_RELEASE_VERSION
+            'Your version: ' . PHP_VERSION
         ) . PHP_EOL;
 }
 try {

@@ -4,6 +4,7 @@ namespace AlecRabbit\Tools;
 
 use AlecRabbit\Accessories\MemoryUsage;
 use AlecRabbit\Accessories\Rewindable;
+use AlecRabbit\ConsoleColour\Terminal;
 use AlecRabbit\Tools\Contracts\BenchmarkInterface;
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
@@ -18,6 +19,11 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     public const MIN_ITERATIONS = 100;
     public const DEFAULT_STEPS = 100;
     public const CLOSURE_NAME = 'λ';
+
+    public const DEFAULT_SEPARATOR_CHAR = '─';
+    public const DEFAULT_END_SEPARATOR_CHAR = '═';
+    public const DEFAULT_TERMINAL_WIDTH = 80;
+    public const WIDTH_COEFFICIENT = 0.8;
 
     /** @var int */
     protected $advanceSteps = self::DEFAULT_STEPS;
@@ -47,6 +53,8 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     protected $functionIndex = 1;
     /** @var bool */
     protected $silent = false;
+    /** @var int */
+    protected $terminalWidth = self::DEFAULT_TERMINAL_WIDTH;
 
     /**
      * Benchmark constructor.
@@ -60,7 +68,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
         $this->silent = $silent ?? $this->silent;
 
         $this->iterationNumberGenerator =
-            function (int $iterations, int $i = 1): \Generator {
+            static function (int $iterations, int $i = 1): \Generator {
                 while ($i <= $iterations) {
                     yield $i++;
                 }
@@ -68,6 +76,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
 
         $this->timer = new Timer(); // Timer to count benchmark process total time
         $this->initialize();
+        $this->terminalWidth = $this->terminalWidth();
     }
 
     protected function refineIterations(?int $iterations): int
@@ -121,7 +130,15 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     }
 
     /**
-     * Resets Benchmark object clear
+     * @return int
+     */
+    protected function terminalWidth(): int
+    {
+        return (int)((new Terminal())->width() * static::WIDTH_COEFFICIENT);
+    }
+
+    /**
+     * Resets Benchmark object clear. Returns divider string.
      * @param null|string $char
      * @return string
      * @throws \Exception
@@ -135,7 +152,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
 
     protected function sectionSeparator(?string $char): string
     {
-        return (string)$char;
+        return str_repeat($char ?? static::DEFAULT_SEPARATOR_CHAR, self::DEFAULT_TERMINAL_WIDTH) . PHP_EOL . PHP_EOL;
     }
 
     /**
@@ -233,10 +250,11 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     }
 
     /**
+     * @param bool $eol
      * @return string
      * @throws \Exception
      */
-    public function stat(): string
+    public function stat(bool $eol = true): string
     {
         return
             sprintf(
@@ -244,7 +262,8 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
                 $this->getTimer()->elapsed(),
                 PHP_EOL,
                 (string)$this->memoryUsageReport
-            );
+            ) .
+            ($eol ? PHP_EOL : '');
     }
 
     /**
