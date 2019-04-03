@@ -4,6 +4,7 @@ namespace AlecRabbit\Tools;
 
 use AlecRabbit\Accessories\MemoryUsage;
 use AlecRabbit\Accessories\Rewindable;
+use AlecRabbit\ConsoleColour\Terminal;
 use AlecRabbit\Tools\Contracts\BenchmarkInterface;
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
@@ -22,6 +23,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     public const DEFAULT_SEPARATOR_CHAR = '─';
     public const DEFAULT_END_SEPARATOR_CHAR = '═';
     public const DEFAULT_TERMINAL_WIDTH = 80;
+    public const WIDTH_COEFFICIENT = 0.8;
 
     /** @var int */
     protected $advanceSteps = self::DEFAULT_STEPS;
@@ -66,7 +68,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
         $this->silent = $silent ?? $this->silent;
 
         $this->iterationNumberGenerator =
-            function (int $iterations, int $i = 1): \Generator {
+            static function (int $iterations, int $i = 1): \Generator {
                 while ($i <= $iterations) {
                     yield $i++;
                 }
@@ -74,6 +76,15 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
 
         $this->timer = new Timer(); // Timer to count benchmark process total time
         $this->initialize();
+        $this->terminalWidth = $this->terminalWidth();
+    }
+
+    /**
+     * @return int
+     */
+    protected function terminalWidth(): int
+    {
+        return (int)((new Terminal())->width() * static::WIDTH_COEFFICIENT);
     }
 
     protected function refineIterations(?int $iterations): int

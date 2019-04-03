@@ -2,9 +2,9 @@
 
 namespace AlecRabbit\Tools;
 
+use AlecRabbit\ConsoleColour\Terminal;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\Console\Terminal;
 use function AlecRabbit\Helpers\bounds;
 
 class BenchmarkSymfonyProgressBar extends Benchmark
@@ -31,7 +31,6 @@ class BenchmarkSymfonyProgressBar extends Benchmark
         parent::__construct($iterations);
         $this->output = $output ?? new ConsoleOutput();
         $this->advanceSteps = $progressBarMax ?? $this->advanceSteps;
-        $this->terminalWidth = $this->terminalWidth();
 
         $this->progressBar = new ProgressBar($this->output, $this->advanceSteps);
         $this->progressBarWidth = $this->refineProgressBarWidth($progressBarWidth);
@@ -55,14 +54,6 @@ class BenchmarkSymfonyProgressBar extends Benchmark
             };
 
         $this->showProgressBy($progressStart, $progressAdvance, $progressFinish);
-    }
-
-    /**
-     * @return int
-     */
-    protected function terminalWidth(): int
-    {
-        return (int)((new Terminal())->getWidth() * 0.8);
     }
 
     /**
@@ -110,6 +101,10 @@ class BenchmarkSymfonyProgressBar extends Benchmark
 
     protected function sectionSeparator(?string $char): string
     {
-        return str_repeat($char ?? static::DEFAULT_SEPARATOR_CHAR, $this->terminalWidth) . PHP_EOL. PHP_EOL;
+        return
+            ' ' . str_repeat(
+                $char ?? static::DEFAULT_SEPARATOR_CHAR,
+                $this->terminalWidth - 2
+            ) . ' ' . PHP_EOL . PHP_EOL;
     }
 }

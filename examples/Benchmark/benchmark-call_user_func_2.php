@@ -1,6 +1,6 @@
 <?php
 
-use AlecRabbit\Tools\OldBenchmark;
+use AlecRabbit\Tools\Benchmark;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
@@ -11,12 +11,13 @@ echo 'PHP version: ' . PHP_VERSION . PHP_EOL;
  * Let's determine what is faster \call_user_func($func, ...$args) or $func(...$args)
 */
 
-$benchmark = new OldBenchmark(500000);
+$benchmark = new Benchmark(500000);
 $a = [1, 2, 3];
 
-$func = function (array $a) {
-    return array_sum($a);
-};
+$func =
+    static function (array $a) {
+        return array_sum($a);
+    };
 
 $benchmark
     ->withComment('Call signature: call_user_func($func, ...$args)')
@@ -28,6 +29,5 @@ $benchmark
     ->useName('$func')
     ->addFunction($func, $a);
 
-$benchmark->run();
-echo $benchmark->getReport() . PHP_EOL;
+echo $benchmark->report() . PHP_EOL;
 echo $benchmark->stat() . PHP_EOL;
