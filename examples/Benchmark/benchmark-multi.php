@@ -1,9 +1,4 @@
 <?php
-/**
- * User: alec
- * Date: 24.12.18
- * Time: 17:13
- */
 
 use AlecRabbit\Tools\Factory;
 use function AlecRabbit\brackets;

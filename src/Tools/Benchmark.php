@@ -79,14 +79,6 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
         $this->terminalWidth = $this->terminalWidth();
     }
 
-    /**
-     * @return int
-     */
-    protected function terminalWidth(): int
-    {
-        return (int)((new Terminal())->width() * static::WIDTH_COEFFICIENT);
-    }
-
     protected function refineIterations(?int $iterations): int
     {
         $iterations = $iterations ?? self::MIN_ITERATIONS;
@@ -138,6 +130,14 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     }
 
     /**
+     * @return int
+     */
+    protected function terminalWidth(): int
+    {
+        return (int)((new Terminal())->width() * static::WIDTH_COEFFICIENT);
+    }
+
+    /**
      * Resets Benchmark object clear. Returns divider string.
      * @param null|string $char
      * @return string
@@ -152,7 +152,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
 
     protected function sectionSeparator(?string $char): string
     {
-        return str_repeat($char ?? static::DEFAULT_SEPARATOR_CHAR, self::DEFAULT_TERMINAL_WIDTH) . PHP_EOL. PHP_EOL;
+        return str_repeat($char ?? static::DEFAULT_SEPARATOR_CHAR, self::DEFAULT_TERMINAL_WIDTH) . PHP_EOL . PHP_EOL;
     }
 
     /**
@@ -250,10 +250,11 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     }
 
     /**
+     * @param bool $eol
      * @return string
      * @throws \Exception
      */
-    public function stat(): string
+    public function stat(bool $eol = true): string
     {
         return
             sprintf(
@@ -261,7 +262,8 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
                 $this->getTimer()->elapsed(),
                 PHP_EOL,
                 (string)$this->memoryUsageReport
-            );
+            ) .
+            ($eol ? PHP_EOL : '');
     }
 
     /**
