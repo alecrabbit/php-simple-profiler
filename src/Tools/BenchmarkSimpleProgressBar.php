@@ -8,24 +8,28 @@ class BenchmarkSimpleProgressBar extends Benchmark
     private $progressBarWidth;
 
     public function __construct(
-        int $iterations = 1000,
-        ?int $progressBarWidth = null
+        int $iterations = 1000
     ) {
         parent::__construct($iterations);
-        $this->progressBarWidth = $this->advanceSteps = $progressBarWidth ?? $this->advanceSteps;
+        $width = $this->advanceSteps = $this->terminalWidth();
+        $progressStart =
+            static function () use ($width): void {
+                echo ' [' . str_repeat('░', $width) .']';
+                echo "\e[" . ($width + 1) . 'D';
+            };
 
         $progressAdvance =
-            function (): void {
-                echo '*';
+            static function (): void {
+                echo '█';
             };
 
         $progressFinish =
-            function (): void {
-                echo "\e[" . $this->progressBarWidth . 'D';
+            static function () use ($width): void {
+                echo "\e[" . ($width + 1). 'D';
                 echo "\e[K";
             };
 
-        $this->showProgressBy(null, $progressAdvance, $progressFinish);
+        $this->showProgressBy($progressStart, $progressAdvance, $progressFinish);
     }
 
     /**

@@ -18,13 +18,9 @@ class BenchmarkSymfonyProgressBar extends Benchmark
     /** @var ProgressBar */
     protected $progressBar;
 
-    /** @var int */
-    protected $progressBarWidth;
-
     public function __construct(
         int $iterations = 1000,
         ?int $progressBarMax = null,
-        ?int $progressBarWidth = null,
         ?ConsoleOutput $output = null,
         ?ProgressBar $progressBar = null
     ) {
@@ -32,7 +28,7 @@ class BenchmarkSymfonyProgressBar extends Benchmark
         $this->output = $output ?? new ConsoleOutput();
         $this->advanceSteps = $progressBarMax ?? $this->advanceSteps;
 
-        $this->progressBar = $progressBar ?? $this->createProgressBar($progressBarWidth);
+        $this->progressBar = $progressBar ?? $this->createProgressBar();
 
         $progressStart =
             function (): void {
@@ -54,14 +50,12 @@ class BenchmarkSymfonyProgressBar extends Benchmark
     }
 
     /**
-     * @param null|int $progressBarWidth
      * @return ProgressBar
      */
-    protected function createProgressBar(?int $progressBarWidth): ProgressBar
+    protected function createProgressBar(): ProgressBar
     {
         $progressBar = new ProgressBar($this->output, $this->advanceSteps);
-        $this->progressBarWidth = $this->refineProgressBarWidth($progressBarWidth);
-        $progressBar->setBarWidth($this->progressBarWidth);
+        $progressBar->setBarWidth($this->terminalWidth());
         $progressBar->setFormat(static::DEFAULT_PROGRESSBAR_FORMAT);
 
         // the finished part of the bar
@@ -111,7 +105,7 @@ class BenchmarkSymfonyProgressBar extends Benchmark
      */
     public function getProgressBarWidth(): int
     {
-        return $this->progressBarWidth;
+        return $this->progressBar->getBarWidth();
     }
 
     protected function showComment(string $comment = ''): void
