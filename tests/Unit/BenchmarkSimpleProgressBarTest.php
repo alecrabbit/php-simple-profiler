@@ -14,13 +14,12 @@ class BenchmarkSimpleProgressBarTest extends TestCase
      */
     public function init(): void
     {
-        $b = new BenchmarkSimpleProgressBar(200);
-        $this->assertInstanceOf(BenchmarkSimpleProgressBar::class, $b);
+        $b = new BenchmarkSimpleProgressBar(200, true);
         $b->addFunction(
             function () {
             }
         );
         $b->run();
-//        $this->assertEquals(Benchmark::DEFAULT_STEPS, $b->getProgressBarWidth());
+        $this->assertInstanceOf(BenchmarkSimpleProgressBar::class, $b);
     }
 }
