@@ -19,6 +19,10 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     public const DEFAULT_STEPS = 100;
     public const CLOSURE_NAME = 'λ';
 
+    public const DEFAULT_SEPARATOR_CHAR = '─';
+    public const DEFAULT_END_SEPARATOR_CHAR = '═';
+    public const DEFAULT_TERMINAL_WIDTH = 80;
+
     /** @var int */
     protected $advanceSteps = self::DEFAULT_STEPS;
     /** @var Rewindable */
@@ -47,6 +51,8 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     protected $functionIndex = 1;
     /** @var bool */
     protected $silent = false;
+    /** @var int */
+    protected $terminalWidth = self::DEFAULT_TERMINAL_WIDTH;
 
     /**
      * Benchmark constructor.
@@ -121,7 +127,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     }
 
     /**
-     * Resets Benchmark object clear
+     * Resets Benchmark object clear. Returns divider string.
      * @param null|string $char
      * @return string
      * @throws \Exception
@@ -135,7 +141,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
 
     protected function sectionSeparator(?string $char): string
     {
-        return (string)$char;
+        return str_repeat($char ?? static::DEFAULT_SEPARATOR_CHAR, self::DEFAULT_TERMINAL_WIDTH) . PHP_EOL. PHP_EOL;
     }
 
     /**

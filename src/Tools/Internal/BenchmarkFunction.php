@@ -65,19 +65,18 @@ class BenchmarkFunction extends Formattable
         $this->args = $args;
         $this->comment = $comment;
         $this->humanReadableName = $humanReadableName;
-        $this->makeTimer();
+        $this->timer = $this->createTimer();
     }
 
     /**
      * @throws \Exception
      */
-    protected function makeTimer(): void
+    protected function createTimer(): AbstractTimer
     {
         if (PHP_VERSION_ID >= 70300 && false === static::$forceRegularTimer) {
-            $this->timer = new HRTimer($this->getIndexedName());
-        } else {
-            $this->timer = new Timer($this->getIndexedName());
+            return new HRTimer($this->getIndexedName());
         }
+        return new Timer($this->getIndexedName());
     }
 
     /**

@@ -12,7 +12,6 @@ class BenchmarkSymfonyProgressBar extends Benchmark
     public const DEFAULT_PROGRESSBAR_FORMAT = ' %percent:3s%% [%bar%] %elapsed:6s%/%estimated:-6s%';
     public const PROGRESS_BAR_MIN_WIDTH = 60;
     public const PROGRESS_BAR_MAX_WIDTH = 80;
-    protected const DEFAULT_SEPARATOR_CHAR = '-';
 
     /** @var ConsoleOutput */
     protected $output;
@@ -22,8 +21,6 @@ class BenchmarkSymfonyProgressBar extends Benchmark
 
     /** @var int */
     protected $progressBarWidth;
-    /** @var int */
-    protected $terminalWidth = 80;
 
     public function __construct(
         int $iterations = 1000,

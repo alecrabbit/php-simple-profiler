@@ -41,7 +41,7 @@ try {
     echo $benchmark1->stat() . PHP_EOL;
     echo PHP_EOL;
 
-    echo 'Throws an exception here:'. PHP_EOL;
+    echo 'Throws an exception here:' . PHP_EOL;
     try {
         $benchmark1
             ->withComment('floatval()')
@@ -49,11 +49,10 @@ try {
     } catch (\RuntimeException $e) {
         echo brackets(typeOf($e)) . ' ' . $e->getMessage() . PHP_EOL;
     }
-
-    echo PHP_EOL . PHP_EOL;
+    echo PHP_EOL;
+    echo $benchmark1->reset('═');
 
     $benchmark2 = Factory::createBenchmark();
-    echo $benchmark2->reset();
 
     $benchmark2
         ->withComment('floatval()')
