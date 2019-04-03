@@ -7,7 +7,7 @@ use function AlecRabbit\typeOf;
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    Factory::setDefaultIterations(50000); // optional
+    Factory::setDefaultIterations(5000000); // optional
     $benchmark1 = Factory::createBenchmark();
 
     $benchmark1

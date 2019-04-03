@@ -2,7 +2,6 @@
 
 namespace AlecRabbit\Tools;
 
-use AlecRabbit\ConsoleColour\Terminal;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use function AlecRabbit\Helpers\bounds;
@@ -26,16 +25,14 @@ class BenchmarkSymfonyProgressBar extends Benchmark
         int $iterations = 1000,
         ?int $progressBarMax = null,
         ?int $progressBarWidth = null,
-        ?ConsoleOutput $output = null
+        ?ConsoleOutput $output = null,
+        ?ProgressBar $progressBar = null
     ) {
         parent::__construct($iterations);
         $this->output = $output ?? new ConsoleOutput();
         $this->advanceSteps = $progressBarMax ?? $this->advanceSteps;
 
-        $this->progressBar = new ProgressBar($this->output, $this->advanceSteps);
-        $this->progressBarWidth = $this->refineProgressBarWidth($progressBarWidth);
-        $this->progressBar->setBarWidth($this->progressBarWidth);
-        $this->progressBar->setFormat(static::DEFAULT_PROGRESSBAR_FORMAT);
+        $this->progressBar = $progressBar ?? $this->createProgressBar($progressBarWidth);
 
         $progressStart =
             function (): void {
@@ -54,6 +51,29 @@ class BenchmarkSymfonyProgressBar extends Benchmark
             };
 
         $this->showProgressBy($progressStart, $progressAdvance, $progressFinish);
+    }
+
+    /**
+     * @param null|int $progressBarWidth
+     * @return ProgressBar
+     */
+    protected function createProgressBar(?int $progressBarWidth): ProgressBar
+    {
+        $progressBar = new ProgressBar($this->output, $this->advanceSteps);
+        $this->progressBarWidth = $this->refineProgressBarWidth($progressBarWidth);
+        $progressBar->setBarWidth($this->progressBarWidth);
+        $progressBar->setFormat(static::DEFAULT_PROGRESSBAR_FORMAT);
+
+        // the finished part of the bar
+        $progressBar->setBarCharacter('█');
+
+        // the unfinished part of the bar
+        $progressBar->setEmptyBarCharacter('░'); // ░ ▒ ▓
+
+        // the progress character
+        $progressBar->setProgressCharacter('');
+
+        return $progressBar;
     }
 
     /**
