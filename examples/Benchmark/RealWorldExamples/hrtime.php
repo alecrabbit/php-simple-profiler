@@ -9,7 +9,7 @@ if (PHP_VERSION_ID < 70300) {
     $themes = new Themes();
     echo
         $themes->warning(
-            '[WARNING]: This example uses polyfill functions(~4 times slower) on php versions below 7.3'
+            '[WARNING]: On php versions below 7.3 this example uses polyfill functions(~4 times slower)'
         ) . PHP_EOL;
     echo
         $themes->dark(
