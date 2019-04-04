@@ -6,8 +6,7 @@
  */
 
 use AlecRabbit\ConsoleColour\Themes;
-use AlecRabbit\Tools\BenchmarkSimpleProgressBar;
-use AlecRabbit\Tools\BenchmarkSnakeProgressIndicator;
+use AlecRabbit\Tools\BenchmarkWithSpinner;
 use function AlecRabbit\typeOf;
 
 const ITERATIONS = 900000;
@@ -15,10 +14,10 @@ const ITERATIONS = 900000;
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 $theme = new Themes();
-echo $theme->comment('Benchmark with simple progress bar') . PHP_EOL;
+echo $theme->comment('Benchmark with snake spinner progress indicator') . PHP_EOL;
 echo $theme->dark('PHP version: ' . PHP_VERSION) . PHP_EOL;
 
-$benchmark = new BenchmarkSnakeProgressIndicator(ITERATIONS);
+$benchmark = new BenchmarkWithSpinner(ITERATIONS);
 
 try {
     $benchmark
@@ -57,5 +56,5 @@ try {
     echo $benchmark->stat();
 } catch (Exception $e) {
     echo 'Error occurred: ';
-    echo  '['. $theme->error(typeOf($e)) . '] ' . $e->getMessage() . PHP_EOL;
+    echo '[' . $theme->error(typeOf($e)) . '] ' . $e->getMessage() . PHP_EOL;
 }
