@@ -14,6 +14,7 @@ class BenchmarkWithSpinner extends Benchmark
     ) {
         parent::__construct($iterations);
         $this->advanceSteps = $this->terminalWidth();
+        // @codeCoverageIgnoreStart
         if (!$quiet) {
             $s = $spinner ?? new SnakeSpinner('Benchmarking');
             $progressStart =
@@ -33,5 +34,6 @@ class BenchmarkWithSpinner extends Benchmark
 
             $this->showProgressBy($progressStart, $progressAdvance, $progressFinish);
         }
+        // @codeCoverageIgnoreEnd
     }
 }

@@ -10,6 +10,7 @@ class BenchmarkSimpleProgressBar extends Benchmark
     ) {
         parent::__construct($iterations);
         $width = $this->advanceSteps = $this->terminalWidth();
+        // @codeCoverageIgnoreStart
         if (!$quiet) {
             $progressStart =
                 static function () use ($width): void {
@@ -29,5 +30,6 @@ class BenchmarkSimpleProgressBar extends Benchmark
 
             $this->showProgressBy($progressStart, $progressAdvance, $progressFinish);
         }
+        // @codeCoverageIgnoreEnd
     }
 }

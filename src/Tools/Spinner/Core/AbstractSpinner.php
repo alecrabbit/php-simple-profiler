@@ -84,15 +84,16 @@ abstract class AbstractSpinner implements SpinnerInterface
                 function (): string {
                     return static::PADDING_STR . $this->spinnerSymbols->value();
                 };
+        } else {
+            return
+                function (): string {
+                    return
+                        static::PADDING_STR .
+                        Strings::ESC .
+                        "[{$this->styles->value()}m{$this->spinnerSymbols->value()}" .
+                        Strings::ESC . '[0m';
+                };
         }
-        return
-            function (): string {
-                return
-                    static::PADDING_STR .
-                    Strings::ESC .
-                    "[{$this->styles->value()}m{$this->spinnerSymbols->value()}" .
-                    Strings::ESC . '[0m';
-            };
     }
 
     /** {@inheritDoc} */
