@@ -4,9 +4,6 @@ namespace AlecRabbit\Tools;
 
 class BenchmarkSimpleProgressBar extends Benchmark
 {
-    /** @var int */
-    private $progressBarWidth;
-
     public function __construct(
         int $iterations = 1000,
         bool $quiet = false

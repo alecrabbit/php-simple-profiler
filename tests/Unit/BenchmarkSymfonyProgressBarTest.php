@@ -2,7 +2,9 @@
 
 namespace AlecRabbit\Tests\Tools;
 
+use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\BenchmarkSymfonyProgressBar;
+use AlecRabbit\Tools\Reports\BenchmarkReport;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -27,12 +29,6 @@ class BenchmarkSymfonyProgressBarTest extends TestCase
         $b->addFunction(function () {
         });
         $b->run();
-        $this->assertIsInt($b->getProgressBarWidth());
-    }
-
-    protected function valueInRange(int $value, int $min, int $max): bool
-    {
-        return
-            ($value >= $min && $value <= $max);
+        $this->assertInstanceOf(BenchmarkReport::class, $b->report());
     }
 }

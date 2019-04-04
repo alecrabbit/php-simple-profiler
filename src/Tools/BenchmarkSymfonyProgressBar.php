@@ -100,14 +100,6 @@ class BenchmarkSymfonyProgressBar extends Benchmark
         return $this->progressBar;
     }
 
-    /**
-     * @return int
-     */
-    public function getProgressBarWidth(): int
-    {
-        return $this->progressBar->getBarWidth();
-    }
-
     protected function showComment(string $comment = ''): void
     {
         $this->output->writeln('<comment>' . $comment . '</>');
