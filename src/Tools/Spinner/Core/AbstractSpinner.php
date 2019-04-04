@@ -5,6 +5,7 @@ namespace AlecRabbit\Tools\Spinner\Core;
 use AlecRabbit\Accessories\Circular;
 use AlecRabbit\ConsoleColour\Terminal;
 use AlecRabbit\Tools\Contracts\Strings;
+use AlecRabbit\Tools\Spinner\Contracts\SpinnerInterface;
 
 abstract class AbstractSpinner implements SpinnerInterface
 {
