@@ -4,6 +4,10 @@ namespace AlecRabbit\Tools\Spinner\Contracts;
 
 interface SpinnerInterface
 {
+    public const DEFAULT_PREFIX = ' ';
+    public const DEFAULT_SUFFIX = '...';
+    public const DEFAULT_MESSAGE = '';
+
     /**
      * @return string
      */

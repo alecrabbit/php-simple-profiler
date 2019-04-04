@@ -16,20 +16,23 @@ abstract class AbstractSpinner implements SpinnerInterface
     /** @var null|Circular */
     protected $styles;
     /** @var string */
-    protected $str;
+    protected $message;
     /** @var string */
     protected $resetStr;
     /** @var \Closure */
     protected $style;
 
 
-    public function __construct(string $str = '', string $prefix = ' ', string $suffix = '...')
-    {
+    public function __construct(
+        string $message = SpinnerInterface::DEFAULT_MESSAGE,
+        string $prefix = SpinnerInterface::DEFAULT_PREFIX,
+        string $suffix = SpinnerInterface::DEFAULT_SUFFIX
+    ) {
         $this->spinnerSymbols = $this->getSymbols();
         $this->styles = $this->getStyles();
 
-        $this->str = $this->refineStr($str, $prefix, $suffix);
-        $strLen = strlen($this->str . static::PADDING_STR) + 2;
+        $this->message = $this->refineStr($message, $prefix, $suffix);
+        $strLen = strlen($this->message . static::PADDING_STR) + 2;
         $this->resetStr = Strings::ESC . "[{$strLen}D";
         $this->style = $this->getStyle();
     }
@@ -55,12 +58,14 @@ abstract class AbstractSpinner implements SpinnerInterface
                 '38;5;205',
             ]);
         }
+        // @codeCoverageIgnoreStart
         if ($terminal->supportsColor()) {
             return new Circular([
                 '96',
             ]);
         }
         return null;
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -84,16 +89,15 @@ abstract class AbstractSpinner implements SpinnerInterface
                 function (): string {
                     return static::PADDING_STR . $this->spinnerSymbols->value();
                 };
-        } else {
-            return
-                function (): string {
-                    return
-                        static::PADDING_STR .
-                        Strings::ESC .
-                        "[{$this->styles->value()}m{$this->spinnerSymbols->value()}" .
-                        Strings::ESC . '[0m';
-                };
         }
+        return
+            function (): string {
+                return
+                    static::PADDING_STR .
+                    Strings::ESC .
+                    "[{$this->styles->value()}m{$this->spinnerSymbols->value()}" .
+                    Strings::ESC . '[0m';
+            };
     }
 
     /** {@inheritDoc} */
@@ -104,7 +108,7 @@ abstract class AbstractSpinner implements SpinnerInterface
 
     protected function work(): string
     {
-        return ($this->style)() . $this->str;
+        return ($this->style)() . $this->message;
     }
 
     /** {@inheritDoc} */

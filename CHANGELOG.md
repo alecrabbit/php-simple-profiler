@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - ...
+### Changed
+ - removed method `getProgressBarWidth()`
+ 
+### Added
+ - spinners
+    - `CircleSpinner::class`
+    - `ClockSpinner::class`
+    - `MoonSpinner::class`
+    - `SnakeSpinner::class`
+    - `TrigramSpinner::class`
+    
+## [0.6.0] - ...
 ### Changed
 - Exception type is shown with message
 - In `ReportFormatter` renamed method `getString()` to `process()` 
