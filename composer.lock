@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "alecrabbit/php-accessories",
-            "version": "0.5.0",
+            "version": "0.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-accessories.git",
-                "reference": "72b3e3c43c297a886bc8f96ddc3a0dc9f97e14ce"
+                "reference": "cd9eb8b5dea0c1b5c1d010241c57365dbb4b47dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-accessories/zipball/72b3e3c43c297a886bc8f96ddc3a0dc9f97e14ce",
-                "reference": "72b3e3c43c297a886bc8f96ddc3a0dc9f97e14ce",
+                "url": "https://api.github.com/repos/alecrabbit/php-accessories/zipball/cd9eb8b5dea0c1b5c1d010241c57365dbb4b47dc",
+                "reference": "cd9eb8b5dea0c1b5c1d010241c57365dbb4b47dc",
                 "shasum": ""
             },
             "require": {
@@ -53,7 +53,7 @@
                 "rewindable",
                 "time"
             ],
-            "time": "2019-03-03T18:27:24+00:00"
+            "time": "2019-04-04T12:28:40+00:00"
         },
         {
             "name": "alecrabbit/php-console-colour",
@@ -2492,16 +2492,16 @@
         },
         {
             "name": "theseer/tokenizer",
-            "version": "1.1.0",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/theseer/tokenizer.git",
-                "reference": "cb2f008f3f05af2893a87208fe6a6c4985483f8b"
+                "reference": "1c42705be2b6c1de5904f8afacef5895cab44bf8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/theseer/tokenizer/zipball/cb2f008f3f05af2893a87208fe6a6c4985483f8b",
-                "reference": "cb2f008f3f05af2893a87208fe6a6c4985483f8b",
+                "url": "https://api.github.com/repos/theseer/tokenizer/zipball/1c42705be2b6c1de5904f8afacef5895cab44bf8",
+                "reference": "1c42705be2b6c1de5904f8afacef5895cab44bf8",
                 "shasum": ""
             },
             "require": {
@@ -2528,7 +2528,7 @@
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
-            "time": "2017-04-07T12:08:54+00:00"
+            "time": "2019-04-04T09:56:43+00:00"
         },
         {
             "name": "webmozart/assert",

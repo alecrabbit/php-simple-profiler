@@ -16,7 +16,6 @@ class BenchmarkSimpleProgressBar extends Benchmark
                     echo ' [' . str_repeat('░', $width) . ']';
                     echo "\e[" . ($width + 1) . 'D';
                 };
-
             $progressAdvance =
                 static function (): void {
                     echo '█';
