@@ -14,5 +14,4 @@ class SnakeSpinner extends AbstractSpinner
     {
         return new Circular(['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']);
     }
-
 }

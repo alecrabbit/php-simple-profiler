@@ -117,5 +117,4 @@ abstract class AbstractSpinner implements SpinnerInterface
     {
         return $this->resetStr . Strings::ESC . '[K';
     }
-
 }
