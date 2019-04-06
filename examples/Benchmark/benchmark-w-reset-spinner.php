@@ -6,6 +6,8 @@
  */
 
 use AlecRabbit\ConsoleColour\Themes;
+use AlecRabbit\Control\Cursor;
+use AlecRabbit\Spinner\ClockSpinner;
 use AlecRabbit\Tools\BenchmarkWithSpinner;
 use function AlecRabbit\typeOf;
 
@@ -14,11 +16,14 @@ const ITERATIONS = 900000;
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 $theme = new Themes();
-echo $theme->comment('Benchmark with snake spinner progress indicator') . PHP_EOL;
+
+$spinner = new ClockSpinner('benchmarking');
+echo $theme->comment('Benchmark with [' . typeOf($spinner) . '] progress indicator') . PHP_EOL;
 echo $theme->dark('PHP version: ' . PHP_VERSION) . PHP_EOL;
 
-$benchmark = new BenchmarkWithSpinner(ITERATIONS);
+$benchmark = new BenchmarkWithSpinner(ITERATIONS, false, $spinner);
 
+echo Cursor::hide();
 try {
     $benchmark
         ->withComment('floatval()')
@@ -51,10 +56,10 @@ try {
     $benchmark
         ->withComment('intval()')
         ->addFunction('intval', '3');
-
     echo $benchmark->report();
     echo $benchmark->stat();
 } catch (Exception $e) {
     echo 'Error occurred: ';
     echo '[' . $theme->error(typeOf($e)) . '] ' . $e->getMessage() . PHP_EOL;
 }
+echo Cursor::show();
