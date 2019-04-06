@@ -1,4 +1,4 @@
- `examples/Benchmark/benchmark-w-reset-spinner.php` [source](../examples/Benchmark/benchmark-w-reset-spinner.php)
+ `examples/Benchmark/benchmark-w-reset-spinner.php` [:link:](../examples/Benchmark/benchmark-w-reset-spinner.php)
  
  ![example](https://raw.githubusercontent.com/alecrabbit/php-simple-profiler/master/docs/images/spinner_demo.gif)
   
