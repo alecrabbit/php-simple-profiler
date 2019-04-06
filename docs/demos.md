@@ -8,6 +8,7 @@
  
  `examples/Benchmark/benchmark-multi.php ` [:link:](../examples/Benchmark/benchmark-multi.php )
  > you can see `gif` below
+ 
  ![example](https://raw.githubusercontent.com/alecrabbit/php-simple-profiler/master/docs/images/demo_multi.png)
  
  ![example](https://raw.githubusercontent.com/alecrabbit/php-simple-profiler/master/docs/images/demo_multi.gif)
