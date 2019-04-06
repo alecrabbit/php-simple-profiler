@@ -7,7 +7,7 @@
  ![example](https://raw.githubusercontent.com/alecrabbit/php-simple-profiler/master/docs/images/demo_static_closure.gif)
  
  `examples/Benchmark/benchmark-multi.php ` [:link:](../examples/Benchmark/benchmark-multi.php )
- > you can see `gif` below
+ > Note: you can see `gif` below
  
  ![example](https://raw.githubusercontent.com/alecrabbit/php-simple-profiler/master/docs/images/demo_multi.png)
  
