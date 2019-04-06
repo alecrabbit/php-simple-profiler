@@ -17,7 +17,8 @@
     "alecrabbit/php-console-colour": "^0.1",
     "alecrabbit/php-helpers": "^0.5",
     "alecrabbit/php-traits": "^0.2",
-    "sebastian/exporter": "^3.1"
+    "sebastian/exporter": "^3.1",
+    "alecrabbit/php-console-spinner": "^0.2.1@alpha"
   },
   "require-dev": {
     "krowinski/bcmath-extended": "^4.2",
