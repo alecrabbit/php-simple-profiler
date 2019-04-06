@@ -16,6 +16,9 @@
 
 > readme for version [0.5.x](https://github.com/alecrabbit/php-simple-profiler/tree/v.0.5.x) (not supported)
 
+### Demos
+See [demos](docs/demos.md)
+
 ### Quickstart
 ##### Benchmark
 ```php
