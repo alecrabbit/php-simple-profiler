@@ -57,16 +57,16 @@
         },
         {
             "name": "alecrabbit/php-console-colour",
-            "version": "0.1.9-ALPHA",
+            "version": "0.1.9-BETA.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-console-colour.git",
-                "reference": "475e2dd8e73d24e35271261d4276fa578e36367a"
+                "reference": "6feb141101b67c744b9235a8f944f309a7771520"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-console-colour/zipball/475e2dd8e73d24e35271261d4276fa578e36367a",
-                "reference": "475e2dd8e73d24e35271261d4276fa578e36367a",
+                "url": "https://api.github.com/repos/alecrabbit/php-console-colour/zipball/6feb141101b67c744b9235a8f944f309a7771520",
+                "reference": "6feb141101b67c744b9235a8f944f309a7771520",
                 "shasum": ""
             },
             "require": {
@@ -100,7 +100,7 @@
                 "terminal",
                 "width"
             ],
-            "time": "2019-04-01T22:11:51+00:00"
+            "time": "2019-04-04T15:49:02+00:00"
         },
         {
             "name": "alecrabbit/php-helpers",
@@ -1588,16 +1588,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "8.0.6",
+            "version": "8.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "925109f8bbe6dae28fbc7bb07446a53abd3b1c25"
+                "reference": "37cfab19fdda1554f2830be83a566ade4e2ae098"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/925109f8bbe6dae28fbc7bb07446a53abd3b1c25",
-                "reference": "925109f8bbe6dae28fbc7bb07446a53abd3b1c25",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/37cfab19fdda1554f2830be83a566ade4e2ae098",
+                "reference": "37cfab19fdda1554f2830be83a566ade4e2ae098",
                 "shasum": ""
             },
             "require": {
@@ -1640,7 +1640,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "8.0-dev"
+                    "dev-master": "8.1-dev"
                 }
             },
             "autoload": {
@@ -1666,7 +1666,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-03-26T14:00:24+00:00"
+            "time": "2019-04-05T05:27:33+00:00"
         },
         {
             "name": "psr/log",
