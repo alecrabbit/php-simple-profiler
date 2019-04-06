@@ -8,23 +8,27 @@
 use AlecRabbit\ConsoleColour\Themes;
 use AlecRabbit\Control\Cursor;
 use AlecRabbit\Spinner\ClockSpinner;
+use AlecRabbit\Spinner\MoonSpinner;
+use AlecRabbit\Spinner\SimpleSpinner;
 use AlecRabbit\Tools\BenchmarkWithSpinner;
 use function AlecRabbit\typeOf;
 
-const ITERATIONS = 900000;
+const ITERATIONS = 1400000;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 $theme = new Themes();
 
-$spinner = new ClockSpinner('benchmarking');
+//$spinner = new SimpleSpinner('benchmarking');
+//$spinner = new ClockSpinner('benchmarking');
+$spinner = new MoonSpinner('benchmarking');
+//$spinner = null; // SnakeSpinner
 echo $theme->comment('Benchmark with [' . typeOf($spinner) . '] progress indicator') . PHP_EOL;
 echo $theme->dark('PHP version: ' . PHP_VERSION) . PHP_EOL;
 
-$benchmark = new BenchmarkWithSpinner(ITERATIONS, false, $spinner);
-
 echo Cursor::hide();
 try {
+    $benchmark = new BenchmarkWithSpinner(ITERATIONS, false, $spinner);
     $benchmark
         ->withComment('floatval()')
         ->addFunction('floatval', '3.5');
