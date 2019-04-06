@@ -146,7 +146,7 @@ try {
 
     $report = $benchmark2
         ->withComment('Benchmark 2 Third section...')
-        ->showReturns()
+        ->showReturns(false)
         ->report();
 
     echo $report;

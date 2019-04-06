@@ -267,11 +267,12 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     }
 
     /**
+     * @param bool $showReturns
      * @return Benchmark
      */
-    public function showReturns(): Benchmark
+    public function showReturns(bool $showReturns = true): Benchmark
     {
-        $this->setShowReturns(true);
+        $this->setShowReturns($showReturns);
         foreach ($this->functions as $function) {
             $function->setShowReturns($this->isShowReturns());
         }
