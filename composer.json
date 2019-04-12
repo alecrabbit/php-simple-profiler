@@ -13,9 +13,9 @@
   "license": "MIT",
   "require": {
     "php": "^7.2",
-    "alecrabbit/php-accessories": "^0.5",
-    "alecrabbit/php-console-colour": "^0.2",
-    "alecrabbit/php-console-spinner": "^0.2",
+    "alecrabbit/php-accessories": "^0.6",
+    "alecrabbit/php-console-colour": "^0.3",
+    "alecrabbit/php-console-spinner": "^0.7",
     "alecrabbit/php-helpers": "^0.5",
     "alecrabbit/php-traits": "^0.2",
     "sebastian/exporter": "^3.1"

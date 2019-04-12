@@ -1,5 +1,0 @@
-parameters:
-	ignoreErrors:
-		-
-			message: '#Cannot call method value\(\) on AlecRabbit\\Accessories\\Circular|null.#'
-			path: %currentWorkingDirectory%/src/Tools/Spinner/Core/AbstractSpinner.php
