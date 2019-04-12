@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9ee3c6b88e831848d259fdf2ac8f9194",
+    "content-hash": "c9c6a9995e37a7edcd4aadbd8406baa0",
     "packages": [
         {
             "name": "alecrabbit/php-accessories",
-            "version": "0.5.2",
+            "version": "0.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-accessories.git",
-                "reference": "cd9eb8b5dea0c1b5c1d010241c57365dbb4b47dc"
+                "reference": "4875c02e208cba1c7e168bca1d45663fa7fa30e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-accessories/zipball/cd9eb8b5dea0c1b5c1d010241c57365dbb4b47dc",
-                "reference": "cd9eb8b5dea0c1b5c1d010241c57365dbb4b47dc",
+                "url": "https://api.github.com/repos/alecrabbit/php-accessories/zipball/4875c02e208cba1c7e168bca1d45663fa7fa30e3",
+                "reference": "4875c02e208cba1c7e168bca1d45663fa7fa30e3",
                 "shasum": ""
             },
             "require": {
@@ -25,8 +25,8 @@
                 "php": "^7.2"
             },
             "require-dev": {
-                "nunomaduro/collision": "^2.1",
-                "phpunit/phpunit": "^7.5",
+                "nunomaduro/collision": "^3.0",
+                "phpunit/phpunit": "^8.0",
                 "symfony/var-dumper": "^4.2"
             },
             "type": "library",
@@ -53,20 +53,20 @@
                 "rewindable",
                 "time"
             ],
-            "time": "2019-04-04T12:28:40+00:00"
+            "time": "2019-04-12T11:47:44+00:00"
         },
         {
             "name": "alecrabbit/php-console-colour",
-            "version": "0.2.1-BETA.1",
+            "version": "0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-console-colour.git",
-                "reference": "3fc4024f92c8518e90dd5075bcff31e063a02bb9"
+                "reference": "5e1b045d85c42f9ba453be20dd7c33f3011b909d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-console-colour/zipball/3fc4024f92c8518e90dd5075bcff31e063a02bb9",
-                "reference": "3fc4024f92c8518e90dd5075bcff31e063a02bb9",
+                "url": "https://api.github.com/repos/alecrabbit/php-console-colour/zipball/5e1b045d85c42f9ba453be20dd7c33f3011b909d",
+                "reference": "5e1b045d85c42f9ba453be20dd7c33f3011b909d",
                 "shasum": ""
             },
             "require": {
@@ -100,31 +100,32 @@
                 "terminal",
                 "width"
             ],
-            "time": "2019-04-06T08:04:05+00:00"
+            "time": "2019-04-11T07:05:48+00:00"
         },
         {
             "name": "alecrabbit/php-console-spinner",
-            "version": "0.2.3-BETA.1",
+            "version": "0.7.1-ALPHA1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-console-spinner.git",
-                "reference": "235d804bc9af99c7b95f68301afdd99589add8f5"
+                "reference": "13396dc27a08668d54c5454ff37ffcfc95e0283e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-console-spinner/zipball/235d804bc9af99c7b95f68301afdd99589add8f5",
-                "reference": "235d804bc9af99c7b95f68301afdd99589add8f5",
+                "url": "https://api.github.com/repos/alecrabbit/php-console-spinner/zipball/13396dc27a08668d54c5454ff37ffcfc95e0283e",
+                "reference": "13396dc27a08668d54c5454ff37ffcfc95e0283e",
                 "shasum": ""
             },
             "require": {
-                "alecrabbit/php-accessories": "^0.5",
-                "alecrabbit/php-console-colour": "^0.2",
+                "alecrabbit/php-accessories": "^0.6",
+                "alecrabbit/php-console-colour": "^0.3",
+                "alecrabbit/php-helpers": "^0.5",
                 "php": ">=7.2"
             },
             "require-dev": {
-                "alecrabbit/php-helpers": "^0.5",
                 "nunomaduro/collision": "^3.0",
                 "phpunit/phpunit": "^8.0",
+                "react/http": "^0.8.4",
                 "symfony/var-dumper": "^4.2"
             },
             "type": "library",
@@ -139,6 +140,7 @@
             ],
             "description": "Spinner - your task is running",
             "keywords": [
+                "cli",
                 "clock",
                 "console",
                 "moon",
@@ -148,7 +150,7 @@
                 "snake",
                 "spinner"
             ],
-            "time": "2019-04-06T08:09:28+00:00"
+            "time": "2019-04-12T12:10:50+00:00"
         },
         {
             "name": "alecrabbit/php-helpers",
@@ -214,16 +216,16 @@
         },
         {
             "name": "alecrabbit/php-traits",
-            "version": "0.2.4",
+            "version": "0.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-traits.git",
-                "reference": "a209692b6522baa069bd6571f78e9d68d89f5507"
+                "reference": "e1febf03405a50f1cbf4a0359094cd2284f73b61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-traits/zipball/a209692b6522baa069bd6571f78e9d68d89f5507",
-                "reference": "a209692b6522baa069bd6571f78e9d68d89f5507",
+                "url": "https://api.github.com/repos/alecrabbit/php-traits/zipball/e1febf03405a50f1cbf4a0359094cd2284f73b61",
+                "reference": "e1febf03405a50f1cbf4a0359094cd2284f73b61",
                 "shasum": ""
             },
             "require": {
@@ -231,8 +233,8 @@
             },
             "require-dev": {
                 "kylekatarnls/multi-tester": "^1.1",
-                "nunomaduro/collision": "^2.1",
-                "phpunit/phpunit": "^7.5",
+                "nunomaduro/collision": "^3.0",
+                "phpunit/phpunit": "^8.0",
                 "symfony/var-dumper": "^4.2"
             },
             "type": "library",
@@ -249,7 +251,16 @@
                 "MIT"
             ],
             "description": "PHP traits to use in every project :)",
-            "time": "2019-03-24T22:59:59+00:00"
+            "keywords": [
+                "name",
+                "php",
+                "private",
+                "start",
+                "stop",
+                "trait",
+                "traits"
+            ],
+            "time": "2019-04-08T13:57:14+00:00"
         },
         {
             "name": "krowinski/bcmath-extended",
@@ -310,16 +321,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.16.2",
+            "version": "2.16.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "720a9c36927396efeeb48a972e9d129d44b6dc28"
+                "reference": "373d9f0d58651af366435148c39beb702c2b7ef4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/720a9c36927396efeeb48a972e9d129d44b6dc28",
-                "reference": "720a9c36927396efeeb48a972e9d129d44b6dc28",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/373d9f0d58651af366435148c39beb702c2b7ef4",
+                "reference": "373d9f0d58651af366435148c39beb702c2b7ef4",
                 "shasum": ""
             },
             "require": {
@@ -366,7 +377,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2019-03-29T12:23:12+00:00"
+            "time": "2019-04-06T17:09:23+00:00"
         },
         {
             "name": "sebastian/exporter",
@@ -955,16 +966,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.8.1",
+            "version": "1.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8"
+                "reference": "e6828efaba2c9b79f4499dae1d66ef8bfa7b2b72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8",
-                "reference": "3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/e6828efaba2c9b79f4499dae1d66ef8bfa7b2b72",
+                "reference": "e6828efaba2c9b79f4499dae1d66ef8bfa7b2b72",
                 "shasum": ""
             },
             "require": {
@@ -999,7 +1010,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2018-06-11T23:09:50+00:00"
+            "time": "2019-04-07T13:18:21+00:00"
         },
         {
             "name": "nunomaduro/collision",
@@ -1636,16 +1647,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "8.1.0",
+            "version": "8.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "37cfab19fdda1554f2830be83a566ade4e2ae098"
+                "reference": "e7450b51b6f5d29edcd645ff72b355ab0633ca35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/37cfab19fdda1554f2830be83a566ade4e2ae098",
-                "reference": "37cfab19fdda1554f2830be83a566ade4e2ae098",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/e7450b51b6f5d29edcd645ff72b355ab0633ca35",
+                "reference": "e7450b51b6f5d29edcd645ff72b355ab0633ca35",
                 "shasum": ""
             },
             "require": {
@@ -1714,7 +1725,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-04-05T05:27:33+00:00"
+            "time": "2019-04-08T16:03:02+00:00"
         },
         {
             "name": "psr/log",

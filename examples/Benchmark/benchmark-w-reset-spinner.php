@@ -2,9 +2,7 @@
 
 use AlecRabbit\ConsoleColour\Themes;
 use AlecRabbit\Control\Cursor;
-use AlecRabbit\Spinner\ClockSpinner;
-use AlecRabbit\Spinner\MoonSpinner;
-use AlecRabbit\Spinner\SimpleSpinner;
+use AlecRabbit\Spinner\SnakeSpinner;
 use AlecRabbit\Tools\BenchmarkWithSpinner;
 use function AlecRabbit\typeOf;
 
@@ -16,12 +14,15 @@ $theme = new Themes();
 
 //$spinner = new SimpleSpinner('benchmarking');
 //$spinner = new ClockSpinner('benchmarking');
-$spinner = new MoonSpinner('benchmarking');
-//$spinner = null; // SnakeSpinner
+//$spinner = new MoonSpinner('benchmarking');
+$spinner = new SnakeSpinner('benchmarking');
+
+if (extension_loaded('xdebug')) {
+    echo $theme->warning('XDebug extension is loaded, benchmarking will be slow!') . PHP_EOL;
+}
 echo $theme->comment('Benchmark with [' . typeOf($spinner) . '] progress indicator') . PHP_EOL;
 echo $theme->dark('PHP version: ' . PHP_VERSION) . PHP_EOL;
 
-echo Cursor::hide();
 try {
     $benchmark = new BenchmarkWithSpinner(ITERATIONS, false, $spinner);
     $benchmark
@@ -60,5 +61,5 @@ try {
 } catch (Exception $e) {
     echo 'Error occurred: ';
     echo '[' . $theme->error(typeOf($e)) . '] ' . $e->getMessage() . PHP_EOL;
+    echo Cursor::show();
 }
-echo Cursor::show();

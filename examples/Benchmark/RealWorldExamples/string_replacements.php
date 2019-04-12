@@ -6,48 +6,21 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 try {
     $benchmark = Factory::createBenchmark();
-    $a = [1, 1, null, 4, 4, 6, 34, 12, 4, 6, 7, 8, 3, '6', 7689, 56, 23, 3, '7', 89, null, 64, 65, 45, null, 5];
-    $c = new class
-    {
-        public function process(array $a): array
-        {
-            return
-                array_filter(
-                    $a,
-                    function ($val): bool {
-                        return $val !== null;
-                    }
-                );
-        }
-    };
-    $s = new class
-    {
-        public function process(array $a): array
-        {
-            return
-                array_filter(
-                    $a,
-                    static function ($val): bool {
-                        return $val !== null;
-                    }
-                );
-        }
-    };
     $benchmark
-        ->withComment('non-static')
+        ->withComment('sprintf')
         ->addFunction(
-            function ($a) use ($c) {
-                return $c->process($a);
+            function ($a) {
+                return sprintf('>>>%s<<<', $a);
             },
-            $a
+            '222'
         );
     $benchmark
-        ->withComment('static')
+        ->withComment('str_replace')
         ->addFunction(
-            function ($a) use ($s) {
-                return $s->process($a);
+            function ($a) {
+                return str_replace('%s', $a, '>>>%s<<<');
             },
-            $a
+            '222'
         );
     echo $benchmark
         ->withComment('Comparing...')

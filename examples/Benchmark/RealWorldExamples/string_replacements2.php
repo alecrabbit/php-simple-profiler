@@ -10,15 +10,26 @@ try {
         ->withComment('sprintf')
         ->addFunction(
             function ($a) {
-                return sprintf('>>>%s<<<', $a);
+                return sprintf(
+                    '%s - %s%s%s%s%s%s%s%s',
+                    $a,
+                    '1',
+                    '2',
+                    '3',
+                    '4',
+                    '5',
+                    '6',
+                    '7',
+                    '8'
+                );
             },
             '222'
         );
     $benchmark
-        ->withComment('str_replace')
+        ->withComment('concat')
         ->addFunction(
             function ($a) {
-                return str_replace('%s', $a, '>>>%s<<<');
+                return $a . ' - ' . '1' . '2' . '3' . '4' . '5' . '6' . '7' . '8';
             },
             '222'
         );
