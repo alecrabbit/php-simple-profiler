@@ -2,7 +2,7 @@
 
 namespace AlecRabbit\Tools;
 
-use AlecRabbit\Spinner\Contracts\SpinnerInterface;
+use AlecRabbit\Spinner\Core\Contracts\SpinnerInterface;
 use AlecRabbit\Spinner\SnakeSpinner;
 
 class BenchmarkWithSpinner extends Benchmark

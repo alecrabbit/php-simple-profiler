@@ -36,7 +36,12 @@ try {
     echo $benchmark
         ->withComment('Comparing...')
         ->report();
+    echo $benchmark
+        ->stat();
+
+//    dump($benchmark);
 } catch (Exception $e) {
     echo 'Error occurred: ';
     echo $e->getMessage() . PHP_EOL;
 }
+

@@ -4,7 +4,7 @@ namespace AlecRabbit\Tools;
 
 use AlecRabbit\Accessories\MemoryUsage;
 use AlecRabbit\Accessories\Rewindable;
-use AlecRabbit\ConsoleColour\Terminal;
+use AlecRabbit\Control\Terminal;
 use AlecRabbit\Tools\Contracts\BenchmarkInterface;
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
