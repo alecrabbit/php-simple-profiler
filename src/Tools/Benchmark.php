@@ -4,7 +4,7 @@ namespace AlecRabbit\Tools;
 
 use AlecRabbit\Accessories\MemoryUsage;
 use AlecRabbit\Accessories\Rewindable;
-use AlecRabbit\Control\Terminal;
+use AlecRabbit\Cli\Tools\Terminal;
 use AlecRabbit\Tools\Contracts\BenchmarkInterface;
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
@@ -55,6 +55,8 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     protected $silent = false;
     /** @var int */
     protected $terminalWidth = self::DEFAULT_TERMINAL_WIDTH;
+    /** @var Terminal */
+    protected $terminal;
 
     /**
      * Benchmark constructor.
@@ -76,6 +78,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
 
         $this->timer = new Timer(); // Timer to count benchmark process total time
         $this->initialize();
+        $this->terminal = new Terminal();
         $this->terminalWidth = $this->terminalWidth();
     }
 
@@ -134,11 +137,12 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
      */
     protected function terminalWidth(): int
     {
-        return (int)((new Terminal())->width() * static::WIDTH_COEFFICIENT);
+        return (int)($this->terminal->width() * static::WIDTH_COEFFICIENT);
     }
 
     /**
      * Resets Benchmark object clear. Returns divider string.
+     *
      * @param null|string $char
      * @return string
      * @throws \Exception
@@ -152,7 +156,11 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
 
     protected function sectionSeparator(?string $char): string
     {
-        return str_repeat($char ?? static::DEFAULT_SEPARATOR_CHAR, self::DEFAULT_TERMINAL_WIDTH) . PHP_EOL . PHP_EOL;
+        return
+            str_repeat(
+                $char ?? static::DEFAULT_SEPARATOR_CHAR,
+                self::DEFAULT_TERMINAL_WIDTH
+            ) . PHP_EOL . PHP_EOL;
     }
 
     /**

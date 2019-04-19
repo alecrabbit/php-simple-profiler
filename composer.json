@@ -14,8 +14,8 @@
   "require": {
     "php": "^7.2",
     "alecrabbit/php-accessories": "^0.6",
-    "alecrabbit/php-console-colour": "^0.4",
-    "alecrabbit/php-console-spinner": "^0.8",
+    "alecrabbit/php-console-colour": "^0.5",
+    "alecrabbit/php-console-spinner": "^0.9",
     "alecrabbit/php-helpers": "^0.5",
     "alecrabbit/php-traits": "^0.2",
     "sebastian/exporter": "^3.1"
