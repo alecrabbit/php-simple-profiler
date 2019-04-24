@@ -6,7 +6,7 @@ use const AlecRabbit\Helpers\Strings\Constants\BYTES_UNITS;
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 try {
-    $b = Factory::createBenchmark(1000);
+    $b = Factory::createBenchmark(1000000);
     $unit = 'mb';
     $units = \array_keys(BYTES_UNITS);
     $b

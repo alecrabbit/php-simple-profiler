@@ -17,6 +17,8 @@ try {
         });
 
     $benchmark1
+        ->addFunction('floatval', 3.5);
+    $benchmark1
         ->withComment('float "+"')
         ->addFunction(function () {
             return +'3.5';
@@ -146,7 +148,7 @@ try {
 
     $report = $benchmark2
         ->withComment('Benchmark 2 Third section...')
-        ->showReturns()
+        ->showReturns(false)
         ->report();
 
     echo $report;

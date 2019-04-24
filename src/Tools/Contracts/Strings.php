@@ -2,12 +2,10 @@
 
 namespace AlecRabbit\Tools\Contracts;
 
-use AlecRabbit\ConsoleColour\ConsoleColor;
+use const AlecRabbit\ESC;
 
 interface Strings
 {
-    public const ESC = ConsoleColor::ESC_CHAR;
-
     public const COUNTERS = 'counters';
     public const TIMERS = 'timers';
 

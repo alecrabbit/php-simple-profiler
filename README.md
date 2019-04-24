@@ -14,7 +14,8 @@
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/alecrabbit/php-simple-profiler.svg)](http://isitmaintained.com/project/alecrabbit/php-simple-profiler "Percentage of issues still open")
 
-> readme for version [0.5.x](https://github.com/alecrabbit/php-simple-profiler/tree/v.0.5.x) (not supported)
+### Demos
+See [demos](docs/demos.md)
 
 ### Quickstart
 ##### Benchmark
@@ -46,7 +47,6 @@ Done in: 2.0s
 ###### For more details see [examples](https://github.com/alecrabbit/php-simple-profiler/tree/master/examples)
 > Note: Some examples could be not up to date... WIP
 
-
 # WIP
 
 ### Installation
@@ -68,7 +68,7 @@ There are moments when you have to choose between two or more different approach
  * `Benchmark::class` (no default progress bar, silent measurements)
  * `BenchmarkSymfonyPB::class` (with Symfony progress bar)
  ```
-   9% [=====>------------------------------------------------------]  1 secs/12 sec
+  26% [████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]  1 sec/4 secs
 ```
  * `BenchmarkSimplePB::class` (with star progress bar)
   ```

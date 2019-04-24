@@ -1,30 +1,30 @@
 <?php
-/**
- * User: alec
- * Date: 24.12.18
- * Time: 17:13
- */
 
 use AlecRabbit\ConsoleColour\Themes;
 use AlecRabbit\Control\Cursor;
-use AlecRabbit\Spinner\ClockSpinner;
+use AlecRabbit\Spinner\SnakeSpinner;
 use AlecRabbit\Tools\BenchmarkWithSpinner;
 use function AlecRabbit\typeOf;
 
-const ITERATIONS = 900000;
+const ITERATIONS = 1400000;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 $theme = new Themes();
 
-$spinner = new ClockSpinner('benchmarking');
+//$spinner = new SimpleSpinner('benchmarking');
+//$spinner = new ClockSpinner('benchmarking');
+//$spinner = new MoonSpinner('benchmarking');
+$spinner = new SnakeSpinner('benchmarking');
+
+if (extension_loaded('xdebug')) {
+    echo $theme->warning('XDebug extension is loaded, benchmarking will be slow!') . PHP_EOL;
+}
 echo $theme->comment('Benchmark with [' . typeOf($spinner) . '] progress indicator') . PHP_EOL;
 echo $theme->dark('PHP version: ' . PHP_VERSION) . PHP_EOL;
 
-$benchmark = new BenchmarkWithSpinner(ITERATIONS, false, $spinner);
-
-echo Cursor::hide();
 try {
+    $benchmark = new BenchmarkWithSpinner(ITERATIONS, false, $spinner);
     $benchmark
         ->withComment('floatval()')
         ->addFunction('floatval', '3.5');
@@ -61,5 +61,5 @@ try {
 } catch (Exception $e) {
     echo 'Error occurred: ';
     echo '[' . $theme->error(typeOf($e)) . '] ' . $e->getMessage() . PHP_EOL;
+    echo Cursor::show();
 }
-echo Cursor::show();
