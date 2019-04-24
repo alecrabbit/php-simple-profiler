@@ -2,7 +2,7 @@
 
 namespace AlecRabbit\Tools\Formatters\Core;
 
-use AlecRabbit\Accessories\Contracts\AbstractFormatter;
+use AlecRabbit\Accessories\Core\AbstractFormatter;
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Formattable;
 use AlecRabbit\Tools\Formatters\Contracts\FormatterInterface;
