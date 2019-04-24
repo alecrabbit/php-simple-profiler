@@ -2,9 +2,10 @@
 
 namespace AlecRabbit\Tools\Formatters\Contracts;
 
+use AlecRabbit\Accessories\Contracts\FormatterInterface as BaseFormatterInterface;
 use AlecRabbit\Tools\Formattable;
 
-interface FormatterInterface
+interface FormatterInterface extends BaseFormatterInterface
 {
     /**
      * @param Formattable $formattable

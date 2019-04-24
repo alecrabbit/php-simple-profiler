@@ -2,13 +2,15 @@
 
 namespace AlecRabbit\Tools\Formatters\Core;
 
+use AlecRabbit\Accessories\Contracts\AbstractFormatter;
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Formattable;
 use AlecRabbit\Tools\Formatters\Contracts\FormatterInterface;
 use function AlecRabbit\typeOf;
 
-abstract class Formatter implements FormatterInterface, Strings
+abstract class Formatter extends AbstractFormatter implements FormatterInterface, Strings
 {
+
     /** {@inheritdoc} */
     abstract public function process(Formattable $formattable): string;
 

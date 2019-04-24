@@ -19,17 +19,17 @@ class BenchmarkWithSpinner extends Benchmark
             $s = $spinner ?? new SnakeSpinner('Benchmarking');
             $progressStart =
                 static function () use ($s): void {
-                    echo $s->begin();
+                    $s->begin(0.0);
                 };
 
             $progressAdvance =
-                static function () use ($s): void {
-                    echo $s->spin();
+                static function (?float $percent = null) use ($s): void {
+                    $s->spin($percent);
                 };
 
             $progressFinish =
                 static function () use ($s): void {
-                    echo $s->end();
+                    $s->end(1.0);
                 };
 
             $this->showProgressBy($progressStart, $progressAdvance, $progressFinish);

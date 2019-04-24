@@ -382,7 +382,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
     {
         $this->doneIterations++;
         if ($this->onAdvance && 0 === $this->doneIterations % $this->advanceStep) {
-            ($this->onAdvance)();
+            ($this->onAdvance)($this->doneIterations / $this->totalIterations);
         }
     }
 }
