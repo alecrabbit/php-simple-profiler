@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e78ffbf6f649d646e6698f26b9b1d1e5",
+    "content-hash": "4507e6c57b9eccbb06fc915f0ab09704",
     "packages": [
         {
             "name": "alecrabbit/php-accessories",
-            "version": "0.6.4",
+            "version": "0.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-accessories.git",
-                "reference": "4875c02e208cba1c7e168bca1d45663fa7fa30e3"
+                "reference": "2c10df8c6646aaaddccdca50fd031071e6eee351"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-accessories/zipball/4875c02e208cba1c7e168bca1d45663fa7fa30e3",
-                "reference": "4875c02e208cba1c7e168bca1d45663fa7fa30e3",
+                "url": "https://api.github.com/repos/alecrabbit/php-accessories/zipball/2c10df8c6646aaaddccdca50fd031071e6eee351",
+                "reference": "2c10df8c6646aaaddccdca50fd031071e6eee351",
                 "shasum": ""
             },
             "require": {
@@ -53,7 +53,7 @@
                 "rewindable",
                 "time"
             ],
-            "time": "2019-04-12T11:47:44+00:00"
+            "time": "2019-04-24T10:47:12+00:00"
         },
         {
             "name": "alecrabbit/php-cli-tools",
@@ -153,16 +153,16 @@
         },
         {
             "name": "alecrabbit/php-console-spinner",
-            "version": "0.9.0-BETA.1",
+            "version": "0.14.1-ALPHA.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-console-spinner.git",
-                "reference": "718d890581e8b1d2f766b12407e2b5e1a13e9106"
+                "reference": "30fb37ac7160465fd4dac8209372ac9159cea0df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-console-spinner/zipball/718d890581e8b1d2f766b12407e2b5e1a13e9106",
-                "reference": "718d890581e8b1d2f766b12407e2b5e1a13e9106",
+                "url": "https://api.github.com/repos/alecrabbit/php-console-spinner/zipball/30fb37ac7160465fd4dac8209372ac9159cea0df",
+                "reference": "30fb37ac7160465fd4dac8209372ac9159cea0df",
                 "shasum": ""
             },
             "require": {
@@ -199,20 +199,20 @@
                 "snake",
                 "spinner"
             ],
-            "time": "2019-04-17T13:56:24+00:00"
+            "time": "2019-04-23T13:12:28+00:00"
         },
         {
             "name": "alecrabbit/php-helpers",
-            "version": "0.5.8",
+            "version": "0.5.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-helpers.git",
-                "reference": "9d7ce8b7330acc8d555edb9c4c25c2969d5594aa"
+                "reference": "f0b52eb8fdbabc0149c4bd6f7fcbe63e9b6ee19f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/9d7ce8b7330acc8d555edb9c4c25c2969d5594aa",
-                "reference": "9d7ce8b7330acc8d555edb9c4c25c2969d5594aa",
+                "url": "https://api.github.com/repos/alecrabbit/php-helpers/zipball/f0b52eb8fdbabc0149c4bd6f7fcbe63e9b6ee19f",
+                "reference": "f0b52eb8fdbabc0149c4bd6f7fcbe63e9b6ee19f",
                 "shasum": ""
             },
             "require": {
@@ -261,7 +261,7 @@
                 "wrap",
                 "zeros"
             ],
-            "time": "2019-04-24T09:41:38+00:00"
+            "time": "2019-04-24T10:41:02+00:00"
         },
         {
             "name": "alecrabbit/php-traits",
