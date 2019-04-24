@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "alecrabbit/php-accessories",
-            "version": "0.6.5",
+            "version": "0.6.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alecrabbit/php-accessories.git",
-                "reference": "2c10df8c6646aaaddccdca50fd031071e6eee351"
+                "reference": "e0fefe80c661c0e3a12784c9bb98005058e17967"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alecrabbit/php-accessories/zipball/2c10df8c6646aaaddccdca50fd031071e6eee351",
-                "reference": "2c10df8c6646aaaddccdca50fd031071e6eee351",
+                "url": "https://api.github.com/repos/alecrabbit/php-accessories/zipball/e0fefe80c661c0e3a12784c9bb98005058e17967",
+                "reference": "e0fefe80c661c0e3a12784c9bb98005058e17967",
                 "shasum": ""
             },
             "require": {
@@ -53,7 +53,7 @@
                 "rewindable",
                 "time"
             ],
-            "time": "2019-04-24T10:47:12+00:00"
+            "time": "2019-04-24T12:12:05+00:00"
         },
         {
             "name": "alecrabbit/php-cli-tools",

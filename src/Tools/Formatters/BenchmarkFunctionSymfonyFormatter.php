@@ -20,11 +20,13 @@ class BenchmarkFunctionSymfonyFormatter extends BenchmarkFunctionFormatter
 
     /**
      * BenchmarkFunctionSymfonyFormatter constructor.
+     * @param null|int $options
      * @throws InvalidStyleException
      */
-    public function __construct()
+    public function __construct(?int $options = null)
     {
-        $this->theme = new Themes(true);
+        parent::__construct($options);
+        $this->theme = new Themes();
         $this->yellowThreshold = 0.05;
         $this->redThreshold = 0.9;
     }
@@ -33,15 +35,15 @@ class BenchmarkFunctionSymfonyFormatter extends BenchmarkFunctionFormatter
     public function returnToString($executionReturn): string
     {
         $type = typeOf($executionReturn);
-        $str = static::getExporter()->export($executionReturn);
+        $exportedValue = static::getExporter()->export($executionReturn);
         return
             $this->theme->dark(
                 'array' === $type ?
-                    $str :
+                    $exportedValue :
                     sprintf(
                         '%s(%s)',
                         $type,
-                        $str
+                        $exportedValue
                     )
             );
     }

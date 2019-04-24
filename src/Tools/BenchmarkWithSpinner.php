@@ -29,7 +29,7 @@ class BenchmarkWithSpinner extends Benchmark
 
             $progressFinish =
                 static function () use ($s): void {
-                    $s->end(1.0);
+                    $s->end();
                 };
 
             $this->showProgressBy($progressStart, $progressAdvance, $progressFinish);
