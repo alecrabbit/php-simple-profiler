@@ -2,10 +2,10 @@
 
 namespace AlecRabbit\Tools\Formatters;
 
-use AlecRabbit\Tools\Factory;
-use AlecRabbit\Tools\Formattable;
+use AlecRabbit\Formatters\Core\AbstractFormatter;
+use AlecRabbit\Reports\Core\Formattable;
+use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Formatters\Contracts\BenchmarkReportFormatterInterface;
-use AlecRabbit\Tools\Formatters\Core\ReportFormatter;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
 use function AlecRabbit\array_is_homogeneous;
@@ -16,7 +16,7 @@ use function AlecRabbit\array_is_homogeneous;
  * Class BenchmarkReportFormatter
  * @package AlecRabbit\Tools\Reports\Formatters
  */
-class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkReportFormatterInterface
+class BenchmarkReportFormatter extends AbstractFormatter implements BenchmarkReportFormatterInterface, Strings
 {
     protected const ALL_RETURNS_ARE_EQUAL = 'All returns are equal';
 
@@ -43,10 +43,8 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
         if ($formattable instanceof BenchmarkReport) {
             return $this->build($formattable);
         }
-        $this->wrongFormattableType(BenchmarkReport::class, $formattable);
-        // @codeCoverageIgnoreStart
-        return ''; // never executes
-        // @codeCoverageIgnoreEnd
+        return
+            $this->errorMessage($formattable, BenchmarkReport::class);
     }
 
     /**

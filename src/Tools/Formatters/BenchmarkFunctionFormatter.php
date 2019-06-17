@@ -3,14 +3,14 @@
 namespace AlecRabbit\Tools\Formatters;
 
 use AlecRabbit\Accessories\Pretty;
-use AlecRabbit\Tools\Formattable;
+use AlecRabbit\Formatters\Core\AbstractFormatter;
+use AlecRabbit\Reports\Core\Formattable;
 use AlecRabbit\Tools\Formatters\Contracts\BenchmarkFunctionFormatterInterface;
-use AlecRabbit\Tools\Formatters\Core\Formatter;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use SebastianBergmann\Exporter\Exporter;
 use function AlecRabbit\typeOf;
 
-class BenchmarkFunctionFormatter extends Formatter implements BenchmarkFunctionFormatterInterface
+class BenchmarkFunctionFormatter extends AbstractFormatter implements BenchmarkFunctionFormatterInterface
 {
     /** @var null|Exporter */
     protected static $exporter;
@@ -42,10 +42,8 @@ class BenchmarkFunctionFormatter extends Formatter implements BenchmarkFunctionF
                     PHP_EOL :
                     /*static::EXCEPTIONS .*/ $exception . PHP_EOL);
         }
-        $this->wrongFormattableType(BenchmarkFunction::class, $function);
-        // @codeCoverageIgnoreStart
-        return ''; // never executes
-        // @codeCoverageIgnoreEnd
+        return
+            $this->errorMessage($function, BenchmarkFunction::class);
     }
 
     /**

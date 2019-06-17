@@ -29,7 +29,7 @@ for ($i = 0; $i < 100; $i++) {
 //echo PHP_EOL;
 echo 'First report' ;
 echo PHP_EOL;
-echo $profiler->getReport();
+echo $profiler->report();
 echo PHP_EOL;
 echo PHP_EOL;
 
@@ -37,5 +37,5 @@ $profiler = new Profiler();
 
 echo 'Second report' ;
 echo PHP_EOL;
-echo $profiler->getReport();
+echo $profiler->report();
 echo PHP_EOL;

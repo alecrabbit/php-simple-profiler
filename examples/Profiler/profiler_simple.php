@@ -19,5 +19,5 @@ for ($i = 0; $i < 100; $i++) {
     $profiler->timer()->check();
 }
 
-echo $profiler->getReport();
+echo $profiler->report();
 echo PHP_EOL;

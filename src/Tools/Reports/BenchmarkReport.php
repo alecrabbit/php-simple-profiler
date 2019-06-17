@@ -2,49 +2,34 @@
 
 namespace AlecRabbit\Tools\Reports;
 
+use AlecRabbit\Reports\Core\AbstractReport;
+use AlecRabbit\Reports\Core\AbstractReportable;
 use AlecRabbit\Tools\Benchmark;
-use AlecRabbit\Tools\Factory;
-use AlecRabbit\Tools\Formatters\Contracts\FormatterInterface;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Tools\Reports\Contracts\BenchmarkReportInterface;
-use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
-use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
-use AlecRabbit\Tools\Reports\Core\Report;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
-class BenchmarkReport extends Report implements BenchmarkReportInterface
+class BenchmarkReport extends AbstractReport implements BenchmarkReportInterface
 {
     use BenchmarkFields;
 
-    protected static function getFormatter(): FormatterInterface
-    {
-        return
-            Factory::getBenchmarkReportFormatter();
-    }
-
-    /**
-     * @param ReportableInterface $benchmark
-     * @return Contracts\ReportInterface
-     * @throws \RuntimeException
+    /** {@inheritDoc}
      * @throws \Exception
      */
-    public function buildOn(ReportableInterface $benchmark): ReportInterface
+    protected function extractDataFrom(AbstractReportable $reportable = null): void
     {
-        if ($benchmark instanceof Benchmark) {
-            $this->added = $benchmark->getAdded();
-            $this->benchmarked = $benchmark->getBenchmarked();
-            $this->memoryUsageReport = $benchmark->getMemoryUsageReport();
-            $this->doneIterations = $benchmark->getDoneIterations();
-            $this->doneIterationsCombined = $benchmark->getDoneIterationsCombined();
-            $this->functions = $this->updateFunctions($benchmark->getFunctions());
-            $this->timer = $benchmark->getTimer();
-            $this->showReturns = $benchmark->isShowReturns();
-        } else {
-            $this->wrongReportable(Benchmark::class, $benchmark);
+        if ($reportable instanceof Benchmark) {
+            $this->added = $reportable->getAdded();
+            $this->benchmarked = $reportable->getBenchmarked();
+            $this->memoryUsageReport = $reportable->getMemoryUsageReport();
+            $this->doneIterations = $reportable->getDoneIterations();
+            $this->doneIterationsCombined = $reportable->getDoneIterationsCombined();
+            $this->functions = $this->updateFunctions($reportable->getFunctions());
+            $this->timer = $reportable->getTimer();
+            $this->showReturns = $reportable->isShowReturns();
         }
-        return $this;
     }
 
     /**

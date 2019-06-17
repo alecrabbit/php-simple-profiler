@@ -2,10 +2,10 @@
 
 namespace AlecRabbit\Tools\Internal;
 
-use AlecRabbit\Tools\AbstractTimer;
-use AlecRabbit\Tools\Formattable;
-use AlecRabbit\Tools\HRTimer;
-use AlecRabbit\Tools\Timer;
+use AlecRabbit\Reports\Core\Formattable;
+use AlecRabbit\Timers\Core\AbstractTimer;
+use AlecRabbit\Timers\HRTimer;
+use AlecRabbit\Timers\Timer;
 use AlecRabbit\Traits\GettableName;
 
 /**

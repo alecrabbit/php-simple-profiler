@@ -3,9 +3,9 @@
 namespace AlecRabbit\Tools\Traits;
 
 use AlecRabbit\Accessories\MemoryUsage\MemoryUsageReport;
+use AlecRabbit\Counters\SimpleCounter;
+use AlecRabbit\Timers\Timer;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
-use AlecRabbit\Tools\SimpleCounter;
-use AlecRabbit\Tools\Timer;
 
 trait BenchmarkFields
 {

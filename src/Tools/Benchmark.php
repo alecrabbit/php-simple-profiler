@@ -5,14 +5,18 @@ namespace AlecRabbit\Tools;
 use AlecRabbit\Accessories\MemoryUsage;
 use AlecRabbit\Accessories\Rewindable;
 use AlecRabbit\Cli\Tools\Terminal;
+use AlecRabbit\Counters\SimpleCounter;
+use AlecRabbit\Reports\Core\AbstractReportable;
+use AlecRabbit\Timers\Timer;
 use AlecRabbit\Tools\Contracts\BenchmarkInterface;
 use AlecRabbit\Tools\Contracts\Strings;
+use AlecRabbit\Tools\Formatters\BenchmarkReportFormatter;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
 use AlecRabbit\Tools\Traits\BenchmarkFields;
 use function AlecRabbit\typeOf;
 
-class Benchmark extends Reportable implements BenchmarkInterface, Strings
+class Benchmark extends AbstractReportable implements BenchmarkInterface, Strings
 {
     use BenchmarkFields;
 
@@ -66,6 +70,7 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
      */
     public function __construct(?int $iterations = null, ?bool $silent = null)
     {
+        parent::__construct();
         $this->iterations = $this->refineIterations($iterations);
         $this->silent = $silent ?? $this->silent;
 
@@ -80,6 +85,10 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
         $this->initialize();
         $this->terminal = new Terminal();
         $this->terminalWidth = $this->terminalWidth();
+        $this->setBindings(
+            BenchmarkReport::class,
+            BenchmarkReportFormatter::class
+        );
     }
 
     protected function refineIterations(?int $iterations): int
@@ -121,10 +130,9 @@ class Benchmark extends Reportable implements BenchmarkInterface, Strings
         $this->resetComment();
         $this->added = new SimpleCounter('added');
         $this->benchmarked = new SimpleCounter('benchmarked');
-        $this->memoryUsageReport = MemoryUsage::report();
+        $this->memoryUsageReport = MemoryUsage::reportStatic();
         $this->doneIterations = 0;
         $this->totalIterations = 0;
-        $this->report = (new BenchmarkReport())->buildOn($this);
     }
 
     protected function resetComment(): void

@@ -3,6 +3,7 @@
 namespace AlecRabbit\Tools\Formatters\Contracts;
 
 use AlecRabbit\Tools\Formatters\BenchmarkFunctionFormatter;
+use AlecRabbit\Formatters\Contracts\FormatterInterface;
 
 interface BenchmarkFunctionFormatterInterface extends FormatterInterface
 {
