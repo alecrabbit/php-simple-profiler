@@ -2,6 +2,7 @@
 
 namespace AlecRabbit\Tools\Formatters;
 
+use function AlecRabbit\container;
 use AlecRabbit\Formatters\Core\AbstractFormatter;
 use AlecRabbit\Reports\Core\Formattable;
 use AlecRabbit\Tools\Contracts\Strings;
@@ -68,7 +69,7 @@ class BenchmarkReportFormatter extends AbstractFormatter implements BenchmarkRep
         /** @var BenchmarkFunction $function */
         foreach ($report->getFunctions() as $name => $function) {
             $tmp =
-                Factory::getBenchmarkFunctionFormatter()
+                container()->make(BenchmarkFunctionFormatter::class)
                     ->noReturnIf($this->equalReturns || $this->report->isNotShowReturns())
                     ->format($function);
             if (null === $function->getException()) {
@@ -86,15 +87,6 @@ class BenchmarkReportFormatter extends AbstractFormatter implements BenchmarkRep
                 $this->countersStatistics(),
                 PHP_EOL
             );
-//        return
-//            sprintf(
-//                '%s%s%s%s%s',
-//                $str,
-//                $this->strEqualReturns(),
-//                $this->countersStatistics(),
-//                $report->getMemoryUsageReport(),
-//                PHP_EOL
-//            );
     }
 
     protected function computeVariables(): void
@@ -153,7 +145,9 @@ class BenchmarkReportFormatter extends AbstractFormatter implements BenchmarkRep
                     '%s%s%s',
                     $aRAE,
                     $this->benchmarkedMoreThanOne && $this->report->isShowReturns() ?
-                        ':' . PHP_EOL . Factory::getBenchmarkFunctionFormatter()->returnToString($this->lastReturn) :
+                        ':' . PHP_EOL . container()
+                            ->make(BenchmarkFunctionFormatter::class)
+                            ->returnToString($this->lastReturn) :
                         $dLM,
                     PHP_EOL
                 );
