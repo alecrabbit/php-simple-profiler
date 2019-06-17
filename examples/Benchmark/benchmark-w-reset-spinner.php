@@ -56,8 +56,9 @@ try {
     $benchmark
         ->withComment('intval()')
         ->addFunction('intval', '3');
-    echo $benchmark->report();
+    echo $report = $benchmark->report();
     echo $benchmark->stat();
+    dump($report);
 } catch (Exception $e) {
     echo 'Error occurred: ';
     echo '[' . $theme->error(typeOf($e)) . '] ' . $e->getMessage() . PHP_EOL;

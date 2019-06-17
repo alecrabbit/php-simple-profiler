@@ -59,6 +59,7 @@ class BenchmarkFunction extends Formattable
         ?string $comment = null,
         ?string $humanReadableName = null
     ) {
+        parent::__construct();
         $this->callable = $func;
         $this->name = $name;
         $this->index = $index;
