@@ -2,8 +2,8 @@
 
 namespace AlecRabbit\Tools\Traits;
 
-use AlecRabbit\Tools\AbstractCounter;
-use AlecRabbit\Tools\AbstractTimer;
+use AlecRabbit\Counters\Core\AbstractCounter;
+use AlecRabbit\Timers\Core\AbstractTimer;
 use AlecRabbit\Tools\Profiler;
 use PHPUnit\Framework\TestCase;
 

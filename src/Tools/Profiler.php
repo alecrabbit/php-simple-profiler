@@ -2,13 +2,22 @@
 
 namespace AlecRabbit\Tools;
 
+use AlecRabbit\Counters\Core\AbstractCounter;
+use AlecRabbit\Counters\ExtendedCounter;
+use AlecRabbit\Counters\SimpleCounter;
+use AlecRabbit\Formatters\TimerReportFormatter;
+use AlecRabbit\Reports\Core\AbstractReportable;
+use AlecRabbit\Reports\TimerReport;
+use AlecRabbit\Timers\Core\AbstractTimer;
+use AlecRabbit\Timers\Timer;
 use AlecRabbit\Tools\Contracts\ProfilerInterface;
 use AlecRabbit\Tools\Contracts\Strings;
+use AlecRabbit\Tools\Formatters\ProfilerReportFormatter;
 use AlecRabbit\Tools\Reports\ProfilerReport;
 use AlecRabbit\Traits\DefaultableName;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
-class Profiler extends Reportable implements ProfilerInterface, Strings
+class Profiler extends AbstractReportable implements ProfilerInterface, Strings
 {
     use DefaultableName;
 
@@ -24,9 +33,13 @@ class Profiler extends Reportable implements ProfilerInterface, Strings
      */
     public function __construct()
     {
+        parent::__construct();
+        $this->setBindings(
+            ProfilerReport::class,
+            ProfilerReportFormatter::class
+        );
         $this->counter(); // Create default counter
         $this->timer(); // Create default timer
-        $this->report = (new ProfilerReport())->buildOn($this);
     }
 
     /**

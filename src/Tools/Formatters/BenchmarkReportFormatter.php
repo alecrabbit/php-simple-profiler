@@ -207,8 +207,4 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
         // @codeCoverageIgnoreEnd
     }
 
-    public function format(\AlecRabbit\Formatters\Core\Formattable $data): string
-    {
-        // TODO: Implement format() method.
-    }
 }
