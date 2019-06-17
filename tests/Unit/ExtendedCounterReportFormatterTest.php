@@ -21,7 +21,7 @@ class ExtendedCounterReportFormatterTest extends TestCase
         $formatter = new ExtendedCounterReportFormatter();
         $profilerReport = new ProfilerReport();
         $this->expectException(\RuntimeException::class);
-        $formatter->process($profilerReport);
+        $formatter->format($profilerReport);
     }
 
     /**
@@ -34,7 +34,7 @@ class ExtendedCounterReportFormatterTest extends TestCase
         $timer = new ExtendedCounter();
         $counterReport = new ExtendedCounterReport();
         $counterReport->buildOn($timer);
-        $str = $formatter->process($counterReport);
+        $str = $formatter->format($counterReport);
         $this->assertStringContainsString(Strings::COUNTER, $str);
     }
 

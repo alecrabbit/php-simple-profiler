@@ -22,7 +22,7 @@ class ProfilerReportFormatterTest extends TestCase
         $formatter = new ProfilerReportFormatter();
         $timerReport = new TimerReport();
         $this->expectException(\RuntimeException::class);
-        $formatter->process($timerReport);
+        $formatter->format($timerReport);
     }
 
     /**
@@ -35,7 +35,7 @@ class ProfilerReportFormatterTest extends TestCase
         $profiler = new Profiler();
         $profilerReport = new ProfilerReport();
         $profilerReport->buildOn($profiler);
-        $str = $formatter->process($profilerReport);
+        $str = $formatter->format($profilerReport);
         $this->assertStringNotContainsString(Strings::COUNTER, $str);
         $this->assertStringContainsString(Strings::ELAPSED, $str);
     }

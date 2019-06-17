@@ -2,7 +2,7 @@
 
 namespace AlecRabbit\Tools\Formatters\Core;
 
-use AlecRabbit\Accessories\Core\AbstractFormatter;
+use AlecRabbit\Formatters\Core\AbstractFormatter;
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Formattable;
 use AlecRabbit\Tools\Formatters\Contracts\FormatterInterface;
@@ -12,7 +12,7 @@ abstract class Formatter extends AbstractFormatter implements FormatterInterface
 {
 
     /** {@inheritdoc} */
-    abstract public function process(Formattable $formattable): string;
+    abstract public function format(Formattable $formattable): string;
 
     /**
      * @param string $expected

@@ -23,12 +23,12 @@ class BenchmarkFunctionTest extends TestCase
         $expectedReturn = self::EXPECTED_RETURN;
         $b = new BenchmarkFunctionFormatter();
         $this->assertInstanceOf(BenchmarkFunctionFormatter::class, $b);
-        $this->assertEquals(PHP_EOL, $b->process($f));
+        $this->assertEquals(PHP_EOL, $b->format($f));
         $f->setBenchmarkRelative(new BenchmarkRelative(1, 0, 0.00001));
         $f->execute();
         $this->assertEquals($expectedReturn, $f->getReturn());
         $this->assertEquals(null, $f->getException());
-        $this->assertIsString($b->process($f));
+        $this->assertIsString($b->format($f));
     }
 
     /**

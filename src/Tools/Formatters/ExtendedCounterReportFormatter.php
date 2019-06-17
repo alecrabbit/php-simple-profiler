@@ -11,7 +11,7 @@ use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 class ExtendedCounterReportFormatter extends ReportFormatter
 {
     /** {@inheritdoc} */
-    public function process(Formattable $formattable): string
+    public function format(Formattable $formattable): string
     {
         if ($formattable instanceof ExtendedCounterReport) {
             if (DEFAULT_NAME === $formattable->getName()) {

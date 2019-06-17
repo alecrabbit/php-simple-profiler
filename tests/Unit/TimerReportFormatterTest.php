@@ -25,7 +25,7 @@ class TimerReportFormatterTest extends TestCase
         $formatter = new TimerReportFormatter();
         $profilerReport = new ProfilerReport();
         $this->expectException(\RuntimeException::class);
-        $formatter->process($profilerReport);
+        $formatter->format($profilerReport);
     }
 
     /**
@@ -38,7 +38,7 @@ class TimerReportFormatterTest extends TestCase
         $timer = new Timer();
         $timerReport = new TimerReport();
         $timerReport->buildOn($timer);
-        $str = $formatter->process($timerReport);
+        $str = $formatter->format($timerReport);
         $this->assertStringContainsString(Strings::ELAPSED, $str);
     }
 
@@ -52,7 +52,7 @@ class TimerReportFormatterTest extends TestCase
         $timer = new HRTimer();
         $timerReport = new TimerReport();
         $timerReport->buildOn($timer);
-        $str = $formatter->process($timerReport);
+        $str = $formatter->format($timerReport);
         $this->assertStringContainsString(Strings::ELAPSED, $str);
     }
 

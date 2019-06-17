@@ -13,15 +13,15 @@
   "license": "MIT",
   "require": {
     "php": "^7.2",
-    "alecrabbit/php-accessories": "^0.7",
+    "alecrabbit/php-accessories": "^0.9",
     "alecrabbit/php-console-colour": "^0.5",
     "alecrabbit/php-console-spinner": "^0.14",
-    "alecrabbit/php-helpers": "^0.5",
-    "alecrabbit/php-traits": "^0.2",
+    "alecrabbit/php-helpers": "^0.6",
+    "alecrabbit/php-traits": "^0.3",
     "sebastian/exporter": "^3.1"
   },
   "require-dev": {
-    "krowinski/bcmath-extended": "^4.2",
+    "krowinski/bcmath-extended": "^4.2 || ^5.0",
     "nunomaduro/collision": "^3.0",
     "phpunit/phpunit": "^8.0",
     "symfony/console": "^4.2",

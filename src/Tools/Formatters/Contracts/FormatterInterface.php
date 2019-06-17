@@ -2,7 +2,7 @@
 
 namespace AlecRabbit\Tools\Formatters\Contracts;
 
-use AlecRabbit\Accessories\Contracts\FormatterInterface as BaseFormatterInterface;
+use AlecRabbit\Formatters\Contracts\FormatterInterface as BaseFormatterInterface;
 use AlecRabbit\Tools\Formattable;
 
 interface FormatterInterface extends BaseFormatterInterface
@@ -11,5 +11,5 @@ interface FormatterInterface extends BaseFormatterInterface
      * @param Formattable $formattable
      * @return string
      */
-    public function process(Formattable $formattable): string;
+    public function format(Formattable $formattable): string;
 }

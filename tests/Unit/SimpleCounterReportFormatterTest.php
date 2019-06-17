@@ -21,7 +21,7 @@ class SimpleCounterReportFormatterTest extends TestCase
         $formatter = new SimpleCounterReportFormatter();
         $profilerReport = new ProfilerReport();
         $this->expectException(\RuntimeException::class);
-        $formatter->process($profilerReport);
+        $formatter->format($profilerReport);
     }
 
     /**
@@ -34,7 +34,7 @@ class SimpleCounterReportFormatterTest extends TestCase
         $timer = new SimpleCounter();
         $timerReport = new SimpleCounterReport();
         $timerReport->buildOn($timer);
-        $str = $formatter->process($timerReport);
+        $str = $formatter->format($timerReport);
         $this->assertStringContainsString(Strings::COUNTER, $str);
     }
 

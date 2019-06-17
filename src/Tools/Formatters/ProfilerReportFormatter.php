@@ -15,7 +15,7 @@ class ProfilerReportFormatter extends ReportFormatter
     private $elapsed = '';
 
     /** {@inheritdoc} */
-    public function process(Formattable $formattable): string
+    public function format(Formattable $formattable): string
     {
         if ($formattable instanceof ProfilerReport) {
             return

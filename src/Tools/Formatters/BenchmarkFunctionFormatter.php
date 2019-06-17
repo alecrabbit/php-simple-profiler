@@ -33,7 +33,7 @@ class BenchmarkFunctionFormatter extends Formatter implements BenchmarkFunctionF
     }
 
     /** {@inheritdoc} */
-    public function process(Formattable $function): string
+    public function format(Formattable $function): string
     {
         if ($function instanceof BenchmarkFunction) {
             return

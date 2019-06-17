@@ -16,7 +16,7 @@ abstract class Report extends Formattable implements ReportInterface
     public function __toString(): string
     {
         return
-            static::getFormatter()->process($this);
+            static::getFormatter()->format($this);
     }
 
     abstract protected static function getFormatter(): FormatterInterface;

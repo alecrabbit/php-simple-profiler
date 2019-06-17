@@ -38,7 +38,7 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
     protected $benchmarkedMoreThanOne;
 
     /** {@inheritdoc} */
-    public function process(Formattable $formattable): string
+    public function format(Formattable $formattable): string
     {
         if ($formattable instanceof BenchmarkReport) {
             return $this->build($formattable);
@@ -72,7 +72,7 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
             $tmp =
                 Factory::getBenchmarkFunctionFormatter()
                     ->noReturnIf($this->equalReturns || $this->report->isNotShowReturns())
-                    ->process($function);
+                    ->format($function);
             if (null === $function->getException()) {
                 $str .= $tmp;
             } else {
@@ -205,5 +205,10 @@ class BenchmarkReportFormatter extends ReportFormatter implements BenchmarkRepor
         // @codeCoverageIgnoreStart
         return '';
         // @codeCoverageIgnoreEnd
+    }
+
+    public function format(\AlecRabbit\Formatters\Core\Formattable $data): string
+    {
+        // TODO: Implement format() method.
     }
 }

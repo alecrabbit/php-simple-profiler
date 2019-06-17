@@ -14,7 +14,7 @@ class TimerReportFormatter extends ReportFormatter
     protected const MILLISECONDS_THRESHOLD = 10000;
 
     /** {@inheritdoc} */
-    public function process(Formattable $formattable): string
+    public function format(Formattable $formattable): string
     {
         if ($formattable instanceof TimerReport) {
             if (0 === $formattable->getCount() && DEFAULT_NAME === $formattable->getName()) {

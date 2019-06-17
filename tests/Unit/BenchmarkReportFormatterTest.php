@@ -25,7 +25,7 @@ class BenchmarkReportFormatterTest extends TestCase
         $formatter = new BenchmarkReportFormatter();
         $profilerReport = new ProfilerReport();
         $this->expectException(\RuntimeException::class);
-        $formatter->process($profilerReport);
+        $formatter->format($profilerReport);
     }
 
     /**
@@ -38,7 +38,7 @@ class BenchmarkReportFormatterTest extends TestCase
         $benchmark = new Benchmark();
         $benchmarkReport = new BenchmarkReport();
         $benchmarkReport->buildOn($benchmark);
-        $str = $formatter->process($benchmarkReport);
+        $str = $formatter->format($benchmarkReport);
         $this->assertIsString($str);
         $this->assertStringContainsString(Strings::RESULTS, $str);
         $this->assertStringContainsString(Strings::BENCHMARKED, $str);

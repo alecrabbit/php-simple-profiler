@@ -22,7 +22,7 @@ class BenchmarkFunctionFormatterTest extends TestCase
             {
             };
         $this->expectException(\RuntimeException::class);
-        $formatter->process($unknownFunction);
+        $formatter->format($unknownFunction);
     }
 
 
@@ -50,12 +50,12 @@ class BenchmarkFunctionFormatterTest extends TestCase
         $b = new BenchmarkFunctionFormatter();
         $this->assertEquals('Array &0 ()', $b->returnToString([]));
         $this->assertInstanceOf(BenchmarkFunctionFormatter::class, $b);
-        $this->assertEquals(PHP_EOL, $b->process($f));
+        $this->assertEquals(PHP_EOL, $b->format($f));
         $f->setBenchmarkRelative(new BenchmarkRelative(1, 0, 0.00001));
         $f->execute();
         $this->assertEquals(
             "1.  10.0μs (    0.00%) hrTestCase(integer, integer) Comment \n integer(3) \n\n",
-            $b->process($f)
+            $b->format($f)
         );
     }
 }
