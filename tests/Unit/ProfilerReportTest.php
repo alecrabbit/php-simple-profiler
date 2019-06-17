@@ -2,26 +2,14 @@
 
 namespace AlecRabbit\Tests\Tools;
 
+use AlecRabbit\Timers\Timer;
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Profiler;
-use AlecRabbit\Tools\Reports\BenchmarkReport;
 use AlecRabbit\Tools\Reports\ProfilerReport;
-use AlecRabbit\Tools\Timer;
 use PHPUnit\Framework\TestCase;
 
 class ProfilerReportTest extends TestCase
 {
-    /**
-     * @test
-     * @throws \Exception
-     */
-    public function wrongReportable(): void
-    {
-        $report = new ProfilerReport();
-        $timer = new Timer();
-        $this->expectException(\RuntimeException::class);
-        $report->buildOn($timer);
-    }
     /**
      * @test
      * @throws \Exception

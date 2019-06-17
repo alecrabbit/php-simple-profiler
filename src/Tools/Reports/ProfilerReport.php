@@ -2,23 +2,15 @@
 
 namespace AlecRabbit\Tools\Reports;
 
+use AlecRabbit\Reports\Core\AbstractReport;
+use AlecRabbit\Reports\Core\AbstractReportable;
 use AlecRabbit\Tools\Contracts\Strings;
-use AlecRabbit\Tools\Factory;
-use AlecRabbit\Tools\Formatters\Contracts\FormatterInterface;
 use AlecRabbit\Tools\Profiler;
-use AlecRabbit\Tools\Reports\Contracts\ReportableInterface;
-use AlecRabbit\Tools\Reports\Contracts\ReportInterface;
-use AlecRabbit\Tools\Reports\Core\Report;
 
-class ProfilerReport extends Report implements Strings
+class ProfilerReport extends AbstractReport implements Strings
 {
     /** @var array */
     private $reports = [];
-
-    protected static function getFormatter(): FormatterInterface
-    {
-        return Factory::getProfilerReportFormatter();
-    }
 
     /**
      * @return array
@@ -28,21 +20,36 @@ class ProfilerReport extends Report implements Strings
         return $this->reports;
     }
 
-    public function buildOn(ReportableInterface $profiler): ReportInterface
+    /** {@inheritDoc}
+     * @throws \Exception
+     */
+    protected function extractDataFrom(AbstractReportable $reportable = null): void
     {
-        if ($profiler instanceof Profiler) {
-            foreach ($profiler->getCounters() as $counter) {
+        if ($reportable instanceof Profiler) {
+            foreach ($reportable->getCounters() as $counter) {
                 $this->reports[self::COUNTERS][$counter->getName()] = $counter->report();
             }
-            foreach ($profiler->getTimers() as $timer) {
+            foreach ($reportable->getTimers() as $timer) {
                 $this->reports[self::TIMERS][$timer->getName()] = $timer->report();
             }
-        } else {
-            $this->wrongReportable(Profiler::class, $profiler);
         }
-        return $this;
     }
 
+//    public function buildOn(ReportableInterface $profiler): ReportInterface
+//    {
+//        if ($profiler instanceof Profiler) {
+//            foreach ($profiler->getCounters() as $counter) {
+//                $this->reports[self::COUNTERS][$counter->getName()] = $counter->report();
+//            }
+//            foreach ($profiler->getTimers() as $timer) {
+//                $this->reports[self::TIMERS][$timer->getName()] = $timer->report();
+//            }
+//        } else {
+//            $this->wrongReportable(Profiler::class, $profiler);
+//        }
+//        return $this;
+//    }
+//
     /**
      * @return array
      */

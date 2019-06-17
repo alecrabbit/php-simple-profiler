@@ -2,14 +2,14 @@
 
 namespace AlecRabbit\Tools\Formatters;
 
-use AlecRabbit\Tools\Formattable;
-use AlecRabbit\Tools\Formatters\Core\ReportFormatter;
-use AlecRabbit\Tools\Reports\AbstractCounterReport;
+use AlecRabbit\Formatters\Core\AbstractFormatter;
+use AlecRabbit\Reports\Core\AbstractCounterReport;
+use AlecRabbit\Reports\Core\Formattable;
+use AlecRabbit\Reports\TimerReport;
 use AlecRabbit\Tools\Reports\ProfilerReport;
-use AlecRabbit\Tools\Reports\TimerReport;
 use const AlecRabbit\Traits\Constants\DEFAULT_NAME;
 
-class ProfilerReportFormatter extends ReportFormatter
+class ProfilerReportFormatter extends AbstractFormatter
 {
     /** @var string */
     private $elapsed = '';
@@ -26,10 +26,8 @@ class ProfilerReportFormatter extends ReportFormatter
                     $this->elapsed
                 );
         }
-        $this->wrongFormattableType(ProfilerReport::class, $formattable);
-        // @codeCoverageIgnoreStart
-        return ''; // never executes
-        // @codeCoverageIgnoreEnd
+        return
+            $this->errorMessage($formattable, ProfilerReport::class);
     }
 
     /**

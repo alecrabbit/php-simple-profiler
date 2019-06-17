@@ -2,42 +2,39 @@
 
 namespace AlecRabbit\Tests\Tools;
 
+use AlecRabbit\Aux\WrongFormattable;
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Formatters\ProfilerReportFormatter;
 use AlecRabbit\Tools\Profiler;
 use AlecRabbit\Tools\Reports\ProfilerReport;
-use AlecRabbit\Tools\Reports\TimerReport;
 use PHPUnit\Framework\TestCase;
 
 class ProfilerReportFormatterTest extends TestCase
 {
     public const NAME = 'name';
 
-    /**
-     * @test
-     * @throws \Exception
-     */
+    /** @test */
     public function wrongReport(): void
     {
         $formatter = new ProfilerReportFormatter();
-        $timerReport = new TimerReport();
-        $this->expectException(\RuntimeException::class);
-        $formatter->format($timerReport);
+        $wrongFormattable = new WrongFormattable();
+        $str = $formatter->format($wrongFormattable);
+        $this->assertSame(
+            '[AlecRabbit\Tools\Formatters\ProfilerReportFormatter]' .
+            ' ERROR: AlecRabbit\Tools\Reports\ProfilerReport expected, AlecRabbit\Aux\WrongFormattable given.',
+            $str
+        );
     }
 
-    /**
-     * @test
-     * @throws \Exception
-     */
+    /** @test */
     public function correctReport(): void
     {
         $formatter = new ProfilerReportFormatter();
-        $profiler = new Profiler();
-        $profilerReport = new ProfilerReport();
-        $profilerReport->buildOn($profiler);
-        $str = $formatter->format($profilerReport);
-        $this->assertStringNotContainsString(Strings::COUNTER, $str);
+        $timer = new Profiler();
+        $timerReport = new ProfilerReport($formatter, $timer);
+        $str = $formatter->format($timerReport);
         $this->assertStringContainsString(Strings::ELAPSED, $str);
+        $this->assertStringNotContainsString(Strings::COUNTER, $str);
     }
 
     /**
