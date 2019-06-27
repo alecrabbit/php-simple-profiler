@@ -1,5 +1,6 @@
 <?php
 
+use AlecRabbit\Cli\Tools\Cursor;
 use AlecRabbit\ConsoleColour\Themes;
 use AlecRabbit\Spinner\SnakeSpinner;
 use AlecRabbit\Tools\BenchmarkWithSpinner;

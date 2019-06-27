@@ -2,14 +2,15 @@
 
 namespace AlecRabbit\Tools\Formatters;
 
-use function AlecRabbit\container;
 use AlecRabbit\Formatters\Core\AbstractFormatter;
 use AlecRabbit\Reports\Core\Formattable;
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Formatters\Contracts\BenchmarkReportFormatterInterface;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Reports\BenchmarkReport;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use function AlecRabbit\array_is_homogeneous;
+use function AlecRabbit\container;
 
 /**
  * @psalm-suppress MissingConstructor
@@ -38,7 +39,10 @@ class BenchmarkReportFormatter extends AbstractFormatter implements BenchmarkRep
     /** @var bool */
     protected $benchmarkedMoreThanOne;
 
-    /** {@inheritdoc} */
+    /**
+     * {@inheritdoc}
+     * @throws BindingResolutionException
+     */
     public function format(Formattable $formattable): string
     {
         if ($formattable instanceof BenchmarkReport) {
@@ -51,6 +55,7 @@ class BenchmarkReportFormatter extends AbstractFormatter implements BenchmarkRep
     /**
      * @param BenchmarkReport $report
      * @return string
+     * @throws BindingResolutionException
      */
     protected function build(BenchmarkReport $report): string
     {
@@ -128,26 +133,32 @@ class BenchmarkReportFormatter extends AbstractFormatter implements BenchmarkRep
 
     /**
      * @return string
+     * @throws BindingResolutionException
      */
     protected function strEqualReturns(): string
     {
         return $this->benchmarkedAny ? $this->allReturnsAreEqual() : '';
     }
 
+    /**
+     * @return string
+     * @throws BindingResolutionException
+     */
     private function allReturnsAreEqual(): string
     {
         $str = '';
         if ($this->equalReturns) {
             $aRAE = $this->benchmarkedMoreThanOne ? static::ALL_RETURNS_ARE_EQUAL : '';
             $dLM = $this->benchmarkedMoreThanOne ? '.' : '';
+            $formattedLastReturn = container()
+                ->make(BenchmarkFunctionFormatter::class)
+                ->returnToString($this->lastReturn);
             $str .=
                 sprintf(
                     '%s%s%s',
                     $aRAE,
                     $this->benchmarkedMoreThanOne && $this->report->isShowReturns() ?
-                        ':' . PHP_EOL . container()
-                            ->make(BenchmarkFunctionFormatter::class)
-                            ->returnToString($this->lastReturn) :
+                        ':' . PHP_EOL . $formattedLastReturn :
                         $dLM,
                     PHP_EOL
                 );
@@ -198,5 +209,4 @@ class BenchmarkReportFormatter extends AbstractFormatter implements BenchmarkRep
         return '';
         // @codeCoverageIgnoreEnd
     }
-
 }
