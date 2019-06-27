@@ -155,6 +155,7 @@ class Benchmark extends AbstractReportable implements BenchmarkInterface, String
      * @param null|string $char
      * @return string
      * @throws \Exception
+     * @deprecated
      */
     public function reset(?string $char = null): string
     {
