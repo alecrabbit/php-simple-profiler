@@ -2,7 +2,7 @@
 
 namespace AlecRabbit\Tests\Tools;
 
-use AlecRabbit\Tools\Formattable;
+use AlecRabbit\Aux\WrongFormattable;
 use AlecRabbit\Tools\Formatters\BenchmarkFunctionFormatter;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
@@ -17,12 +17,13 @@ class BenchmarkFunctionFormatterTest extends TestCase
     public function wrongFunction(): void
     {
         $formatter = new BenchmarkFunctionFormatter();
-        $unknownFunction =
-            new class extends Formattable
-            {
-            };
-        $this->expectException(\RuntimeException::class);
-        $formatter->format($unknownFunction);
+        $unknownFunction = new WrongFormattable();
+        $str = $formatter->format($unknownFunction);
+        $this->assertEquals(
+            '[AlecRabbit\Tools\Formatters\BenchmarkFunctionFormatter] ERROR: ' .
+            'AlecRabbit\Tools\Internal\BenchmarkFunction expected, AlecRabbit\Aux\WrongFormattable given.',
+            $str
+        );
     }
 
 

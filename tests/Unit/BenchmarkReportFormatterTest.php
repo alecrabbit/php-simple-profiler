@@ -3,6 +3,7 @@
 
 namespace AlecRabbit\Tests\Tools;
 
+use AlecRabbit\Aux\WrongFormattable;
 use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\Contracts\Strings;
 use AlecRabbit\Tools\Formatters\BenchmarkReportFormatter;
@@ -23,9 +24,14 @@ class BenchmarkReportFormatterTest extends TestCase
     public function wrongReport(): void
     {
         $formatter = new BenchmarkReportFormatter();
-        $profilerReport = new ProfilerReport();
-        $this->expectException(\RuntimeException::class);
-        $formatter->format($profilerReport);
+
+        $wrongFormattable = new WrongFormattable();
+        $str = $formatter->format($wrongFormattable);
+        $this->assertEquals(
+            '[AlecRabbit\Tools\Formatters\BenchmarkReportFormatter] ERROR: ' .
+            'AlecRabbit\Tools\Reports\BenchmarkReport expected, AlecRabbit\Aux\WrongFormattable given.',
+            $str
+        );
     }
 
     /**
@@ -36,8 +42,7 @@ class BenchmarkReportFormatterTest extends TestCase
     {
         $formatter = new BenchmarkReportFormatter();
         $benchmark = new Benchmark();
-        $benchmarkReport = new BenchmarkReport();
-        $benchmarkReport->buildOn($benchmark);
+        $benchmarkReport = new BenchmarkReport($formatter, $benchmark);
         $str = $formatter->format($benchmarkReport);
         $this->assertIsString($str);
         $this->assertStringContainsString(Strings::RESULTS, $str);

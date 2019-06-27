@@ -2,11 +2,11 @@
 
 namespace AlecRabbit\Tests\Tools;
 
+use AlecRabbit\Timers\HRTimer;
+use AlecRabbit\Timers\Timer;
 use AlecRabbit\Tools\Formatters\BenchmarkFunctionFormatter;
-use AlecRabbit\Tools\HRTimer;
 use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
-use AlecRabbit\Tools\Timer;
 use PHPUnit\Framework\TestCase;
 
 class BenchmarkFunctionTest extends TestCase
