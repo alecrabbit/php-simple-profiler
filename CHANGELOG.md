@@ -1,6 +1,12 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
+### Changed
+- method `addFunction` renamed to `add`
+
+
+<a name="0.20.0-ALPHA.1"></a>
+## [0.20.0-ALPHA.1] - 2019-06-28
 
 <a name="0.9.1-ALPHA.1"></a>
 ## [0.9.1-ALPHA.1] - 2019-04-24
@@ -62,7 +68,8 @@
 <a name="0.0.15"></a>
 ## 0.0.15 - 2018-11-29
 
-[Unreleased]: https://github.com/alecrabbit/php-counters/compare/0.9.1-ALPHA.1...HEAD
+[Unreleased]: https://github.com/alecrabbit/php-counters/compare/0.20.0-ALPHA.1...HEAD
+[0.20.0-ALPHA.1]: https://github.com/alecrabbit/php-counters/compare/0.9.1-ALPHA.1...0.20.0-ALPHA.1
 [0.9.1-ALPHA.1]: https://github.com/alecrabbit/php-counters/compare/0.9.0-ALPHA.1...0.9.1-ALPHA.1
 [0.9.0-ALPHA.1]: https://github.com/alecrabbit/php-counters/compare/0.8.0-ALPHA.1...0.9.0-ALPHA.1
 [0.8.0-ALPHA.1]: https://github.com/alecrabbit/php-counters/compare/0.7.2-ALPHA.2...0.8.0-ALPHA.1
