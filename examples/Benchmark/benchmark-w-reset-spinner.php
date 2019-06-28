@@ -27,15 +27,15 @@ try {
     $benchmark = new BenchmarkWithSpinner(ITERATIONS, false, $spinner);
     $benchmark
         ->withComment('floatval()')
-        ->addFunction('floatval', '3.5');
+        ->add('floatval', '3.5');
     $benchmark
         ->withComment('(float)')
-        ->addFunction(function () {
+        ->add(function () {
             return (float)'3.5';
         });
     $benchmark
         ->withComment('float "+"')
-        ->addFunction(function () {
+        ->add(function () {
             return +'3.5';
         });
 
@@ -43,19 +43,19 @@ try {
     echo $benchmark->reset();
     $benchmark
         ->withComment('(int)')
-        ->addFunction(function () {
+        ->add(function () {
             return (int)'3';
         });
 
     $benchmark
         ->withComment('int "+"')
-        ->addFunction(function () {
+        ->add(function () {
             return +'3';
         });
 
     $benchmark
         ->withComment('intval()')
-        ->addFunction('intval', '3');
+        ->add('intval', '3');
     echo $report = $benchmark->report();
     echo $benchmark->stat();
     dump($report);

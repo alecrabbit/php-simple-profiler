@@ -15,7 +15,7 @@ class BenchmarkSimpleProgressBarTest extends TestCase
     public function init(): void
     {
         $b = new BenchmarkSimpleProgressBar(200, true);
-        $b->addFunction(
+        $b->add(
             function () {
             }
         );

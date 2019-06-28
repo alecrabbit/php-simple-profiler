@@ -70,20 +70,20 @@ class BenchmarkReportFormatterTest extends TestCase
         $bench
             ->useName($str_one)
             ->withComment($comment_one)
-            ->addFunction(function () {
+            ->add(function () {
                 usleep(100);
                 return 1;
             });
         $bench
             ->useName($str_two)
             ->withComment($comment_two)
-            ->addFunction(function () {
+            ->add(function () {
                 usleep(10);
                 return 2;
             });
         $bench
             ->useName($with_exception)
-            ->addFunction(
+            ->add(
                 function () use ($str_exception) {
                     throw new \RuntimeException($str_exception);
                 }
@@ -158,20 +158,20 @@ class BenchmarkReportFormatterTest extends TestCase
         $bench
             ->useName($str_one)
             ->withComment($comment_one)
-            ->addFunction(function () {
+            ->add(function () {
                 usleep(100);
                 return 1;
             });
         $bench
             ->useName($str_two)
             ->withComment($comment_two)
-            ->addFunction(function () {
+            ->add(function () {
                 usleep(10);
                 return 2;
             });
         $bench
             ->useName($with_exception)
-            ->addFunction(
+            ->add(
                 function () use ($str_exception) {
                     throw new \RuntimeException($str_exception);
                 }
@@ -237,20 +237,20 @@ class BenchmarkReportFormatterTest extends TestCase
         $bench
             ->useName($str_one)
             ->withComment($comment_one)
-            ->addFunction(function () {
+            ->add(function () {
                 usleep(100);
                 return 1;
             });
         $bench
             ->useName($str_two)
             ->withComment($comment_two)
-            ->addFunction(function () {
+            ->add(function () {
                 usleep(10);
                 return 2;
             });
         $bench
             ->useName($with_exception)
-            ->addFunction(
+            ->add(
                 function () use ($str_exception) {
                     throw new \RuntimeException($str_exception);
                 }

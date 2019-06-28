@@ -34,22 +34,22 @@ class BenchmarkAllReturnsAreEqualTest extends TestCase
     protected function benchmarkedFourFunctionsWithEqualReturns(): void
     {
         $this->bench
-            ->addFunction(function ($a) {
+            ->add(function ($a) {
                 usleep(10);
                 return $a;
             }, 1);
         $this->bench
-            ->addFunction(function ($a) {
+            ->add(function ($a) {
                 usleep(20);
                 return $a;
             }, 1);
         $this->bench
-            ->addFunction(function ($a) {
+            ->add(function ($a) {
                 usleep(30);
                 return $a;
             }, 1);
         $this->bench
-            ->addFunction(function ($a) {
+            ->add(function ($a) {
                 usleep(40);
                 return $a;
             }, 1);
@@ -97,22 +97,22 @@ class BenchmarkAllReturnsAreEqualTest extends TestCase
     protected function benchmarkedFourFunctionsWithDiffReturns(): void
     {
         $this->bench
-            ->addFunction(function ($a) {
+            ->add(function ($a) {
                 usleep(10);
                 return $a;
             }, 2);
         $this->bench
-            ->addFunction(function ($a) {
+            ->add(function ($a) {
                 usleep(20);
                 return $a;
             }, 1);
         $this->bench
-            ->addFunction(function ($a) {
+            ->add(function ($a) {
                 usleep(30);
                 return $a;
             }, 2);
         $this->bench
-            ->addFunction(function ($a) {
+            ->add(function ($a) {
                 usleep(40);
                 return $a;
             }, 3);
@@ -167,7 +167,7 @@ class BenchmarkAllReturnsAreEqualTest extends TestCase
     protected function benchmarkedOneFunction(): void
     {
         $this->bench
-            ->addFunction(function ($a) {
+            ->add(function ($a) {
                 usleep(10);
                 return $a;
             }, 1);
@@ -177,12 +177,12 @@ class BenchmarkAllReturnsAreEqualTest extends TestCase
     protected function benchmarkedOneFunctionAddedTwo(): void
     {
         $this->bench
-            ->addFunction(function ($a) {
+            ->add(function ($a) {
                 usleep(10);
                 return $a;
             }, 1);
         $this->bench
-            ->addFunction(function () {
+            ->add(function () {
                 throw new \RuntimeException(self::SIMULATION);
             }, 1);
         $this->report = $this->bench->report();

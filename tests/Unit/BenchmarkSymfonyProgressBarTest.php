@@ -26,7 +26,7 @@ class BenchmarkSymfonyProgressBarTest extends TestCase
         $this->assertInstanceOf(ConsoleOutput::class, $b->getOutput());
         /** @noinspection UnnecessaryAssertionInspection */
         $this->assertInstanceOf(ProgressBar::class, $b->getProgressBar());
-        $b->addFunction(function () {
+        $b->add(function () {
         });
         $b->run();
         $this->assertInstanceOf(BenchmarkReport::class, $b->report());

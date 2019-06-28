@@ -195,7 +195,7 @@ class Benchmark extends AbstractReportable implements BenchmarkInterface, String
      * @param mixed ...$args
      * @throws \Exception
      */
-    public function addFunction($func, ...$args): void
+    public function add($func, ...$args): void
     {
         if ($this->isLaunched()) {
             throw new \RuntimeException('You should reset benchmark object before adding a new function.');
