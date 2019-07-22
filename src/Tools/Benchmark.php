@@ -93,7 +93,7 @@ class Benchmark
         $args = $f->getArgs();
         $n = 1;
         while ($n++ <= 5) {
-            $i = 2 ** ($n * 2) + 20;
+            $i = 2 ** ($n * 2);
             $measurements = [];
 //            dump($n, $i, $measurements);
             while ($i > 0) {
@@ -104,7 +104,7 @@ class Benchmark
                 $i--;
             }
 //            dump($measurements);
-            $this->removeMaxAndMin($measurements);
+            $this->refine($measurements);
             $mean = Average::mean($measurements);
             $standardErrorOfTheMean = RandomVariable::standardErrorOfTheMean($measurements);
             $tValue = TDistribution::tValue(count($measurements));
@@ -115,9 +115,25 @@ class Benchmark
 
     protected function removeMaxAndMin(array &$measurements): void
     {
+        $max = max($measurements);
+        unset($measurements[array_search($max, $measurements, true)]);
 
-        sort($measurements);
-        $measurements = array_slice($measurements, 5, -5);
+//        sort($measurements);
+//        $measurements = array_slice($measurements, 5, -5);
+    }
+
+    public function refine(array &$measurements): void
+    {
+        $this->removeMaxAndMin($measurements);
+
+        $meanCorr = Average::mean($measurements) * 1.05;
+
+        foreach ($measurements as $key => $value) {
+            if ($value > $meanCorr) {
+//            echo $value . PHP_EOL;
+                unset($measurements[$key]);
+            }
+        }
     }
 
 }

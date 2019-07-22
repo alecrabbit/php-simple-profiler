@@ -16,18 +16,19 @@ echo $themes->dark('PHP version: ' . PHP_VERSION) . PHP_EOL;
 $options = new BenchmarkOptions();
 
 $benchmark = new Benchmark($options);
-//$benchmark
-//    ->withComment('Some comment')
-//    ->withName('addition')
-//    ->add(
-//        function ($value) {
-//            usleep(100);
-//            if (is_float($value) && floatval(intval($value)) === $value) {
-//                return "$value.0";
-//            }
-//        },
-//        1.0
-//    );
+$benchmark
+    ->withComment('Some comment')
+    ->withName('addition')
+    ->add(
+        function ($value) {
+            $a = 0;
+            for ($i = 0; $i < 1000; $i++) {
+                $a += $i * 2;
+            }
+            return $a + $value;
+        },
+        1.0
+    );
 $benchmark
     ->withComment('Some comment for exception')
     ->withName('except')
