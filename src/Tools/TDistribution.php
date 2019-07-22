@@ -54,13 +54,22 @@ class TDistribution
         5 => 0.999,
     ];
 
-    public static function tValue(int $measurements, float $p = 0.995): float
+    /**
+     * @param int $numOfMeasurements
+     * @param float $p
+     * @return float
+     */
+    public static function tValue(int $numOfMeasurements, float $p = 0.95): float
     {
         $x = array_search($p, self::P_VALUES, true);
-        $y = self::getClosest($measurements);
+        $y = self::getClosest($numOfMeasurements);
         return self::T_VALUES[$y][$x];
     }
 
+    /**
+     * @param int $search
+     * @return int
+     */
     protected static function getClosest(int $search): int
     {
         $closest = null;
