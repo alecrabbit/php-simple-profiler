@@ -26,6 +26,9 @@ class BenchmarkFunction
     /** @var \Throwable|null */
     protected $exception;
 
+    /** @var null|BenchmarkResult[] */
+    protected $results;
+
     /**
      * BenchmarkFunction constructor.
      * @param callable $func
@@ -107,6 +110,11 @@ class BenchmarkFunction
     public function getArgs(): array
     {
         return $this->args;
+    }
+
+    public function addResult(BenchmarkResult $result): void
+    {
+        $this->results[] = $result;
     }
 
 }

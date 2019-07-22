@@ -6,6 +6,8 @@ class BenchmarkReport
 {
     /** @var bool */
     protected $showReturns = false;
+    /** @var BenchmarkFunction[] */
+    protected $functions;
 
     public function withReturns(): self
     {
@@ -16,5 +18,11 @@ class BenchmarkReport
     public function __toString(): string
     {
         return 'Report ' . $this->showReturns;
+    }
+
+    public function setFunctions(array $functions): self
+    {
+        $this->functions = $functions;
+        return $this;
     }
 }

@@ -8,6 +8,8 @@ use Webmozart\Assert\Assert;
 
 class Benchmark
 {
+    protected const NUMBER_OF_MEASUREMENTS = 5000;
+
     /** @var null|string */
     protected $comment;
 
@@ -82,47 +84,38 @@ class Benchmark
             }
             $this->bench($function);
         }
-        return new BenchmarkReport();
+        return (new BenchmarkReport())->setFunctions($this->functions);
     }
 
     protected function bench(BenchmarkFunction $f): void
     {
         $function = $f->getCallable();
         $args = $f->getArgs();
-        $i = 1000;
-        $measurements = [];
-        while ($i > 0) {
-            $i--;
-            $start = hrtime(true);
-            $function(...$args);
-            $stop = hrtime(true);
-            $measurements[] = $stop - $start;
-        }
-        $this->removeMaxAndMin($measurements);
-        $mean = Average::mean($measurements);
-        $standardErrorOfTheMean = RandomVariable::standardErrorOfTheMean($measurements);
-        $tValue = TDistribution::tValue(count($measurements), 0.999);
-        $f->setResult($mean, $standardErrorOfTheMean * $tValue);
-    }
+        $n = 1;
+        while ($n++ <= 5) {
+            $i = 2 ** ($n * 2) + 20;
+            $measurements = [];
+//            dump($n, $i, $measurements);
+            while ($i > 0) {
+                $start = hrtime(true);
+                $function(...$args);
+                $stop = hrtime(true);
+                $measurements[] = $stop - $start;
+                $i--;
+            }
+//            dump($measurements);
+            $this->removeMaxAndMin($measurements);
+            $mean = Average::mean($measurements);
+            $standardErrorOfTheMean = RandomVariable::standardErrorOfTheMean($measurements);
+            $tValue = TDistribution::tValue(count($measurements));
 
-//    protected function refine(array $measurements): array
-//    {
-//        $measurements = removeMax($measurements);
-//
-//        $meanCorr = Average::mean($measurements) * 1.05;
-////    echo $meanCorr . PHP_EOL;
-//
-//        foreach ($measurements as $key => $value) {
-//            if ($value > $meanCorr) {
-////            echo $value . PHP_EOL;
-//                unset($measurements[$key]);
-//            }
-//        }
-//        return $measurements;
-//    }
+            $f->addResult(new BenchmarkResult($mean, $standardErrorOfTheMean * $tValue));
+        }
+    }
 
     protected function removeMaxAndMin(array &$measurements): void
     {
+
         sort($measurements);
         $measurements = array_slice($measurements, 5, -5);
     }
