@@ -7,7 +7,7 @@ class BenchmarkReport
     /** @var bool */
     protected $showReturns = false;
 
-    public function showReturns(): self
+    public function withReturns(): self
     {
         $this->showReturns = true;
         return $this;

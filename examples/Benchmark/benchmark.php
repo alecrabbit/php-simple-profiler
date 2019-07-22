@@ -4,7 +4,6 @@ use AlecRabbit\ConsoleColour\Themes;
 use AlecRabbit\Tools\Benchmark;
 use AlecRabbit\Tools\BenchmarkOptions;
 use NunoMaduro\Collision\Provider;
-use Webmozart\Assert\Assert;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
@@ -27,5 +26,5 @@ $benchmark
         1,
         2
     );
-$report = $benchmark->execute();
-echo (string)$report->showReturns();
+$report = $benchmark->run();
+echo (string)$report->withReturns();
