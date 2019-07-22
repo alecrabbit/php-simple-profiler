@@ -46,11 +46,29 @@ class TDistribution
         ];
 
     protected const P_VALUES = [
-        1 => 0.95,
-        2 => 0.98,
-        3 => 0.99,
-        4 => 0.995,
-        5 => 0.998,
-        6 => 0.999,
+        0 => 0.95,
+        1 => 0.98,
+        2 => 0.99,
+        3 => 0.995,
+        4 => 0.998,
+        5 => 0.999,
     ];
+
+    public static function tValue(int $measurements, float $p = 0.995): float
+    {
+        $x = array_search($p, self::P_VALUES, true);
+        $y = self::getClosest($measurements);
+        return self::T_VALUES[$y][$x];
+    }
+
+    protected static function getClosest(int $search): int
+    {
+        $closest = null;
+        foreach (self::T_VALUES as $key => $item) {
+            if ($closest === null || abs($search - $closest) > abs($key - $search)) {
+                $closest = $key;
+            }
+        }
+        return (int)$closest;
+    }
 }
