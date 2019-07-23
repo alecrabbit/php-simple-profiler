@@ -122,29 +122,47 @@ class Benchmark
         $args = $f->getArgs();
         $n = 1;
         while ($n <= 7) {
-            $i = 2 ** ($n * 2) * 7;
+            $revs = 1 + $n ** ($n - 1);
+            $i = $revs;
             $measurements = [];
-//            dump($n, $i, $measurements);
             while ($i > 0) {
                 $start = hrtime(true);
-                $function(...$args);
+                $r = $function(...$args);
                 $measurements[] = hrtime(true) - $start;
                 $i--;
             }
-//            $this->refine($measurements, $numberOfRejections);
-//            $mean = Average::mean($measurements);
-//            $standardErrorOfTheMean = RandomVariable::standardErrorOfTheMean($measurements);
-//            $numberOfMeasurements = count($measurements);
-//            $tValue = TDistribution::tValue($numberOfMeasurements);
-//
-//            $result =
-//                new BenchmarkResult(
-//                    $mean,
-//                    $standardErrorOfTheMean * $tValue,
-//                    $numberOfMeasurements,
-//                    $numberOfRejections
-//                );
             $result = MeasurementsResults::createResult($measurements);
+            $f->addResult($result);
+            if ($this->options->isCli()) {
+                echo
+                    sprintf(
+                        '   Iteration #%s %s±%s %s[%s]',
+                        $n,
+                        Pretty::nanoseconds($result->getMean()),
+                        Pretty::percent($result->getDeltaPercent()),
+                        $result->getNumberOfMeasurements(),
+                        Pretty::percent(1 - $result->getRejectionsPercent())
+                    ) . PHP_EOL;
+            }
+
+            $n++;
+        }
+    }
+    protected function bench2(BenchmarkFunction $f): void
+    {
+        $function = $f->getCallable();
+        $args = $f->getArgs();
+        $n = 1;
+        while ($n <= 7) {
+            $revs = 1 + $n ** ($n - 1);
+            $i = $revs;
+            $start = hrtime(true);
+            while ($i > 0) {
+                $r = $function(...$args);
+                $i--;
+            }
+            $measurement = hrtime(true) - $start;
+            $result = new BenchmarkResult($measurement / $revs, 0, $revs);
             $f->addResult($result);
             if ($this->options->isCli()) {
                 echo
