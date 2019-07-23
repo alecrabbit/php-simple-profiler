@@ -17,8 +17,8 @@ $options = new BenchmarkOptions();
 
 $benchmark = new Benchmark($options);
 $benchmark
-    ->withComment('Some comment')
-    ->withName('addition')
+    ->withComment('Use sprintf')
+    ->withName('sprintf')
     ->add(
         function ($a) {
             return sprintf(
@@ -37,14 +37,23 @@ $benchmark
         '222'
     );
 $benchmark
-    ->withComment('Some comment for exception')
-    ->withName('except')
+    ->withComment('Concatenate values')
+    ->withName('concat')
     ->add(
         function ($a) {
             return $a . ' - ' . '1' . '2' . '3' . '4' . '5' . '6' . '7' . '8';
         },
         '222'
     );
+$benchmark
+    ->withComment('Just returning value')
+//    ->withName('return_value')
+    ->add(
+        function ($a) {
+            return $a;
+        },
+        '222'
+    );
 $report = $benchmark->run();
 echo $report->withReturns() . PHP_EOL;
-dump($report);
+//dump($report);

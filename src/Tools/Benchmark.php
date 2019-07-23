@@ -2,13 +2,15 @@
 
 namespace AlecRabbit\Tools;
 
+use AlecRabbit\Accessories\Pretty;
 use MathPHP\Statistics\Average;
 use MathPHP\Statistics\RandomVariable;
 use Webmozart\Assert\Assert;
 
 class Benchmark
 {
-    protected const NUMBER_OF_MEASUREMENTS = 5000;
+//    protected const NUMBER_OF_MEASUREMENTS = 5000;
+    protected const REJECT_COEFFICIENT = 1.05;
 
     /** @var null|string */
     protected $comment;
@@ -79,7 +81,24 @@ class Benchmark
     public function run(): BenchmarkReport
     {
         foreach ($this->functions as $function) {
+            if ($this->options->isCli()) {
+                echo
+                    sprintf(
+                        'Benchmarking function: "%s"',
+                        $function->getHumanReadableName()
+                    ) . PHP_EOL;
+            }
             if (!$function->execute()) {
+                $exception = $function->getException();
+                if ($exception instanceof \Throwable) {
+                    if ($this->options->isCli()) {
+                        echo
+                            sprintf(
+                                'Exception encountered: %s',
+                                $exception->getMessage()
+                            ) . PHP_EOL;
+                    }
+                }
                 continue;
             }
             $this->bench($function);
@@ -92,8 +111,9 @@ class Benchmark
         $function = $f->getCallable();
         $args = $f->getArgs();
         $n = 1;
-        while ($n++ <= 5) {
-            $i = 2 ** ($n * 2);
+        while ($n <= 6) {
+
+            $i = 2 ** ($n * 2) * 2;
             $measurements = [];
 //            dump($n, $i, $measurements);
             while ($i > 0) {
@@ -109,31 +129,40 @@ class Benchmark
             $numberOfMeasurements = count($measurements);
             $tValue = TDistribution::tValue($numberOfMeasurements);
 
-            $f->addResult(new BenchmarkResult($mean, $standardErrorOfTheMean * $tValue, $numberOfMeasurements));
+            $result = new BenchmarkResult($mean, $standardErrorOfTheMean * $tValue, $numberOfMeasurements);
+            $f->addResult($result);
+            if ($this->options->isCli()) {
+                echo
+                    sprintf(
+                        'Iteration #%s %s %s±%s',
+                        $n,
+                        $result->getNumberOfMeasurements(),
+                        $result->getMean(),
+                        Pretty::nanoseconds($result->getDelta()),
+                        ) . PHP_EOL;
+            }
+
+            $n++;
         }
-    }
-
-    protected function removeMaxAndMin(array &$measurements): void
-    {
-        $max = max($measurements);
-        unset($measurements[array_search($max, $measurements, true)]);
-
-//        sort($measurements);
-//        $measurements = array_slice($measurements, 5, -5);
     }
 
     public function refine(array &$measurements): void
     {
-        $this->removeMaxAndMin($measurements);
+        $this->removeMax($measurements);
 
-        $meanCorr = Average::mean($measurements) * 1.05;
+        $meanCorr = Average::mean($measurements) * self::REJECT_COEFFICIENT;
 
         foreach ($measurements as $key => $value) {
             if ($value > $meanCorr) {
-//            echo $value . PHP_EOL;
                 unset($measurements[$key]);
             }
         }
+    }
+
+    protected function removeMax(array &$measurements): void
+    {
+        $max = max($measurements);
+        unset($measurements[array_search($max, $measurements, true)]);
     }
 
 }

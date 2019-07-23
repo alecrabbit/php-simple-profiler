@@ -9,6 +9,8 @@ class BenchmarkFunction
 {
     use GettableName;
 
+    public const CLOSURE_NAME = 'λ';
+
     /** @var bool */
     protected $withReturns = false;
     /** @var callable */
@@ -55,11 +57,19 @@ class BenchmarkFunction
             );
         }
         $this->callable = $func;
-        $this->name = $name;
+        $this->name = $this->refineName($func, $name);
         $this->index = $index;
         $this->args = $args;
         $this->comment = $comment;
         $this->assignedName = $assignName;
+    }
+
+    protected function refineName($func, $name): string
+    {
+        if ($func instanceof \Closure) {
+            $name = self::CLOSURE_NAME;
+        }
+        return $name;
     }
 
     /**
@@ -117,4 +127,35 @@ class BenchmarkFunction
         $this->results[] = $result;
     }
 
+    /**
+     * @return string
+     */
+    public function getHumanReadableName(): string
+    {
+        return $this->assignedName ?? $this->getIndexedName();
+    }
+
+    /**
+     * @return string
+     */
+    public function getIndexedName(): string
+    {
+        return "⟨{$this->getIndex()}⟩ {$this->getName()}";
+    }
+
+    /**
+     * @return int
+     */
+    public function getIndex(): int
+    {
+        return $this->index;
+    }
+
+    /**
+     * @return null|\Throwable
+     */
+    public function getException(): ?\Throwable
+    {
+        return $this->exception;
+    }
 }
