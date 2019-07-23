@@ -3,9 +3,7 @@
 namespace AlecRabbit\Tools;
 
 use AlecRabbit\Accessories\Pretty;
-use const AlecRabbit\Helpers\Constants\UNIT_MICROSECONDS;
 use MathPHP\Statistics\Average;
-use MathPHP\Statistics\RandomVariable;
 use Webmozart\Assert\Assert;
 
 class Benchmark
@@ -109,7 +107,7 @@ class Benchmark
                     sprintf(
                         'Result %s±%s',
                         Pretty::nanoseconds($result->getMean()),
-                        Pretty::percent($result->getDeltaPercent()),
+                        Pretty::percent($result->getDeltaPercent())
                     ) . PHP_EOL;
             }
         }
@@ -122,7 +120,9 @@ class Benchmark
         $args = $f->getArgs();
         $n = 1;
         while ($n <= 7) {
-            $revs = 1 + $n ** ($n - 1);
+            $revs = $this->getRevs($n);
+            $n++;
+
             $i = $revs;
             $measurements = [];
             while ($i > 0) {
@@ -144,17 +144,16 @@ class Benchmark
                         Pretty::percent(1 - $result->getRejectionsPercent())
                     ) . PHP_EOL;
             }
-
-            $n++;
         }
     }
+
     protected function bench2(BenchmarkFunction $f): void
     {
         $function = $f->getCallable();
         $args = $f->getArgs();
         $n = 1;
         while ($n <= 7) {
-            $revs = 1 + $n ** ($n - 1);
+            $revs = $this->getRevs($n);
             $i = $revs;
             $start = hrtime(true);
             while ($i > 0) {
@@ -180,23 +179,12 @@ class Benchmark
         }
     }
 
-    public function refine(array &$measurements, ?int &$rejections): void
+    /**
+     * @param int $n
+     * @return int
+     */
+    protected function getRevs(int $n): int
     {
-        $this->removeMax($measurements);
-        $rejections = $rejections ?? 0;
-        $meanCorr = Average::mean($measurements) * self::REJECT_COEFFICIENT;
-
-        foreach ($measurements as $key => $value) {
-            if ($value > $meanCorr) {
-                unset($measurements[$key]);
-                $rejections++;
-            }
-        }
-    }
-
-    protected function removeMax(array &$measurements): void
-    {
-        $max = max($measurements);
-        unset($measurements[array_search($max, $measurements, true)]);
+        return 1 + $n ** ($n - 1);
     }
 }
