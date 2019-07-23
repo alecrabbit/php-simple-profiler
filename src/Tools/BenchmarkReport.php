@@ -6,7 +6,7 @@ class BenchmarkReport
 {
     /** @var bool */
     protected $showReturns = false;
-    /** @var BenchmarkFunction[] */
+    /** @var null|BenchmarkFunction[] */
     protected $functions;
 
     public function withReturns(): self

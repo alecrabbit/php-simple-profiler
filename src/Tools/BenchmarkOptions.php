@@ -21,5 +21,4 @@ class BenchmarkOptions
     {
         return $this->cli;
     }
-
 }

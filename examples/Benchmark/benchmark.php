@@ -17,6 +17,12 @@ $options = new BenchmarkOptions();
 
 $benchmark = new Benchmark($options);
 $benchmark
+    ->withComment('Benchmark hrtime')
+    ->add('hrtime', true);
+$benchmark
+    ->withComment('Benchmark microtime')
+    ->add('microtime', true);
+$benchmark
     ->withComment('Use sprintf')
     ->withName('sprintf')
     ->add(
@@ -53,6 +59,18 @@ $benchmark
             return $a;
         },
         '222'
+    );
+$func = static function (int $a) {
+    return $a;
+};
+$benchmark
+    ->withComment('Just returning value')
+    ->add(
+        static function () use ($func) {
+            $a = hrtime(true);
+            $func('1');
+            $b =  hrtime(true) - $a;
+        }
     );
 $report = $benchmark->run();
 echo $report->withReturns() . PHP_EOL;

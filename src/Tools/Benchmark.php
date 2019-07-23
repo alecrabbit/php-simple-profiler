@@ -9,8 +9,7 @@ use Webmozart\Assert\Assert;
 
 class Benchmark
 {
-//    protected const NUMBER_OF_MEASUREMENTS = 5000;
-    protected const REJECT_COEFFICIENT = 1.05;
+    protected const REJECT_COEFFICIENT = 1.1;
 
     /** @var null|string */
     protected $comment;
@@ -27,9 +26,9 @@ class Benchmark
     /** @var int */
     private $index = 0;
 
-    public function __construct(BenchmarkOptions $options)
+    public function __construct(BenchmarkOptions $options = null)
     {
-        $this->options = $options;
+        $this->options = $options ?? new BenchmarkOptions();
     }
 
     /**
@@ -84,7 +83,7 @@ class Benchmark
             if ($this->options->isCli()) {
                 echo
                     sprintf(
-                        'Benchmarking function: "%s"',
+                        ' Benchmarking function: "%s"',
                         $function->getHumanReadableName()
                     ) . PHP_EOL;
             }
@@ -94,7 +93,7 @@ class Benchmark
                     if ($this->options->isCli()) {
                         echo
                             sprintf(
-                                'Exception encountered: %s',
+                                ' Exception encountered: %s',
                                 $exception->getMessage()
                             ) . PHP_EOL;
                     }
@@ -111,9 +110,8 @@ class Benchmark
         $function = $f->getCallable();
         $args = $f->getArgs();
         $n = 1;
-        while ($n <= 6) {
-
-            $i = 2 ** ($n * 2) * 2;
+        while ($n <= 5) {
+            $i = 2 ** ($n * 2) * 7;
             $measurements = [];
 //            dump($n, $i, $measurements);
             while ($i > 0) {
@@ -122,39 +120,47 @@ class Benchmark
                 $measurements[] = hrtime(true) - $start;
                 $i--;
             }
-//            dump($measurements);
-            $this->refine($measurements);
+            $this->refine($measurements, $numberOfRejections);
             $mean = Average::mean($measurements);
             $standardErrorOfTheMean = RandomVariable::standardErrorOfTheMean($measurements);
             $numberOfMeasurements = count($measurements);
             $tValue = TDistribution::tValue($numberOfMeasurements);
 
-            $result = new BenchmarkResult($mean, $standardErrorOfTheMean * $tValue, $numberOfMeasurements);
+            $result =
+                new BenchmarkResult(
+                    $mean,
+                    $standardErrorOfTheMean * $tValue,
+                    $numberOfMeasurements,
+                    $numberOfRejections
+                );
             $f->addResult($result);
             if ($this->options->isCli()) {
                 echo
                     sprintf(
-                        'Iteration #%s %s %s±%s',
+                        '   Iteration #%s %s±%s %s(%s)[%s]',
                         $n,
+                        Pretty::nanoseconds($result->getMean()),
+                        Pretty::percent($result->getDelta() / $result->getMean()),
                         $result->getNumberOfMeasurements(),
-                        $result->getMean(),
-                        Pretty::nanoseconds($result->getDelta()),
-                        ) . PHP_EOL;
+                        $result->getNumberOfRejections(),
+                        Pretty::percent($result->getNumberOfRejections() / $result->getNumberOfMeasurements())
+                    ) . PHP_EOL;
             }
 
             $n++;
         }
     }
 
-    public function refine(array &$measurements): void
+    public function refine(array &$measurements, ?int &$rejections): void
     {
         $this->removeMax($measurements);
-
+        $rejections = $rejections ?? 0;
         $meanCorr = Average::mean($measurements) * self::REJECT_COEFFICIENT;
 
         foreach ($measurements as $key => $value) {
             if ($value > $meanCorr) {
                 unset($measurements[$key]);
+                $rejections++;
             }
         }
     }
@@ -164,5 +170,4 @@ class Benchmark
         $max = max($measurements);
         unset($measurements[array_search($max, $measurements, true)]);
     }
-
 }
