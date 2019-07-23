@@ -9,8 +9,9 @@ class MeasurementsResults
 {
     protected const REJECTION_THRESHOLD = 10;
 
-    public static function createResult($measurements): BenchmarkResult
+    public static function createResult(array $measurements): BenchmarkResult
     {
+        $measurements = self::convertDataType($measurements);
         self::refine($measurements, $numberOfRejections);
         $mean = Average::mean($measurements);
         $standardErrorOfTheMean = RandomVariable::standardErrorOfTheMean($measurements);
@@ -24,6 +25,19 @@ class MeasurementsResults
                 $numberOfMeasurements,
                 $numberOfRejections
             );
+    }
+
+    protected static function convertDataType(array $measurements): array
+    {
+        if ($measurements[0] instanceof BenchmarkResult) {
+            $m = [];
+            /** @var BenchmarkResult $r */
+            foreach ($measurements as $r) {
+                $m[] = $r->getMean();
+            }
+            $measurements = $m;
+        }
+        return $measurements;
     }
 
     protected static function refine(array &$measurements, ?int &$rejections): void

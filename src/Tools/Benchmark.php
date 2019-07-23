@@ -104,13 +104,17 @@ class Benchmark
             }
             $this->bench($function);
             if ($this->options->isCli()) {
+                $result = MeasurementsResults::createResult($function->getResults());
                 echo
                     sprintf(
-                        ' Result: %s',
-                        MeasurementsResults::createResult($function->getResults())
+                        'Result %s±%s %s(%s)[%s]',
+                        Pretty::nanoseconds($result->getMean()),
+                        Pretty::percent($result->getDelta() / $result->getMean()),
+                        $result->getNumberOfMeasurements(),
+                        $result->getNumberOfRejections(),
+                        Pretty::percent($result->getNumberOfRejections() / $result->getNumberOfMeasurements())
                     ) . PHP_EOL;
             }
-
         }
         return (new BenchmarkReport())->setFunctions($this->functions);
     }
@@ -145,18 +149,18 @@ class Benchmark
 //                );
             $result = MeasurementsResults::createResult($measurements);
             $f->addResult($result);
-            if ($this->options->isCli()) {
-                echo
-                    sprintf(
-                        '   Iteration #%s %s±%s %s(%s)[%s]',
-                        $n,
-                        Pretty::nanoseconds($result->getMean(), UNIT_MICROSECONDS),
-                        Pretty::percent($result->getDelta() / $result->getMean()),
-                        $result->getNumberOfMeasurements(),
-                        $result->getNumberOfRejections(),
-                        Pretty::percent($result->getNumberOfRejections() / $result->getNumberOfMeasurements())
-                    ) . PHP_EOL;
-            }
+//            if ($this->options->isCli()) {
+//                echo
+//                    sprintf(
+//                        '   Iteration #%s %s±%s %s(%s)[%s]',
+//                        $n,
+//                        Pretty::nanoseconds($result->getMean()),
+//                        Pretty::percent($result->getDelta() / $result->getMean()),
+//                        $result->getNumberOfMeasurements(),
+//                        $result->getNumberOfRejections(),
+//                        Pretty::percent($result->getNumberOfRejections() / $result->getNumberOfMeasurements())
+//                    ) . PHP_EOL;
+//            }
 
             $n++;
         }
