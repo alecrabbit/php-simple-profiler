@@ -107,12 +107,9 @@ class Benchmark
                 $result = MeasurementsResults::createResult($function->getResults());
                 echo
                     sprintf(
-                        'Result %s±%s %s(%s)[%s]',
+                        'Result %s±%s',
                         Pretty::nanoseconds($result->getMean()),
-                        Pretty::percent($result->getDelta() / $result->getMean()),
-                        $result->getNumberOfMeasurements(),
-                        $result->getNumberOfRejections(),
-                        Pretty::percent($result->getNumberOfRejections() / $result->getNumberOfMeasurements())
+                        Pretty::percent($result->getDeltaPercent()),
                     ) . PHP_EOL;
             }
         }
@@ -149,18 +146,17 @@ class Benchmark
 //                );
             $result = MeasurementsResults::createResult($measurements);
             $f->addResult($result);
-//            if ($this->options->isCli()) {
-//                echo
-//                    sprintf(
-//                        '   Iteration #%s %s±%s %s(%s)[%s]',
-//                        $n,
-//                        Pretty::nanoseconds($result->getMean()),
-//                        Pretty::percent($result->getDelta() / $result->getMean()),
-//                        $result->getNumberOfMeasurements(),
-//                        $result->getNumberOfRejections(),
-//                        Pretty::percent($result->getNumberOfRejections() / $result->getNumberOfMeasurements())
-//                    ) . PHP_EOL;
-//            }
+            if ($this->options->isCli()) {
+                echo
+                    sprintf(
+                        '   Iteration #%s %s±%s %s[%s]',
+                        $n,
+                        Pretty::nanoseconds($result->getMean()),
+                        Pretty::percent($result->getDeltaPercent()),
+                        $result->getNumberOfMeasurements(),
+                        Pretty::percent(1 - $result->getRejectionsPercent())
+                    ) . PHP_EOL;
+            }
 
             $n++;
         }

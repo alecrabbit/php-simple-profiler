@@ -21,12 +21,9 @@ class BenchmarkResult
         $this->numberOfRejections = $numberOfRejections;
     }
 
-    /**
-     * @return float
-     */
-    public function getMean(): float
+    public function getDeltaPercent(): float
     {
-        return $this->mean;
+        return $this->getDelta() / $this->getMean();
     }
 
     /**
@@ -38,11 +35,16 @@ class BenchmarkResult
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getNumberOfMeasurements(): int
+    public function getMean(): float
     {
-        return $this->numberOfMeasurements;
+        return $this->mean;
+    }
+
+    public function getRejectionsPercent(): float
+    {
+        return $this->getNumberOfRejections() / $this->getNumberOfMeasurements();
     }
 
     /**
@@ -51,5 +53,13 @@ class BenchmarkResult
     public function getNumberOfRejections(): int
     {
         return $this->numberOfRejections;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfMeasurements(): int
+    {
+        return $this->numberOfMeasurements;
     }
 }
