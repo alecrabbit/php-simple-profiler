@@ -8,11 +8,14 @@ class BenchmarkResult
     protected $mean;
     /** @var float */
     protected $delta;
+    /** @var int */
+    protected $numberOfMeasurements;
 
-    public function __construct(float $mean, float $delta)
+    public function __construct(float $mean, float $delta, int $numberOfMeasurements)
     {
         $this->mean = $mean;
         $this->delta = $delta;
+        $this->numberOfMeasurements = $numberOfMeasurements;
     }
 
     /**
@@ -29,5 +32,13 @@ class BenchmarkResult
     public function getDelta(): float
     {
         return $this->delta;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfMeasurements(): int
+    {
+        return $this->numberOfMeasurements;
     }
 }

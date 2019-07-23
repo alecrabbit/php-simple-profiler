@@ -20,25 +20,30 @@ $benchmark
     ->withComment('Some comment')
     ->withName('addition')
     ->add(
-        function ($value) {
-            $a = 0;
-            for ($i = 0; $i < 1000; $i++) {
-                $a += $i * 2;
-            }
-            return $a + $value;
+        function ($a) {
+            return sprintf(
+                '%s - %s%s%s%s%s%s%s%s',
+                $a,
+                '1',
+                '2',
+                '3',
+                '4',
+                '5',
+                '6',
+                '7',
+                '8'
+            );
         },
-        1.0
+        '222'
     );
 $benchmark
     ->withComment('Some comment for exception')
     ->withName('except')
     ->add(
-        function ($value) {
-            if (is_float($value) && ((float)(int)$value) === $value) {
-                return "$value.0";
-            }
+        function ($a) {
+            return $a . ' - ' . '1' . '2' . '3' . '4' . '5' . '6' . '7' . '8';
         },
-        1.0
+        '222'
     );
 $report = $benchmark->run();
 echo $report->withReturns() . PHP_EOL;

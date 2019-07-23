@@ -99,17 +99,17 @@ class Benchmark
             while ($i > 0) {
                 $start = hrtime(true);
                 $function(...$args);
-                $stop = hrtime(true);
-                $measurements[] = $stop - $start;
+                $measurements[] = hrtime(true) - $start;
                 $i--;
             }
 //            dump($measurements);
             $this->refine($measurements);
             $mean = Average::mean($measurements);
             $standardErrorOfTheMean = RandomVariable::standardErrorOfTheMean($measurements);
-            $tValue = TDistribution::tValue(count($measurements));
+            $numberOfMeasurements = count($measurements);
+            $tValue = TDistribution::tValue($numberOfMeasurements);
 
-            $f->addResult(new BenchmarkResult($mean, $standardErrorOfTheMean * $tValue));
+            $f->addResult(new BenchmarkResult($mean, $standardErrorOfTheMean * $tValue, $numberOfMeasurements));
         }
     }
 
