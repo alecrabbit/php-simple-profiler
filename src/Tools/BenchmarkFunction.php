@@ -158,4 +158,17 @@ class BenchmarkFunction
     {
         return $this->exception;
     }
+
+    /**
+     * @return null|string
+     */
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function getResults(): array
+    {
+        return $this->results;
+    }
 }

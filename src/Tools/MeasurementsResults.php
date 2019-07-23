@@ -3,22 +3,34 @@
 namespace AlecRabbit\Tools;
 
 use MathPHP\Statistics\Average;
+use MathPHP\Statistics\RandomVariable;
 
 class MeasurementsResults
 {
-    protected const REJECT_COEFFICIENT = 1.1;
+    protected const REJECTION_THRESHOLD = 10;
 
-    protected function removeMax(array &$measurements): void
+    public static function createResult($measurements): BenchmarkResult
     {
-        $max = max($measurements);
-        unset($measurements[array_search($max, $measurements, true)]);
+        self::refine($measurements, $numberOfRejections);
+        $mean = Average::mean($measurements);
+        $standardErrorOfTheMean = RandomVariable::standardErrorOfTheMean($measurements);
+        $numberOfMeasurements = count($measurements);
+        $tValue = TDistribution::tValue($numberOfMeasurements);
+
+        return
+            new BenchmarkResult(
+                $mean,
+                $standardErrorOfTheMean * $tValue,
+                $numberOfMeasurements,
+                $numberOfRejections
+            );
     }
 
-    public function refine(array &$measurements, ?int &$rejections): void
+    protected static function refine(array &$measurements, ?int &$rejections): void
     {
-        $this->removeMax($measurements);
+        self::removeMax($measurements);
         $rejections = $rejections ?? 0;
-        $meanCorr = Average::mean($measurements) * self::REJECT_COEFFICIENT;
+        $meanCorr = Average::mean($measurements) * (1 + self::REJECTION_THRESHOLD / 100);
 
         foreach ($measurements as $key => $value) {
             if ($value > $meanCorr) {
@@ -28,5 +40,9 @@ class MeasurementsResults
         }
     }
 
-
+    protected static function removeMax(array &$measurements): void
+    {
+        $max = max($measurements);
+        unset($measurements[array_search($max, $measurements, true)]);
+    }
 }

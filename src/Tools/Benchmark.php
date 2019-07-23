@@ -3,6 +3,7 @@
 namespace AlecRabbit\Tools;
 
 use AlecRabbit\Accessories\Pretty;
+use const AlecRabbit\Helpers\Constants\UNIT_MICROSECONDS;
 use MathPHP\Statistics\Average;
 use MathPHP\Statistics\RandomVariable;
 use Webmozart\Assert\Assert;
@@ -83,8 +84,9 @@ class Benchmark
             if ($this->options->isCli()) {
                 echo
                     sprintf(
-                        ' Benchmarking function: "%s"',
-                        $function->getHumanReadableName()
+                        ' Benchmarking function: "%s" %s',
+                        $function->getHumanReadableName(),
+                        $function->getComment()
                     ) . PHP_EOL;
             }
             if (!$function->execute()) {
@@ -101,6 +103,14 @@ class Benchmark
                 continue;
             }
             $this->bench($function);
+            if ($this->options->isCli()) {
+                echo
+                    sprintf(
+                        ' Result: %s',
+                        MeasurementsResults::createResult($function->getResults())
+                    ) . PHP_EOL;
+            }
+
         }
         return (new BenchmarkReport())->setFunctions($this->functions);
     }
@@ -110,7 +120,7 @@ class Benchmark
         $function = $f->getCallable();
         $args = $f->getArgs();
         $n = 1;
-        while ($n <= 5) {
+        while ($n <= 7) {
             $i = 2 ** ($n * 2) * 7;
             $measurements = [];
 //            dump($n, $i, $measurements);
@@ -120,26 +130,27 @@ class Benchmark
                 $measurements[] = hrtime(true) - $start;
                 $i--;
             }
-            $this->refine($measurements, $numberOfRejections);
-            $mean = Average::mean($measurements);
-            $standardErrorOfTheMean = RandomVariable::standardErrorOfTheMean($measurements);
-            $numberOfMeasurements = count($measurements);
-            $tValue = TDistribution::tValue($numberOfMeasurements);
-
-            $result =
-                new BenchmarkResult(
-                    $mean,
-                    $standardErrorOfTheMean * $tValue,
-                    $numberOfMeasurements,
-                    $numberOfRejections
-                );
+//            $this->refine($measurements, $numberOfRejections);
+//            $mean = Average::mean($measurements);
+//            $standardErrorOfTheMean = RandomVariable::standardErrorOfTheMean($measurements);
+//            $numberOfMeasurements = count($measurements);
+//            $tValue = TDistribution::tValue($numberOfMeasurements);
+//
+//            $result =
+//                new BenchmarkResult(
+//                    $mean,
+//                    $standardErrorOfTheMean * $tValue,
+//                    $numberOfMeasurements,
+//                    $numberOfRejections
+//                );
+            $result = MeasurementsResults::createResult($measurements);
             $f->addResult($result);
             if ($this->options->isCli()) {
                 echo
                     sprintf(
                         '   Iteration #%s %s±%s %s(%s)[%s]',
                         $n,
-                        Pretty::nanoseconds($result->getMean()),
+                        Pretty::nanoseconds($result->getMean(), UNIT_MICROSECONDS),
                         Pretty::percent($result->getDelta() / $result->getMean()),
                         $result->getNumberOfMeasurements(),
                         $result->getNumberOfRejections(),
