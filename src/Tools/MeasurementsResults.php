@@ -13,9 +13,9 @@ class MeasurementsResults
     {
         $measurements = self::convertDataType($measurements);
         self::refine($measurements, $numberOfRejections);
+        $numberOfMeasurements = count($measurements);
         $mean = Average::mean($measurements);
         $standardErrorOfTheMean = RandomVariable::standardErrorOfTheMean($measurements);
-        $numberOfMeasurements = count($measurements);
         $tValue = TDistribution::tValue($numberOfMeasurements);
 
         return

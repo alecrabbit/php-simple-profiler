@@ -2,7 +2,7 @@
 
 use AlecRabbit\ConsoleColour\Themes;
 use AlecRabbit\Tools\Benchmark;
-use AlecRabbit\Tools\BenchmarkOptions;
+use AlecRabbit\Tools\BenchmarkOptions as Options;
 use NunoMaduro\Collision\Provider;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
@@ -15,7 +15,8 @@ echo $themes->comment('Benchmark example') . PHP_EOL;
 echo $themes->dark('PHP version: ' . PHP_VERSION) . PHP_EOL;
 
 // Benchmarking
-$options = new BenchmarkOptions(); // Example
+$options = new Options(); // Example
+$options->setMethod(Options::DIRECT_MEASUREMENTS);
 
 $benchmark = new Benchmark($options);
 $benchmark
