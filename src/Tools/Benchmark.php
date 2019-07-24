@@ -3,7 +3,6 @@
 namespace AlecRabbit\Tools;
 
 use AlecRabbit\Accessories\Pretty;
-use MathPHP\Statistics\Average;
 use Webmozart\Assert\Assert;
 
 class Benchmark
@@ -100,9 +99,9 @@ class Benchmark
                 }
                 continue;
             }
-            $this->bench($function);
+            $this->bench2($function);
+            $result = MeasurementsResults::createResult($function->getResults());
             if ($this->options->isCli()) {
-                $result = MeasurementsResults::createResult($function->getResults());
                 echo
                     sprintf(
                         'Result %s±%s',
@@ -132,17 +131,20 @@ class Benchmark
                 $i--;
             }
             $result = MeasurementsResults::createResult($measurements);
-            $f->addResult($result);
-            if ($this->options->isCli()) {
-                echo
-                    sprintf(
-                        '   Iteration #%s %s±%s %s[%s]',
-                        $n,
-                        Pretty::nanoseconds($result->getMean()),
-                        Pretty::percent($result->getDeltaPercent()),
-                        $result->getNumberOfMeasurements(),
-                        Pretty::percent(1 - $result->getRejectionsPercent())
-                    ) . PHP_EOL;
+//            dump($result->getDeltaPercent());
+            if ($result->getDeltaPercent() < 0.02) {
+                $f->addResult($result);
+                if ($this->options->isCli()) {
+                    echo
+                        sprintf(
+                            '   Iteration #%s %s±%s %s[%s]',
+                            $n,
+                            Pretty::nanoseconds($result->getMean()),
+                            Pretty::percent($result->getDeltaPercent()),
+                            $result->getNumberOfMeasurements(),
+                            Pretty::percent(1 - $result->getRejectionsPercent())
+                        ) . PHP_EOL;
+                }
             }
         }
     }
@@ -156,9 +158,13 @@ class Benchmark
             $revs = $this->getRevs($n);
             $i = $revs;
             $start = hrtime(true);
-            while ($i > 0) {
+            $r = null;
+            while ($i-- > 0) {
                 $r = $function(...$args);
-                $i--;
+            }
+            $unequal = false;
+            if ($f->getReturn() !== $r) {
+                $unequal = true;
             }
             $measurement = hrtime(true) - $start;
             $result = new BenchmarkResult($measurement / $revs, 0, $revs);
@@ -166,12 +172,12 @@ class Benchmark
             if ($this->options->isCli()) {
                 echo
                     sprintf(
-                        '   Iteration #%s %s±%s %s[%s]',
+                        '   Iteration #%s %s±%s [%s] %s',
                         $n,
                         Pretty::nanoseconds($result->getMean()),
                         Pretty::percent($result->getDeltaPercent()),
                         $result->getNumberOfMeasurements(),
-                        Pretty::percent(1 - $result->getRejectionsPercent())
+                        $unequal ? 'unequal returns' : ''
                     ) . PHP_EOL;
             }
 

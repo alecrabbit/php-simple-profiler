@@ -44,10 +44,10 @@ class MeasurementsResults
     {
         self::removeMax($measurements);
         $rejections = $rejections ?? 0;
-        $meanCorr = Average::mean($measurements) * (1 + self::REJECTION_THRESHOLD / 100);
+        $meanThreshold = Average::mean($measurements) * self::rejectionCoefficient();
 
         foreach ($measurements as $key => $value) {
-            if ($value > $meanCorr) {
+            if ($value > $meanThreshold) {
                 unset($measurements[$key]);
                 $rejections++;
             }
@@ -58,5 +58,13 @@ class MeasurementsResults
     {
         $max = max($measurements);
         unset($measurements[array_search($max, $measurements, true)]);
+    }
+
+    /**
+     * @return float|int
+     */
+    protected static function rejectionCoefficient()
+    {
+        return 1 + self::REJECTION_THRESHOLD / 100;
     }
 }

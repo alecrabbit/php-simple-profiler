@@ -171,4 +171,12 @@ class BenchmarkFunction
     {
         return $this->results;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getReturn()
+    {
+        return $this->return;
+    }
 }
