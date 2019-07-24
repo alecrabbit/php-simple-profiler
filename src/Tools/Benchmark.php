@@ -3,12 +3,12 @@
 namespace AlecRabbit\Tools;
 
 use AlecRabbit\Accessories\Pretty;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 use Webmozart\Assert\Assert;
 
 class Benchmark
 {
-    protected const REJECT_COEFFICIENT = 1.1;
-
     /** @var null|string */
     protected $comment;
 
@@ -22,11 +22,15 @@ class Benchmark
     protected $functions = [];
 
     /** @var int */
-    private $index = 0;
+    protected $index = 0;
 
-    public function __construct(BenchmarkOptions $options = null)
+    /** @var OutputInterface */
+    protected $output;
+
+    public function __construct(BenchmarkOptions $options = null, ?OutputInterface $output = null)
     {
         $this->options = $options ?? new BenchmarkOptions();
+        $this->output = $output ?? new ConsoleOutput();
     }
 
     /**
@@ -113,42 +117,6 @@ class Benchmark
         return (new BenchmarkReport())->setFunctions($this->functions);
     }
 
-    protected function bench(BenchmarkFunction $f): void
-    {
-        $function = $f->getCallable();
-        $args = $f->getArgs();
-        $n = 1;
-        while ($n <= 7) {
-            $revs = $this->getRevs($n);
-            $n++;
-
-            $i = $revs;
-            $measurements = [];
-            while ($i > 0) {
-                $start = hrtime(true);
-                $r = $function(...$args);
-                $measurements[] = hrtime(true) - $start;
-                $i--;
-            }
-            $result = MeasurementsResults::createResult($measurements);
-//            dump($result->getDeltaPercent());
-            if ($result->getDeltaPercent() < 0.02) {
-                $f->addResult($result);
-                if ($this->options->isCli()) {
-                    echo
-                        sprintf(
-                            '   Iteration #%s %s±%s %s[%s]',
-                            $n,
-                            Pretty::nanoseconds($result->getMean()),
-                            Pretty::percent($result->getDeltaPercent()),
-                            $result->getNumberOfMeasurements(),
-                            Pretty::percent(1 - $result->getRejectionsPercent())
-                        ) . PHP_EOL;
-                }
-            }
-        }
-    }
-
     protected function bench2(BenchmarkFunction $f): void
     {
         $function = $f->getCallable();
@@ -169,17 +137,16 @@ class Benchmark
             $measurement = hrtime(true) - $start;
             $result = new BenchmarkResult($measurement / $revs, 0, $revs);
             $f->addResult($result);
-            if ($this->options->isCli()) {
-                echo
-                    sprintf(
-                        '   Iteration #%s %s±%s [%s] %s',
-                        $n,
-                        Pretty::nanoseconds($result->getMean()),
-                        Pretty::percent($result->getDeltaPercent()),
-                        $result->getNumberOfMeasurements(),
-                        $unequal ? 'unequal returns' : ''
-                    ) . PHP_EOL;
-            }
+            $this->message(
+                sprintf(
+                    '   Iteration #%s %s±%s [%s] %s',
+                    $n,
+                    Pretty::nanoseconds($result->getMean()),
+                    Pretty::percent($result->getDeltaPercent()),
+                    $result->getNumberOfMeasurements(),
+                    $unequal ? 'unequal returns' : ''
+                )
+            );
 
             $n++;
         }
@@ -192,5 +159,50 @@ class Benchmark
     protected function getRevs(int $n): int
     {
         return 1 + $n ** ($n - 1);
+    }
+
+    /**
+     * @param string $message
+     * @param bool $newline
+     */
+    protected function message(string $message, $newline = true): void
+    {
+        if ($this->options->isCli()) {
+            $this->output->write($message, $newline);
+        }
+    }
+
+    protected function bench(BenchmarkFunction $f): void
+    {
+        $function = $f->getCallable();
+        $args = $f->getArgs();
+        $n = 1;
+        while ($n <= 7) {
+            $revs = $this->getRevs($n);
+            $n++;
+
+            $i = $revs;
+            $measurements = [];
+            while ($i > 0) {
+                $start = hrtime(true);
+                $r = $function(...$args);
+                $measurements[] = hrtime(true) - $start;
+                $i--;
+            }
+            $result = MeasurementsResults::createResult($measurements);
+            if ($result->getDeltaPercent() < 0.02) {
+                $f->addResult($result);
+                $this->message(
+                    sprintf(
+                        '   Iteration #%s %s±%s %s[%s]',
+                        $n,
+                        Pretty::nanoseconds($result->getMean()),
+                        Pretty::percent($result->getDeltaPercent()),
+                        $result->getNumberOfMeasurements(),
+                        Pretty::percent(1 - $result->getRejectionsPercent())
+                    )
+                );
+            }
+        }
     }
 }
