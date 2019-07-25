@@ -93,31 +93,28 @@ class Benchmark
         foreach ($this->functions as $function) {
             $this->message(
                 sprintf(
-                    ' Benchmarking function: "%s" %s: ',
-                    $function->getHumanReadableName(),
-                    $function->getComment()
+                    ' Benchmarking function: %s',
+                    str_pad('"' . $function->getAssignedName().'"', 20)
                 ),
                 false
             );
             if (!$function->execute()) {
                 $exception = $function->getException();
                 if ($exception instanceof \Throwable) {
-                    if ($this->options->isCli()) {
-                        echo
-                            sprintf(
-                                ' Exception encountered: %s',
-                                $exception->getMessage()
-                            ) . PHP_EOL;
-                    }
+                    $this->message(
+                        sprintf(
+                            'Exception: %s',
+                            $exception->getMessage()
+                        )
+                    );
                 }
                 continue;
             }
             $result = $this->benchNew($function);
-//            $result = MeasurementsResults::createResult($function->getResults());
-//            $this->addResult($result);
+//            $this->message('');
             $this->message(
                 sprintf(
-                    'Result %s±%s',
+                    ' %s±%s',
                     Pretty::nanoseconds($result->getMean()),
                     Pretty::percent($result->getDeltaPercent())
                 )
@@ -152,14 +149,13 @@ class Benchmark
             $r[] = $this->indirectBenchmark(100, $f);
         }
         $result = MeasurementsResults::createResult($r);
-//        dump((string)$result);
         $n = 0;
         while ($n++ <= 4) {
             try {
                 $benchmarkResult = $this->directBenchmark($this->getRevs($n, 5), $f, $result);
                 $r[] = $benchmarkResult;
-//                dump($benchmarkResult);
             } catch (BadDataException $e) {
+                // Result rejected
 //                $this->message('Result rejected');
             }
         }
@@ -192,45 +188,15 @@ class Benchmark
         while ($i-- > 0) {
             $function(...$args);
         }
+        $this->progress();
         return
             new BenchmarkResult((hrtime(true) - $start) / $revs, 0, $revs);
     }
 
-//    protected function bench2(BenchmarkFunction $f): void
-//    {
-//        $function = $f->getCallable();
-//        $args = $f->getArgs();
-//        $n = 0;
-//        while ($n <= $this->maxIterations) {
-//            $revs = $this->getRevs($n);
-//            $i = $revs;
-//            $start = hrtime(true);
-//            $r = null;
-//            while ($i-- > 0) {
-//                $r = $function(...$args);
-//            }
-//            $unequal = false;
-//            if ($f->getReturn() !== $r) {
-//                $unequal = true;
-//            }
-//            $measurement = hrtime(true) - $start;
-//            $result = new BenchmarkResult($measurement / $revs, 0, $revs);
-//            if ($revs > 500) {
-//                $f->addResult($result);
-//            }
-//            $this->message(
-//                sprintf(
-//                    '   Iteration #%s %s±%s [%s] %s',
-//                    $n,
-//                    Pretty::nanoseconds($result->getMean()),
-//                    Pretty::percent($result->getDeltaPercent()),
-//                    $result->getNumberOfMeasurements(),
-//                    $unequal ? 'unequal returns' : ''
-//                )
-//            );
-//            $n++;
-//        }
-//    }
+    protected function progress(): void
+    {
+        $this->message('.', false);
+    }
 
     /**
      * @param int $i
@@ -245,10 +211,15 @@ class Benchmark
         $function = $f->getCallable();
         $args = $f->getArgs();
         $measurements = [];
+        $done = 0;
         while ($i > 0) {
             $start = hrtime(true);
             $function(...$args);
             $measurements[] = hrtime(true) - $start;
+            $done++;
+            if (0 === $done % 5000) {
+                $this->progress();
+            }
             $i--;
         }
         return MeasurementsResults::createResult($measurements, $previous);
@@ -279,37 +250,4 @@ class Benchmark
         $this->results[] = $result;
     }
 
-//    protected function bench(BenchmarkFunction $f): void
-//    {
-//        $function = $f->getCallable();
-//        $args = $f->getArgs();
-//        $n = 1;
-//        while ($n <= $this->maxIterations) {
-//            $revs = $this->getRevs($n);
-//            $n++;
-//
-//            $i = $revs;
-//            $measurements = [];
-//            while ($i > 0) {
-//                $start = hrtime(true);
-//                $r = $function(...$args);
-//                $measurements[] = hrtime(true) - $start;
-//                $i--;
-//            }
-//            $result = MeasurementsResults::createResult($measurements);
-//            if ($result->getDeltaPercent() < 0.02) {
-//                $f->addResult($result);
-//                $this->message(
-//                    sprintf(
-//                        '   Iteration #%s %s±%s %s[%s]',
-//                        $n,
-//                        Pretty::nanoseconds($result->getMean()),
-//                        Pretty::percent($result->getDeltaPercent()),
-//                        $result->getNumberOfMeasurements(),
-//                        Pretty::percent(1 - $result->getRejectionsPercent())
-//                    )
-//                );
-//            }
-//        }
-//    }
 }

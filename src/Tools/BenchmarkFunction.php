@@ -110,7 +110,7 @@ class BenchmarkFunction
     /**
      * @return string
      */
-    public function getHumanReadableName(): string
+    public function getAssignedName(): string
     {
         return $this->assignedName ?? $this->getIndexedName();
     }
@@ -120,7 +120,7 @@ class BenchmarkFunction
      */
     public function getIndexedName(): string
     {
-        return "⟨{$this->getIndex()}⟩ {$this->getName()}";
+        return "<{$this->getIndex()}> {$this->getName()}";
     }
 
     /**

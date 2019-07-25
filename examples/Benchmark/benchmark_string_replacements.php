@@ -14,10 +14,6 @@ $themes = new Themes();
 echo $themes->comment('Benchmark example') . PHP_EOL;
 echo $themes->dark('PHP version: ' . PHP_VERSION) . PHP_EOL;
 
-// Benchmarking
-$options = new Options(); // Example
-//$options->setMethod(Options::DIRECT_MEASUREMENTS);
-
 const EMPTY_ELEMENTS = ['', null, false];
 
 $args = [
@@ -28,9 +24,15 @@ $args = [
     },
 ];
 
-$benchmark = new Benchmark($options);
+$benchmark = new Benchmark();
 $benchmark
     ->withComment('sprintf')
+    ->add('sprintf', '>>>%s<<<', '222');
+$benchmark
+    ->withComment('str_replace')
+    ->add('str_replace', '%s', '222', '>>>%s<<<');
+$benchmark
+    ->withName('sprintf')
     ->add(
         function ($a) {
             return sprintf('>>>%s<<<', $a);
@@ -38,7 +40,7 @@ $benchmark
         '222'
     );
 $benchmark
-    ->withComment('str_replace')
+    ->withName('str_replace')
     ->add(
         function ($a) {
             return str_replace('%s', $a, '>>>%s<<<');
@@ -60,7 +62,8 @@ function formatted_array_1(
     int $columns = 10,
     ?callable $callback = null,
     int $pad = STR_PAD_RIGHT
-): array {
+): array
+{
     $result = [];
     $maxLength = arr_el_max_length($data, $callback);
     $tmp = [];
@@ -85,7 +88,8 @@ function formatted_array_2(
     int $columns = 10,
     ?callable $callback = null,
     int $pad = STR_PAD_RIGHT
-): array {
+): array
+{
     $result = [];
     $func = function (&$rowEmpty, &$tmp, &$result) {
         $result[] = \implode($rowEmpty ? '' : ' ', $tmp);
@@ -116,7 +120,8 @@ function formatted_array_3(
     int $columns = 10,
     ?callable $callback = null,
     int $pad = STR_PAD_RIGHT
-): array {
+): array
+{
     $result = $tmp = [];
     $maxLength = arr_el_max_length($data, $callback);
     $rowEmpty = true;

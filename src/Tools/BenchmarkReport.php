@@ -4,7 +4,6 @@ namespace AlecRabbit\Tools;
 
 use AlecRabbit\Accessories\Pretty;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
-use function AlecRabbit\typeOf;
 
 class BenchmarkReport
 {
@@ -30,14 +29,19 @@ class BenchmarkReport
         foreach ($functions as $name => $f) {
             $benchmarkRelative = $f->getRelative();
             if ($benchmarkRelative instanceof BenchmarkRelative) {
-//                dump($benchmarkRelative);
                 $str .=
                     sprintf(
-                        '%s. %s %s [%s]',
+                        '%s. %s %s %s %s',
                         $benchmarkRelative->getRank(),
-                        $f->getHumanReadableName(),
-                        (string)$benchmarkRelative->getBenchmarkResult(),
-                        Pretty::percent($benchmarkRelative->getRelative())
+                        str_pad($f->getAssignedName(), 30),
+                        str_pad('+' . Pretty::percent($benchmarkRelative->getRelative()), 8, ' ', STR_PAD_LEFT),
+                        str_pad(
+                            (string)$benchmarkRelative->getBenchmarkResult(),
+                            18,
+                            ' ',
+                            STR_PAD_LEFT
+                        ),
+                        $f->getComment()
                     ) . PHP_EOL;
             }
         }
@@ -51,7 +55,6 @@ class BenchmarkReport
      */
     private function updateFunctions(array $functions): array
     {
-//        dump($functions);
         $averages = $this->computeAverages();
         $relatives = $this->computeRelatives($averages);
         $updatedFunctions = [];
@@ -61,7 +64,6 @@ class BenchmarkReport
                 /** @var BenchmarkFunction $function */
                 $function = $functions[$name] ?? null;
                 $average = $averages[$name] ?? null;
-//                dump($name, typeOf($function), $average);
                 if (null !== $function && null !== $average) {
                     $function->setBenchmarkRelative(
                         new BenchmarkRelative(++$rank, (float)$relative - 1, $function->getResult())

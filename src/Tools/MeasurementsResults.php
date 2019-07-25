@@ -9,7 +9,7 @@ use MathPHP\Statistics\RandomVariable;
 
 class MeasurementsResults
 {
-    protected const REJECTION_THRESHOLD = 25;
+    protected const REJECTION_THRESHOLD = 100;
 
     /**
      * @param array $measurements
