@@ -33,9 +33,9 @@ class BenchmarkReport
                     sprintf(
                         '%s. %s %s %s %s',
                         $benchmarkRelative->getRank(),
-                        str_pad($f->getAssignedName(), 30),
-                        str_pad('+' . Pretty::percent($benchmarkRelative->getRelative()), 8, ' ', STR_PAD_LEFT),
-                        str_pad(
+                        mb_str_pad($f->getAssignedName(), 30),
+                        mb_str_pad('+' . Pretty::percent($benchmarkRelative->getRelative()), 8, ' ', STR_PAD_LEFT),
+                        mb_str_pad(
                             (string)$benchmarkRelative->getBenchmarkResult(),
                             18,
                             ' ',

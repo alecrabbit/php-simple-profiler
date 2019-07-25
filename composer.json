@@ -23,7 +23,8 @@
     "alecrabbit/php-traits": "^0.3",
     "sebastian/exporter": "^3.1",
     "markrogoyski/math-php": "^0.52.0",
-    "webmozart/assert": "^1.4"
+    "webmozart/assert": "^1.4",
+    "sehrgut/mb-str-pad": "^1.0"
   },
   "require-dev": {
     "krowinski/bcmath-extended": "^4.2 || ^5.0",

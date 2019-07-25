@@ -8,23 +8,6 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Webmozart\Assert\Assert;
 
-/**
- * mb_str_pad
- *
- * @param string $input
- * @param int $pad_length
- * @param string $pad_string
- * @param int $pad_type
- * @return string
- * @author Kari "Haprog" Sderholm
- */
-function mb_str_pad($input, $pad_length, $pad_string = ' ', $pad_type = STR_PAD_RIGHT)
-{
-    $diff = strlen($input) - mb_strlen($input);
-    return
-        str_pad($input, $pad_length + $diff, $pad_string, $pad_type);
-}
-
 class Benchmark
 {
     /** @var null|string */
