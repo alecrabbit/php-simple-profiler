@@ -87,7 +87,10 @@ class BenchmarkReport
         $averages = [];
         /** @var BenchmarkFunction $f */
         foreach ($this->functions as $f) {
-            $averages[$f->getIndexedName()] = $f->getResult()->getMean();
+            $benchmarkResult = $f->getResult();
+            if ($benchmarkResult instanceof BenchmarkResult) {
+                $averages[$f->getIndexedName()] = $benchmarkResult->getMean();
+            }
         }
         return $averages;
     }

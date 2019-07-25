@@ -32,7 +32,7 @@ $benchmark
     ->withComment('str_replace')
     ->add('str_replace', '%s', '222', '>>>%s<<<');
 $benchmark
-    ->withName('sprintf')
+//    ->withName('sprintf')
     ->add(
         function ($a) {
             return sprintf('>>>%s<<<', $a);
@@ -40,7 +40,7 @@ $benchmark
         '222'
     );
 $benchmark
-    ->withName('str_replace')
+//    ->withName('str_replace')
     ->add(
         function ($a) {
             return str_replace('%s', $a, '>>>%s<<<');

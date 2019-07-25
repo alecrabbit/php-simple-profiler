@@ -2,12 +2,28 @@
 
 namespace AlecRabbit\Tools;
 
-use AlecRabbit\Accessories\Pretty;
 use MathPHP\Exception\BadDataException;
 use MathPHP\Exception\OutOfBoundsException;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Webmozart\Assert\Assert;
+
+/**
+ * mb_str_pad
+ *
+ * @param string $input
+ * @param int $pad_length
+ * @param string $pad_string
+ * @param int $pad_type
+ * @return string
+ * @author Kari "Haprog" Sderholm
+ */
+function mb_str_pad($input, $pad_length, $pad_string = ' ', $pad_type = STR_PAD_RIGHT)
+{
+    $diff = strlen($input) - mb_strlen($input);
+    return
+        str_pad($input, $pad_length + $diff, $pad_string, $pad_type);
+}
 
 class Benchmark
 {
@@ -90,11 +106,13 @@ class Benchmark
 
     public function run(): BenchmarkReport
     {
+        $this->message('Benchmarking: ');
+
         foreach ($this->functions as $function) {
             $this->message(
                 sprintf(
-                    ' Benchmarking function: %s',
-                    str_pad('"' . $function->getAssignedName().'"', 20)
+                    'Function %s',
+                    mb_str_pad('\'' . $function->getAssignedName() . '\'', 20)
                 ),
                 false
             );
@@ -111,15 +129,9 @@ class Benchmark
                 continue;
             }
             $result = $this->benchNew($function);
-//            $this->message('');
-            $this->message(
-                sprintf(
-                    ' %s±%s',
-                    Pretty::nanoseconds($result->getMean()),
-                    Pretty::percent($result->getDeltaPercent())
-                )
-            );
+            $this->message(' ' . $result);
         }
+        $this->message('');
         return (new BenchmarkReport())->setFunctions($this->functions);
     }
 
