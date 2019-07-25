@@ -9,10 +9,10 @@ class MeasurementsResults
 {
     protected const REJECTION_THRESHOLD = 10;
 
-    public static function createResult(array $measurements): BenchmarkResult
+    public static function createResult(array $measurements, ?BenchmarkResult $previous = null): BenchmarkResult
     {
         $measurements = self::convertDataType($measurements);
-        self::refine($measurements, $numberOfRejections);
+        $numberOfRejections = self::refine($measurements, $previous);
         $numberOfMeasurements = count($measurements);
         $mean = Average::mean($measurements);
         $standardErrorOfTheMean = RandomVariable::standardErrorOfTheMean($measurements);
@@ -40,11 +40,15 @@ class MeasurementsResults
         return $measurements;
     }
 
-    protected static function refine(array &$measurements, ?int &$rejections): void
+    protected static function refine(array &$measurements, ?BenchmarkResult $previous = null): int
     {
         self::removeMax($measurements);
-        $rejections = $rejections ?? 0;
-        $meanThreshold = Average::mean($measurements) * self::rejectionCoefficient();
+        $rejections = 0;
+        if ($previous instanceof BenchmarkResult) {
+            $meanThreshold = $previous->getMean() * self::rejectionCoefficient();
+        } else {
+            $meanThreshold = Average::mean($measurements) * self::rejectionCoefficient();
+        }
 
         foreach ($measurements as $key => $value) {
             if ($value > $meanThreshold) {
@@ -52,6 +56,7 @@ class MeasurementsResults
                 $rejections++;
             }
         }
+        return $rejections;
     }
 
     protected static function removeMax(array &$measurements): void

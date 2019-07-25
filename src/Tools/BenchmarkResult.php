@@ -2,6 +2,8 @@
 
 namespace AlecRabbit\Tools;
 
+use AlecRabbit\Accessories\Pretty;
+
 class BenchmarkResult
 {
     /** @var float */
@@ -62,4 +64,16 @@ class BenchmarkResult
     {
         return $this->numberOfMeasurements;
     }
+
+    public function __toString(): string
+    {
+        return
+            sprintf(
+                '%s±%s',
+                Pretty::nanoseconds($this->getMean()),
+                Pretty::percent($this->getDeltaPercent())
+            );
+    }
+
+
 }

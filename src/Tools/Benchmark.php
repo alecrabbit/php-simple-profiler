@@ -110,53 +110,98 @@ class Benchmark
                 }
                 continue;
             }
-            $this->bench2($function);
-            $result = MeasurementsResults::createResult($function->getResults());
-            $this->addResult($result);
-            $this->message(
-                sprintf(
-                    'Result %s±%s',
-                    Pretty::nanoseconds($result->getMean()),
-                    Pretty::percent($result->getDeltaPercent())
-                )
-            );
+            $this->benchNew($function);
+//            $result = MeasurementsResults::createResult($function->getResults());
+//            $this->addResult($result);
+//            $this->message(
+//                sprintf(
+//                    'Result %s±%s',
+//                    Pretty::nanoseconds($result->getMean()),
+//                    Pretty::percent($result->getDeltaPercent())
+//                )
+//            );
         }
         return (new BenchmarkReport())->setFunctions($this->functions);
     }
 
-    protected function bench(BenchmarkFunction $f): void
+    protected function benchNew(BenchmarkFunction $f): void
+    {
+        $r = [];
+        $this->warmUp($f);
+        $n = 0;
+        while ($n++ <= 6) {
+            $r[] = $this->indirectBenchmark(100, $f);
+        }
+        $result = MeasurementsResults::createResult($r);
+        dump((string)$result);
+    }
+
+    /**
+     * @param BenchmarkFunction $f
+     * @param int $max
+     */
+    protected function warmUp(BenchmarkFunction $f, int $max = 3): void
+    {
+        $n = 0;
+        while ($n++ <= $max) {
+            $this->indirectBenchmark(100, $f);
+        }
+    }
+
+    protected function indirectBenchmark(int $i, BenchmarkFunction $f): BenchmarkResult
     {
         $function = $f->getCallable();
         $args = $f->getArgs();
-        $n = 1;
-        while ($n <= $this->maxIterations) {
-            $revs = $this->getRevs($n);
-            $n++;
 
-            $i = $revs;
-            $measurements = [];
-            while ($i > 0) {
-                $start = hrtime(true);
-                $r = $function(...$args);
-                $measurements[] = hrtime(true) - $start;
-                $i--;
-            }
-            $result = MeasurementsResults::createResult($measurements);
-            if ($result->getDeltaPercent() < 0.02) {
-                $f->addResult($result);
-                $this->message(
-                    sprintf(
-                        '   Iteration #%s %s±%s %s[%s]',
-                        $n,
-                        Pretty::nanoseconds($result->getMean()),
-                        Pretty::percent($result->getDeltaPercent()),
-                        $result->getNumberOfMeasurements(),
-                        Pretty::percent(1 - $result->getRejectionsPercent())
-                    )
-                );
-            }
+        $start = hrtime(true);
+        $revs = $i;
+        while ($i-- > 0) {
+            $function(...$args);
         }
+        return
+            new BenchmarkResult((hrtime(true) - $start) / $revs, 0, $revs);
     }
+
+    protected function addResult(BenchmarkResult $result): void
+    {
+        $this->results[] = $result;
+    }
+
+//    protected function bench2(BenchmarkFunction $f): void
+//    {
+//        $function = $f->getCallable();
+//        $args = $f->getArgs();
+//        $n = 0;
+//        while ($n <= $this->maxIterations) {
+//            $revs = $this->getRevs($n);
+//            $i = $revs;
+//            $start = hrtime(true);
+//            $r = null;
+//            while ($i-- > 0) {
+//                $r = $function(...$args);
+//            }
+//            $unequal = false;
+//            if ($f->getReturn() !== $r) {
+//                $unequal = true;
+//            }
+//            $measurement = hrtime(true) - $start;
+//            $result = new BenchmarkResult($measurement / $revs, 0, $revs);
+//            if ($revs > 500) {
+//                $f->addResult($result);
+//            }
+//            $this->message(
+//                sprintf(
+//                    '   Iteration #%s %s±%s [%s] %s',
+//                    $n,
+//                    Pretty::nanoseconds($result->getMean()),
+//                    Pretty::percent($result->getDeltaPercent()),
+//                    $result->getNumberOfMeasurements(),
+//                    $unequal ? 'unequal returns' : ''
+//                )
+//            );
+//            $n++;
+//        }
+//    }
 
     /**
      * @param int $n
@@ -187,42 +232,51 @@ class Benchmark
         }
     }
 
-    protected function addResult(BenchmarkResult $result): void
-    {
-        $this->results[] = $result;
-    }
-
-    protected function bench2(BenchmarkFunction $f): void
+    protected function directBenchmark(int $i, BenchmarkFunction $f, ?BenchmarkResult $previous = null): BenchmarkResult
     {
         $function = $f->getCallable();
         $args = $f->getArgs();
-        $n = 1;
-        while ($n <= $this->maxIterations) {
-            $revs = $this->getRevs($n);
-            $i = $revs;
+        $measurements = [];
+        while ($i > 0) {
             $start = hrtime(true);
-            $r = null;
-            while ($i-- > 0) {
-                $r = $function(...$args);
-            }
-            $unequal = false;
-            if ($f->getReturn() !== $r) {
-                $unequal = true;
-            }
-            $measurement = hrtime(true) - $start;
-            $result = new BenchmarkResult($measurement / $revs, 0, $revs);
-            $f->addResult($result);
-            $this->message(
-                sprintf(
-                    '   Iteration #%s %s±%s [%s] %s',
-                    $n,
-                    Pretty::nanoseconds($result->getMean()),
-                    Pretty::percent($result->getDeltaPercent()),
-                    $result->getNumberOfMeasurements(),
-                    $unequal ? 'unequal returns' : ''
-                )
-            );
-            $n++;
+            $function(...$args);
+            $measurements[] = hrtime(true) - $start;
+            $i--;
         }
+        return MeasurementsResults::createResult($measurements, $previous);
     }
+
+//    protected function bench(BenchmarkFunction $f): void
+//    {
+//        $function = $f->getCallable();
+//        $args = $f->getArgs();
+//        $n = 1;
+//        while ($n <= $this->maxIterations) {
+//            $revs = $this->getRevs($n);
+//            $n++;
+//
+//            $i = $revs;
+//            $measurements = [];
+//            while ($i > 0) {
+//                $start = hrtime(true);
+//                $r = $function(...$args);
+//                $measurements[] = hrtime(true) - $start;
+//                $i--;
+//            }
+//            $result = MeasurementsResults::createResult($measurements);
+//            if ($result->getDeltaPercent() < 0.02) {
+//                $f->addResult($result);
+//                $this->message(
+//                    sprintf(
+//                        '   Iteration #%s %s±%s %s[%s]',
+//                        $n,
+//                        Pretty::nanoseconds($result->getMean()),
+//                        Pretty::percent($result->getDeltaPercent()),
+//                        $result->getNumberOfMeasurements(),
+//                        Pretty::percent(1 - $result->getRejectionsPercent())
+//                    )
+//                );
+//            }
+//        }
+//    }
 }
