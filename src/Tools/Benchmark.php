@@ -3,6 +3,8 @@
 namespace AlecRabbit\Tools;
 
 use AlecRabbit\Accessories\Pretty;
+use MathPHP\Exception\BadDataException;
+use MathPHP\Exception\OutOfBoundsException;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Webmozart\Assert\Assert;
@@ -89,14 +91,14 @@ class Benchmark
     public function run(): BenchmarkReport
     {
         foreach ($this->functions as $function) {
-            if ($this->options->isCli()) {
-                echo
-                    sprintf(
-                        ' Benchmarking function: "%s" %s',
-                        $function->getHumanReadableName(),
-                        $function->getComment()
-                    ) . PHP_EOL;
-            }
+            $this->message(
+                sprintf(
+                    ' Benchmarking function: "%s" %s: ',
+                    $function->getHumanReadableName(),
+                    $function->getComment()
+                ),
+                false
+            );
             if (!$function->execute()) {
                 $exception = $function->getException();
                 if ($exception instanceof \Throwable) {
@@ -110,21 +112,38 @@ class Benchmark
                 }
                 continue;
             }
-            $this->benchNew($function);
+            $result = $this->benchNew($function);
 //            $result = MeasurementsResults::createResult($function->getResults());
 //            $this->addResult($result);
-//            $this->message(
-//                sprintf(
-//                    'Result %s±%s',
-//                    Pretty::nanoseconds($result->getMean()),
-//                    Pretty::percent($result->getDeltaPercent())
-//                )
-//            );
+            $this->message(
+                sprintf(
+                    'Result %s±%s',
+                    Pretty::nanoseconds($result->getMean()),
+                    Pretty::percent($result->getDeltaPercent())
+                )
+            );
         }
         return (new BenchmarkReport())->setFunctions($this->functions);
     }
 
-    protected function benchNew(BenchmarkFunction $f): void
+    /**
+     * @param string $message
+     * @param bool $newline
+     */
+    protected function message(string $message, $newline = true): void
+    {
+        if ($this->options->isCli()) {
+            $this->output->write($message, $newline);
+        }
+    }
+
+    /**
+     * @param BenchmarkFunction $f
+     * @return BenchmarkResult
+     * @throws BadDataException
+     * @throws OutOfBoundsException
+     */
+    protected function benchNew(BenchmarkFunction $f): BenchmarkResult
     {
         $r = [];
         $this->warmUp($f);
@@ -133,7 +152,22 @@ class Benchmark
             $r[] = $this->indirectBenchmark(100, $f);
         }
         $result = MeasurementsResults::createResult($r);
-        dump((string)$result);
+//        dump((string)$result);
+        $n = 0;
+        while ($n++ <= 4) {
+            try {
+                $benchmarkResult = $this->directBenchmark($this->getRevs($n, 5), $f, $result);
+                $r[] = $benchmarkResult;
+//                dump($benchmarkResult);
+            } catch (BadDataException $e) {
+//                $this->message('Result rejected');
+            }
+        }
+        $result = MeasurementsResults::createResult($r);
+        $f->setResult($result);
+        return $result;
+//        dump((string)$result);
+//        dump($result);
     }
 
     /**
@@ -160,11 +194,6 @@ class Benchmark
         }
         return
             new BenchmarkResult((hrtime(true) - $start) / $revs, 0, $revs);
-    }
-
-    protected function addResult(BenchmarkResult $result): void
-    {
-        $this->results[] = $result;
     }
 
 //    protected function bench2(BenchmarkFunction $f): void
@@ -204,34 +233,13 @@ class Benchmark
 //    }
 
     /**
-     * @param int $n
-     * @return int
+     * @param int $i
+     * @param BenchmarkFunction $f
+     * @param BenchmarkResult|null $previous
+     * @return BenchmarkResult
+     * @throws BadDataException
+     * @throws OutOfBoundsException
      */
-    protected function getRevs(int $n): int
-    {
-        if ($n <= 0) {
-            return 1;
-        }
-        if ($n > $this->maxIterations) {
-            $n = $this->maxIterations;
-        }
-        if ($this->options->methodIsDirect()) {
-            return 1 + $n ** ($n - 1);
-        }
-        return 10 ** $n;
-    }
-
-    /**
-     * @param string $message
-     * @param bool $newline
-     */
-    protected function message(string $message, $newline = true): void
-    {
-        if ($this->options->isCli()) {
-            $this->output->write($message, $newline);
-        }
-    }
-
     protected function directBenchmark(int $i, BenchmarkFunction $f, ?BenchmarkResult $previous = null): BenchmarkResult
     {
         $function = $f->getCallable();
@@ -244,6 +252,31 @@ class Benchmark
             $i--;
         }
         return MeasurementsResults::createResult($measurements, $previous);
+    }
+
+    /**
+     * @param int $n
+     * @param int|null $shift
+     * @return int
+     */
+    protected function getRevs(int $n, ?int $shift = null): int
+    {
+        $shift = $shift ?? 0;
+        if ($n <= 0) {
+            return 1 + $shift;
+        }
+        if ($n > $this->maxIterations) {
+            $n = $this->maxIterations;
+        }
+        if ($this->options->methodIsDirect()) {
+            return 1 + $n ** ($n - 1) + $shift;
+        }
+        return 10 ** $n + $shift;
+    }
+
+    protected function addResult(BenchmarkResult $result): void
+    {
+        $this->results[] = $result;
     }
 
 //    protected function bench(BenchmarkFunction $f): void

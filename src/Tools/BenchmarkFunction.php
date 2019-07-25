@@ -2,6 +2,7 @@
 
 namespace AlecRabbit\Tools;
 
+use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Traits\GettableName;
 use function AlecRabbit\typeOf;
 
@@ -28,8 +29,10 @@ class BenchmarkFunction
     /** @var \Throwable|null */
     protected $exception;
 
-    /** @var null|BenchmarkResult[] */
-    protected $results;
+    /** @var null|BenchmarkResult */
+    protected $result;
+    /** @var null|BenchmarkRelative */
+    protected $relative;
 
     /**
      * BenchmarkFunction constructor.
@@ -89,24 +92,6 @@ class BenchmarkFunction
     }
 
     /**
-     * @param mixed $return
-     */
-    public function setReturn($return): void
-    {
-        $this->return = $return;
-    }
-
-    /**
-     * @param \Throwable $exception
-     * @return BenchmarkFunction
-     */
-    public function setException(\Throwable $exception): self
-    {
-        $this->exception = $exception;
-        return $this;
-    }
-
-    /**
      * @return callable
      */
     public function getCallable(): callable
@@ -120,11 +105,6 @@ class BenchmarkFunction
     public function getArgs(): array
     {
         return $this->args;
-    }
-
-    public function addResult(BenchmarkResult $result): void
-    {
-        $this->results[] = $result;
     }
 
     /**
@@ -160,6 +140,16 @@ class BenchmarkFunction
     }
 
     /**
+     * @param \Throwable $exception
+     * @return BenchmarkFunction
+     */
+    public function setException(\Throwable $exception): self
+    {
+        $this->exception = $exception;
+        return $this;
+    }
+
+    /**
      * @return null|string
      */
     public function getComment(): ?string
@@ -167,9 +157,20 @@ class BenchmarkFunction
         return $this->comment;
     }
 
-    public function getResults(): array
+    /**
+     * @return BenchmarkResult|null
+     */
+    public function getResult(): ?BenchmarkResult
     {
-        return $this->results;
+        return $this->result;
+    }
+
+    /**
+     * @param BenchmarkResult $result
+     */
+    public function setResult(BenchmarkResult $result): void
+    {
+        $this->result = $result;
     }
 
     /**
@@ -178,5 +179,26 @@ class BenchmarkFunction
     public function getReturn()
     {
         return $this->return;
+    }
+
+    /**
+     * @param mixed $return
+     */
+    public function setReturn($return): void
+    {
+        $this->return = $return;
+    }
+
+    public function setBenchmarkRelative(BenchmarkRelative $relative): void
+    {
+        $this->relative = $relative;
+    }
+
+    /**
+     * @return BenchmarkRelative|null
+     */
+    public function getRelative(): ?BenchmarkRelative
+    {
+        return $this->relative;
     }
 }

@@ -2,13 +2,22 @@
 
 namespace AlecRabbit\Tools;
 
+use MathPHP\Exception\BadDataException;
+use MathPHP\Exception\OutOfBoundsException;
 use MathPHP\Statistics\Average;
 use MathPHP\Statistics\RandomVariable;
 
 class MeasurementsResults
 {
-    protected const REJECTION_THRESHOLD = 10;
+    protected const REJECTION_THRESHOLD = 25;
 
+    /**
+     * @param array $measurements
+     * @param BenchmarkResult|null $previous
+     * @return BenchmarkResult
+     * @throws BadDataException
+     * @throws OutOfBoundsException
+     */
     public static function createResult(array $measurements, ?BenchmarkResult $previous = null): BenchmarkResult
     {
         $measurements = self::convertDataType($measurements);

@@ -20,22 +20,27 @@ $options = new Options(); // Example
 
 $benchmark = new Benchmark($options);
 $benchmark
-    ->withComment('Benchmark hrtime')
-    ->add('hrtime', true);
-
+    ->withComment('floatval(intval($value))')
+    ->withName('functions')
+    ->add(
+        static function ($value) {
+            if (is_float($value) && floatval(intval($value)) === $value) {
+                return "$value.0";
+            }
+        },
+        1.0
+    );
 $benchmark
-    ->withComment('Benchmark max')
-    ->add('max', [2, 3, 4, 5, 5, 3, 3, 3, 5, 56, 7, 3, 23, 3, 5, 6, 7, 76, 3, 3, 6, 7, 7, 3, 3, 2, 2]);
-
-$benchmark
-    ->withComment('Benchmark hash md5')
-    ->withName('hash_md5')
-    ->add('hash', 'md5', 'Hello World!');
-
-$benchmark
-    ->withComment('Benchmark hash sha1')
-    ->withName('hash_sha1')
-    ->add('hash', 'sha1', 'Hello World!');
+    ->withComment('(float)(int)$value')
+    ->withName('casting')
+    ->add(
+        static function ($value) {
+            if (is_float($value) && (float)(int)$value === $value) {
+                return "$value.0";
+            }
+        },
+        1.0
+    );
 
 $report = $benchmark->run();
 echo $report->withReturns() . PHP_EOL; // cast BenchmarkReport object to string
