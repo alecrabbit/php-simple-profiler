@@ -110,7 +110,7 @@ class Benchmark
                 }
                 continue;
             }
-            $this->bench($function);
+            $this->bench2($function);
             $result = MeasurementsResults::createResult($function->getResults());
             $this->addResult($result);
             $this->message(

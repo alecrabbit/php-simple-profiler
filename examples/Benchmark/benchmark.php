@@ -16,7 +16,7 @@ echo $themes->dark('PHP version: ' . PHP_VERSION) . PHP_EOL;
 
 // Benchmarking
 $options = new Options(); // Example
-$options->setMethod(Options::DIRECT_MEASUREMENTS);
+//$options->setMethod(Options::DIRECT_MEASUREMENTS);
 
 $benchmark = new Benchmark($options);
 $benchmark
@@ -38,4 +38,4 @@ $benchmark
 $report = $benchmark->run();
 echo $report->withReturns() . PHP_EOL; // cast BenchmarkReport object to string
 
-dump($report); // Optional
+//dump($report); // Optional
