@@ -6,18 +6,13 @@ use function AlecRabbit\Helpers\bounds;
 
 class BenchmarkOptions
 {
-//    public const DIRECT_MEASUREMENTS = 1000;
-//    public const INDIRECT_MEASUREMENTS = 1010;
-//    protected const MAX_ITERATIONS = [
-//        self::INDIRECT_MEASUREMENTS => 5,
-//        self::DIRECT_MEASUREMENTS => 7,
-//    ];
-
     /** @var bool */
     protected $cli = false;
 
     /** @var int */
     protected $maxIterations;
+    /** @var int */
+    protected $progressThreshold;
 
     /**
      * BenchmarkOptions constructor.
@@ -28,6 +23,14 @@ class BenchmarkOptions
             $this->cli = true;
         }
         $this->setMaxIterations(5);
+    }
+
+    /**
+     * @return int
+     */
+    public function getProgressThreshold(): int
+    {
+        return $this->progressThreshold;
     }
 
     /**
@@ -44,6 +47,7 @@ class BenchmarkOptions
     public function setMaxIterations(int $maxIterations): void
     {
         $this->maxIterations = (int)bounds($maxIterations, 1, 10);
+        $this->progressThreshold = 10 + 1000 * $this->maxIterations;
     }
 
     /**

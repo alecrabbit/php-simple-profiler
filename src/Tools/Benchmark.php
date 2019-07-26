@@ -2,12 +2,12 @@
 
 namespace AlecRabbit\Tools;
 
-use function AlecRabbit\Helpers\bounds;
 use MathPHP\Exception\BadDataException;
 use MathPHP\Exception\OutOfBoundsException;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Webmozart\Assert\Assert;
+use function AlecRabbit\Helpers\bounds;
 
 class Benchmark
 {
@@ -32,6 +32,9 @@ class Benchmark
     /** @var int */
     protected $maxIterations;
 
+    /** @var int */
+    protected $progressThreshold;
+
     /** @var BenchmarkResult[] */
     protected $results;
 
@@ -40,6 +43,7 @@ class Benchmark
         $this->options = $options ?? new BenchmarkOptions();
         $this->output = $output ?? new ConsoleOutput();
         $this->maxIterations = $this->options->getMaxIterations();
+        $this->progressThreshold = $this->options->getProgressThreshold();
     }
 
     /**
@@ -172,6 +176,7 @@ class Benchmark
         while ($n++ <= $max) {
             $this->indirectBenchmark(1000, $f);
         }
+        $this->progress();
     }
 
     protected function indirectBenchmark(int $i, BenchmarkFunction $f): BenchmarkResult
@@ -191,9 +196,11 @@ class Benchmark
             new BenchmarkResult($stop / $revs, 0, $revs);
     }
 
-    protected function progress(): void
+    protected function progress(?int $done = null): void
     {
-        $this->message('.', false);
+        if (0 === ($done ?? 0) % $this->progressThreshold) {
+            $this->message('.', false);
+        }
     }
 
     /**
@@ -215,12 +222,11 @@ class Benchmark
         while ($i > 0) {
             $start = hrtime(true);
             $function(...$args);
-            $measurements[] = hrtime(true) - $start;
+            $stop = hrtime(true);
+            $measurements[] = $stop - $start;
             $done++;
-            if (0 === $done % 2500) {
-                $this->progress();
-            }
             $i--;
+            $this->progress($done);
         }
         return MeasurementsResults::createResult($measurements, $previous);
     }

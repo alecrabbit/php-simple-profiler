@@ -120,7 +120,7 @@ class BenchmarkFunction
      */
     public function getIndexedName(): string
     {
-        return "<{$this->getIndex()}> {$this->getName()}";
+        return "⟨{$this->getIndex()}⟩ {$this->getName()}";
     }
 
     /**
