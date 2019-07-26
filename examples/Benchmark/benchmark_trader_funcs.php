@@ -22,4 +22,4 @@ $benchmark
 $report = $benchmark->run();
 echo $report->withReturns() . PHP_EOL; // cast BenchmarkReport object to string
 
-dump($report); // Optional
+//dump($report); // Optional

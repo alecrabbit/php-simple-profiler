@@ -43,11 +43,13 @@ class BenchmarkOptions
 
     /**
      * @param int $maxIterations
+     * @return BenchmarkOptions
      */
-    public function setMaxIterations(int $maxIterations): void
+    public function setMaxIterations(int $maxIterations): self
     {
         $this->maxIterations = (int)bounds($maxIterations, 1, 10);
         $this->progressThreshold = 10 + 1000 * $this->maxIterations;
+        return $this;
     }
 
     /**
