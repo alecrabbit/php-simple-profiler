@@ -2,6 +2,7 @@
 
 namespace AlecRabbit\Tools;
 
+use function AlecRabbit\Helpers\bounds;
 use MathPHP\Exception\BadDataException;
 use MathPHP\Exception\OutOfBoundsException;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -104,14 +105,15 @@ class Benchmark
                 if ($exception instanceof \Throwable) {
                     $this->message(
                         sprintf(
-                            'Exception: %s',
+                            'Exception[%s]: %s ',
+                            get_class($exception),
                             $exception->getMessage()
                         )
                     );
                 }
                 continue;
             }
-            $result = $this->benchNew($function);
+            $result = $this->bench($function);
             $this->message(' ' . $result);
         }
         $this->message('');
@@ -135,17 +137,17 @@ class Benchmark
      * @throws BadDataException
      * @throws OutOfBoundsException
      */
-    protected function benchNew(BenchmarkFunction $f): BenchmarkResult
+    protected function bench(BenchmarkFunction $f): BenchmarkResult
     {
         $r = [];
         $this->warmUp($f);
         $n = 0;
         while ($n++ <= 6) {
-            $r[] = $this->indirectBenchmark(100, $f);
+            $r[] = $this->indirectBenchmark(1000, $f);
         }
         $result = MeasurementsResults::createResult($r);
         $n = 0;
-        while ($n++ <= 4) {
+        while ($n <= $this->maxIterations) {
             try {
                 $benchmarkResult = $this->directBenchmark($this->getRevs($n, 5), $f, $result);
                 $r[] = $benchmarkResult;
@@ -153,12 +155,11 @@ class Benchmark
                 // Result rejected
 //                $this->message('Result rejected');
             }
+            $n++;
         }
         $result = MeasurementsResults::createResult($r);
         $f->setResult($result);
         return $result;
-//        dump((string)$result);
-//        dump($result);
     }
 
     /**
@@ -169,23 +170,25 @@ class Benchmark
     {
         $n = 0;
         while ($n++ <= $max) {
-            $this->indirectBenchmark(100, $f);
+            $this->indirectBenchmark(1000, $f);
         }
     }
 
     protected function indirectBenchmark(int $i, BenchmarkFunction $f): BenchmarkResult
     {
+        dump($i);
         $function = $f->getCallable();
         $args = $f->getArgs();
 
-        $start = hrtime(true);
         $revs = $i;
+        $start = hrtime(true);
         while ($i-- > 0) {
             $function(...$args);
         }
+        $stop = hrtime(true) - $start;
         $this->progress();
         return
-            new BenchmarkResult((hrtime(true) - $start) / $revs, 0, $revs);
+            new BenchmarkResult($stop / $revs, 0, $revs);
     }
 
     protected function progress(): void
@@ -203,6 +206,8 @@ class Benchmark
      */
     protected function directBenchmark(int $i, BenchmarkFunction $f, ?BenchmarkResult $previous = null): BenchmarkResult
     {
+        dump($i);
+
         $function = $f->getCallable();
         $args = $f->getArgs();
         $measurements = [];
@@ -212,7 +217,7 @@ class Benchmark
             $function(...$args);
             $measurements[] = hrtime(true) - $start;
             $done++;
-            if (0 === $done % 5000) {
+            if (0 === $done % 2500) {
                 $this->progress();
             }
             $i--;
@@ -228,15 +233,7 @@ class Benchmark
     protected function getRevs(int $n, ?int $shift = null): int
     {
         $shift = $shift ?? 0;
-        if ($n <= 0) {
-            return 1 + $shift;
-        }
-        if ($n > $this->maxIterations) {
-            $n = $this->maxIterations;
-        }
-        if ($this->options->methodIsDirect()) {
-            return 1 + $n ** ($n - 1) + $shift;
-        }
+        $n = (int)bounds($n, 1, 5);
         return 10 ** $n + $shift;
     }
 

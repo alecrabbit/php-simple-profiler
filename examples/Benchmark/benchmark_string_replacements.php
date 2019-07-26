@@ -26,13 +26,11 @@ $args = [
 
 $benchmark = new Benchmark();
 $benchmark
-    ->withComment('sprintf')
     ->add('sprintf', '>>>%s<<<', '222');
 $benchmark
-    ->withComment('str_replace')
     ->add('str_replace', '%s', '222', '>>>%s<<<');
 $benchmark
-//    ->withName('sprintf')
+    ->withComment('sprintf')
     ->add(
         function ($a) {
             return sprintf('>>>%s<<<', $a);
@@ -40,7 +38,7 @@ $benchmark
         '222'
     );
 $benchmark
-//    ->withName('str_replace')
+    ->withComment('str_replace')
     ->add(
         function ($a) {
             return str_replace('%s', $a, '>>>%s<<<');

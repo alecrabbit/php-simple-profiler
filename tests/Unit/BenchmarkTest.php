@@ -16,37 +16,39 @@ class BenchmarkTest extends TestCase
         $this->assertInstanceOf(Benchmark::class, $b);
     }
 
-    /** @test */
-    public function getRevsDirect(): void
+    /**
+     * @test
+     * @dataProvider getRevsDataProvider
+     * @param int $expected
+     * @param int $n
+     * @param int|null $shift
+     */
+    public function getRevs(int $expected, int $n, ?int $shift): void
     {
         $options = new BenchmarkOptions();
-        $options->setMethod(BenchmarkOptions::DIRECT_MEASUREMENTS);
         $b = new Benchmark($options);
-        $this->assertEquals(1, callMethod($b, 'getRevs', 0));
-        $this->assertEquals(2, callMethod($b, 'getRevs', 1));
-        $this->assertEquals(3, callMethod($b, 'getRevs', 2));
-        $this->assertEquals(10, callMethod($b, 'getRevs', 3));
-        $this->assertEquals(65, callMethod($b, 'getRevs', 4));
-        $this->assertEquals(626, callMethod($b, 'getRevs', 5));
-        $this->assertEquals(7777, callMethod($b, 'getRevs', 6));
-        $this->assertEquals(117650, callMethod($b, 'getRevs', 7));
-        $this->assertEquals(117650, callMethod($b, 'getRevs', 8));
+        $this->assertEquals($expected, callMethod($b, 'getRevs', $n, $shift));
     }
 
-    /** @test */
-    public function getRevsIndirect(): void
+    public function getRevsDataProvider(): array
     {
-        $options = new BenchmarkOptions();
-        $options->setMethod(BenchmarkOptions::INDIRECT_MEASUREMENTS);
-        $b = new Benchmark($options);
-        $this->assertEquals(1, callMethod($b, 'getRevs', 0));
-        $this->assertEquals(10, callMethod($b, 'getRevs', 1));
-        $this->assertEquals(100, callMethod($b, 'getRevs', 2));
-        $this->assertEquals(1000, callMethod($b, 'getRevs', 3));
-        $this->assertEquals(10000, callMethod($b, 'getRevs', 4));
-        $this->assertEquals(100000, callMethod($b, 'getRevs', 5));
-        $this->assertEquals(100000, callMethod($b, 'getRevs', 6));
-        $this->assertEquals(100000, callMethod($b, 'getRevs', 7));
-        $this->assertEquals(100000, callMethod($b, 'getRevs', 8));
+        return [
+            [10, 0, null],
+            [10, 1, null],
+            [100, 2, null],
+            [1000, 3, null],
+            [10000, 4, null],
+            [100000, 5, null],
+            [100000, 6, null],
+            [100000, 7, null],
+            [15, 0, 5],
+            [15, 1, 5],
+            [105, 2, 5],
+            [1005, 3, 5],
+            [10005, 4, 5],
+            [100005, 5, 5],
+            [100005, 6, 5],
+            [100005, 7, 5],
+        ];
     }
 }
