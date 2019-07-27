@@ -2,6 +2,7 @@
 
 namespace AlecRabbit\Tools;
 
+use AlecRabbit\Accessories\MemoryUsage;
 use MathPHP\Exception\BadDataException;
 use MathPHP\Exception\OutOfBoundsException;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -94,6 +95,7 @@ class Benchmark
 
     public function run(): BenchmarkReport
     {
+        $this->message((string)MemoryUsage::reportStatic());
         $this->message('Benchmarking: ');
 
         foreach ($this->functions as $function) {
@@ -181,7 +183,6 @@ class Benchmark
 
     protected function indirectBenchmark(int $i, BenchmarkFunction $f): BenchmarkResult
     {
-        dump($i);
         $function = $f->getCallable();
         $args = $f->getArgs();
 
@@ -213,8 +214,6 @@ class Benchmark
      */
     protected function directBenchmark(int $i, BenchmarkFunction $f, ?BenchmarkResult $previous = null): BenchmarkResult
     {
-        dump($i);
-
         $function = $f->getCallable();
         $args = $f->getArgs();
         $measurements = [];

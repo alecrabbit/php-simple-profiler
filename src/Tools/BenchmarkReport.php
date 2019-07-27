@@ -2,6 +2,7 @@
 
 namespace AlecRabbit\Tools;
 
+use AlecRabbit\Accessories\MemoryUsage;
 use AlecRabbit\Accessories\Pretty;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
 
@@ -45,7 +46,7 @@ class BenchmarkReport
                     ) . PHP_EOL;
             }
         }
-        // Form report
+        $str .= PHP_EOL . MemoryUsage::reportStatic();
         return $str;
     }
 
