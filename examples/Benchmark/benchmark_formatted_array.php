@@ -40,7 +40,7 @@ $benchmark
     ->add('formatted_array_3', ...$args);
 
 $report = $benchmark->run();
-echo $report->withReturns() . PHP_EOL; // cast BenchmarkReport object to string
+echo $report . PHP_EOL; // cast BenchmarkReport object to string
 
 //dump($report); // Optional
 
