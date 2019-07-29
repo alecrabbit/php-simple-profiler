@@ -10,8 +10,8 @@ class BenchmarkReport
 {
     /** @var bool */
     protected $showReturns = false;
-    /** @var null|BenchmarkFunction[] */
-    protected $functions;
+    /** @var BenchmarkFunction[] */
+    protected $functions = [];
 
     public function withReturns(): self
     {
@@ -42,11 +42,11 @@ class BenchmarkReport
                             ' ',
                             STR_PAD_LEFT
                         ),
-                        $f->getComment()
+                        (string)$f->getComment()
                     ) . PHP_EOL;
             }
         }
-        $str .= PHP_EOL . MemoryUsage::reportStatic();
+        $str .= PHP_EOL . MemoryUsage::getReport();
         return $str;
     }
 
@@ -62,7 +62,7 @@ class BenchmarkReport
         if (!empty($relatives)) {
             $rank = 0;
             foreach ($relatives as $name => $relative) {
-                /** @var BenchmarkFunction $function */
+                /** @var null|BenchmarkFunction $function */
                 $function = $functions[$name] ?? null;
                 $average = $averages[$name] ?? null;
                 if (null !== $function && null !== $average) {

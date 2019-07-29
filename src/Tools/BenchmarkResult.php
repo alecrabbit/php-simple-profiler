@@ -74,6 +74,4 @@ class BenchmarkResult
                 Pretty::percent($this->getDeltaPercent())
             );
     }
-
-
 }

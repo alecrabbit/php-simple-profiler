@@ -13,7 +13,7 @@
   "license": "MIT",
   "require": {
     "php": "^7.3",
-    "alecrabbit/php-accessories": "^0.9",
+    "alecrabbit/php-accessories": "^0.12",
     "alecrabbit/php-console-colour": "^0.5",
     "alecrabbit/php-console-spinner": "^0.14",
     "alecrabbit/php-counters": "^0.2",

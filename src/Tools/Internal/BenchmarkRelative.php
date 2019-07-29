@@ -12,16 +12,16 @@ class BenchmarkRelative
     /** @var float */
     private $relative;
 
-    /** @var BenchmarkResult */
+    /** @var null|BenchmarkResult */
     private $benchmarkResult;
 
     /**
      * BenchmarkRelative constructor.
      * @param int $rank
      * @param float $relative
-     * @param BenchmarkResult $result
+     * @param null|BenchmarkResult $result
      */
-    public function __construct(int $rank, float $relative, BenchmarkResult $result)
+    public function __construct(int $rank, float $relative, ?BenchmarkResult $result)
     {
         $this->rank = $rank;
         $this->relative = $relative;
@@ -45,9 +45,9 @@ class BenchmarkRelative
     }
 
     /**
-     * @return BenchmarkResult
+     * @return null|BenchmarkResult
      */
-    public function getBenchmarkResult(): BenchmarkResult
+    public function getBenchmarkResult(): ?BenchmarkResult
     {
         return $this->benchmarkResult;
     }

@@ -67,7 +67,12 @@ class BenchmarkFunction
         $this->assignedName = $assignName;
     }
 
-    protected function refineName($func, $name): string
+    /**
+     * @param callable $func
+     * @param string $name
+     * @return string
+     */
+    protected function refineName($func, string $name): string
     {
         if ($func instanceof \Closure) {
             $name = self::CLOSURE_NAME;

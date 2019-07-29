@@ -3,6 +3,7 @@
 namespace AlecRabbit\Tools;
 
 use AlecRabbit\Accessories\MemoryUsage;
+use AlecRabbit\Accessories\MemoryUsage\MemoryUsageReport;
 use MathPHP\Exception\BadDataException;
 use MathPHP\Exception\OutOfBoundsException;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -38,6 +39,9 @@ class Benchmark
 
     /** @var BenchmarkResult[] */
     protected $results;
+
+    /** @var null|MemoryUsageReport */
+    protected $memoryUsageReport;
 
     public function __construct(BenchmarkOptions $options = null, ?OutputInterface $output = null)
     {
@@ -95,7 +99,8 @@ class Benchmark
 
     public function run(): BenchmarkReport
     {
-        $this->message((string)MemoryUsage::reportStatic());
+        $this->memoryUsageReport = MemoryUsage::getReport();
+        $this->message((string)$this->memoryUsageReport);
         $this->message('Benchmarking: ');
 
         foreach ($this->functions as $function) {
@@ -238,13 +243,11 @@ class Benchmark
     protected function getRevs(int $n, ?int $shift = null): int
     {
         $shift = $shift ?? 0;
-        $n = (int)bounds($n, 1, 5);
-        return 10 ** $n + $shift;
+        return (int)(10 ** bounds($n, 1, 5) + $shift);
     }
 
     protected function addResult(BenchmarkResult $result): void
     {
         $this->results[] = $result;
     }
-
 }
