@@ -101,6 +101,8 @@ class Benchmark
     {
         $this->memoryUsageReport = MemoryUsage::getReport();
         $this->message((string)$this->memoryUsageReport);
+        $this->message('');
+
         $this->message('Benchmarking: ');
 
         foreach ($this->functions as $function) {
