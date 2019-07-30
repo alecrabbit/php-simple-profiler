@@ -128,6 +128,10 @@ class Benchmark
             $this->message(' ' . $result);
         }
         $this->message('');
+        $this->memoryUsageReport = MemoryUsage::getReport()->diff($this->memoryUsageReport);
+        $this->message((string)$this->memoryUsageReport);
+        $this->message('');
+
         return (new BenchmarkReport())->setFunctions($this->functions);
     }
 
