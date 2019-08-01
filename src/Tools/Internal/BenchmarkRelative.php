@@ -2,8 +2,6 @@
 
 namespace AlecRabbit\Tools\Internal;
 
-use AlecRabbit\Tools\BenchmarkResult;
-
 class BenchmarkRelative
 {
     /** @var int */

@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 
 use AlecRabbit\Tools\Benchmark;
-use AlecRabbit\Tools\BenchmarkOptions;
 
 require_once __DIR__ . '/../bootstrap.php';
 

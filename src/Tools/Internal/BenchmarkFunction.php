@@ -1,8 +1,7 @@
 <?php declare(strict_types=1);
 
-namespace AlecRabbit\Tools;
+namespace AlecRabbit\Tools\Internal;
 
-use AlecRabbit\Tools\Internal\BenchmarkRelative;
 use AlecRabbit\Traits\GettableName;
 use function AlecRabbit\typeOf;
 

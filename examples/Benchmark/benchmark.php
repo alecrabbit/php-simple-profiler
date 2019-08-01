@@ -1,9 +1,7 @@
 <?php declare(strict_types=1);
 
-use AlecRabbit\ConsoleColour\Themes;
 use AlecRabbit\Tools\Benchmark;
-use AlecRabbit\Tools\BenchmarkOptions as Options;
-use NunoMaduro\Collision\Provider;
+use AlecRabbit\Tools\Internal\BenchmarkOptions as Options;
 
 require_once __DIR__ . '/../bootstrap.php';
 

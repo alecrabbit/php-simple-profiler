@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AlecRabbit\Tools;
+namespace AlecRabbit\Tools\Internal;
 
 use function AlecRabbit\Helpers\bounds;
 

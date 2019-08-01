@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AlecRabbit\Tools;
+namespace AlecRabbit\Tools\Internal;
 
 use MathPHP\Exception\BadDataException;
 use MathPHP\Exception\OutOfBoundsException;

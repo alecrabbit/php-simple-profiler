@@ -1,10 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace AlecRabbit\Tools;
+namespace AlecRabbit\Tools\Reports;
 
 use AlecRabbit\Accessories\MemoryUsage;
 use AlecRabbit\Accessories\Pretty;
+use AlecRabbit\Tools\Internal\BenchmarkFunction;
 use AlecRabbit\Tools\Internal\BenchmarkRelative;
+use AlecRabbit\Tools\Internal\BenchmarkResult;
 
 class BenchmarkReport
 {

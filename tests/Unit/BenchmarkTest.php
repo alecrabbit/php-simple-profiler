@@ -3,7 +3,7 @@
 namespace AlecRabbit\Tests\Tools;
 
 use AlecRabbit\Tools\Benchmark;
-use AlecRabbit\Tools\BenchmarkOptions;
+use AlecRabbit\Tools\Internal\BenchmarkOptions;
 use PHPUnit\Framework\TestCase;
 use function AlecRabbit\Helpers\callMethod;
 

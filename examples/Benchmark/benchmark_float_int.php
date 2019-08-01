@@ -2,7 +2,7 @@
 
 use AlecRabbit\ConsoleColour\Themes;
 use AlecRabbit\Tools\Benchmark;
-use AlecRabbit\Tools\BenchmarkOptions as Options;
+use AlecRabbit\Tools\Internal\BenchmarkOptions as Options;
 use NunoMaduro\Collision\Provider;
 
 require_once __DIR__ . '/../../vendor/autoload.php';

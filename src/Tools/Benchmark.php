@@ -4,6 +4,11 @@ namespace AlecRabbit\Tools;
 
 use AlecRabbit\Accessories\MemoryUsage;
 use AlecRabbit\Accessories\MemoryUsage\MemoryUsageReport;
+use AlecRabbit\Tools\Internal\BenchmarkFunction;
+use AlecRabbit\Tools\Internal\BenchmarkOptions;
+use AlecRabbit\Tools\Internal\BenchmarkResult;
+use AlecRabbit\Tools\Internal\MeasurementsResults;
+use AlecRabbit\Tools\Reports\BenchmarkReport;
 use MathPHP\Exception\BadDataException;
 use MathPHP\Exception\OutOfBoundsException;
 use Symfony\Component\Console\Output\ConsoleOutput;
