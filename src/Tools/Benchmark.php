@@ -113,8 +113,8 @@ class Benchmark
         foreach ($this->functions as $function) {
             $this->message(
                 sprintf(
-                    'Function %s',
-                    mb_str_pad('\'' . $function->getAssignedName() . '\'', 20)
+                    '%s',
+                    mb_str_pad($function->getAssignedName(), 30)
                 ),
                 false
             );
