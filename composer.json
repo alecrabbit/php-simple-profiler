@@ -5,6 +5,7 @@
   "keywords": [
     "counter",
     "timer",
+    "hrtime",
     "simple",
     "profiler",
     "benchmark",
