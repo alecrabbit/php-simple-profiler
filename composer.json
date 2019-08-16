@@ -15,7 +15,7 @@
     "php": "^7.3",
     "alecrabbit/php-accessories": "^0.12",
     "alecrabbit/php-console-colour": "^0.5",
-    "alecrabbit/php-console-spinner": "^0.14",
+    "alecrabbit/php-console-spinner": "^0.16",
     "alecrabbit/php-counters": "^0.2",
     "alecrabbit/php-helpers": "^0.6",
     "alecrabbit/php-reports": "^0.2",
