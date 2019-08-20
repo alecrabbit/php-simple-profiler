@@ -54,6 +54,9 @@ class Benchmark
         $this->output = $output ?? new ConsoleOutput();
         $this->maxIterations = $this->options->getMaxIterations();
         $this->progressThreshold = $this->options->getProgressThreshold();
+//        if (extension_loaded('Xdebug')) {
+//            trigger_error('XDebug extension is loaded', E_USER_WARNING);
+//        }
     }
 
     /**
